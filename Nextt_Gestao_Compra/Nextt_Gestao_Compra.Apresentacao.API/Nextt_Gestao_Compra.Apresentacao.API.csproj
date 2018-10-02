@@ -102,6 +102,15 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\RDI_Gerenciador_Usuario\RDI_Gerenciador_Usuario.ManagerStart\bin\Debug\RDI_Gerenciador_Usuario.Aplicacao.dll</HintPath>
     </Reference>
+    <Reference Include="RDI_Gerenciador_Usuario.Dominio">
+      <HintPath>..\..\..\..\..\RDI_Gerenciador_Usuario\RDI_Gerenciador_Usuario.ManagerStart\bin\Debug\RDI_Gerenciador_Usuario.Dominio.dll</HintPath>
+    </Reference>
+    <Reference Include="RDI_Gerenciador_Usuario.Infra.CrossCutting">
+      <HintPath>..\..\..\..\..\RDI_Gerenciador_Usuario\RDI_Gerenciador_Usuario.ManagerStart\bin\Debug\RDI_Gerenciador_Usuario.Infra.CrossCutting.dll</HintPath>
+    </Reference>
+    <Reference Include="RDI_Gerenciador_Usuario.Infra.Dados">
+      <HintPath>..\..\..\..\..\RDI_Gerenciador_Usuario\RDI_Gerenciador_Usuario.ManagerStart\bin\Debug\RDI_Gerenciador_Usuario.Infra.Dados.dll</HintPath>
+    </Reference>
     <Reference Include="RDI_Gerenciador_Usuario.ManagerStart, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\RDI_Gerenciador_Usuario\RDI_Gerenciador_Usuario.ManagerStart\bin\Debug\RDI_Gerenciador_Usuario.ManagerStart.dll</HintPath>
@@ -184,6 +193,8 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="bin\Nextt_Gestao_Compra.Apresentacao.API.dll" />
+    <Content Include="bin\Nextt_Gestao_Compra.Apresentacao.API.pdb" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

@@ -337,6 +337,7 @@ $(document).ready(function () {
                 addLinhaOpcaoCores(corClasses, corNome)
             }
         }
+        console.log(corClasses)
         if (retornaCoresSelecionadas()) {
             coresGrade = retornaCoresSelecionadas();
             reiniciaTbGrade();

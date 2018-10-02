@@ -2270,6 +2270,8 @@
     <Content Include="Assets\js\table_dynamic.js" />
     <Content Include="Assets\js\table_editable.js" />
     <Content Include="Assets\js\uteis\tratamento-string.js" />
+    <Content Include="bin\Nextt_Gestao_Compra.Web.dll" />
+    <Content Include="bin\Nextt_Gestao_Compra.Web.pdb" />
     <Content Include="Erro\AcessoNegado.html" />
     <Content Include="Web.config" />
     <Content Include="WebConfig.js" />
