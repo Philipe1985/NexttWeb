@@ -1,0 +1,239 @@
+﻿@{
+    Layout = "~/_LayoutPrincipal.cshtml";
+}
+<script src="../Assets/js/plugins/moment.min.js"></script>
+<link href="../Assets/js/plugins/bootstrap-datepicker/daterangepicker.css" rel="stylesheet" />
+<script src="../Assets/js/plugins/bootstrap-datepicker/daterangepicker.js"></script>
+<script src="../Assets/js/plugins/tab-wizard-responsive/responsive-tabs.js"></script>
+<link href="../Assets/js/plugins/collapsible-fieldset/css/jquery-collapsible-fieldset.css" rel="stylesheet" />
+<script src="../Assets/js/plugins/collapsible-fieldset/js/jquery-collapsible-fieldset.js"></script>
+<link href="../Assets/js/plugins/colorpicker/spectrum.css" rel="stylesheet" />
+<script src="../Assets/js/cadastro-fornecedor.js"></script>
+<div class="col-md-12 col-sm-12 col-xs-12" id="principal">
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12 cadForn" style="display:none">
+            <ul class="nav nav-tabs responsive" id="wizard-cad-forn">
+                <li class="active"><a class="deco-none" href="#tabDados"><span class="fa fa-info-circle"> Cadastro </span></a></li>
+                @*<li><a class="deco-none" href="#tabGrade"><span class="fa fa-cubes"> Grade </span></a></li>
+                <li><a class="deco-none" href="#tabPack"><span class="fa fa-briefcase"> Pack </span></a></li>
+                <li><a class="deco-none" href="#tabFoto"><span class="fa fa-camera-retro"> Foto </span></a></li>
+                <li><a class="deco-none" href="#tabDistribuicao"><span class="fa fa-share-alt-square"> Distribuição </span></a></li>*@
+            </ul>
+            <div class="tab-content responsive">
+                <div class="tab-pane active" id="tabDados">
+                    <div class="row">
+                        <table class="table table-striped">
+                            <tbody>
+                                <tr>
+                                    <td colspan="1">
+                                        <form class="well form-horizontal">
+                                            <fieldset>
+                                                <legend>Dados Gerais</legend>
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label">Razão Social</label>
+                                                    <div class="col-md-8 inputGroupContainer">
+                                                        <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span><input id="txtRazSoc" name="txtRazSoc" placeholder="Full Name" class="form-control" required="true" value="" type="text"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label">Nome Fantasia</label>
+                                                    <div class="col-md-8 inputGroupContainer">
+                                                        <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span><input id="txtNomFant" name="txtNomFant" placeholder="Address Line 1" class="form-control" required="true" value="" type="text"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label">CNPJ</label>
+                                                    <div class="col-md-8 inputGroupContainer">
+                                                        <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-list-alt"></i></span><input id="txtCnpj" name="txtCnpj" placeholder="Address Line 2" class="form-control" required="true" value="" type="text"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label">Inacrição Estadual</label>
+                                                    <div class="col-md-8 inputGroupContainer">
+                                                        <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-list-alt"></i></span><input id="txtInscEst" name="txtInscEst" placeholder="City" class="form-control" required="true" value="" type="text"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label">Logradouro</label>
+                                                    <div class="col-md-8 inputGroupContainer">
+                                                        <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-road"></i></span><input id="txtLogra" name="txtLogra" placeholder="State/Province/Region" class="form-control" required="true" value="" type="text"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label">Endereço</label>
+                                                    <div class="col-md-8 inputGroupContainer">
+                                                        <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-home"></i></span><input id="txtEbdereco" name="txtEbdereco" placeholder="Postal Code/ZIP" class="form-control" required="true" value="" type="text"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label">Número</label>
+                                                    <div class="col-md-8 inputGroupContainer">
+                                                        <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-map-marker"></i></span><input id="txtNum" name="txtNum" placeholder="Postal Code/ZIP" class="form-control" required="true" value="" type="text"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label">Complemento</label>
+                                                    <div class="col-md-8 inputGroupContainer">
+                                                        <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-copyright-mark"></i></span><input id="txtComplemento" name="txtComplemento" placeholder="Email" class="form-control" required="true" value="" type="text"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label">Bairro</label>
+                                                    <div class="col-md-8 inputGroupContainer">
+                                                        <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-home"></i></span><input id="txtBairro" name="txtBairro" placeholder="Phone Number" class="form-control" required="true" value="" type="text"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label">CEP</label>
+                                                    <div class="col-md-8 inputGroupContainer">
+                                                        <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-pushpin"></i></span><input id="txtCep" name="txtCep" placeholder="Phone Number" class="form-control" required="true" value="" type="text"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label">Cidade</label>
+                                                    <div class="col-md-8 inputGroupContainer">
+                                                        <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-globe"></i></span><input id="txtCidade" name="txtCidade" placeholder="Phone Number" class="form-control" required="true" value="" type="text"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label">Estado</label>
+                                                    <div class="col-md-8 inputGroupContainer">
+                                                        <div class="input-group">
+                                                            <span class="input-group-addon" style="max-width: 100%;"><i class="glyphicon glyphicon-globe"></i></span>
+                                                            <select class="selectpicker form-control">
+                                                                <option>Varios</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </fieldset>
+                                        </form>
+                                    </td>
+                                    <td colspan="1">
+                                        <form class="well form-horizontal">
+                                            <fieldset>
+                                                <legend>Dados de Contato</legend>
+                                                <div class="form-group multiple-form-group input-group">
+                                                    <div class="input-group-btn input-group-select">
+                                                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                                            <span class="concept">Telefone Comercial</span> <span class="caret"></span>
+                                                        </button>
+                                                        <ul class="dropdown-menu" role="menu">
+                                                            <li><a href="#com">Telefone Comercial</a></li>
+                                                            <li><a href="#res">Telefone Residencial</a></li>
+                                                            <li><a href="#cel">Telefone Celular</a></li>
+                                                            <li><a href="#skype">Skype</a></li>
+                                                            <li><a href="#email">E-mail</a></li>
+                                                        </ul>
+                                                        <input type="hidden" class="input-group-select-val" name="contacts['type'][]" value="Telefone Comercial">
+                                                    </div>
+                                                    <input type="text" name="contacts['value'][]" class="form-control">
+                                                    <span class="input-group-btn">
+                                                        <button type="button" class="btn btn-success btn-add">+</button>
+                                                    </span>
+                                                </div>
+
+
+                                            </fieldset>
+                                        </form>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+
+                    </div>
+
+                    <div class="row">
+                        <div class="pull-right">
+                            <button type="button" class="btn btn-danger cancel-change">Cancelar</button>
+                            <button type="button" class="btn btn-primary next-step">Avançar</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane" id="tabGrade">
+                    <div class="row">
+                    </div>
+                    <div class="row">
+                        <div class="pull-right">
+                            <button type="button" class="btn btn-info prev-step">Voltar</button>
+                            <button type="button" class="btn btn-danger cancel-change">Cancelar</button>
+                            <button type="button" class="btn btn-primary next-step">Avançar</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane" id="tabPack">
+                    <div class="row">
+                        <div class="col-md-10 col-sm-12 col-xs-12" style="text-align:left">
+                            <div id="alertCadPack" class="alertCustomizado alert-danger" style="display:none"></div>
+                        </div>
+                        <div class="col-md-2 col-sm-2 col-xs-2" style="text-align:right">
+                            <a id="btnAddPack" href="#" class="btn btn-primary-3d btn3d" style="margin-top:0px;padding-bottom:1px"><i class="fa fa-plus" aria-hidden="true"> Adicionar Pack</i></a>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12 table-responsive" style="max-height:50vh;overflow:auto">
+                            <table id="tabelaPack" cellpadding="0" cellspacing="0" width="100%" class="cell-border hover table cell nowrap stripe compact pretty"></table>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div id="grupoPackCadastrados" class="col-md-12 col-sm-12 col-xs-12"></div>
+                    </div>
+                    <div class="row">
+                        <div class="pull-right">
+                            <button type="button" class="btn btn-info prev-step">Voltar</button>
+                            <button type="button" class="btn btn-danger cancel-change">Cancelar</button>
+                            <button type="button" class="btn btn-primary next-step">Avançar</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane" id="tabFoto">
+                    <hr>
+                    <h5 style="color:blue" class="text-center"><strong>Adicione/Atualize a imagem do produto </strong>(Opcional)</h5>
+                    <hr>
+                    <div class="row">
+                        <div id="kv-avatar-errors-2" class="center-block" style="width:800px;display:none"></div>
+                        <div class="col-md-12 col-sm-12 col-xs-12" style="text-align:center">
+                            <div id="alertEditaImg" class="alertCustomizado alert-info" style="display:none"></div>
+                        </div>
+
+                        <div class="col-md-12 col-sm-12 col-xs-12 text-center">
+                            <div class="kv-avatar">
+                                <div class="file-loading">
+                                    <input id="imgUpload" type="file" accept="image/*" required />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="pull-right">
+                            <button type="button" class="btn btn-info prev-step">Voltar</button>
+                            <button type="button" class="btn btn-danger cancel-change">Cancelar</button>
+                            <button type="button" class="btn btn-primary next-step">Avançar</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane" id="tabDistribuicao">
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12" style="text-align:center">
+                            <div id="alertProdCarteira" class="alertCustomizado alert-info" style="display:none"></div>
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-xs-12 table-responsive filter-right">
+                            <table cellpadding="0" cellspacing="0" style="width:100%;" border="1"
+                                   class="table-tools cell-border hover table cell nowrap stripe compact pretty"
+                                   id="tblRedistribuirProduto"></table>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="pull-right">
+                            <button type="button" class="btn btn-info prev-step">Voltar</button>
+                            <button type="button" class="btn btn-danger cancel-change">Cancelar</button>
+                            <button type="button" class="btn btn-success finish-change">Salvar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{C5EB9C21-C77A-41D0-B33A-9B97C0A51B05}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Nextt_Gestao_Compra.Dominio</RootNamespace>
+    <AssemblyName>Nextt_Gestao_Compra.Dominio</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Entidades\CadastroProdutoSecaoEspecieMarcaFornecetor.cs" />
+    <Compile Include="Entidades\ClassificacaoFiscal.cs" />
+    <Compile Include="Entidades\CondicaoPgto.cs" />
+    <Compile Include="Entidades\Cor.cs" />
+    <Compile Include="Entidades\DadosGerenciamentoProdutoCompra.cs" />
+    <Compile Include="Entidades\DadosPrePedido.cs" />
+    <Compile Include="Entidades\DadosUltimaCompra.cs" />
+    <Compile Include="Entidades\Especie.cs" />
+    <Compile Include="Entidades\FormaPgto.cs" />
+    <Compile Include="Entidades\Fornecedor.cs" />
+    <Compile Include="Entidades\FotoProduto.cs" />
+    <Compile Include="Entidades\Grade.cs" />
+    <Compile Include="Entidades\GrupoFilial.cs" />
+    <Compile Include="Entidades\Marca.cs" />
+    <Compile Include="Entidades\Parametros.cs" />
+    <Compile Include="Entidades\PedidoCadastrado.cs" />
+    <Compile Include="Entidades\PedidoConsulta.cs" />
+    <Compile Include="Entidades\ProdutoItem.cs" />
+    <Compile Include="Entidades\ReferenciaProduto.cs" />
+    <Compile Include="Entidades\Secao.cs" />
+    <Compile Include="Entidades\GrupoTamanho.cs" />
+    <Compile Include="Entidades\UsuarioGerenciamento.cs" />
+    <Compile Include="Interfaces\Repositorio\Gerenciamento\IRepositorioCompra.cs" />
+    <Compile Include="Interfaces\Repositorio\Gerenciamento\IRepositorioGrupo.cs" />
+    <Compile Include="Interfaces\Repositorio\Gerenciamento\IRepositorioPedido.cs" />
+    <Compile Include="Interfaces\Repositorio\IRepositorioPadrao.cs" />
+    <Compile Include="Interfaces\Servico\Gerenciamento\IServicoCompra.cs" />
+    <Compile Include="Interfaces\Servico\Gerenciamento\IServicoGrupo.cs" />
+    <Compile Include="Interfaces\Servico\Gerenciamento\IServicoPedido.cs" />
+    <Compile Include="Interfaces\Servico\IServicoPadrao.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Servicos\Gerenciamento\ServicoCompra.cs" />
+    <Compile Include="Servicos\Gerenciamento\ServicoGrupo.cs" />
+    <Compile Include="Servicos\Gerenciamento\ServicoPedido.cs" />
+    <Compile Include="Servicos\ServicoPadrao.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

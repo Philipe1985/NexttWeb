@@ -1,0 +1,81 @@
+﻿@{
+    Layout = "~/_LayoutPrincipal.cshtml";
+}
+<script src="../Assets/js/grupo-filiais.js"></script>
+<script src="../Assets/js/calculosRelatorio.js"></script>
+<div class="col-md-12" id="principal">
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12" style="text-align:center">
+            <div id="alertCadGrupoFilial" class="alertCustomizado alert-danger" style="display:none"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3 col-sm-12 col-xs-12">
+            <div class="form-group">
+                <label class="form-label" style="font-size:16px!important;">Selecione os Grupos:</label>
+                <div class="controls ocultarElemento">
+                    <select name="cbGrupos" id="cbGrupos" class="selectpicker show-tick form-control" data-live-search="true" data-size="7"
+                            data-width="100%" multiple title="Selecione para editar..."></select>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-2 col-sm-12 col-xs-12">
+            <div class="form-group">
+                <label class="form-label" style="font-size:16px!important;">Participação por:</label>
+                <div class="controls ocultarElemento">
+                    <input type="checkbox" checked class="ckbGrpDist" style="opacity:initial !important;cursor:not-allowed!important;pointer-events:auto !important" disabled data-width="100" data-on-color="success" data-off-color="primary" data-on-text="&nbsp;&nbsp;Vendas &nbsp;&nbsp;" data-off-text="Cobertura">
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-12 col-xs-12">
+            <div class="form-group">
+                <label class="form-label" style="font-size:16px!important;">Iniciar:</label>
+                <div class="controls">
+                    <button id="btnCadastrarGrupo" style="margin-top:1px;padding-bottom:1px;" onclick="criaDescGrp()" class="btn btn-primary btn3d">
+                        <i class="fa fa-plus" aria-hidden="true"> Cadastrar um Grupo</i>
+                    </button>
+                    <button id="btnEditarGrupos" style="margin-top:1px;padding-bottom:1px;" onclick="atualizarGrupos()" class="btn btn-info btn3d">
+                        <i class="fa fa-save" aria-hidden="true"> Salvar Alterações</i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div id="divPaineisCadastroGrupo" class="col-md-12 col-sm-12 col-xs-12 ocultarElemento">
+            <ul class="nav nav-tabs nav-tabs-responsive" role="tablist" id="cadGrupo"></ul>
+            <div class="tab-content">
+            </div>
+        </div>
+    </div>
+    <div class="bg_load"></div>
+    <div class="wrapper">
+        <div class="inner">
+            <span class="wait">
+                <span>A</span>
+                <span>g</span>
+                <span>u</span>
+                <span>a</span>
+                <span>r</span>
+                <span>d</span>
+                <span>e</span>
+            </span>
+            <span class="resized ocultarElemento">
+                <span>A</span>
+                <span>j</span>
+                <span>u</span>
+                <span>s</span>
+                <span>t</span>
+                <span>a</span>
+                <span>n</span>
+                <span>d</span>
+                <span>o</span>
+            </span>
+        </div>
+    </div>
+
+</div>
+
+
+

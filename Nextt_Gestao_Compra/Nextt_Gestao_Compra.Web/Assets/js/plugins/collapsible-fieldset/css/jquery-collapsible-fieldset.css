@@ -1,0 +1,137 @@
+.collapsible, .collapsible.expanded {
+    border: 1px solid #999 !important;
+    border-radius: 8px !important;
+    box-shadow: 0 0 10px #999 !important;
+}
+
+.collapsible.collapsed {
+	
+}
+
+    .collapsible legend {
+        font-weight: bold;
+        /*background: #fff!important;*/
+        font-size: 14px !important;
+        cursor: pointer;
+        width: auto !important;
+        padding-left: 10px;
+        padding-right:10px!important;
+        padding-top:15px!important;
+        border-bottom:none!important;
+
+
+    }
+
+    .collapsible legend, .collapsible.expanded legend:before {
+        content: "\2212";
+        line-height: 1;
+        margin: 10px;
+        display: inline-block;
+    }
+
+    .collapsible.collapsed legend:before {
+        content: "\2b";
+        line-height: 1;
+        margin: 10px;
+        display: inline-block;
+    }
+
+.coolfieldset,
+.coolfieldset.expanded {
+    border: 2px solid #66a9bd;
+}
+
+    .coolfieldset.collapsed {
+        border: 0;
+        border-top: 2px solid #66a9bd;
+    }
+
+    .coolfieldset legend {
+        font-size: medium !important;
+        width: auto !important;
+        padding-left: 10px;
+        padding-right: 10px !important;
+        font-weight: bold;
+        cursor: pointer;
+        color: #337ab7;
+        border-bottom: none !important;
+    }
+
+    .coolfieldset legend,
+    .coolfieldset.expanded legend:before {
+        content: "\2212";
+        line-height: 1;
+        margin: 0;
+        display: inline-block;
+    }
+
+    .coolfieldset.collapsed legend:before {
+        content: "\2b";
+        line-height: 1;
+        margin: 10px;
+        display: inline-block;
+    }
+
+.collapsibleChild, .collapsibleChild.expanded {
+}
+
+    .collapsibleChild.collapsed {
+    }
+
+    .collapsibleChild legend {
+        font-weight: bold;
+        font-size: 14px !important;
+        cursor: pointer;
+        width: auto !important;
+        padding-left: 10px;
+    }
+
+    .collapsibleChild legend, .collapsibleChild.expanded legend:before {
+        content: "\2212";
+        line-height: 1;
+        margin: 10px;
+        display: inline-block;
+    }
+
+    .collapsibleChild.collapsed legend:before {
+        content: "\2b";
+        line-height: 1;
+        margin: 10px;
+        display: inline-block;
+    }
+
+.coolfieldset,
+.coolfieldset.expanded {
+    border: 2px solid #66a9bd;
+}
+
+    .coolfieldset.collapsed {
+        border: 0;
+        border-top: 2px solid #66a9bd;
+    }
+
+    .coolfieldset legend {
+        font-size: medium !important;
+        width: auto !important;
+        padding-left: 10px;
+        padding-right: 10px !important;
+        font-weight: bold;
+        cursor: pointer;
+        color: #337ab7;
+        border-bottom: none !important;
+    }
+
+    .coolfieldset legend,
+    .coolfieldset.expanded legend:before {
+        content: "\2212";
+        line-height: 1;
+        margin: 0;
+        display: inline-block;
+    }
+
+    .coolfieldset.collapsed legend:before {
+        content: "\2b";
+        line-height: 1;
+        margin: 10px;
+        display: inline-block;
+    }

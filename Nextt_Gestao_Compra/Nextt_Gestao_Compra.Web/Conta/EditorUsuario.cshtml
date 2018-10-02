@@ -1,0 +1,166 @@
+﻿@{
+    Layout = "~/_LayoutPrincipal.cshtml";
+}
+<link href="../Assets/js/plugins/bootstrap-switch/bootstrap-switch.css" rel="stylesheet" />
+<link href="../Assets/js/plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" />
+<script src="../Assets/js/plugins/bootstrap-select/js/bootstrap-select.js"></script>
+<script src="../Assets/js/plugins/bootstrap-switch/bootstrap-switch.js"></script>
+<script src="../Assets/js/customUsuarioManager.js"></script>
+<script src="../Assets/js/customEditorUsuario.js"></script>
+
+<div class="col-md-12" id="principal">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="events-filter">
+                <div class="col-md-1">
+                    <a id="btnVoltarGerenciar" href="javascript:gerenciarUsuario();" data-placement="bottom" class="btn btn-primary" data-toggle="tooltip" title="Retornar ao gerenciamento de usuários"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title" id="pnlDadosBasicos">Dados básicos</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-6 col-sm-6 col-xs-6">
+                            <div class="form-group">
+                                <label class="form-label" id="lblAtivo">Ativo</label>
+                                <div class="controls">
+                                    <input id="ckbAtivo" type="checkbox" class="switch" data-on-text="Sim" data-off-text="Não" data-on-color="success" data-off-color="danger" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xs-6">
+                            <div class="form-group">
+                                <label class="form-label" id="lblAdministradosEditar">Administrador</label>
+                                <div class="controls">
+                                    <input id="ckbAdministrador" type="checkbox" class="switch" data-on-text="Sim" data-off-text="Não" data-on-color="success" data-off-color="danger" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 col-sm-6 col-xs-6">
+                            <div class="form-group">
+                                <label class="form-label" id="lblNomeEditar">Nome</label>
+                                <div class="controls">
+                                    <input type="text" id="txtNome" MaxLength="200" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xs-6">
+                            <div class="form-group">
+                                <label class="form-label" id="lblSobrenomeEditar">Sobrenome</label>
+                                <div class="controls">
+                                    <input type="text" id="txtSobrenome" MaxLength="200" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-md-6 col-sm-6 col-xs-6">
+                            <div class="form-group">
+                                <label class="form-label" id="lblUsuarioEditar">Nome de Exibição</label><span id="spanUsuarioEditar" class="tips"> Login e exibição</span>
+                                <div class="controls">
+                                    <input type="text" id="txtNomeExibicao" MaxLength="200" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xs-6">
+                            <div class="form-group">
+                                <label class="form-label" id="lblEmailEditar">E-mail</label>
+                                <div class="controls">
+                                    <input type="text" id="txtEmail" MaxLength="50" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 col-sm-6 col-xs-6 ocultarElemento">
+                            <div class="form-group">
+                                <label class="form-label" id="lblCelularEditar">Celular</label>
+                                <div class="controls">
+                                    <input type="text" id="txtCelular" MaxLength="15" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xs-6">
+                            <div class="form-group">
+                                <label class="form-label" id="lblCadastroData">Cadastrado em</label>
+                                <div class="controls">
+                                    <input type="text" id="txtDataCadastro" disabled MaxLength="15" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-md-12 pull-left">
+                <div class="panel">
+                    <div class="panel-body" style="padding-top: 0px;">
+                        <div class="row text-center">
+                            <div class="col-md-6 col-sm-6 col-xs-6">
+                                <button id="btnCancelarEdicao" type="button" class="btn btn-danger"><i class="fa fa-times" aria-hidden="true"></i> Cancelar</button>
+                            </div>
+                            <div class="col-md-6 col-sm-6 col-xs-6">
+                                <button id="btnSalvarEdicao" type="button" class="btn btn-success"><i class="fa fa-check" aria-hidden="true"></i> Salvar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title" id="pnlDadosAcesso">Dados de acesso</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="form-group text-center">
+                                <label class="form-label" id="lblResetSenha">Redefinir Senha</label><span id="spanReset" class="tips"> Esta operação é independete do botão salvar.</span>
+                                <div class="controls">
+                                    <button id="btnResetarSenha" type="button" class="btn btn-primary"><i class="fa fa-refresh" aria-hidden="true"></i> Resetar Agora</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="form-group">
+                                <label id="lblPerfilEditar" class="form-label">Perfil</label><span id="spanPerfilEditar" class="tips"> Adicionará e removerá perfis deste usuário.</span>
+                                <div class="controls ocultarElemento">
+                                    <select name="ucComboAdminsEditar" id="ucComboAdminsEditar" class="selectpicker" data-width="50%"></select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="bg_load"></div>
+<div class="wrapper">
+    <div class="inner">
+        <span>
+            <span>A</span>
+            <span>g</span>
+            <span>u</span>
+            <span>a</span>
+            <span>r</span>
+            <span>d</span>
+            <span>e</span>
+        </span>
+    </div>
+</div>

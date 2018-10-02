@@ -1,0 +1,104 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js sidebar-large lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js sidebar-large lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js sidebar-large lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html>
+<head>
+    <!-- BEGIN META SECTION -->
+    <meta charset="utf-8">
+    <meta http-equiv="cache-control" content="no-cache" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="-1" />
+    <title>Nextt - Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta content="" name="description" />
+    <meta content="themes-lab" name="author" />
+    <!-- END META SECTION -->
+    @*------------------------------- Favicons------------------------------------------------------------ *@
+    <link rel="apple-touch-icon" sizes="57x57" href="../Assets/images/favicon/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="../Assets/images/favicon/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="../Assets/images/favicon/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="../Assets/images/favicon/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="../Assets/images/favicon/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="../Assets/images/favicon/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="../Assets/images/favicon/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="../Assets/images/favicon/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../Assets/images/favicon/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="../Assets/images/favicon/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../Assets/images/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="../Assets/images/favicon/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../Assets/images/favicon/favicon-16x16.png">
+    <link rel="manifest" href="../Assets/images/favicon/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="../Assets/images/favicon/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+    @*------------------------------------------------------------------------------------------------ *@
+
+    <!-- BEGIN MANDATORY STYLE -->
+    <link href="../Assets/css/LoadingStyle.min.css" rel="stylesheet" />
+    <link href="../Assets/css/icons/icons.min.css" rel="stylesheet" />
+    <link href="../Assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../Assets/css/plugins.min.css" rel="stylesheet">
+    <link href="../Assets/js/plugins/bootstrap-loading/lada.min.css" rel="stylesheet">
+    <link href="../Assets/css/style.min.css" rel="stylesheet">
+    <link href="../Assets/css/customConta.min.css" rel="stylesheet" />
+    <link href="../Assets/css/animate-custom.min.css" rel="stylesheet">
+    <!-- END PAGE LEVEL STYLE -->
+    <script src="../WebConfig.js"></script>
+    <script src="../Assets/js/jquery-1.11.1.min.js"></script>
+    <script src="../Assets/js/plugins/jquery-ui/jquery-ui-1.10.4.min.js"></script>
+    <script src="../Assets/js/plugins/jquery-mobile/jquery.mobile-1.4.2.js"></script>
+    <script src="../Assets/js/plugins/modernizr/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+    <script src="../Assets/js/customConta.js"></script>
+    <script src="../Assets/js/chamadasAPI/callbackAPI.js"></script>
+</head>
+<body class="login fade-in" data-page="login">
+    <div class="alert alert-danger" style="display:none" id="dangeralert">
+        <button type="button" class="close" data-dismiss="alert">x</button>
+        <strong>Falha ao logar</strong>
+    </div>
+    <div class="container" id="login-block">
+        <div class="row">
+            <div class="col-sm-6 col-md-4 col-sm-offset-3 col-md-offset-4">
+                <div class="login-box clearfix flipInY">
+                    <div class="login-logo">
+                        <script src="~/WebConfig.js"></script>
+                        <img src="../Assets/images/nexttLogo.png" />
+                    </div>
+                    <hr>
+                    <div class="login-form">
+                        <form action="#" method="post">
+                            <input type="text" name="txtLogin" id="txtLogin" class="input-field form-control user">
+                            <input type="password" name="txtSenha" id="txtSenha" class="input-field form-control password">
+                            <input type="submit" name="btnLogin" id="btnLogin" class="btn btn-login ladda-button ladda-label" value="Conectar" />
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="bg_load" style="display:none"></div>
+    <div class="wrapper" style="display:none">
+        <div class="inner">
+            <span>A</span>
+            <span>g</span>
+            <span>u</span>
+            <span>a</span>
+            <span>r</span>
+            <span>d</span>
+            <span>e</span>
+        </div>
+    </div>
+
+    <!-- BEGIN MANDATORY SCRIPTS -->
+    <script src="../Assets/js/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../Assets/js/plugins/backstretch/backstretch.min.js"></script>
+    <script src="../Assets/js/plugins/bootstrap-loading/lada.min.js"></script>
+    <!-- END MANDATORY SCRIPTS -->
+</body>
+</html>

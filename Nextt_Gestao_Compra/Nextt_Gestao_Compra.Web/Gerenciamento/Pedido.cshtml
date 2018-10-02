@@ -1,0 +1,333 @@
+﻿@{
+    Layout = "~/_LayoutPrincipal.cshtml";
+}
+<link href="../Assets/js/plugins/bootstrap-treeview/css/bootstrap-treeview.css" rel="stylesheet" />
+<script src="../Assets/js/plugins/bootstrap-treeview/js/bootstrap-treeview.js"></script>
+<link href="../Assets/js/plugins/modal-wizard/easyWizard.css" rel="stylesheet" />
+<script src="../Assets/js/plugins/modal-wizard/easyWizard.js"></script>
+<script src="../Assets/js/plugins/moment.min.js"></script>
+<link href="../Assets/js/plugins/bootstrap-datepicker/daterangepicker.css" rel="stylesheet" />
+<script src="../Assets/js/plugins/bootstrap-datepicker/daterangepicker.js"></script>
+<script src="../Assets/js/consulta-pedido.js"></script>
+<link href="../Assets/js/plugins/collapsible-fieldset/css/jquery-collapsible-fieldset.css" rel="stylesheet" />
+<script src="../Assets/js/plugins/collapsible-fieldset/js/jquery-collapsible-fieldset.js"></script>
+<link href="../Assets/js/plugins/colorpicker/spectrum.css" rel="stylesheet" />
+<script src="../Assets/js/plugins/colorpicker/spectrum.js"></script>
+<script src="../Assets/js/plugins/colorpicker/i18n/jquery.spectrum-pt-br.js"></script>
+<script src="../Assets/js/plugins/image_upload.js"></script>
+<script src="../Assets/js/calculosRelatorio.js"></script>
+
+<div class="col-md-12 col-sm-12 col-xs-12" id="principal">
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12" style="text-align:center">
+                    <div id="alertConsultaPedido" class="alertCustomizado alert-danger" style="display:none"></div>
+                </div>
+
+                <div class="col-md-2 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <h5 class="form-label">Data de Cadastro</h5>
+                        <div class="controls">
+                            <input type="text" name="txtDtCadPed" id="txtDtCadPed" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <h5 id="lblEntregaPed" class="form-label">Prazo da Entrega</h5>
+                        <div class="controls">
+                            <input type="text" name="txtDtEntregaPed" id="txtDtEntregaPed" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <h5 id="lblCodProd" class="form-label">Cod. Prod. Matriz</h5>
+                        <div class="controls">
+                            <input type="text" name="txtCodProd" id="txtCodProd" class="form-control txtInteiro" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-2 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <h5 id="lblRefProd" class="form-label">Ref. Prod. Matriz</h5>
+                        <div class="controls">
+                            <input type="text" name="txtRefProd" id="txtRefProd" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <h5 id="lblDescProd" class="form-label">Desc. Produto</h5>
+                        <div class="controls">
+                            <input type="text" name="txtDescProd" id="txtDescProd" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <h5 id="lblIdPed" class="form-label">Código do Pedido</h5>
+                        <div class="controls">
+                            <input type="text" name="txtIdPed" id="txtIdPed" class="form-control txtInteiro" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div id="divForn" class="col-md-3 col-sm-12 col-xs-12 ocultarElemento">
+                    <div class="form-group">
+                        <h5 class="form-label">Selecione os fornecedores:</h5>
+                        <div class="controls">
+                            <select id="drpCNPJ" class="selectpicker show-tick form-control" data-show-subtext="true" data-actions-box="true" multiple data-live-search="true"
+                                    data-select-all-text="Marcar Todos" data-deselect-all-text="Desmarcar Todos" data-count-selected-text="Selecionado {0} de {1} CNPJ's'" title="0 selecionados..."
+                                    data-width="100%" data-select-header="true" data-size="7" data-selected-text-format="count > 2"></select>
+                        </div>
+                    </div>
+                </div>
+                <div id="divMarca" class="col-md-3 col-sm-12 col-xs-12 ocultarElemento">
+                    <div class="form-group">
+                        <h5 class="form-label">Selecione as marcas:</h5>
+                        <div class="controls">
+                            <select id="drpMarc" class="selectpicker show-tick form-control" data-actions-box="true" multiple data-live-search="true"
+                                    data-select-all-text="Marcar Todos" data-deselect-all-text="Desmarcar Todos" data-count-selected-text="Selecionado {0} de {1}" title="0 selecionados..."
+                                    data-width="100%" data-size="7" data-selected-text-format="count > 2"></select>
+                        </div>
+                    </div>
+                </div>
+                <div id="divSec" class="col-md-3 col-sm-12 col-xs-12 ocultarElemento">
+                    <div class="form-group">
+                        <h5 class="form-label">Selecione as seções:</h5>
+                        <div class="controls">
+                            <select id="drpSec" class="selectpicker show-tick form-control" data-show-subtext="true" data-actions-box="true" multiple data-live-search="true"
+                                    data-select-all-text="Marcar Todas" data-deselect-all-text="Desmarcar Todas" data-count-selected-text="Selecionado {0} de {1}" title="0 selecionados..."
+                                    data-width="100%" data-select-header="true" data-size="7" data-selected-text-format="count > 2"></select>
+                        </div>
+                    </div>
+                </div>
+                <div id="divEsp" class="col-md-3 col-sm-12 col-xs-12 ocultarElemento">
+                    <div class="form-group">
+                        <h5 class="form-label">Selecione as espécies:</h5>
+                        <div class="controls">
+                            <select id="drpEsp" class="selectpicker show-tick form-control" data-show-subtext="true" data-actions-box="true" multiple data-live-search="true"
+                                    data-select-all-text="Marcar Todas" data-deselect-all-text="Desmarcar Todas" data-count-selected-text="Selecionado {0} de {1}" title="0 selecionados..."
+                                    data-width="100%" data-select-header="true" data-size="7" data-selected-text-format="count > 2"></select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <h5 class="form-label">Selecione os Compradores:</h5>
+                        <div class="controls ocultarElemento">
+                            <select name="cbUsuario" id="cbUsuario" data-actions-box="true" class="selectpicker show-tick form-control pull-right" data-live-search="true"
+                                    data-select-all-text="Marcar Todas" data-deselect-all-text="Desmarcar Todas" data-count-selected-text="Selecionado {0} de {1} opções"
+                                    data-width="100%" multiple data-select-header="true" data-size="auto" data-selected-text-format="count > 2" title="Compradores..."></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <h5 class="form-label">Status do Pedido</h5>
+                        <div class="controls ocultarElemento">
+                            <select name="cbStatus" id="cbStatus" data-actions-box="true" class="selectpicker show-tick form-control pull-right" data-live-search="true"
+                                    data-select-all-text="Marcar Todas" data-deselect-all-text="Desmarcar Todas" data-count-selected-text="Selecionado {0} de {1} opções"
+                                    data-width="100%" multiple data-select-header="true" data-size="auto" data-selected-text-format="count > 2" title="Status...">
+                                <option value="C">Cancelados</option>
+                                <option value="A">Aberto/Digitando</option>
+                                <option selected value="F">Fechado/Pendente de Liberação</option>
+                                <option value="L">Liberado</option>
+                                <option value="E">Entregues</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-12 col-xs-12">
+                    <h5 class="form-label">Filtrar Resultados</h5>
+                    <input type="text" id="fTxtBusca" placeholder="Buscar por caracter..." class="form-control" />
+                </div>
+                <div class="col-md-3 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <h5 class="form-label">Pesquisar Pedidos:</h5>
+                        <div class="controls">
+                            <button id="btnBuscarPedidoa" class="btn btn-primary btn-block" onclick="buscarPedidosFiltrado()">
+                                <i class="fa fa-search" aria-hidden="true"> Pesquisar</i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Pré-Pedidos</h3>
+                </div>
+                <div id="" class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12 table-responsive" style="max-height:65vh;overflow:auto">
+                            <table id="tabelaPedidos" cellpadding="0" cellspacing="0" style=" width:100%;" class="cell-border hover table cell nowrap stripe compact pretty">
+                                <thead>
+                                    <tr>
+                                        <th style="border:1px solid black;border-bottom:2px solid black">Detalhamento</th>
+                                        <th style="border:1px solid black;border-bottom:2px solid black">Cód. Pedido</th>
+                                        <th style="border:1px solid black;border-bottom:2px solid black">ID. Produto</th>
+                                        <th style="border:1px solid black;border-bottom:2px solid black">Descrição</th>
+                                        <th style="border:1px solid black;border-bottom:2px solid black">CNPJ Fornecedor</th>
+                                        <th style="border:1px solid black;border-bottom:2px solid black">Nome Fornecedor</th>
+                                        <th style="border:1px solid black;border-bottom:2px solid black">Marca</th>
+                                        <th style="border:1px solid black;border-bottom:2px solid black">Data de Emissão</th>
+                                        <th style="border:1px solid black;border-bottom:2px solid black">Data de Entrega</th>
+                                        <th style="border:1px solid black;border-bottom:2px solid black">Qtd. Total</th>
+                                        <th style="border:1px solid black;border-bottom:2px solid black">Custo Total</th>
+                                        <th style="border:1px solid black;border-bottom:2px solid black">Status</th>
+                                        <th style="border:1px solid black;border-bottom:2px solid black">Comprador</th>
+                                        <th style="border:1px solid black;border-bottom:2px solid black">Copiar Pedido</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="bg_load"></div>
+    <div class="wrapper">
+        <div class="inner">
+            <span class="wait">
+                <span>A</span>
+                <span>g</span>
+                <span>u</span>
+                <span>a</span>
+                <span>r</span>
+                <span>d</span>
+                <span>e</span>
+            </span>
+            <span class="resized ocultarElemento">
+                <span>A</span>
+                <span>j</span>
+                <span>u</span>
+                <span>s</span>
+                <span>t</span>
+                <span>a</span>
+                <span>n</span>
+                <span>d</span>
+                <span>o</span>
+            </span>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modalDetalhamentoPedido" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-info">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"><i class="fa fa-shopping-cart"></i>&nbsp;Ficha de <strong>Pré-Pedido</strong></h4>
+            </div>
+            <div id="modalBodyDetalhePedido" class="modal-body" style="padding-top:8px; padding-bottom:0px;">
+
+                <div class="row" style="margin-top:0px">
+                    <div class="col-md-12 ">
+                        <div class="row" style="margin-top:0px">
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <h4><strong>ID do Produto: <span id="spnIdProd"></span></strong></h4>
+                                <address id="dadosForn">
+                                    <strong>Informações Fornecedor:</strong><br>
+                                    Razão Social: <span id="spnRazSoc"></span> <br>
+                                    Nome Fantasia: <span id="spnNomFan"></span><br>
+                                    Cnpj: <span id="spnCnpj"></span><br>
+                                    Referencia do Fornecedor: <span id="spnRefForn"></span>
+                                </address>
+                            </div>
+                            <div class="col-md-6 col-sm-6 col-xs-12 text-right">
+                                <h4><strong>Código do Pedido: <span id="spnCodPed"></span></strong></h4>
+                                <address id="dadosPed">
+                                    <strong>Informações do Pedido:</strong><br>
+                                    Data de Emissão: <span id="spnDtEmi"></span><br>
+                                    Período de Entrega: <span id="spnDtEnt"></span><br>
+                                    Custo Total: <span id="spnCstTot"></span><br>
+                                    Comprador: <span id="spnComp"></span>
+                                </address>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <h4 class="text-center"><strong>Detalhes do Produto</strong></h4>
+                        </div>
+                        <div class="row" style="margin-top:5px">
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <address id="detalheProd">
+                                    <strong>Cod. Produto: <span id="spnCodProd"></span></strong><br>
+                                    <strong><span id="spnDescSecEsp"></span></strong><br>
+                                    Descrição: <span id="spnDesc"></span><br>
+                                    Desc. Resumida: <span id="spnDescRes"></span><br>
+                                    Custo Bruto: <span id="spnCustoBruto"></span><br>
+                                    Preço de Venda: <span id="spnPrVenda"></span><br>
+                                    Qtd. Total: <span id="spnQtdTot"></span>
+                                </address>
+                            </div>
+                            <div class="col-md-6 col-sm-6 col-xs-12 imgProd text-right">
+                                <address>
+                                    <strong>Foto:</strong>
+                                    <br>
+                                    <div class="input-icon pull-right">
+                                        <img id="imgProdPrincipal" class="img-responsive" style="width:150px; height: 130px" src="http://placehold.it/150x150" />
+                                    </div>
+                                </address>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" style="margin-top:5px">
+                    <div class="text-center">
+
+                        <h4 class="text-center"><strong>Packs</strong></h4>
+
+                    </div>
+                    <div id="divPackCadastradosNF" class="col-md-12 col-sm-12 col-xs-12"></div>
+                </div>
+                
+                <div class="row" >
+                    <div class="text-center">
+
+                        <h4 class="text-center"><strong>Distribuição</strong></h4>
+
+                    </div>
+                    <div id="divPackDistNF" class="col-md-12 col-sm-12 col-xs-12 table-responsive filter-right">
+
+                    </div>
+                </div>
+                <br />
+            </div>
+            <div class="modal-footer btnFooters">
+                <button type="button" id="btnAcessar" class="btn btn-primary"><i class="fa fa-external-link-square" aria-hidden="true"></i> Acessar Pedido</button>
+                <button type="button" id="btnAprovar" class="btn btn-success"><i class="fa fa-check" aria-hidden="true"></i> Aprovar Pedido</button>
+                <button type="button" id="btnDevolver" class="btn btn-warning"><i class="fa fa-mail-reply" aria-hidden="true"></i> Reprovar Pedido</button>
+                <button type="button" id="btnCancelar" class="btn btn-danger"><i class="fa fa-close" aria-hidden="true"></i> Cancelar Pedido</button>
+                <button type="button" id="btnPrint" class="btn btn-primary"><i class="fa fa-print" aria-hidden="true"></i> Imprimir Ficha</button>
+                <button id="btnSair" type="button" class="btn btn-info" data-dismiss="modal"><i class="fa fa-ban" aria-hidden="true"></i> Sair</button>
+            </div>
+            <div id="modalLoad" class="bg_load"></div>
+            <div id="modalwrapper" class="wrapper">
+                <div class="inner">
+                    <span class="wait">
+                        <span>A</span>
+                        <span>g</span>
+                        <span>u</span>
+                        <span>a</span>
+                        <span>r</span>
+                        <span>d</span>
+                        <span>e</span>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,178 @@
+﻿@{
+    Layout = "~/_LayoutPrincipal.cshtml";
+}
+<link href="../Assets/js/plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" />
+<script src="../Assets/js/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+<script src="../Assets/js/table_dynamic.js"></script>
+<script src="../Assets/js/table_editable.js"></script>
+<script src="../Assets/js/realocacao.js"></script>
+
+<div class="col-md-12" id="principal">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="events-filter">
+                <div class="col-md-3">
+                    <input type="text" id="fTxtBusca" placeholder="Buscar por caracter..." class="form-control" />
+                </div>
+                <div class="col-md-3">
+                    <select name="ucComboQtds" id="ucComboQtds" class="selectpicker show-tick" data-width="100%" multiple data-max-options="1" title="Selecione um filtro de quantidade...">
+                        <option data-icon="fa fa-truck" value="0">Quantidade em Estoque</option>
+                        <option data-icon="fa fa-shopping-cart" value="1">Quantidade em Carteira</option>
+                    </select>
+                </div>
+                <div id="filtroMetrica" style="display:none" class="col-md-3">
+                    <select name="ucComboMetrica" id="ucComboMetrica" class="selectpicker show-tick" data-width="100%" multiple data-max-options="1" title="Selecione um parametro de comparação...">
+                        <option data-icon="fa fa-less-than" value="0">Menor que</option>
+                        <option data-icon="fa fa-less-than-equal" value="1">Menor ou igual a</option>
+                        <option data-icon="fa fa-equal" value="2">Igual a</option>
+                        <option data-icon="fa fa-greater-than-equal" value="3">Maior ou igual a</option>
+                        <option data-icon="fa fa-greater-than" value="4">Maior que</option>
+
+                    </select>
+                </div>
+                <div id="filtroQtds" style="display:none" class="col-md-3">
+                    <input type="text" id="fTxtQtds" name="fTxtQtds" class="form-control" placeholder="Informe uma quantidade..." />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">Filial 1</h3>
+
+        </div>
+        <div id="" class="panel-body">
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12 table-responsive filter-right">
+                    <table id="tabelaUsuarios" cellpadding="0" cellspacing="0" style=" width:100%;" class="table-tools cell-border hover table cell nowrap stripe compact pretty">
+                        <thead>
+                            <tr>
+                                <th id="coluna_id" style="border:1px solid black;border-bottom:2px solid black">Código de Produto</th>
+                                <th id="coluna_nome" style="border:1px solid black;border-bottom:2px solid black">Descrição de Produto</th>
+                                <th id="coluna_email" style="border:1px solid black;border-bottom:2px solid black">Modelo do Produto</th>
+                                <th id="coluna_ativo" style="border:1px solid black;border-bottom:2px solid black">Grade</th>
+                                <th id="coluna_administrador" style="border:1px solid black;border-bottom:2px solid black">Qtd em Estoque</th>
+                                <th id="coluna_gerenciarUsuario" style="border:1px solid black;border-bottom:2px solid black">Qtd em Carteira</th>
+                                <th id="coluna_realocar" style="border:1px solid black;border-bottom:2px solid black">Realocar Produtos</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usuarioTabela"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalRealocarProduto" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header modal-header-primary">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="realocarProdutoModalTitulo"><i class="fa fa-building-o"></i>&nbsp;Realocando Produtos da <strong>Filial 1</strong></h4>
+            </div>
+            <div class="modal-body" style="padding-top:8px; padding-bottom:0px;">
+                <h4 id="tituloProdutoRealocar" class="text-center"><strong>Produto: </strong>TESTANDO 1</h4>
+                <h5 id="tituloTotalProduto" class="text-center">Total de produtos em estoque: 100</h5>
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Realocar</h3>
+                            </div>
+                            <div class="panel-body">
+                                <div class="column left">
+                                    <div style="display:flex">
+                                        <ul id="sortable1" class="esq connectedSortable" style="list-style-type: none;">
+                                            <li>
+                                                <label>
+                                                    <input type="checkbox"> Filial 1
+                                                </label>
+                                                <label> Qtd. Estoque: 20</label>
+                                                <label>Qtd. Carteira: 30</label>
+                                                
+                                            </li>
+                                           
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="column">
+                            <div class="middle">
+                                <div class="row">
+                                    <div class="form-group">
+                                        <h5 id="lblQtdProdRealoc" class="form-label">Informe a <strong>Quantidade</strong> Realocada</h5>
+                                        <div class="controls">
+                                            <input type="number" name="quantity" min="1" max="5">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <button class="dir">▶</button>
+                                </div>
+                                <div class="row">
+                                    <button class="esq">◀</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Realocado</h3>
+                            </div>
+                            <div class="panel-body">
+                                <div class="column right">
+                                    <ul id="sortable2" class="dir connectedSortable">
+                                        <li style="display:inline-block;">
+                                            <label style="vertical-align: middle">
+                                                <input type="checkbox"> Filial 2
+                                            </label>
+                                            <label style="vertical-align: middle"> Qtd. Estoque: 20</label>
+                                            <label style="vertical-align: middle">Qtd. Carteira: 30</label>
+
+                                        </li>
+                                        <li style="display:inline-block;">
+                                            <label style="vertical-align: middle">
+                                                <input type="checkbox"> Filial 3
+                                            </label>
+                                            <label style="vertical-align: middle"> Qtd. Estoque: 20</label>
+                                            <label style="vertical-align: middle">Qtd. Carteira: 30</label>
+
+                                        </li>
+                                        <li style="display:inline-block;">
+                                            <label style="vertical-align: middle">
+                                                <input type="checkbox"> Filial 4
+                                            </label>
+                                            <label style="vertical-align: middle"> Qtd. Estoque: 20</label>
+                                            <label style="vertical-align: middle">Qtd. Carteira: 30</label>
+
+                                        </li>
+                                        <li style="display:inline-block;">
+                                            <label style="vertical-align: middle">
+                                                <input type="checkbox"> Filial 5
+                                            </label>
+                                            <label> Qtd. Estoque: 20</label>
+                                            <label style="vertical-align: middle">Qtd. Carteira: 30</label>
+
+                                        </li>
+                                    </ul>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" ID="btnSalvarRealocacao" class="btn btn-success"><i class="fa fa-check" aria-hidden="true"></i> Confirmar</button>
+                <button id="btnCancelarSenha" type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-ban" aria-hidden="true"></i> Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>

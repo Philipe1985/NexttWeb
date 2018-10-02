@@ -1,0 +1,29 @@
+
+ERROR 2018-09-18 01:42:40 - Erro ao Salvar Imagem
+System.Exception: RepositorioCompra.SalvarFotosProduto: 
+Cannot insert the value NULL into column 'IDProduto', table 'Nextt.Compras2.dbo.ProdutoFoto'; column does not allow nulls. INSERT fails.
+   em Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento.RepositorioCompra.SalvarFotosProduto(FotoProduto fotoJson) na C:\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Repositorios\Gerenciamento\RepositorioCompra.cs:linha 249
+   em Nextt_Gestao_Compra.Dominio.Servicos.Gerenciamento.ServicoCompra.SalvarFotosProduto(FotoProduto fotoJson) na C:\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Dominio\Servicos\Gerenciamento\ServicoCompra.cs:linha 92
+   em Nextt_Gestao_Compra.Aplicacao.Servicos.Gerenciamento.AppServicoCompra.SalvarFotosProduto(FotoProduto fotoJson) na C:\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Servicos\Gerenciamento\AppServicoCompra.cs:linha 96
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Compra.GerenciadorAplicacaoCompra.SalvarFotosProduto(IAppServicoCompra compraServico, ImagensProdutoVM imagemVM) na C:\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Compra\GerenciadorAplicacaoCompra.cs:linha 151
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Gerenciamento.CompraController.<SalvarImagem>d__13.MoveNext() na C:\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Gerenciamento\CompraController.cs:linha 215
+
+ERROR 2018-09-18 14:50:33 - Erro ao Recuperar Dados do Pedido Analítico
+System.NullReferenceException: Referência de objeto não definida para uma instância de um objeto.
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido.GerenciadorAplicacaoPedido.<>c.<ValidaTamanhoPedido>b__6_1(GrupoTamanho x) na C:\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Pedido\GerenciadorAplicacaoPedido.cs:linha 114
+   em System.Linq.Enumerable.WhereSelectListIterator`2.MoveNext()
+   em System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
+   em System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido.GerenciadorAplicacaoPedido.ValidaTamanhoPedido(List`1 tamanhos, List`1 produtoItems) na C:\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Pedido\GerenciadorAplicacaoPedido.cs:linha 114
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido.GerenciadorAplicacaoPedido.RetornaPedidoAnalitico(IAppServicoPedido pedidoServico, ParametrosVM parametroVM, FabricaViewModel fabrica) na C:\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Pedido\GerenciadorAplicacaoPedido.cs:linha 78
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Cadastro.PedidoController.RetornaPedidoAnalitico(ParametrosVM parametros) na C:\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Cadastro\PedidoController.cs:linha 93
+
+ERROR 2018-09-18 14:52:36 - Erro ao Recuperar Dados do Pedido Analítico
+System.NullReferenceException: Referência de objeto não definida para uma instância de um objeto.
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido.GerenciadorAplicacaoPedido.<>c.<ValidaTamanhoPedido>b__6_1(GrupoTamanho x) na C:\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Pedido\GerenciadorAplicacaoPedido.cs:linha 114
+   em System.Linq.Enumerable.WhereSelectListIterator`2.MoveNext()
+   em System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
+   em System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido.GerenciadorAplicacaoPedido.ValidaTamanhoPedido(List`1 tamanhos, List`1 produtoItems) na C:\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Pedido\GerenciadorAplicacaoPedido.cs:linha 114
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido.GerenciadorAplicacaoPedido.RetornaPedidoAnalitico(IAppServicoPedido pedidoServico, ParametrosVM parametroVM, FabricaViewModel fabrica) na C:\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Pedido\GerenciadorAplicacaoPedido.cs:linha 78
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Cadastro.PedidoController.RetornaPedidoAnalitico(ParametrosVM parametros) na C:\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Cadastro\PedidoController.cs:linha 93

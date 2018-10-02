@@ -1,0 +1,133 @@
+﻿@{
+    Layout = "~/_LayoutPrincipal.cshtml";
+}
+<link href="../Assets/js/plugins/jquery-ui-1.12.1.custom/jquery-ui.css" rel="stylesheet" />
+<script src="../Assets/js/plugins/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
+<script src="../Assets/js/plugins/fullcalendar/moment.min.js"></script>
+<link href="../Assets/js/plugins/fullcalendar/fullcalendar.css" rel="stylesheet" />
+<script src="../Assets/js/plugins/jquery-ui-1.12.1.custom/external/jquery/jquery.js"></script>
+<script type="text/javascript">
+    var $J = $.noConflict(true);
+</script>
+@*<script src="../Assets/js/plugins/bootstrap/js/bootstrap.min.js"></script>*@
+<script src="../Assets/js/plugins/fullcalendar/fullcalendar.js"></script>
+<script src="../Assets/js/plugins/fullcalendar/pt-br.js"></script> 
+<link href="../Assets/js/plugins/bootstrap-clockpicker/dist/bootstrap-clockpicker.css" rel="stylesheet" />
+<script src="../Assets/js/plugins/bootstrap-clockpicker/dist/bootstrap-clockpicker.js"></script>
+<link href="../Assets/js/plugins/bootstrap-clockpicker/dist/jquery-clockpicker.css" rel="stylesheet" />
+<script src="../Assets/js/plugins/bootstrap-clockpicker/dist/jquery-clockpicker.js"></script>
+<script src="../Assets/js/agenda.js"></script>
+<style>
+    .popover {
+        z-index: 215000000 !important;
+    }
+</style>
+<div class="col-md-12 col-sm-12 col-xs-12" id="principal">
+    <div class="widget-fullwidth">
+        <div class="col-md-3 p-0">
+            <div class="widget">
+                <div class="widget-body">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <h3 class="text-white center" id="calender-current-date">Eventos</h3>
+                        <div id='external-events'>
+                            <h4>Arraste e solte um evento ou clique no período desejado do calendário</h4>
+                            <div class="external-event bg-green" draggable="true" data-class='bg-green' style="position: relative;">
+                                <i class="fa fa-car"></i>&nbsp;&nbsp;Visita
+                            </div>
+                            <div class="external-event bg-purple" draggable="true" data-class="bg-purple" style="position: relative;">
+                                <i class="fa fa-handshake-o"></i>&nbsp;&nbsp;Reunião
+                            </div>
+                            <div class="external-event bg-red" draggable="true" data-class="bg-red" style="position: relative;">
+                                <i class="fa fa-group"></i>&nbsp;&nbsp;Conferência
+                            </div>
+                            <div class="external-event bg-blue" draggable="true" data-class="bg-blue" style="position: relative;">
+                                <i class="fa fa-phone-square"></i>&nbsp;&nbsp;Ligação
+                            </div>
+                            <div class="external-event bg-black" draggable="true" data-class="bg-black" style="position: relative;">
+                                <i class="fa fa-money"></i>&nbsp;&nbsp;Cobrança
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        <div class="col-md-9 col-sm-12 col-xs-12">
+
+            <div id='calendarioAgenda' class="p-40"></div>
+        </div>
+    </div>
+
+
+
+</div>
+<div class="modal fade-scale" id="modalEventoCalendario" tabindex="-1" role="dialog" aria-labelledby="modalEventoCalendarioLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header modal-header-primary">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"><i class="fa fa-building-o"></i>&nbsp;Criar <strong>Evento</strong></h4>
+            </div>
+            <div class="modal-body" style="padding-top:8px; padding-bottom:0px;">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">Data Prevista:</label>
+                            <div class="controls">
+                                <input type="text" ID="txtDataEvento" disabled class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">Descrição:</label>
+                            <div class="controls">
+                                @*<input type="text" ID="txtIdEvento" disabled class="form-control" />*@
+                                <select id="txtIdEvento" class="selectpicker show-tick form-control" data-width="100%">
+                                    <option value="bg-green" data-content="<span class='bg-green'><i class='fa fa-car'></i>&nbsp;&nbsp;Visita</span>">Visita</option>
+                                    <option value="bg-purple" data-content="<span class='bg-purple'><i class='fa fa-handshake-o'></i>&nbsp;&nbsp;Reunião</span>">Reunião</option>
+                                    <option value="bg-red" data-content="<span class='bg-red'><i class='fa fa-group'></i>&nbsp;&nbsp;Conferência</span>">Conferência</option>
+                                    <option value="bg-blue" data-content="<span class='bg-blue'><i class='fa fa-phone-square'></i>&nbsp;&nbsp;Ligação</span>">Ligação</option>
+                                    <option value="bg-black" data-content="<span class='bg-black'><i class='fa fa-money'></i>&nbsp;&nbsp;Cobrança</span>">Cobrança</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">Início Previsto:</label>
+                            <div class="controls">
+                                <input type="text" id="txtIniEvento" maxLength="5" placeholder="Início" class="form-control timerCheck" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">Término Previsto:</label>
+                            <div class="controls">
+                                <input type="text" id="txtTermEvento" maxLength="5" placeholder="Término" class="form-control timerCheck" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="form-label">Comentário:</label>
+                            <div class="controls">
+                                <textarea class="form-control" rows="5" id="txtComentario"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnSalvarEvento" class="btn btn-success" data-dismiss="modal"><i class="fa fa-check" aria-hidden="true"></i> Agendar</button>
+                <button id="btnCancelarEvento" type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-ban" aria-hidden="true"></i> Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>

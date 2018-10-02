@@ -1,0 +1,74 @@
+﻿@{
+    Layout = "~/_LayoutPrincipal.cshtml";
+}
+<script src="../Assets/js/distribuicao.js"></script>
+<script src="../Assets/js/calculosRelatorio.js"></script>
+<div class="col-md-12" id="principal">
+    <div class="row">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Periodo Referência: 1ª Quinzana</h3>
+            </div>
+            <div id="" class="panel-body">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12 table-responsive filter-right">
+                        <table id="tabelaUsuarios" cellpadding="0" cellspacing="0" style=" width:100%;" class="table-tools cell-border hover table cell nowrap stripe compact pretty">
+                            <thead>
+                                <tr>
+                                    <th id="coluna_id" style="border:1px solid black;border-bottom:2px solid black">Código de Produto</th>
+                                    <th id="coluna_nome" style="border:1px solid black;border-bottom:2px solid black">Descrição de Produto</th>
+                                    <th id="coluna_email" style="border:1px solid black;border-bottom:2px solid black">Modelo do Produto</th>
+                                    <th id="coluna_ativo" style="border:1px solid black;border-bottom:2px solid black">Grade</th>
+                                    <th id="coluna_administrador" style="border:1px solid black;border-bottom:2px solid black">Qtd em Estoque</th>
+                                    <th id="coluna_gerenciarUsuario" style="border:1px solid black;border-bottom:2px solid black">Qtd em Carteira</th>
+                                    <th id="coluna_realocar" style="border:1px solid black;border-bottom:2px solid black">Redistribuir Produto</th>
+                                </tr>
+                            </thead>
+                            <tbody id="usuarioTabela"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modalRedistribuirProduto" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header modal-header-primary">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="redistribuirProdutoModalTitulo"><i class="fa fa-building-o"></i>&nbsp;Redistribuindo Produto <strong>TESTANDO 1</strong></h4>
+            </div>
+            <div class="modal-body" style="padding-top:8px; padding-bottom:0px;">
+                <h5 id="tituloTotal" style="color:blue" class="text-center"><strong>Valores Iniciais</strong></h5>
+                <div class="row">
+                    <h5 id="tituloProdutoRedistribuir" class="pull-left"><strong>Quantidade Total Inicial:</strong> 23</h5>
+                    <h5 id="tituloPorcentagemProduto" class="pull-right"><strong>Porcentagem Total Inicial:</strong> 100%</h5>
+                </div>
+                <h5 id="tituloRecalculado" style="color:blue" class="text-center"><strong>Valores Recalculados</strong><span id="spanInvalido" style="display:none" class="tips"> Não é permitido finalizar com quantidade ou porcentagen negativas. <br /> Corrija os valores, ou acesse o sistema Open to Buy para aumentar a quantidade de produtos neste período.</span></h5>
+                <div class="row">
+                    <h5 id="tituloProdutoRedistribuirCalculado" class="pull-left"><strong>Quantidade Total Sobressalente:</strong> 0</h5>
+                    <h5 id="tituloPorcentagemProdutoCalculado" class="pull-right"><strong>Porcentagem Total Sobressalente:</strong> 0%</h5>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12 table-responsive filter-right">
+                        <table cellpadding="0" cellspacing="0" style="width:100%;" border="1" class="table-tools cell-border hover table cell nowrap stripe compact pretty" id="tblRedistribuirProduto">
+                            <thead>
+                                <tr>
+                                    <th id="coluna_filial">Cod. Filial</th>
+                                    <th id="coluna_participacao">Desc. Filial</th>
+                                    <th id="coluna_cobertura">Participação (%)</th>
+                                    <th id="coluna_qtdeVenda">Qtd. Distribuida</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" ID="btnSalvarDistribuicao" class="btn btn-success"><i class="fa fa-check" aria-hidden="true"></i> Confirmar</button>
+                <button id="btnCancelarSenha" type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-ban" aria-hidden="true"></i> Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>

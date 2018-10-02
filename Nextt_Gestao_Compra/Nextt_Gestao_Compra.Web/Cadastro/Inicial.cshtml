@@ -1,0 +1,175 @@
+﻿@{
+    Layout = "~/_LayoutPrincipal.cshtml";
+}
+
+<script src="../Assets/js/primeiro-acesso.js"></script>
+<div class="col-md-12" id="principal">
+    <div class="row">
+
+        <div class="outer-container">
+            <div id="wizard" class="aiia-wizard" style="display: none;">
+
+                <div class="aiia-wizard-step">
+                    <h1>Area de Atuação</h1>
+                    <div class="step-content">
+                        <p>
+                            Oh... I know you'll probably say..."Why would you make a plugin that already exists?". :) Well, why not? It's true, there are some great plugins out there that do just that. In fact this plugin was inspired by the excellent "jQuery Steps" plugin, created by Rafael Staib. And I am sure that if you Google you'll find more of them...
+                        </p>
+                        <div class="row">
+                            <div class="col-md-5">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 id="tltAreas" class="panel-title">Opções</h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="column left" style="height:300px; max-height: 300px;overflow: auto;">
+                                            <ul id="filtroOpcoesAreas" class="esq connectedSortable" style="list-style-type: none;min-height:100px">
+                                                <li data-filtro="teste at 1"><label class="containerLabel"><input style="margin:0px !important" type="checkbox" value="teste at 1"><span class="checkmark"></span> teste at 1</label></li>
+                                                <li data-filtro="teste at 2"><label class="containerLabel"><input style="margin:0px !important" type="checkbox" value="teste at 2"><span class="checkmark"></span> teste at 2</label></li>
+                                                <li data-filtro="teste at 3"><label class="containerLabel"><input style="margin:0px !important" type="checkbox" value="teste at 3"><span class="checkmark"></span> teste at 3</label></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="column">
+                                    <div class="middle">
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <h5 id="lblFiltraArea" class="form-label">Digite para filtrar as opções</h5>
+                                                <div class="controls">
+                                                    <input type="text" id="txtBuscaAreas" placeholder="Digite aqui..." class="form-control filtroSearch" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row" style="text-align:center !important">
+                                            <button class="dir">▶</button>
+                                        </div>
+                                        <div class="row" style="text-align:center !important">
+                                            <button class="esq">◀</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 id="tltSelecionadoAreas" class="panel-title">Selecionadas</h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="column right" style="height:300px;max-height: 300px;overflow: auto;">
+                                            <ul id="filtroSelecionadoAreas" class="dir connectedSortable" style="list-style-type: none;min-height:100px"></ul>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="aiia-wizard-step">
+                    <h1>Segmentos</h1>
+                    <div class="step-content">
+                        <p>
+                            Oh... I know you'll probably say..."Why would you make a plugin that already exists?". :) Well, why not? It's true, there are some great plugins out there that do just that. In fact this plugin was inspired by the excellent "jQuery Steps" plugin, created by Rafael Staib. And I am sure that if you Google you'll find more of them...
+                        </p>
+                        <div class="row">
+                            <div class="col-md-5">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 id="tltSegmentos" class="panel-title">Opções</h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="column left" style="height:300px; max-height: 300px;overflow: auto;">
+                                            <ul id="filtroOpcoesSegmentos" class="esqseg connectedSortable" style="list-style-type: none;min-height:100px">
+                                                <li data-filtro="teste sg 1"><label class="containerLabel"><input style="margin:0px !important" type="checkbox" value="teste sg 1"><span class="checkmark"></span> teste sg 1</label></li>
+                                                <li data-filtro="teste sg 2"><label class="containerLabel"><input style="margin:0px !important" type="checkbox" value="teste sg 2"><span class="checkmark"></span> teste sg 2</label></li>
+                                                <li data-filtro="teste sg 3"><label class="containerLabel"><input style="margin:0px !important" type="checkbox" value="teste sg 3"><span class="checkmark"></span> teste sg 3</label></li>
+
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="column">
+                                    <div class="middle">
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <h5 id="lblFiltraSegmentos" class="form-label">Digite para filtrar as opções</h5>
+                                                <div class="controls">
+                                                    <input type="text" id="txtBuscaSegmentos" placeholder="Digite aqui..." class="form-control filtroSearch" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row" style="text-align:center !important">
+                                            <button class="dirseg">▶</button>
+                                        </div>
+                                        <div class="row" style="text-align:center !important">
+                                            <button class="esqseg">◀</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 id="tltSelecionadoSegmentos" class="panel-title">Selecionadas</h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="column right" style="height:300px;max-height: 300px;overflow: auto;">
+                                            <ul id="filtroSelecionadoSegmentos" class="dirseg connectedSortable" style="list-style-type: none;min-height:100px"></ul>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="aiia-wizard-step">
+                    <h1>Qtd. Vendedores</h1>
+                    <div class="step-content">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h4>Selecione a opção que mais se aproxima da quantidade de vendedores que sua representação comercial possui</h4>
+                                <div class="col-md-12 phradio" style="display:inline-flex">
+                                    <div class="phradio-primary col-md-2">
+                                        <input type="radio" name="radio" id="radio1" />
+                                        <label for="radio1">de 1 a 10</label>
+                                    </div>
+                                    <div class="phradio-primary col-md-2">
+                                        <input type="radio" name="radio" id="radio2" checked />
+                                        <label for="radio2">de 11 a 20</label>
+                                    </div>
+                                    <div class="phradio-primary col-md-2">
+                                        <input type="radio" name="radio" id="radio3" />
+                                        <label for="radio3">de 21 a 30</label>
+                                    </div>
+                                    <div class="phradio-primary col-md-2">
+                                        <input type="radio" name="radio" id="radio4" />
+                                        <label for="radio4">de 31 a 40</label>
+                                    </div>
+                                    <div class="phradio-primary col-md-2">
+                                        <input type="radio" name="radio" id="radio5" />
+                                        <label for="radio5">de 41 a 50</label>
+                                    </div>
+                                    <div class="phradio-primary col-md-2">
+                                        <input type="radio" name="radio" id="radio6" />
+                                        <label for="radio6">Mais de 50</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

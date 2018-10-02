@@ -1,0 +1,73 @@
+﻿@{
+    Layout = "~/_LayoutPrincipal.cshtml";
+}
+<script src="../Assets/js/compra-produto-manager.js"></script>
+<div class="col-md-12 col-sm-12 col-xs-12" id="principal">
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12" style="text-align:center">
+            <div id="alertProdListaCompra" class="alertCustomizado alert-danger" style="display:none"></div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="events-filter">
+                    <div class="col-md-1" style="margin-bottom:5px!important">
+                        <a id="btnVoltarGerenciarCompras" href="#" data-placement="bottom" class="btn btn-primary "
+                           title="Retornar ao gerenciamento de compras"><i class="fa fa-arrow-left" aria-hidden="true"></i> Voltar</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Lista de Produtos</h3>
+                </div>
+                <div id="" class="panel-body">
+                    <div class="col-md-12 col-sm-12 col-xs-12 table-responsive" style="max-height:80vh;overflow:auto">
+                        <table id="tabelaProdutosPedidoCad" cellpadding="0" cellspacing="0" class="table-tools cell-border hover table cell nowrap stripe compact pretty">
+                            <thead>
+                                <tr>
+                                    <th style="border:1px solid black;border-bottom:2px solid black">Imagem</th>
+                                    <th style="border:1px solid black;border-bottom:2px solid black">Código</th>
+                                    <th style="border:1px solid black;border-bottom:2px solid black">Descrição</th>
+                                    <th style="border:1px solid black;border-bottom:2px solid black">Desc. Reduzida</th>
+                                    <th style="border:1px solid black;border-bottom:2px solid black">Marca</th>
+                                    <th style="border:1px solid black;border-bottom:2px solid black">Fornecedor</th>
+                                    <th style="border:1px solid black;border-bottom:2px solid black">Status</th>
+                                    <th style="border:1px solid black;border-bottom:2px solid black">Pré-Pedido</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="bg_load"></div>
+    <div class="wrapper">
+        <div class="inner">
+            <span class="wait">
+                <span>A</span>
+                <span>g</span>
+                <span>u</span>
+                <span>a</span>
+                <span>r</span>
+                <span>d</span>
+                <span>e</span>
+            </span>
+            <span class="resized ocultarElemento">
+                <span>A</span>
+                <span>j</span>
+                <span>u</span>
+                <span>s</span>
+                <span>t</span>
+                <span>a</span>
+                <span>n</span>
+                <span>d</span>
+                <span>o</span>
+            </span>
+        </div>
+    </div>
+</div>

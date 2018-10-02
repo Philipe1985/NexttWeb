@@ -1,0 +1,223 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <meta http-equiv="Content-Language" content="pt-br">
+    <meta http-equiv="cache-control" content="no-cache" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="-1" />
+    <title>Gestão de Compras - vs 1.0</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes" />
+    @*------------------------------- Favicons------------------------------------------------------------ *@
+    <link rel="apple-touch-icon" sizes="57x57" href="../Assets/images/favicon/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="../Assets/images/favicon/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="../Assets/images/favicon/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="../Assets/images/favicon/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="../Assets/images/favicon/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="../Assets/images/favicon/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="../Assets/images/favicon/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="../Assets/images/favicon/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../Assets/images/favicon/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="../Assets/images/favicon/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../Assets/images/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="../Assets/images/favicon/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../Assets/images/favicon/favicon-16x16.png">
+    <link rel="manifest" href="../Assets/images/favicon/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="../Assets/images/favicon/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+    @*------------------------------------------------------------------------------------------------ *@
+    <!----------------------------- MANDATORY STYLE ---------------------------------------------------->
+    <link href="../Assets/css/icons/icons.min.css" rel="stylesheet" />
+    <link href="../Assets/css/bootstrap.min.css" rel="stylesheet" media='screen,print' />
+    <link href="../Assets/css/plugins.min.css" rel="stylesheet" media='all' />
+    <link href="../Assets/css/customCheckboxRadioButton.css" rel="stylesheet" />
+    <link href="../Assets/css/style.min.css" rel="stylesheet" media='all' />
+    <link href="../Assets/css/animate-custom.min.css" rel="stylesheet" media='all'>
+    <link href="#" rel="stylesheet" id="themeColor" />
+    <!------------------------------------------------------------------------------------------------>
+    <link href="../Assets/js/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" media='all' />
+    <link href="../Assets/fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet" media='all' />
+    <link href="../Assets/js/plugins/jquery-alerta-confirmacao/jquery-confirm.min.css" rel="stylesheet" />
+    <link href="../Assets/js/plugins/bootstrap-file-input/css/fileinput.min.css" rel="stylesheet" />
+    <link href="../Assets/js/plugins/bootstrap-file-input/css/fileinput-rtl.min.css" rel="stylesheet" />
+    <link href="../Assets/css/build.css" rel="stylesheet" />
+    <link href="../Assets/js/plugins/datatables/responsive/files/css/datatables.responsive.css" rel="stylesheet" />
+    @* <link href="../Assets/js/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet" />*@
+    <link href="../Assets/js/plugins/bootstrap-loading/lada.min.css" rel="stylesheet" />
+    <link href="../Assets/js/plugins/bootstrap-switch/bootstrap-switch.css" rel="stylesheet" />
+    <link href="../Assets/js/plugins/datatables/jquery.dataTables.min.css" rel="stylesheet" />
+    <link href="../Assets/css/LoadingStyle.min.css" rel="stylesheet" />
+    <link href="../Assets/css/custom.css" rel="stylesheet" />
+    <link href="../Assets/css/fastselect.css" rel="stylesheet" />
+    <link href="../Assets/js/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
+    <link href="../Assets/js/plugins/datatables/fixedHeader.dataTables.min.css" rel="stylesheet" />
+    <link href="../Assets/css/bootstrap-dropdownhover.css" rel="stylesheet" />
+    <link href="../Assets/css/customRelatorio.css" rel="stylesheet" />
+    <!----------------------------- MANDATORY Javascript ---------------------------------------------------->
+    <script src="../Assets/js/jquery-1.11.1.min.js"></script>
+
+    <script src="../Assets/js/plugins/jquery-ui/jquery-ui-1.10.4.min.js"></script>
+    <script src="../Assets/js/plugins/modernizr/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+    <script src="../Assets/js/plugins/jquery-mobile/jquery.mobile-1.4.2.js"></script>
+    <script src="../Assets/js/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../Assets/js/plugins/bootstrap-progressbar/bootstrap-progressbar.js"></script>
+    <script src="../Assets/js/plugins/jquery-alerta-confirmacao/jquery-confirm.min.js"></script>
+    <script src="../Assets/js/plugins/bootstrap-file-input/js/plugins/piexif.min.js"></script>
+    <script src="../Assets/js/plugins/bootstrap-file-input/js/plugins/purify.min.js"></script>
+    <script src="../Assets/js/plugins/bootstrap-file-input/js/plugins/sortable.min.js"></script>
+    <script src="../Assets/js/plugins/bootstrap-file-input/js/fileinput.js"></script>
+    <script src="../Assets/js/plugins/bootstrap-file-input/js/locales/pt-BR.js"></script>
+    <script src="../Assets/js/plugins/bootstrap-file-input/js/plugins/popper.min.js"></script>
+    <script src="../Assets/js/animations.js"></script>
+    <script src="../Assets/js/plugins/datatables/dynamic/jquery.dataTables.min.js"></script>
+    <script src="../Assets/js/plugins/bootstrap-dropdown/bootstrap-dropdownhover.js"></script>
+    <script src="../Assets/js/plugins/mmenu/js/jquery.mmenu.min.all.js"></script>
+    <script src="../Assets/js/modalDinamico.js"></script>
+    <script src="../Assets/js/uteis/tratamento-string.js"></script>
+
+    
+    <!----------------------------------------------------------------------------------------------------->
+    <script src="../WebConfig.js"></script>
+    <script src="../Assets/js/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="../Assets/js/plugins/datatables/dataTables.bootstrap.js"></script>
+    <script src="../Assets/js/plugins/datatables/dataTables.tableTools.js"></script>
+    <script src="../Assets/js/plugins/datatables/dataTables.fixedColumns.min.js"></script>
+    <script src="../Assets/js/plugins/datatables/responsive/files/js/datatables.responsive.js"></script>
+    <script src="../Assets/js/plugins/bootstrap-datepicker/bootstrap-datepicker.js"></script>
+    <script src="../Assets/js/plugins/jquery.mask.min.js"></script>
+    <script src="../Assets/js/plugins/jquery.maskMoney.min.js"></script>
+    <script src="../Assets/js/progressBarCustom.js"></script>
+    <script src="../Assets/js/plugins/tab-wizard-responsive/responsive-tabs.js"></script>
+    <script src="../Assets/js/customDefault.js"></script>
+    <script src="../Assets/js/chamadasAPI/callbackAPI.js"></script>
+    <script src="../Assets/js/application.js"></script>
+    <script src="../Assets/js/plugins/bootstrap-select/js/bootstrap-select.js"></script>
+    <script src="../Assets/js/plugins/bootstrap-select/js/i18n/defaults-pt_BR.min.js"></script>
+    <script src="../Assets/js/plugins/bootstrap-switch/bootstrap-switch.js"></script>
+    <script src="../Assets/js/plugins/datatables/dataTables.rowsGroup.js"></script>
+    <script src="../Assets/js/plugins/datatables/dataTables.fixedHeader.min.js"></script>
+    <script src="../Assets/js/uteis/tratamento-string.js"></script>
+</head>
+<body>
+    <!--MENU SUPERIOR-->
+    <nav class="navbar navbar-default navbar-fixed-top ocultarElemento" style="background-color:#CDD6D1" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="javascript:navBrandClick();">@*Gerenciamento de Produtos*@</a>
+                <div class="navbar-center"><strong>Gerenciamento de Produtos</strong></div>
+
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav pull-right header-menu">
+
+                    @*Checar se é admin*@
+                    <!-- BEGIN USER DROPDOWN -->
+                    <li class="dropdown" id="user-header">
+                        <a href="#" class="dropdown-toggle c-dark" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                            <span class="username"></span>
+                            <i class="fa fa-angle-down p-r-10"></i>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li id="homeOpcao">
+                                <a href="javascript:voltarHome();">
+                                    <span>
+                                        <i class="fa fa-home" aria-hidden="true"></i> Tela Inicial
+                                    </span>
+                                </a>
+                            </li>
+                            <li id="usuarioOpcao">
+                                <a tabindex="-1" href="javascript:gerenciarUsuario();">
+
+                                    <span>
+                                        <i class="fa fa-user-plus" aria-hidden="true"></i> Gerenciar usuários
+                                    </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a tabindex="-1" href="javascript:mudarSenhaModal();">
+                                    <span>
+                                        <i class="fa fa-key" aria-hidden="true"></i> Alterar senha
+                                    </span>
+                                </a>
+                            </li>
+                            @*<li id="agendaOpcao">
+            <a tabindex="-1" href="javascript:conferirAgenda();">
+                <span>
+                    <i class="fa fa-book" aria-hidden="true"></i> Gerenciamento de Agenda
+                </span>
+            </a>
+        </li>*@
+                            <li class="dropdown-footer clearfix">
+                                <a tabindex="-1" href="javascript:desconectarSessao();" data-toggle="tooltip" data-placement="bottom" title="Logout" style="width:100%">
+                                    <i class="fa fa-power-off"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- END CHAT HEADER -->
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div id="wrapper">
+        <div id="main-content">
+            @RenderBody()
+            <div class="modal fade" id="modalAlteraSenha" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title" id="alteraSenhaModalTitulo"><i class="fa fa-user"></i>&nbsp;Alterar <strong>Senha</strong></h4>
+                        </div>
+                        <div class="modal-body" style="padding-top:8px; padding-bottom:0px;">
+                            <form id="form4" role="form" data-parsley-validate class="icon-validation">
+                                <div class="row">
+                                    <div class="col-md-6 form-group">
+                                        <h5 class="form-label" id="lblSenhaAtual">Informe a Senha Atual</h5>
+                                        <div class="controls">
+                                            <input type="password" ID="txtSenhaAtual" MaxLength="50" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 form-group">
+                                        <h5 class="form-label" id="lblNovaSenha">Informe a Nova Senha</h5>
+                                        <div class="controls">
+                                            <input type="password" ID="txtSenhaNova" MaxLength="50" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6 form-group">
+                                        <h5 class="form-label" id="lblConfirmaSenha">Confirme a Nova Senha</h5>
+                                        <div class="controls">
+                                            <input type="password" ID="txtConfirmaSenhaNova" MaxLength="50" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            <br />
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" ID="btnSalvarSenha" class="btn btn-success" onclick="atualizarSenha()"><i class="fa fa-check" aria-hidden="true"></i> Alterar</button>
+                            <button id="btnCancelarSenha" type="button" onclick="limparModalSenha()" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-ban" aria-hidden="true"></i> Cancelar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

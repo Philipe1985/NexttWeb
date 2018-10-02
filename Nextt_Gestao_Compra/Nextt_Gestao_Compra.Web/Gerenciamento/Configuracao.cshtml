@@ -1,0 +1,409 @@
+﻿@{
+    Layout = "~/_LayoutPrincipal.cshtml";
+}
+<script src="~/Assets/js/setup.js"></script>
+<div class="col-md-12" id="principal">
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12" style="text-align:center">
+            <div id="alertSetup" class="alertCustomizado alert-danger" style="display:none"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div id="divPaineisConfigApp" class="col-md-12 col-sm-12 col-xs-12">
+            <ul class="nav nav-tabs nav-tabs-responsive" role="tablist" id="tabSetupInicial">
+                <li role="presentation" class="active">
+                    <a id="usuarioAdmintab" aria-controls="usuarioAdmin" class="deco-none" href="#usuarioAdmin"
+                       data-toggle="tab"><span class="text">Usuario Principal <i class="fa fa-check ocultarElemento"></i></span></a>
+                </li>
+                <li role="presentation" class="disabled">
+                    <a id="permissaoApptab" aria-controls="permissaoApp" class="deco-none" href="#permissaoApp"
+                       data-toggle="tab"><span class="text">Permissões <i class="fa fa-check ocultarElemento"></i></span></a>
+                </li>
+                <li role="presentation" class="disabled">
+                    <a id="perfilApptab" aria-controls="perfilApp" class="deco-none" href="#perfilApp"
+                       data-toggle="tab"><span class="text">Perfis <i class="fa fa-check ocultarElemento"></i></span></a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" aria-labelledby="usuarioAdmintab" id="#usuarioAdmin">
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12" style="text-align:center">
+                            <h5 class="form-label"><strong class="blue">Cadastre o Primeiro Usuário Administrador Para Configurar a Aplicação</strong></h5>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label id="lblPerfil" class="form-label">Perfil</label>
+                                <div class="controls">
+                                    <select name="cbPerfil" id="cbPerfil" class="selectpicker show-tick" data-width="100%" title="Selecione um perfil...">
+                                        <option selected value="Administrador">Administrador</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label id="lblUserName" class="form-label">Usuário de Login</label>
+                                <div class="controls">
+                                    <input type="text" ID="txtUserName" MaxLength="200" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label id="lblNome" class="form-label">Nome</label>
+                                <div class="controls">
+                                    <input type="text" ID="txtNome" MaxLength="200" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label id="lblSobrenome" class="form-label">Sobrenome</label>
+                                <div class="controls">
+                                    <input type="text" ID="txtSobrenome" MaxLength="50" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">E-mail</label>
+                                <div class="controls">
+                                    <input type="text" ID="txtEmail" MaxLength="50" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 ocultarElemento">
+                            <div class="form-group">
+                                <label id="lblCelular" class="form-label">Celular</label>
+                                <div class="controls">
+                                    <input type="text" ID="txtCelular" MaxLength="15" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="pull-right">
+                            <button type="button" ID="btnSalvarUsuario" class="btn btn-success" Text="Salvar" onclick="cadastrarUsuarioAdmin()"><i class="fa fa-check"></i> Cadastrar</button>
+                        </div>
+                    </div>
+                </div>
+                <div role="tabpanel" class="tab-pane" aria-labelledby="permissaoApptab" id="#permissaoApp">
+                    
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12" style="text-align:center">
+                            <h5 class="form-label"><strong class="blue">Selecione as Funções Abaixo que Poderão Ser Concedidas ou Revogadas aos Perfis/Usuários</strong></h5>
+                        </div>
+                        <div class="col-md-4 col-sm-5 col-xs-12">
+                            <div class="panel panel-primary">
+                                <div class="panel-heading">
+                                    <h5 id="tltAtivo" class="panel-title" style="font-size:17px!important">Funções Gerenciáveis</h5>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="column left" style="height:300px; max-height: 500px;overflow: auto;">
+                                        <ul id="funcoesHabilitado" class="esq connectedSortable" style="list-style-type: none;min-height:100px">
+                                            <li data-filtro="Cadastrar Produto Novo">
+                                                <label class="containerLabel">
+                                                    <input style="margin:0px !important" type="checkbox" value="Cadastrar Produto Novo">
+                                                    <span class="checkmark"> Cadastrar Produto Novo</span>
+                                                </label>
+                                            </li>
+                                            <li data-filtro="Cadastrar Atributo de Pedido">
+                                                <label class="containerLabel">
+                                                    <input style="margin:0px !important" type="checkbox" value="Cadastrar Atributo de Pedido">
+                                                    <span class="checkmark"> Cadastrar Atributo de Pedido</span>
+                                                </label>
+                                            </li>
+                                            <li data-filtro="Cadastrar Atributo de Produto">
+                                                <label class="containerLabel">
+                                                    <input style="margin:0px !important" type="checkbox" value="Cadastrar Atributo de Produto">
+                                                    <span class="checkmark"> Cadastrar Atributo de Produto</span>
+                                                </label>
+                                            </li>
+                                            <li data-filtro="Cadastrar Novas Condições de Pagamento">
+                                                <label class="containerLabel">
+                                                    <input style="margin:0px !important" type="checkbox" value="Cadastrar Novas Condições de Pagamento">
+                                                    <span class="checkmark"> Cadastrar Novas Condições de Pagamento</span>
+                                                </label>
+                                            </li>
+                                            <li data-filtro="Cadastrar Novas Cores">
+                                                <label class="containerLabel">
+                                                    <input style="margin:0px !important" type="checkbox" value="Cadastrar Novas Cores">
+                                                    <span class="checkmark"> Cadastrar Novas Cores</span>
+                                                </label>
+                                            </li>
+                                            <li data-filtro="Cadastrar Novas Referências">
+                                                <label class="containerLabel">
+                                                    <input style="margin:0px !important" type="checkbox" value="Cadastrar Novas Referências">
+                                                    <span class="checkmark"> Cadastrar Novas Referências</span>
+                                                </label>
+                                            </li>
+                                            <li data-filtro="Adicionar Fotos">
+                                                <label class="containerLabel">
+                                                    <input style="margin:0px !important" type="checkbox" value="Adicionar Fotos">
+                                                    <span class="checkmark"> Adicionar Fotos</span>
+                                                </label>
+                                            </li>
+                                            <li data-filtro="Excluir Fotos">
+                                                <label class="containerLabel">
+                                                    <input style="margin:0px !important" type="checkbox" value="Excluir Fotos">
+                                                    <span class="checkmark"> Excluir Fotos</span>
+                                                </label>
+                                            </li>
+                                            <li data-filtro="Filtrar Planejamento OTB">
+                                                <label class="containerLabel">
+                                                    <input style="margin:0px !important" type="checkbox" value="Filtrar Planejamento OTB">
+                                                    <span class="checkmark"> Filtrar Planejamento OTB</span>
+                                                </label>
+                                            </li>
+                                            <li data-filtro="Alterar Quantidade Distribuida nos Grupos">
+                                                <label class="containerLabel">
+                                                    <input style="margin:0px !important" type="checkbox" value="Alterar Quantidade Distribuida nos Grupos">
+                                                    <span class="checkmark"> Alterar Quantidade Distribuida nos Grupos</span>
+                                                </label>
+                                            </li>
+                                            <li data-filtro="Alterar Quantidade Distribuida nas Filiais">
+                                                <label class="containerLabel">
+                                                    <input style="margin:0px !important" type="checkbox" value="Alterar Quantidade Distribuida nas Filiais">
+                                                    <span class="checkmark"> Alterar Quantidade Distribuida nas Filiais</span>
+                                                </label>
+                                            </li>
+
+
+                                            <li data-filtro="Bloquear/Desbloquear Usuário">
+                                                <label class="containerLabel">
+                                                    <input style="margin:0px !important" type="checkbox" value="Bloquear/Desbloquear Usuário">
+                                                    <span class="checkmark"> Bloquear/Desbloquear Usuário</span>
+                                                </label>
+                                            </li>
+                                            <li data-filtro="Cadastrar Usuário">
+                                                <label class="containerLabel">
+                                                    <input style="margin:0px !important" type="checkbox" value="Cadastrar Usuário">
+                                                    <span class="checkmark"> Cadastrar Usuário</span>
+                                                </label>
+                                            </li>
+                                            <li data-filtro="Editar Usuário">
+                                                <label class="containerLabel">
+                                                    <input style="margin:0px !important" type="checkbox" value="Editar Usuário">
+                                                    <span class="checkmark"> Editar Usuário</span>
+                                                </label>
+                                            </li>
+                                            <li data-filtro="Cadastrar Perfil">
+                                                <label class="containerLabel">
+                                                    <input style="margin:0px !important" type="checkbox" value="Cadastrar Perfil">
+                                                    <span class="checkmark"> Cadastrar Perfil</span>
+                                                </label>
+                                            </li>
+                                            <li data-filtro="Editar Dados Basicos">
+                                                <label class="containerLabel">
+                                                    <input style="margin:0px !important" type="checkbox" value="Editar Dados Basicos">
+                                                    <span class="checkmark"> Editar Dados Basicos</span>
+                                                </label>
+                                            </li>
+                                            <li data-filtro="Adicionar Perfil ao Usuário">
+                                                <label class="containerLabel">
+                                                    <input style="margin:0px !important" type="checkbox" value="Adicionar Perfil ao Usuário">
+                                                    <span class="checkmark"> Adicionar Perfil ao Usuário</span>
+                                                </label>
+                                            </li>
+                                            <li data-filtro="Conceder Permissão Especial">
+                                                <label class="containerLabel">
+                                                    <input style="margin:0px !important" type="checkbox" value="Conceder Permissão Especial">
+                                                    <span class="checkmark"> Conceder Permissão Especial</span>
+                                                </label>
+                                            </li>
+                                            <li data-filtro="Negar Permissão Especial">
+                                                <label class="containerLabel">
+                                                    <input style="margin:0px !important" type="checkbox" value="Negar Permissão Especial">
+                                                    <span class="checkmark"> Negar Permissão Especial</span>
+                                                </label>
+                                            </li>
+                                            <li data-filtro="Redefinir Senha">
+                                                <label class="containerLabel">
+                                                    <input style="margin:0px !important" type="checkbox" value="Redefinir Senha">
+                                                    <span class="checkmark"> Redefinir Senha</span>
+                                                </label>
+                                            </li>
+
+
+                                            <li data-filtro="Aprovar Qualquer Pedidos">
+                                                <label class="containerLabel">
+                                                    <input style="margin:0px !important" type="checkbox" value="Aprovar Qualquer Pedidos">
+                                                    <span class="checkmark"> Aprovar Qualquer Pedidos</span>
+                                                </label>
+                                            </li>
+                                            <li data-filtro="Cancelar Qualquer Pedidos">
+                                                <label class="containerLabel">
+                                                    <input style="margin:0px !important" type="checkbox" value="Cancelar Qualquer Pedidos">
+                                                    <span class="checkmark"> Cancelar Qualquer Pedidos</span>
+                                                </label>
+                                            </li>
+                                            <li data-filtro="Reprovar para Editar Qualquer Pedidos">
+                                                <label class="containerLabel">
+                                                    <input style="margin:0px !important" type="checkbox" value="Reprovar para Editar Qualquer Pedidos">
+                                                    <span class="checkmark"> Reprovar para Editar Qualquer Pedidos</span>
+                                                </label>
+                                            </li>
+                                            <li data-filtro="Finalizar para Aprovar Qualquer Pedidos">
+                                                <label class="containerLabel">
+                                                    <input style="margin:0px !important" type="checkbox" value="Finalizar para Aprovar Qualquer Pedidos">
+                                                    <span class="checkmark"> Cadastrar Novas Condições de Pagamento</span>
+                                                </label>
+                                            </li>
+                                            <li data-filtro="Editar Qualquer Pedido">
+                                                <label class="containerLabel">
+                                                    <input style="margin:0px !important" type="checkbox" value="Editar Qualquer Pedido">
+                                                    <span class="checkmark"> Editar Qualquer Pedido</span>
+                                                </label>
+                                            </li>
+                                            <li data-filtro="Imprimir Pedidos">
+                                                <label class="containerLabel">
+                                                    <input style="margin:0px !important" type="checkbox" value="Imprimir Pedidos">
+                                                    <span class="checkmark"> Imprimir Pedidos</span>
+                                                </label>
+                                            </li>
+                                            <li data-filtro="Enviar por Email">
+                                                <label class="containerLabel">
+                                                    <input style="margin:0px !important" type="checkbox" value="Adicionar Fotos">
+                                                    <span class="checkmark"> Adicionar Fotos</span>
+                                                </label>
+                                            </li>
+                                            <li data-filtro="Aprovar os Próprios Pedidos">
+                                                <label class="containerLabel">
+                                                    <input style="margin:0px !important" type="checkbox" value="Aprovar os Próprios Pedidos">
+                                                    <span class="checkmark"> Aprovar os Próprios Pedidos</span>
+                                                </label>
+                                            </li>
+                                            <li data-filtro="Cancelar os Próprios Pedidos">
+                                                <label class="containerLabel">
+                                                    <input style="margin:0px !important" type="checkbox" value="Cancelar os Próprios Pedidos">
+                                                    <span class="checkmark"> Cancelar os Próprios Pedidos</span>
+                                                </label>
+                                            </li>
+                                            <li data-filtro="Reprovar para Editar os Próprios Pedidos">
+                                                <label class="containerLabel">
+                                                    <input style="margin:0px !important" type="checkbox" value="Reprovar para Editar os Próprios Pedidos">
+                                                    <span class="checkmark"> Reprovar para Editar os Próprios Pedidos</span>
+                                                </label>
+                                            </li>
+                                            <li data-filtro="Finalizar para Aprovar os Próprio Pedidos">
+                                                <label class="containerLabel">
+                                                    <input style="margin:0px !important" type="checkbox" value="Finalizar para Aprovar os Próprio Pedidos">
+                                                    <span class="checkmark"> Finalizar para Aprovar os Próprio Pedidos</span>
+                                                </label>
+                                            </li>
+
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-2 col-xs-12">
+                            <div class="column">
+                                <div class="middle">
+                                    <div class="row">
+                                        <div class="form-group" style="text-align:center">
+                                            <h5 id="lblQtdProdRealoc" class="form-label">Filre a função desejada</h5>
+                                            <div class="controls">
+                                                <input type="text" id="txtBuscaFiltros" placeholder="Digite aqui..." class="form-control" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" style="text-align:center !important">
+                                        <button class="dir">▶</button>
+                                    </div>
+                                    <div class="row" style="text-align:center !important">
+                                        <button class="esq">◀</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-5 col-xs-12">
+                            <div class="panel panel-primary">
+                                <div class="panel-heading">
+                                    <h5 id="tltInativo" class="panel-title" style="font-size:17px!important">Funções Não Gerenciáveis</h5>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="column right" style="height:300px;max-height: 300px;overflow: auto;">
+                                        <ul id="funcoesDesabilitado" class="dir connectedSortable" style="list-style-type: none;min-height:100px"></ul>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                    </div>
+                    <div class="row">
+                        <div class="pull-right">
+                            <button type="button" class="btn btn-success" Text="Salvar" onclick="cadastrarFuncoes()"><i class="fa fa-check"></i> Cadastrar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div role="tabpanel" class="tab-pane" aria-labelledby="perfilApptab" id="#perfilApp">
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12" style="text-align:center">
+                            <h5 class="form-label"><strong class="blue">Cadastre/Gerencie os Perfis Disponibilizados na Aplicação</strong></h5>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label id="lblDescPerfil" class="form-label">Descrição do Perfil</label>
+                                <div class="controls">
+                                    <input type="text" ID="txtDescPerfil" MaxLength="200" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label id="lblPerfilExistente" class="form-label">Gerencie um Perfil Existente</label>
+                                <div class="controls">
+                                    <select name="cbPerfilExistente" id="cbPerfilExistente" class="selectpicker" data-width="100%" title="Selecione um perfil..."></select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="pull-right">
+                            <button type="button" class="btn btn-success" Text="Salvar" onclick="cadastrarPerfis()"><i class="fa fa-check"></i> Cadastrar e Finalizar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="bg_load"></div>
+    <div class="wrapper">
+        <div class="inner">
+            <span class="wait">
+                <span>A</span>
+                <span>g</span>
+                <span>u</span>
+                <span>a</span>
+                <span>r</span>
+                <span>d</span>
+                <span>e</span>
+            </span>
+            <span class="resized ocultarElemento">
+                <span>A</span>
+                <span>j</span>
+                <span>u</span>
+                <span>s</span>
+                <span>t</span>
+                <span>a</span>
+                <span>n</span>
+                <span>d</span>
+                <span>o</span>
+            </span>
+        </div>
+    </div>
+
+</div>
+
+
