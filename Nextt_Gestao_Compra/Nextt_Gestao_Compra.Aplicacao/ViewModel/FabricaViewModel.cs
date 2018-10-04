@@ -173,6 +173,10 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
         }
         public ComboFiltroVM Criar(GrupoFilial grupo)
         {
+            var dadosAdicionais = new List<string>
+            {
+                grupo.ParticipacaoGrupo.ToString()
+            };
             if (grupo.IDGrupo == 0)
             {
                 throw new Exception("Existe grupo retornado sem a coluna 'IDGrupo' definida para ele.");
@@ -181,7 +185,8 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
             {
                 Valor = grupo.IDGrupo.ToString(),
                 Token = grupo.IDGrupo + "," + grupo.DescricaoGrupo.Trim(),
-                Descricao = grupo.DescricaoGrupo.Trim()
+                Descricao = grupo.DescricaoGrupo.Trim(),
+                DadosAdicionais = dadosAdicionais
             };
         }
         public ComboFiltroVM CriarComboFilial(GrupoFilial filial)

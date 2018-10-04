@@ -1857,8 +1857,21 @@ ial.nav-pills > li {
         }
 }
 
+
 td.qtdPack, td.qtdPackCadastrado, td.qtdPackFilial {
     background: white !important;
+}
+#gruposCadastrados_wrapper table.dataTable.no-footer{
+    border-bottom: none !important;
+    
+}
+
+td.grupoOperacao, th.grupoOperacao {
+    background: #eeeeee !important;
+    border: none !important;
+    width: 130px!important;
+    
+    /*padding: 4px 17px 4px 4px !important;*/
 }
 
 td.invalido {

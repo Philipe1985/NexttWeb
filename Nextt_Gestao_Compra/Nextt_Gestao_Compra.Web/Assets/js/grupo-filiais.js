@@ -45,6 +45,13 @@ $(document).ready(function () {
 
 
     });
+    $(document).on('click', '.editarGrupo', function (evento) {
+        var linha = $(this).parent().parent();
+        var dadoLinha = dtbCad.row($(linha)).data()
+
+        console.log(dadoLinha)
+        edittaGrupo(dadoLinha.descricao, dadoLinha.participacao)
+    })
 })
 function carregar() {
     $(".ckbGrpDist").bootstrapSwitch();
@@ -329,35 +336,38 @@ function geraColunaCad(filiais) {
     }
     return colunasDistribuicao;
 }
-function carregarCadFilial(idTabelaDist, colunmsPk, dadosPk) {
-    dtbCad = $('#' + idTabelaDist).DataTable({
+function carregarCadFilial(dados) {
+    dtbCad = $('#gruposCadastrados').DataTable({
         paging: false,
-        searching: false,
+        searching: true,
         lengthChange: false,
         deferRender: true,
-        "ordering": false,
+        "ordering": true,
         responsive: true,
+        scrollX: true,
+        scrollY: '50vh',
         "columnDefs": [
             {
-                "targets": "_all",
-                "orderable": false,
+                "targets": [0, 3, 2],
                 'className': 'dt-body-center',
                 "render": function (data, type, row, meta) {
-                    if (type === 'display' && meta.col > 0) {
-                        if (meta.row === 5) {
-                            return data.toLocaleString('pt-BR', { style: "currency", currency: "BRL" })
-                        } else if (meta.row === 0 || meta.row === 1) {
-                            return Math.round10(data, -2).toLocaleString('pt-BR');
-                        } else {
-                            return data.toLocaleString('pt-BR')
-                        }
+                    if (type === 'display' && meta.col === 3) {
+                        return Math.round10(data, -2).toLocaleString('pt-BR') + '%';
                     }
                     else {
                         return data;
                     }
-                    // 'sort', 'type' and undefined all just use the integer
                 }
             },
+            {
+                "visible": false,
+                "targets": 0
+            },
+            {
+                "orderable": false,
+                'className': 'dt-body-center grupoOperacao',
+                "targets": 1
+            }
         ],
         "language": {
             "emptyTable": "Nenhum produto encontrado",
@@ -366,11 +376,15 @@ function carregarCadFilial(idTabelaDist, colunmsPk, dadosPk) {
 
         "info": false,
         destroy: true,
-        data: dadosPk,
-        columns: colunmsPk
+        data: dados,
+        "columns": [
+            { "data": "id" },
+            { "data": "operacao" },
+            { "data": "descricao" },
+            { "data": "participacao" },
+
+        ]
     });
-    var $inputGrp = $('#' + idTabelaDist.replace('tblGrpPack', 'txtQtdPackGrupo'))
-    dtbCad.columns.adjust().draw();
 }
 function criaObjetoAtualizarGrupos() {
     var idsGrupo = $('#cbGrupos').val(), retorno = [];
@@ -452,4 +466,104 @@ function msgGrupoCadastrado() {
         },
     });
 
+}
+function edittaGrupo(desc, part) {
+    var value = 'sdffsfdsdfsd'
+    $.confirm({
+        icon: 'fa fa-pencil-square-o',
+        type: 'blue',
+        title: 'Atualizar Grupo!',
+        containerFluid: true,
+        content: '<div class="col-md-6 form-group">' +
+            '<label class="control-label">Descrição</label>' +
+            '<input type="text" id="txtDescGrp" placeholder="Digite aqui..."  value="' + desc + '" class="form-control">' +
+            '</div>' +
+            '<div class="col-md-6 form-group">' +
+            '<label class="control-label">Participação</label>' +
+            '<input type="text" id="txtPartGrp" disabled value="' + Math.round10(part, -2).toLocaleString('pt-BR') + '%' + '" class="form-control">' +
+            '</div>' +
+            '<div class="col-md-12 form-group">' +
+            '<div class="panel panel-primary">' +
+            '<div class="panel-heading">' +
+            '<h5 id="tltAtivo" class="panel-title" style="font-size:17px!important">Filiais</h5>' +
+            '</div>' +
+            '<div class="panel-body">' +
+            '<div style="height:200px; max-height: 500px;overflow: auto;">' +
+            '<ul id="funcoesHabilitado" class="esq connectedSortable" style="list-style-type: none;min-height:100px">' +
+            localStorage.getItem('filiaisLista') +
+
+            '</ul>' +
+            '</div>' +
+            '</div>' +
+            '</div>' +
+            '</div>',
+        buttons: {
+            confirm: {
+                text: 'Salvar',
+                btnClass: 'btn-green',
+                action: function () {
+                    //var descGrupo = this.$content.find('#txtDescGrp').val().trim();
+                    //if (!descGrupo.length) {
+                    //    $('#txtDescGrp').popover({
+                    //        title: '<h5 class="custom-title"><span class="glyphicon glyphicon-exclamation-sign orange"></span> Atenção!</h5>',
+                    //        content: "<p>Para avançar é necessário informar uma descrição</p>",
+                    //        html: true,
+                    //        trigger: 'manual',
+                    //        container: this.$content,
+                    //        placement: 'bottom'
+                    //    });
+
+                    //    $('#txtDescGrp').popover('show');
+                    //    $('#txtDescGrp').focus().select();
+                    //    setTimeout(function () {
+                    //        $('#txtDescGrp').popover('destroy');
+
+                    //    }, 3000);
+                    //    return false;
+                    //} else {
+                    //    dadosGrupoNovo.descricao = descGrupo;
+                    //    addFiliais();
+                    //}
+
+                }
+            },
+            cancel: {
+                text: 'Cancelar',
+                btnClass: 'btn-red',
+                action: function () {
+                    //dadosGrupoNovo = {};
+                }
+            }
+        },
+        onContentReady: function () {
+
+            var self = this;
+            this.$content.find('#txtDescGrp').keyup(function (evento) {
+
+                var code = (evento.keyCode ? evento.keyCode : evento.which);
+                if (code === 9 || code === 13) {
+                    $(this).blur();
+                }
+            });
+
+
+        }, onOpenBefore: function () {
+            var self = this;
+
+            self.$content.find("li input[type='checkbox']").checkboxradio();
+
+        },
+    });
+}
+function geraListaFilial(filiais) {
+    var retorno = '';
+    for (var i = 0; i < filiais.length; i++) {
+        retorno += '<li class="phradio" data-filtro="' + filiais[i].token + '">' +
+            '<label class="phradio-info">' +
+            '<input style="margin:0px !important" type="checkbox" value="' + filiais[i].valor + '">' +
+            '<span class="checkmark"> ' + filiais[i].descricao + '</span>' +
+            '</label>' +
+            '</li>'
+    }
+    return retorno;
 }

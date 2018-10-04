@@ -193,8 +193,6 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="bin\Nextt_Gestao_Compra.Apresentacao.API.dll" />
-    <Content Include="bin\Nextt_Gestao_Compra.Apresentacao.API.pdb" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

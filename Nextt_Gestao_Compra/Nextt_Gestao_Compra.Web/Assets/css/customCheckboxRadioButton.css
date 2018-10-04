@@ -1,14 +1,14 @@
 ﻿.phradio {
-    border: 1px solid black !important;
-    text-align: center !important;
+    border: none;
+    text-align: left !important;
 }
 
-    .phradio div {
+    /*.phradio div {
         clear: both;
         overflow: hidden;
         display: inline-flex;
         background-color: white !important;
-    }
+    }*/
 
     .phradio .ui-btn.ui-checkbox-off:after, .ui-btn.ui-radio-off:after {
         border: 2px solid #0c0d0d;
@@ -126,6 +126,7 @@
 .phradio-primary input[type="checkbox"]:checked ~ label:before {
     color: #fff;
     background-color: #337ab7;
+
 }
 
 .phradio-success input[type="radio"]:checked ~ label:before,
@@ -148,15 +149,16 @@
 
 .phradio-info input[type="radio"]:checked ~ label:before,
 .phradio-info input[type="checkbox"]:checked ~ label:before {
-    color: #fff;
-    background-color: #5bc0de;
+    color: #fff !important;
+    background-color: #5bc0de !important;
 }
 
 .ui-btn.ui-checkbox-off:after, .ui-btn.ui-checkbox-on:after, .ui-btn.ui-radio-off:after, .ui-btn.ui-radio-on:after {
     display: block;
     width: 14px;
     height: 14px;
-    margin: -9px 2px 0 2px;
+    margin: -5px 2px 0 2px;
+    background-color: #5bc0de !important;
 }
 
 /* SCSS STYLES */

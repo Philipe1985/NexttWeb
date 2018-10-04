@@ -184,12 +184,6 @@
     <Compile Include="ViewModel\TamanhoItemVM.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="bin\Debug\Nextt_Gestao_Compra.Aplicacao.dll" />
-    <Content Include="bin\Debug\Nextt_Gestao_Compra.Aplicacao.pdb" />
-    <Content Include="bin\Release\Nextt_Gestao_Compra.Aplicacao.dll" />
-    <Content Include="bin\Release\Nextt_Gestao_Compra.Aplicacao.pdb" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config">
       <SubType>Designer</SubType>

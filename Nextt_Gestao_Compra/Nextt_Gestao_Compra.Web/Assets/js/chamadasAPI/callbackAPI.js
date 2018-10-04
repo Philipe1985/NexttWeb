@@ -31,7 +31,7 @@
                     } else {
                         limparModalCadastro(retorno);
                     }
-                    
+
                 });
             }
         },
@@ -63,13 +63,13 @@ function carregarEspecie(parametro) {
         },
         success: function (result) {
             var sourceEsp = "";
-            if (result.length ) {
+            if (result.length) {
                 for (var i = 0; i < result.length; i++) {
                     console.log(result[i])
                     if (!localStorage.getItem("combo")) {
                         sourceEsp += '<optgroup label="' + result[i].grupoDescricao + '">';
                     }
-                    
+
                     $.each(result[i].filtroEspecies, function (index, value) {
                         sourceEsp += "<option data-tokens='" + value.token + "' value='" + value.valor + "'>" + value.descricao + "</option>";
                     });
@@ -722,7 +722,7 @@ function geraCargaPrePedido(parametro) {
                 if (!parseInt(value.token.split(',')[0])) {
                     sourceReferencia += '<option data-tokens="' + value.token + '" value="' + value.descricao + '" data-content="<span class=\'badge badge-danger\' style=\'font-size: 12px;\'><i style=\'font-size: 12px !important;width:12px !important;height:12px !important;\' class=\'glyphicon glyphicon-tags\' aria-hidden=\'true\'></i>&nbsp;&nbsp;' + value.descricao + '</span>">' + value.descricao + '</option>';
                 } else {
-                    sourceReferencia += '<option data-tokens="' + value.token + '" value="' + value.descricao + '" data-content="<span style=\'font-size: 12px;\'><i style=\'font-size: 12px !important;width:12px !important;height:12px !important;\' class=\'glyphicon glyphicon-tags\' aria-hidden=\'true\'></i>&nbsp;&nbsp;' + value.descricao + '</span>">' + value.descricao + '</option>';                        
+                    sourceReferencia += '<option data-tokens="' + value.token + '" value="' + value.descricao + '" data-content="<span style=\'font-size: 12px;\'><i style=\'font-size: 12px !important;width:12px !important;height:12px !important;\' class=\'glyphicon glyphicon-tags\' aria-hidden=\'true\'></i>&nbsp;&nbsp;' + value.descricao + '</span>">' + value.descricao + '</option>';
                 }
             });
             $.each(result.filtrosPrePedido.tamanhoGrupo, function (index, value) {
@@ -915,7 +915,7 @@ function geraCargaCadNovo() {
                         window.location = "../gerenciamento/compraprodutos.cshtml";
                     }
 
-                    
+
                 }
             });;
         }
@@ -1150,7 +1150,7 @@ function criarClonePedido(parametro) {
         success: function (result) {
             console.log(result)
             sessionStorage.setItem("pedidoId", result)
-           
+
             window.location = "../cadastro/compra.cshtml";
 
         },
@@ -1182,17 +1182,26 @@ function recuperaGruposCadastrados() {
             req.setRequestHeader('Authorization', sessionStorage.getItem("token"));
         },
         success: function (result) {
-            var sourceGrupo = '', sourceFiliais = '';
+            console.log(result)
+            var sourceGrupo = [], sourceFiliais = '';
             $.each(result.grupos, function (index, value) {
-                sourceGrupo += "<option data-tokens='" + value.token + "' value='" + value.valor + "'>" + toTitleCase(value.descricao) + "</option>";
+                var retorno = {};
+                retorno.id = parseInt(value.valor);
+                retorno.descricao = toTitleCase(value.descricao);
+                retorno.participacao = parseFloat(value.dadosAdicionais[0].replace(',', '.'));
+                retorno.operacao = '<a href="#" style="margin:3px" class="btn btn-info editarGrupo" data-toggle="tooltip" title="Editar" ><i class="fa fa-pencil" aria-hidden="true"></i></a>'
+                    + '<a href="#" style="margin:3px;" class="btn btn-danger excluirGrupo" data-toggle="tooltip" title="Cancelar" ><i class="fa fa-trash" aria-hidden="true"></i></a>';
+                sourceGrupo.push(retorno);
             });
+            var lista = geraListaFilial(result.filiais);
             $.each(result.filiais, function (index, value) {
                 sourceFiliais += "<option data-tokens='" + value.token + "' value='" + value.valor + "'>" + toTitleCase(value.descricao) + "</option>";
             });
-
-
+            console.log(sourceGrupo)
+            carregarCadFilial(sourceGrupo)
             $("#cbGrupos").html(sourceGrupo);
             localStorage.setItem("filiaisOption", sourceFiliais);
+            localStorage.setItem("filiaisLista", lista);
 
             //$("#cbFiliais").html(sourceFiliais);
             $(".selectpicker").selectpicker('refresh');
