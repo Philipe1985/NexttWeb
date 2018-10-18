@@ -22,7 +22,13 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
         public List<ComboFiltroVM> TamanhoGrupo { get; set; }
         public TamanhoGrupoVM Tamanhos { get; set; }
         public PaletaDadosVM DadosPaleta { get; set; }
-
+        public List<GruposValidadosVM> RelacionamentoGrupos { get; set; }
+        public List<bool> OrdemPed { get; set; }
+        public List<bool> OrdemProd { get; set; }
+        public List<ComboAtributoVM> AttrListaProd { get; set; }
+        public List<ComboAtributoVM> AttrListaPed { get; set; }
+        public List<AtributoElementoVM> AttrEleListaProd { get; set; }
+        public List<AtributoElementoVM> AttrEleListaPed { get; set; }
         public FiltrosPesquisa(List<ComboFiltroVM> _fornecedores, List<ComboFiltroVM> _secoes, List<ComboFiltroVM> _marcas)
         {
             Fornecedores = _fornecedores;
@@ -36,11 +42,11 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
             Fornecedores = _fornecedores;
             Secoes = _secoes;
             Marcas = _marcas;
-            Tamanhos = new TamanhoGrupoVM(compraServico, fabrica, tamanhos);
+            Tamanhos = new TamanhoGrupoVM(compraServico, fabrica, tamanhos); 
             Cores = compraServico.RetornaCoresPrincipais(cores).Select(x => fabrica.Criar(x)).ToList();
             DadosPaleta = new PaletaDadosVM(compraServico.RetornaCSSCor(cores), compraServico.RetornaDescricaoCor(cores));
         }
-
+         
         public FiltrosPesquisa(DadosPrePedido dadosCadastro, IAppServicoCompra compraServico, FabricaViewModel fabrica, List<Cor> cores,
             List<GrupoTamanho> tamanhos, List<ReferenciaProduto> referencias)
         {

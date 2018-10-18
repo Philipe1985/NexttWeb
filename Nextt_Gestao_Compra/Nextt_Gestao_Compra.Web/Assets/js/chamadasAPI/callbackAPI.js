@@ -689,11 +689,13 @@ function geraCargaPrePedido(parametro) {
             req.setRequestHeader('Authorization', sessionStorage.getItem("token"));
         },
         success: function (result) {
-            console.log(result);
+            console.log(result)
+            grupoRelacionar = result.filtrosPrePedido.relacionamentoGrupos;
             var sourceSec = "", sourceCNPJ = "", souceClass = "", sourceMarca = "", sourceEspecie = "",
                 sourceForma = "", sourceCondicao = "", sourceCores = "", sourceTamanho = "",
                 sourceTamanhoGrupo = "", sourceReferencia = "";
-            //tamanhoCalcados = result.filtrosPrePedido.tamanhosCalcado, tamanhoConfeccao = result.filtrosPrePedido.tamanhosConfeccao;
+            carregaAtributosPorOrdem(result.filtrosPrePedido.attrEleListaPed, result.filtrosPrePedido.attrListaPed, result.filtrosPrePedido.ordemPed, true);
+            carregaAtributosPorOrdem(result.filtrosPrePedido.attrEleListaProd, result.filtrosPrePedido.attrListaProd, result.filtrosPrePedido.ordemProd, false)
             $.each(result.filtrosPrePedido.secoes, function (index, value) {
                 sourceSec += "<option selected data-tokens='" + value.token + "' value='" + value.valor + "'>" + value.descricao + "</option>";
             });
@@ -746,7 +748,11 @@ function geraCargaPrePedido(parametro) {
             if (result.filtrosPrePedido.tamanhoGrupo.length === 1) {
                 $("#drpTamanhoCategoria option[value='" + result.filtrosPrePedido.tamanhoGrupo[0].valor + "']").attr('selected', 'selected')
             }
-
+            //$(".attrBool").checkboxradio();
+            $(".attrNum").maskMoney();
+            $(".attrMon").maskMoney();
+            $(".attrPerc").maskMoney();
+            geraComponenteCalendarioAttr();
             ordenaOpcao();
             $(".selectpicker").selectpicker();
 
@@ -781,11 +787,11 @@ function geraCargaPrePedido(parametro) {
             $('.percent').maskMoney('mask');
             $('.money').maskMoney('mask');
             criaPaletas();
-            if (result.ultimaCondicao && result.ultimaForma.length) {
+            if (result.ultimaCondicao && result.ultimaForma.length && validaAttrCadastrado($("#pnlAttrPed"))) {
                 $('#wizard-cad-ped li a[href="#tabFoto"]').click();
             }
             var $menuTitulo = $(".navbar.navbar-default.navbar-fixed-top");
-            $menuTitulo.find('.navbar-header .navbar-center').text('Cadastro de Pré-Pedido');
+            $menuTitulo.find('.navbar-header .navbar-center').text('Cadastro de Pedido');
             $(".selectpicker").selectpicker('refresh');
             carregaPedidoGrade();
             $(".bg_load").fadeOut();
@@ -825,9 +831,13 @@ function geraCargaCadNovo() {
             req.setRequestHeader('Authorization', sessionStorage.getItem("token"));
         },
         success: function (result) {
-            console.log(result);
+            console.log(result)
+            grupoRelacionar = result.relacionamentoGrupos;
             var sourceForma = "", sourceCondicao = "", souceClass = '', sourceSec = '<option selected value="">Nenhuma</option>', sourceTamanho = "", sourceCNPJ = '<option selected value="">Nenhum</option>',
                 sourceMarca = '<option selected value="">Nenhuma</option>', sourceCores = '', sourceEspecie = '<option selected value="">Nenhuma</option>';
+            carregaAtributosPorOrdem(result.attrEleListaPed, result.attrListaPed, result.ordemPed, true);
+            carregaAtributosPorOrdem(result.attrEleListaProd, result.attrListaProd, result.ordemProd, false)
+
             $.each(result.secoes, function (index, value) {
                 sourceSec += "<option data-tokens='" + value.token + "' value='" + value.valor + "'>" + value.descricao + "</option>";
             });
@@ -861,6 +871,13 @@ function geraCargaCadNovo() {
             $("#drpTamanhoCategoria").html(sourceTamanho).selectpicker('val', '');
             $('#drpClassificacao').html(souceClass).selectpicker('val', '');
             $("#drpCoresGrade").html(sourceCores);
+            $(".attrNum").maskMoney();
+            $(".attrMon").maskMoney();
+            $(".attrPerc").maskMoney();
+            $(".attrNum").maskMoney('mask');
+            $(".attrMon").maskMoney('mask');
+            $(".attrPerc").maskMoney('mask');
+            geraComponenteCalendarioAttr()
 
             $(".selectpicker").selectpicker();
             nomesCoresCSS = repartirArray(result.dadosPaleta.valoresCSS);
@@ -878,7 +895,7 @@ function geraCargaCadNovo() {
                 continuarNovoProd()
             }
             var $menuTitulo = $(".navbar.navbar-default.navbar-fixed-top");
-            $menuTitulo.find('.navbar-header .navbar-center').text('Cadastro de Pré-Pedido');
+            $menuTitulo.find('.navbar-header .navbar-center').text('Cadastro de Pedido e Produto');
             $(".selectpicker").selectpicker('refresh');
             $(".bg_load").fadeOut();
             $(".wrapper").fadeOut();
@@ -1087,13 +1104,23 @@ function salvarPedido(parametro) {
                 sessionStorage.setItem("idProdutoImagens", result);
                 $('#imgUpload').fileinput('upload');
             }
+           var statusSalvar= sessionStorage.getItem("salvarStatus");
+            sessionStorage.removeItem("salvarStatus");
             sessionStorage.removeItem("pedidoId");
             sessionStorage.removeItem("pedidoStatus")
+            var msg = compraId ?
+                statusSalvar === 'A' ?
+                    'O pedido foi atualizado, mas segue aberto para edição' :
+                    'O pedido foi enviado para aprovação.' :
+                statusSalvar === 'A' ?
+                    'O pedido foi cadastrado, mas segue aberto para edição' :
+                    'O pedido foi enviado para aprovação.';
+            var titMsg = compraId ? 'Pedido Atualizado Com Sucesso!' : 'Pedido ' + result + ' Salvo Com Sucesso!';
             $(".bg_load").fadeOut("slow");
             $(".wrapper").fadeOut("slow", function () {
                 var jc2 = $.confirm({
-                    title: 'Pedido Salvo Com Sucesso!',
-                    content: 'O pedido foi enviado para aprovação.',
+                    title: titMsg,
+                    content: msg,//'O pedido foi enviado para aprovação.',
                     icon: 'fa fa-check',
                     theme: 'modern',
                     closeIcon: false,
@@ -1107,7 +1134,7 @@ function salvarPedido(parametro) {
                     onContentReady: function () {
                         setTimeout(function () {
                             jc2.close()
-                        }, 4000);
+                        }, 2000);
                     },
                     onOpenBefore: function () {
                         this.buttons.okButton.hide();
@@ -1241,8 +1268,18 @@ function retornaInfoGrp(parametro) {
         },
         success: function (result) {
             console.log(result);
-            //Criar abas dos grupos
-            criarTabGruposSelecionados(result.gruposCadastrados)
+            var sourceFiliais = []
+            $.each(result.filiais, function (index, value) {
+                sourceFiliais.push(value.valor);
+            });
+            var idEditar = result.grupos[0].valor;
+            var desc = toTitleCase(result.grupos[0].descricao);
+            var part = parseFloat(result.grupos[0].dadosAdicionais[0].replace(',', '.'));
+            localStorage.setItem("filiaisGrupo", sourceFiliais);
+            localStorage.setItem("idGrpEditar", idEditar);
+            //var filiaisExis = localStorage.getItem('filiaisLista');//Criar abas dos grupos
+            //geraListaFilial(filiais)
+            manipularGrupo('Atualizar Grupo', desc, part);
         },
         error: function (erro) {
             $(".bg_load").fadeOut("slow");
@@ -1266,16 +1303,14 @@ function salvarAtualizacaoGrp(parametro) {
         crossDomain: true,
         async: true,
         cache: false,
-        url: urlApi + 'cadastro/grupo/AtualizarGrupos',
+        url: urlApi + 'cadastro/grupo/GerenciarGrupo',
         data: parametro,
         beforeSend: function (req) {
             req.setRequestHeader('Authorization', sessionStorage.getItem("token"));
         },
         success: function (result) {
-            $('#divPaineisCadastroGrupo').addClass('ocultarElemento');
-            $('#divPaineisCadastroGrupo #cadGrupo').empty();
-            $('#divPaineisCadastroGrupo div.tab-content:first').empty();
-            $('.selectpicker').selectpicker('show');
+            atualizaLinhaGrupo(result);
+            $(".navbar.navbar-default.navbar-fixed-top").removeClass('ocultarElemento');
             $(".bg_load").fadeOut("slow");
             $(".wrapper").fadeOut("slow", function () {
                 msgGrupoAtualizado();
@@ -1298,26 +1333,58 @@ function salvarAtualizacaoGrp(parametro) {
     });
 
 }
+function excluirGrp(parametro) {
+    $.ajax({
+        type: 'POST',
+        crossDomain: true,
+        async: true,
+        cache: false,
+        url: urlApi + 'cadastro/grupo/ExcluirGrupo',
+        data: parametro,
+        beforeSend: function (req) {
+            req.setRequestHeader('Authorization', sessionStorage.getItem("token"));
+        },
+        success: function (result) {
+            var excId = parseInt(sessionStorage.getItem('idGrpWxc'));
+            sessionStorage.removeItem('idGrpWxc')
+            excluirLinhaGrupo(excId);
+            $(".navbar.navbar-default.navbar-fixed-top").removeClass('ocultarElemento');
+            $(".bg_load").fadeOut("slow");
+            $(".wrapper").fadeOut("slow", function () {
+                excluirGrupo();
+            });
+            //Criar abas dos grupos
+        },
+        error: function (erro) {
+            $(".bg_load").fadeOut("slow");
+            $(".wrapper").fadeOut("slow", function () {
+                $('.selectpicker').selectpicker('show');
+            });
 
+            modal({
+                messageText: "Ocorreu um erro durante esta operação, tente novamente.<br/>Caso o erro persista informe o administrador do sistema o horário e data da ocorrencia",
+                type: "alert",
+                headerText: "Falha Interna",
+                alertType: "warning"
+            });
+        }
+    });
+
+}
 function cadastrarGrupoNovo(parametro) {
     $.ajax({
         type: 'POST',
         crossDomain: true,
         async: true,
         cache: false,
-        url: urlApi + 'cadastro/grupo/CadastrarGrupo',
+        url: urlApi + 'cadastro/grupo/GerenciarGrupo',
         data: parametro,
         beforeSend: function (req) {
             req.setRequestHeader('Authorization', sessionStorage.getItem("token"));
         },
         success: function (result) {
-            $('#divPaineisCadastroGrupo').addClass('ocultarElemento');
-            var novoGrupo = "<option selected data-tokens='" + result.gruposCadastrado[0].idGrupo + ',' + result.gruposCadastrado[0].descricao + "' value='" + result.gruposCadastrado[0].idGrupo + "'>" + toTitleCase(result.gruposCadastrado[0].descricao) + "</option>";
-            $("#cbGrupos").prepend(novoGrupo);
-            $("#cbGrupos").selectpicker('refresh');
-            $("#cbGrupos").selectpicker('render');
-            criarTabGruposSelecionados(result.gruposCadastrados);
-            $('.selectpicker').selectpicker('show');
+            insereLinhaGrupo(result);
+            $(".navbar.navbar-default.navbar-fixed-top").removeClass('ocultarElemento');
             $(".bg_load").fadeOut("slow");
             $(".wrapper").fadeOut("slow", function () {
                 msgGrupoCadastrado();
@@ -1501,10 +1568,13 @@ function geraCargaPedidoAnalitico(parametro) {
             var objEnvio = {};
             objEnvio.codigo = result.idProduto;
             sessionStorage.setItem("pedidoStatus", result.status);
+            grupoRelacionar = result.filtrosPrePedido.relacionamentoGrupos;
 
             carregaImagemProduto(objEnvio);
             var sourceSec = "", sourceCNPJ = "", souceClass = "", sourceMarca = "", sourceEspecie = "", sourceForma = "",
                 sourceCondicao = "", sourceCores = "", sourceTamanho = "", sourceTamanhoGrupo = "", sourceReferencia = "";
+            carregaAtributosPorOrdem(result.filtrosPrePedido.attrEleListaPed, result.filtrosPrePedido.attrListaPed, result.filtrosPrePedido.ordemPed, true);
+            carregaAtributosPorOrdem(result.filtrosPrePedido.attrEleListaProd, result.filtrosPrePedido.attrListaProd, result.filtrosPrePedido.ordemProd, false)
             $.each(result.filtrosPrePedido.secoes, function (index, value) {
                 sourceSec += "<option selected data-tokens='" + value.token + "' value='" + value.valor + "'>" + value.descricao + "</option>";
             });
@@ -1538,6 +1608,11 @@ function geraCargaPedidoAnalitico(parametro) {
             $.each(result.filtrosPrePedido.tamanhoOpcoes, function (index, value) {
                 sourceTamanho += criarTamanho(value.valor, value.token, value.descricao);
             });
+
+            $(".attrNum").maskMoney();
+            $(".attrMon").maskMoney();
+            $(".attrPerc").maskMoney();
+            geraComponenteCalendarioAttr()
 
             $('#txtDtEntregaPed').data('daterangepicker').minDate = moment(new Date(result.dataEntregaInicio));
             $('#txtDtEntregaPed').data('daterangepicker').setStartDate(new Date(result.dataEntregaInicio));
@@ -1615,7 +1690,8 @@ function geraCargaPedidoAnalitico(parametro) {
                 var dadosPack = retornaPackCadDados(result.packs[i].packItens);
                 carregarPackPedidoCadastrado("tblPackCad" + result.packs[i].idPedidoPack, dadosOriginais, dadosPack, colPack);
             }
-            $menuTitulo.find('.navbar-header .navbar-center').text('Cadastro de Pré-Pedido');
+            var textoTitulo = 'Pedido ' + sessionStorage.getItem("pedidoId") + ': ' + retornaStatusTextoTit(result.status);
+            $menuTitulo.find('.navbar-header .navbar-center').text(textoTitulo);
             $(".finish-change").html('Atualizar');
             $(".selectpicker").selectpicker('refresh');
             $(".bg_load").fadeOut();
@@ -1628,6 +1704,20 @@ function geraCargaPedidoAnalitico(parametro) {
             if (result.status !== 'A') {
                 desabilitaEdicao();
                 $(".selectpicker").selectpicker('refresh');
+            } else {
+                $("#frmDados.collapsible").collapsible({
+                    animation: true,
+                    speed: "medium"
+                });
+                $("#frmCusto.collapsible").collapsible({
+                    animation: true,
+                    speed: "medium"
+                });
+                $("#frmAttrProd.collapsible").collapsible({
+                    animation: true,
+                    speed: "medium"
+                });
+
             }
             statusPedido = result.status;
 
@@ -1658,8 +1748,11 @@ function geraCargaPedidoAnalitico(parametro) {
     });
 }
 function atualizarStatus(parametro) {
-    console.log(parametro)
-    $('#modalDetalhamentoPedido').modal('hide');
+    $('.btn-group.bootstrap-select.disabled.show-tick').addClass('ocultarElemento');
+    if ($('#modalDetalhamentoPedido')) {
+        $('#modalDetalhamentoPedido').modal('hide');
+    }
+    
     $('.selectpicker').selectpicker('hide');
     $(".navbar.navbar-default.navbar-fixed-top").addClass('ocultarElemento');
     $(".bg_load").show();
@@ -1683,7 +1776,12 @@ function atualizarStatus(parametro) {
                 $(".navbar.navbar-default.navbar-fixed-top").removeClass('ocultarElemento');
                 $('.selectpicker').selectpicker('show');
             } else {
-                window.location = "../gerenciamento/pedido.cshtml";
+                if (sessionStorage.getItem('Editar')) {
+                    sessionStorage.removeItem('Editar');
+                    location.reload();
+                } else {
+                    window.location = "../gerenciamento/pedido.cshtml";
+                }
             }
 
             //Criar abas dos grupos

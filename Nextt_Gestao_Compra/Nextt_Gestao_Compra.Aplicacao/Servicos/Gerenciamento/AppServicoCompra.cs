@@ -14,7 +14,7 @@ namespace Nextt_Gestao_Compra.Aplicacao.Servicos.Gerenciamento
             _servicoCompra = servicoCompra;
         }
 
-        public List<IEnumerable> AtualizaCargaTamanho(Parametros parametros)
+        public List<GrupoTamanho> AtualizaCargaTamanho(Parametros parametros)
         {
             return _servicoCompra.AtualizaCargaTamanho(parametros);
         }
@@ -32,6 +32,16 @@ namespace Nextt_Gestao_Compra.Aplicacao.Servicos.Gerenciamento
         public int GravarPedido(string pedidoJson)
         {
             return _servicoCompra.GravarPedido(pedidoJson);
+        }
+
+        public List<Atributos> RetornaAtributosCampos(List<Atributos> _listaAttr)
+        {
+            return _servicoCompra.RetornaAtributosCampos(_listaAttr);
+        }
+
+        public List<TipoLista> RetornaAtributosTipoLista(List<Atributos> _listaAttr)
+        {
+            return _servicoCompra.RetornaAtributosTipoLista(_listaAttr);
         }
 
         public List<IEnumerable> RetornaCargaEspeciesFiltros(string secoes)

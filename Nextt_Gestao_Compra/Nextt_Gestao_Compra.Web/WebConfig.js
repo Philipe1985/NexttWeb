@@ -6,7 +6,10 @@ Array.prototype.sum = function (prop) {
     }
     return total;
 };
-
+Array.prototype.equals = function (array) {
+    return this.length == array.length &&
+        this.every(function (this_i, i) { return this_i == array[i] })
+};
 var nomesCoresCSS = [], nomesCoresPtCSS = [], sizePaletaLine = 5;
 var configuracaoCalendarios = {
     "format": "DD/MM/YYYY",

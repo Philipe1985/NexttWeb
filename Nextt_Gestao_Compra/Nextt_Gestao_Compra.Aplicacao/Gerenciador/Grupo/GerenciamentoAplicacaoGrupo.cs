@@ -14,7 +14,9 @@ namespace Nextt_Gestao_Compra.Aplicacao.Gerenciador.Grupo
         {
             var dados = servicoGrupo.BuscaGruposCadastrados();
             var listaGrupo = dados.ElementAt(0).Cast<GrupoFilial>().Select(x => fabrica.Criar(x)).ToList();
-            var listaFiliais = dados.ElementAt(1).Cast<GrupoFilial>().Select(x => fabrica.CriarComboFilial(x)).ToList();
+            var listaFiliais = dados.ElementAt(1).Cast<GrupoFilial>().Select(x => new  { x.IDFilial, x.Filial_Nome}).Distinct()
+                                        .Select(x => fabrica.CriarComboFilial(new GrupoFilial {IDFilial= x.IDFilial,Filial_Nome= x.Filial_Nome }))
+                                        .ToList();
             var retorno = new FiltrosCadastroGrupoVM
             {
                 Filiais = listaFiliais,
@@ -22,38 +24,32 @@ namespace Nextt_Gestao_Compra.Aplicacao.Gerenciador.Grupo
             };
             return retorno;
         }
-        public static FiltrosCadastroGrupoVM RetornaFiliaisPorGrupo(IAppServicoGrupo servicoGrupo,ParametrosVM parametroVM)
+        public static FiltrosCadastroGrupoVM RetornaFiliaisPorGrupo(IAppServicoGrupo servicoGrupo,ParametrosVM parametroVM, FabricaViewModel fabrica)
         {
             var filtro = Mapper.Map<ParametrosVM, Parametros>(parametroVM);
-            var dados = servicoGrupo.BuscaFiliaisPorGrupos(filtro).ElementAt(1).Cast<GrupoFilial>().GroupBy(x => x.IDGrupo).Select(x => x.ToList()).ToList();
+            var dados = servicoGrupo.BuscaFiliaisPorGrupos(filtro);
+            var listaGrupo = dados.ElementAt(0).Cast<GrupoFilial>().Select(x => fabrica.Criar(x)).ToList();
+            var listaFiliais = dados.ElementAt(1).Cast<GrupoFilial>().Select(x => fabrica.CriarComboFilial(x)).ToList();
             var retorno = new FiltrosCadastroGrupoVM
             {
-                GruposCadastrados = new List<GrupoCadastroVM>()
+                Filiais = listaFiliais,
+                Grupos = listaGrupo
             };
-            for (int i = 0; i < dados.Count; i++)
-            {
-                retorno.GruposCadastrados.Add(new GrupoCadastroVM(dados[i]));
-            }
+            
             return retorno;
         }
-        public static void AtualizarGruposCadastrados(IAppServicoGrupo servicoGrupo, ObjGruposAtualizarVM objGrupos)
+        public static ComboFiltroVM ManipularGrupos(IAppServicoGrupo servicoGrupo, GrupoFilialOperacaoVM objGrupos, FabricaViewModel fabrica)
         {
-            var objJson = JsonConvert.SerializeObject(objGrupos);
-            servicoGrupo.SalvarAtualizacaoGrupos(objJson);
-        }
-        public static FiltrosCadastroGrupoVM SalvarGrupoNovo(IAppServicoGrupo servicoGrupo, GrupoAtualizarVM objGrupo)
-        {
-            var objJson = JsonConvert.SerializeObject(objGrupo);
-            var dados = servicoGrupo.CadastrarGrupo(objJson).ElementAt(0).Cast<GrupoFilial>().GroupBy(x => x.IDGrupo).Select(x => x.ToList()).ToList();
-            var retorno = new FiltrosCadastroGrupoVM
-            {
-                GruposCadastrados = new List<GrupoCadastroVM>()
-            };
-            for (int i = 0; i < dados.Count; i++)
-            {
-                retorno.GruposCadastrados.Add(new GrupoCadastroVM(dados[i]));
-            }
+            var objJson = JsonConvert.SerializeObject(objGrupos.GruposOperacao);
+            var grupoManipulado = servicoGrupo.ManipularGrupo(objJson).ElementAt(0).Cast<GrupoFilial>().FirstOrDefault();
+            var retorno = fabrica.Criar(grupoManipulado);
             return retorno;
+        }
+        public static void ExcluirGrupos(IAppServicoGrupo servicoGrupo, ParametrosVM parametroVM)
+        {
+            var filtro = Mapper.Map<ParametrosVM, Parametros>(parametroVM);
+            servicoGrupo.ExcluirGrupo(filtro);
+            
         }
     }
 }

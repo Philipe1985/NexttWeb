@@ -3,34 +3,31 @@
 }
 <script src="../Assets/js/grupo-filiais.js"></script>
 <script src="../Assets/js/calculosRelatorio.js"></script>
-<div class="col-md-12" id="principal">
+<div class="col-md-12 col-sm-12 col-xs-12" id="principal">
     <div class="row">
         <div class="col-md-12 col-sm-12 col-xs-12" style="text-align:center">
             <div id="alertCadGrupoFilial" class="alertCustomizado alert-danger" style="display:none"></div>
         </div>
     </div>
     <div class="row">
-
-
-        <div class="col-md-10 col-md-offset-1 col-sm-12 col-xs-12">
-            <h4 class="text-center">Grupos Cadastrados</h4>
-            <div class="col-md-12 col-sm-12 col-xs-12 table-responsive" style="max-height:80vh;overflow:auto">
-
-
-                <table id="gruposCadastrados"  cellpadding="0" cellspacing="0" class="table-tools cell-border hover table cell nowrap stripe compact pretty">
-
+        <div class="col-md-6 col-md-offset-3 col-sm-12 col-xs-12">
+            <h4 class="text-center" style="font-weight:bold!important">Grupos Cadastrados</h4>
+            <div class="col-md-12 col-sm-12 col-xs-12 table-responsive">
+                <table id="gruposCadastrados" cellpadding="0" cellspacing="0" class="table-tools cell-border hover table cell stripe pretty">
                     <thead>
                         <tr>
                             <th></th>
-                            <th class="grupoOperacao" style="text-align:center!important"><button type="button" onclick="criaDescGrp()" class="btn btn-success btn-create"><i class="fa fa-plus" aria-hidden="true"></i> Novo Grupo</button></th>
                             <th>Descrição</th>
                             <th>Participação</th>
-
-                            @*<th>Delete</th>*@
+                            <th class="grupoOperacao" style="text-align:left!important">
+                                <button type="button" onclick="criaDescGrp()" class="btn btn-success btn-create">
+                                    <i class="fa fa-plus" aria-hidden="true"></i>
+                                </button>
+                            </th>
                         </tr>
                     </thead>
-             
                 </table>
+            </div>
         </div>
     </div>
 </div>
@@ -60,7 +57,7 @@
     </div>
 </div>
 
-</div>
+
 
 
 

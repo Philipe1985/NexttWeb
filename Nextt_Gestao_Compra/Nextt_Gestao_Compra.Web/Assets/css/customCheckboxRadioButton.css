@@ -30,6 +30,7 @@
     border: 1px solid #D1D3D4;*/
         font-weight: normal;
         font-size: 15px !important;
+        
     }
 
 @media only screen and (max-width:768px) {
@@ -158,9 +159,16 @@
     width: 14px;
     height: 14px;
     margin: -5px 2px 0 2px;
-    background-color: #5bc0de !important;
+    /*background-color: #337ab7 !important;*/
 }
 
+.ui-btn.ui-checkbox-on:after, .ui-btn.ui-radio-on:after {
+    /*display: block;
+    width: 14px;
+    height: 14px;
+    margin: -5px 2px 0 2px;*/
+    background-color: #337ab7 !important;
+}
 /* SCSS STYLES */
 /*
 .phradio {

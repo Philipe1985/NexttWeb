@@ -1,5 +1,4 @@
 ﻿using Nextt_Gestao_Compra.Dominio.Entidades;
-using System;
 
 namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
 {

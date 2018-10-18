@@ -55,7 +55,7 @@ $(document).ready(function () {
             btnNao = "Não", checkbox = this, idEditar = tbUsuario.row($(linha)).data()[0], titulo = 'Operação Inválida', texto = 'Não é permitido bloquear seu próprio usuário.';
 
         if (sessionStorage.getItem("id_usuario") === idEditar) {
-            $(checkbox).bootstrapSwitch('state', !state.value, true);
+            $(checkbox).bootstrapSwitch('state', !state, true);
             modal({
                 type: "alert",
                 messageText: texto,
@@ -68,7 +68,7 @@ $(document).ready(function () {
             var nomeUsuarioBloqueio = tbUsuario.row($(linha)).data()[1];
 
 
-            if (!state.value) {
+            if (!state) {
                 texto = 'Ao confirmar esta operação, o usuário ' + nomeUsuarioBloqueio + ' perderá acesso ao sistema. </br> Deseja Prosseguir?';
                 modal({
                     type: "confirm",
@@ -81,7 +81,7 @@ $(document).ready(function () {
                     if (!e) {
                         $(checkbox).bootstrapSwitch('state', true, true);
                     } else {
-                        alterarStatusUsuario(idEditar, state.value, checkbox);
+                        alterarStatusUsuario(idEditar, state, checkbox);
                     }
                 });
             } else {
@@ -97,7 +97,7 @@ $(document).ready(function () {
                     if (!e) {
                         $(checkbox).bootstrapSwitch('state', false, true);
                     } else {
-                        alterarStatusUsuario(idEditar, state.value, checkbox);
+                        alterarStatusUsuario(idEditar, state, checkbox);
                     }
                 });
             }
@@ -184,12 +184,15 @@ function carregarUsuario() {
             },
             fixedHeader: true,
             "drawCallback": function (settings) {
-                $(".ckbGrid").bootstrapSwitch();
 
+                $(".ckbGrid").bootstrapSwitch();
+                $(".ckbGrid").each(function () {
+    
+                    $(this).bootstrapSwitch('state', $(this).is(":checked"));
+                });
                 settings.oLanguage.oPaginate.sPrevious = "Anterior";
                 settings.oLanguage.oPaginate.sNext = "Próximo";
-                $('.ckbGrid').bootstrapSwitch('onText', 'Sim');
-                $('.ckbGrid').bootstrapSwitch('offText', 'Não');
+
                 $('.editaUsuario').each(function () {
                     $(this).attr('data-original-title', "Editar Usuário");
                 });
@@ -225,6 +228,7 @@ function carregarUsuario() {
                             carregarGridUsuario(json[i])
                         );
                     }
+                    console.log(retorno)
                     $("#usuarioOpcao").css("display", "none");
 
                     $(".bg_load").fadeOut();
@@ -279,7 +283,7 @@ function focoCadastroInvalido() {
 function carregarGridUsuario(retorno) {
 
     var admin = '<select class="selectpicker cbPerfilGrid" data-width="100%" multiple title="Nenhum Perfil Atribuído">';
-    var editarUsuario = '<a href="#" class="btn btn-primary btn3d editaUsuario" data-toggle="tooltip" title="Editar Usuário" style="margin-top:0px"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>';
+    var editarUsuario = '<a href="#" class="btn btn-primary editaUsuario" data-toggle="tooltip" title="Editar Usuário"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>';
 
     $.each(retorno.roles, function (indice, valor) {
         admin += '<option value="' + indice + '" disabled selected="selected">' + valor + '</option>';
@@ -287,9 +291,9 @@ function carregarGridUsuario(retorno) {
     admin += '</select>';
     var status;
     if (!retorno.locked) {
-        status = '<input type="checkbox" checked class="ckbGrid" data-on-color="success" data-off-color="danger" data-on-text="Sim" data-off-text="Não">';
+        status = '<input type="checkbox" checked class="switch ckbGrid" data-on-color="success" data-off-color="danger" data-on-text="Sim" data-off-text="Não">';
     } else {
-        status = '<input type="checkbox" class="ckbGrid" data-on-color="success" data-off-color="danger" data-on-text="Sim" data-off-text="Não">';
+        status = '<input type="checkbox" class="switch ckbGrid" data-on-color="success" data-off-color="danger" data-on-text="Sim" data-off-text="Não">';
     }
 
     cargaTabela = [

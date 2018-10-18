@@ -1,4 +1,4 @@
-﻿var isMobile = false; //initiate as false
+﻿var isMobile = false, resizeId; //initiate as false
 
 $(document).ready(function () {
     // device detection
@@ -129,6 +129,21 @@ $(document).ready(function () {
             }
         }
     });
+    //$(window).on('resize', function () {
+    //    $(window).scrollTop(0);
+    //    $("span.wait").addClass('ocultarElemento');
+    //    $("span.resized").removeClass('ocultarElemento');
+    //    $('.selectpicker').selectpicker('hide');
+    //    if (!$('.infoPage').hasClass('ocultarElemento')) {
+    //        $('.infoPage').css('display', 'none')
+    //    }
+    //    $(".bg_load").show();
+    //    $(".wrapper").show();
+    //    clearTimeout(resizeId);
+    //    console.log((new Date).toLocaleTimeString())
+    //    resizeId = setTimeout(redimensionarTabelas, 1000);
+
+    //});
 
     $(document).on("mouseup touchend", ".bootstrap-select .dropdown-header", function () {
         $(this).closest('.bootstrap-select').find('select').attr('id').indexOf('OcultaColuna') > 0 ? iniciarOcultacaoColuna(this) : cliqueGrupoDpd(this);
@@ -439,6 +454,26 @@ function formatarDataEnvio(date) {
     if (day.length < 2) day = '0' + day;
 
     return [year, month, day].join('-');
+}
+function redimensionarTabelas() {
+
+    console.log((new Date).toLocaleTimeString())
+
+    $.fn.dataTable.tables({ visible: true, api: true }).columns.adjust().draw();
+    $.fn.dataTable.tables({ visible: true, api: true }).fixedHeader.adjust();
+    var tables = $('.dataTable').DataTable();
+    console.log(screen);
+
+    $(".bg_load").fadeOut("slow");
+    $(".wrapper").fadeOut("slow", function () {
+        if (!$('.infoPage').hasClass('ocultarElemento')) {
+            $('.infoPage').removeAttr('style')
+        }
+        $('.selectpicker').selectpicker('show');
+        $("span.resized").addClass('ocultarElemento');
+        $("span.wait").removeClass('ocultarElemento');
+    });
+
 }
 (function () {
     var addRule;

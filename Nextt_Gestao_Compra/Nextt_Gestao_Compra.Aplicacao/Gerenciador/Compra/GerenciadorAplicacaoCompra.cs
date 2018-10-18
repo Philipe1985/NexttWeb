@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
+using System.Collections;
 
 namespace Nextt_Gestao_Compra.Aplicacao.Gerenciador.Compra
 {
@@ -25,7 +26,7 @@ namespace Nextt_Gestao_Compra.Aplicacao.Gerenciador.Compra
         }
         public static List<ComboFiltroVM> RetornaGruposCadastrados(IAppServicoCompra compraServico, FabricaViewModel fabrica)
         {
-            return compraServico.RetornaGruposCadastrados().ElementAt(0).Cast<GrupoFilial>().Select(x => fabrica.Criar(x)).ToList();
+            return compraServico.RetornaGruposCadastrados().ElementAt(0).Cast<GrupoFilial>().Where(x => x.Ativo == true).Select(x => fabrica.Criar(x)).ToList();
         }
 
         public static List<GrupoDistribuicaoVM> RetornaGruposFiliaisDistribuicao(IAppServicoCompra compraServico, ParametrosVM parametroVM)
@@ -51,16 +52,33 @@ namespace Nextt_Gestao_Compra.Aplicacao.Gerenciador.Compra
             ChecaCoresSemRgb(dadosCores);
             var dadosTamanho = dados.ElementAt(3).Cast<GrupoTamanho>().ToList();
 
+            var gruposAtivo = RetornaGruposAtivos(dados.ElementAt(10).Cast<GrupoFilial>().ToList());
+            var gruposRelacionadosDesativar = RetornaGruposRelacionados(dados.ElementAt(11).Cast<GrupoFilial>().ToList(), gruposAtivo);
             var listaForma = dados.ElementAt(5).Cast<FormaPgto>().OrderBy(x => x.DescricaoFormaPagamento).Select(x => fabrica.Criar(x)).ToList();
             var condicoesOrdenadas = dados.ElementAt(6).Cast<CondicaoPgto>().OrderBy(x => x.Condicao.Split('+').Length).Select(x => x).ToList();
             var listaClassificacao = dados.ElementAt(7).Cast<ClassificacaoFiscal>().OrderBy(x => x.CodigoFiscal).Select(x => fabrica.Criar(x)).ToList();
+            var listaAttrProd = dados.ElementAt(12).Cast<Atributos>().OrderBy(x => x.Ordem).ToList();
+            var listaAttrPed = dados.ElementAt(13).Cast<Atributos>().OrderBy(x => x.Ordem).ToList();
+            var ordemPed = listaAttrPed.Where(x => x.IDTipoAtributo == x.IDTipoAtributoKey).Select(x => x.Lista).ToList();
+            var ordemProd = listaAttrProd.Where(x => x.IDTipoAtributo == x.IDTipoAtributoKey).Select(x => x.Lista).ToList();
+            var listaElemPed = compraServico.RetornaAtributosCampos(listaAttrPed).Select(x => new AtributoElementoVM(x));
+            var listaElemProd = compraServico.RetornaAtributosCampos(listaAttrProd).Select(x => new AtributoElementoVM(x));
+            var comboAttrPed = compraServico.RetornaAtributosTipoLista(listaAttrPed).Select(x => new ComboAtributoVM(x, fabrica));
+            var comboAttrProd = compraServico.RetornaAtributosTipoLista(listaAttrProd).Select(x => new ComboAtributoVM(x, fabrica));
 
             var listaCondicao = ComparaCondicaoPagamento(condicoesOrdenadas).Select(x => fabrica.Criar(x)).ToList();
             var filtrosPesquisa = new FiltrosPesquisa(compraServico, fabrica, dadosCores, listaFornecedores, listaSecoes, listaMarcas, dadosTamanho)
             {
+                OrdemPed = ordemPed,
+                OrdemProd = ordemProd,
+                AttrEleListaProd = listaElemProd.ToList(),
+                AttrEleListaPed = listaElemPed.ToList(),
+                AttrListaProd = comboAttrProd.ToList(),
+                AttrListaPed = comboAttrPed.ToList(),
                 FormaPgto = listaForma,
                 CondicaoPgto = listaCondicao,
-                Classificacao = listaClassificacao
+                Classificacao = listaClassificacao,
+                RelacionamentoGrupos = gruposRelacionadosDesativar
             };
 
             return filtrosPesquisa;
@@ -73,7 +91,6 @@ namespace Nextt_Gestao_Compra.Aplicacao.Gerenciador.Compra
             var listaRetorno = Mapper.Map<IEnumerable<DadosGerenciamentoProdutoCompra>, IEnumerable<ProdutosFiltradosVM>>(dados).ToList();
             return new RetornoProdutosVM(listaRetorno);
         }
-
 
         public static IEnumerable<RetornoEspecieFiltroVM> RetornaEspeciesFiltradas(IAppServicoCompra compraServico, ParametrosVM parametroVM, FabricaViewModel fabrica)
         {
@@ -118,25 +135,44 @@ namespace Nextt_Gestao_Compra.Aplicacao.Gerenciador.Compra
             ValidaCorGrade(dadosCores, gradePadrao);
             ValidaReferenciaGrade(dadosReferencia, gradePadrao);
 
+            var gruposAtivo = RetornaGruposAtivos(dadoPre.ElementAt(9).Cast<GrupoFilial>().ToList());
+            var gruposRelacionadosDesativar = RetornaGruposRelacionados(dadoPre.ElementAt(10).Cast<GrupoFilial>().ToList(), gruposAtivo);
+
             var listaForma = dadoPre.ElementAt(4).Cast<FormaPgto>().OrderBy(x => x.DescricaoFormaPagamento).Select(x => fabrica.Criar(x)).ToList();
             var listaClassificacao = dadoPre.ElementAt(6).Cast<ClassificacaoFiscal>().OrderBy(x => x.CodigoFiscal).Select(x => fabrica.Criar(x)).ToList();
             var condicoesOrdenadas = dadoPre.ElementAt(5).Cast<CondicaoPgto>().OrderBy(x => x.Condicao.Split('+').Length).Select(x => x).ToList();
             var listaCondicao = ComparaCondicaoPagamento(condicoesOrdenadas).Select(x => fabrica.Criar(x)).ToList();
-            
+            var listaAttrProd = dadoPre.ElementAt(11).Cast<Atributos>().OrderBy(x=>x.Ordem).ToList();
+            var listaAttrPed = dadoPre.ElementAt(12).Cast<Atributos>().OrderBy(x => x.Ordem).ToList();
+            var ordemPed = listaAttrPed.Where(x => x.IDTipoAtributo == x.IDTipoAtributoKey).Select(x => x.Lista).ToList();
+            var ordemProd = listaAttrProd.Where(x => x.IDTipoAtributo == x.IDTipoAtributoKey).Select(x => x.Lista).ToList();
+            var listaElemPed = compraServico.RetornaAtributosCampos(listaAttrPed).Select(x => new AtributoElementoVM(x));
+            var listaElemProd = compraServico.RetornaAtributosCampos(listaAttrProd).Select(x => new AtributoElementoVM(x));
+            var comboAttrPed = compraServico.RetornaAtributosTipoLista(listaAttrPed).Select(x => new ComboAtributoVM(x, fabrica));
+            var comboAttrProd = compraServico.RetornaAtributosTipoLista(listaAttrProd).Select(x => new ComboAtributoVM(x, fabrica));
+
             var dadosUltimaCompra = dadoPre.ElementAt(8).Cast<DadosUltimaCompra>().ToList();
             var filtrosPesquisa = new FiltrosPesquisa(dadosCadastro, compraServico, fabrica, dadosCores, dadosTamanho, dadosReferencia)
             {
+                OrdemPed = ordemPed,
+                OrdemProd = ordemProd,
+                AttrEleListaProd = listaElemProd.ToList(),
+                AttrEleListaPed = listaElemPed.ToList(),
+                AttrListaProd = comboAttrProd.ToList(),
+                AttrListaPed = comboAttrPed.ToList(),
                 FormaPgto = listaForma,
                 CondicaoPgto = listaCondicao,
-                Classificacao = listaClassificacao
+                Classificacao = listaClassificacao,
+                RelacionamentoGrupos = gruposRelacionadosDesativar
             };
             return new RetornoPrePedidoVM(filtrosPesquisa, dadosCadastro, gradePadrao, dadosUltimaCompra);
         }
 
+
         public static List<ComboFiltroVM> RetornaTamanhoDadosNovo(IAppServicoCompra compraServico, ParametrosVM parametroVM, FabricaViewModel fabrica)
         {
             var filtro = Mapper.Map<ParametrosVM, Parametros>(parametroVM);
-            var dadosTamanho = compraServico.AtualizaCargaTamanho(filtro).ElementAt(0).Cast<GrupoTamanho>().ToList().Select(x => fabrica.Criar(x)).ToList();
+            var dadosTamanho = compraServico.AtualizaCargaTamanho(filtro).Select(x => fabrica.Criar(x)).ToList();
             return dadosTamanho;
         }
         public static List<ImagensProdutoVM> RecuperaFotosProduto(IAppServicoCompra compraServico, ParametrosVM parametroVM)
@@ -261,19 +297,19 @@ namespace Nextt_Gestao_Compra.Aplicacao.Gerenciador.Compra
         private static void ChecaCoresSemRgb(List<Cor> cores)
         {
             var coresSemRgb = cores.Where(x => x.CorRGB.Length == 0).ToList();
-            
-            if (coresSemRgb.Count() > 0)
-                {
-                    throw new Exception("Exitem cores retornadas que não possuem RGB. \r\n Cores sem rgb:" +
-                         String.Join(", ", coresSemRgb.Select(x => x.Descricao).ToList()));
 
-                }
-            
+            if (coresSemRgb.Count() > 0)
+            {
+                throw new Exception("Exitem cores retornadas que não possuem RGB. \r\n Cores sem rgb:" +
+                     String.Join(", ", coresSemRgb.Select(x => x.Descricao).ToList()));
+
+            }
+
         }
         private static void ValidaTamanhoGrade(List<GrupoTamanho> tamanhos, List<Grade> produtoItems)
         {
             var valido = true;
-            var tamanhosPedido = produtoItems.Select(x=>new {x.IDTamanho, x.DescricaoTamanho }).Distinct().ToList();
+            var tamanhosPedido = produtoItems.Select(x => new { x.IDTamanho, x.DescricaoTamanho }).Distinct().ToList();
             for (int i = 0; i < tamanhosPedido.Count; i++)
             {
                 valido = tamanhos.Select(x => x.Descricao.Trim().ToUpper()).ToList().Contains(tamanhosPedido[i].DescricaoTamanho.Trim().ToUpper());
@@ -295,17 +331,16 @@ namespace Nextt_Gestao_Compra.Aplicacao.Gerenciador.Compra
         private static void ValidaCorGrade(List<Cor> cores, List<Grade> produtoItems)
         {
             var valido = true;
-            var coresPedido = produtoItems.Select(x => new {x.IDCor ,x.DescricaoCor }).Distinct().ToList();
+            var coresPedido = produtoItems.Select(x => new { x.IDCor, x.DescricaoCor }).Distinct().ToList();
             for (int i = 0; i < coresPedido.Count; i++)
             {
 
-               var corPaleta = cores.SingleOrDefault(x => x.VisivelSelecao == false &&
-                                x.Descricao.Trim().ToUpper() == coresPedido[i].DescricaoCor.Trim().ToUpper() &&
-                                x.IDCor == coresPedido[i].IDCor);
+                var corPaleta = cores.SingleOrDefault(x => x.Descricao.Trim().ToUpper() == coresPedido[i].DescricaoCor.Trim().ToUpper() &&
+                                 x.IDCor == coresPedido[i].IDCor);
                 if (corPaleta != null)
                     corPaleta.VisivelSelecao = true;
                 else
-                    valido = cores.Where(x => x.VisivelSelecao == true).Select(x => x.Descricao.Trim().ToUpper()).ToList().Contains(coresPedido[i].DescricaoCor.ToUpper());
+                    valido = cores.Select(x => x.Descricao.Trim().ToUpper()).ToList().Contains(coresPedido[i].DescricaoCor.ToUpper());
                 if (!valido)
                 {
                     cores.Add(new Cor
@@ -337,6 +372,49 @@ namespace Nextt_Gestao_Compra.Aplicacao.Gerenciador.Compra
 
                 }
             }
+        }
+        private static List<short> RetornaGruposAtivos(List<GrupoFilial> dadoPre)
+        {
+            return dadoPre.Where(x => x.Ativo == true).Select(x => x.IDGrupoFilial).ToList();
+        }
+        private static List<GruposValidadosVM> RetornaGruposRelacionados(List<GrupoFilial> dadoPre, List<short> gruposAtivo)
+        {
+            var retorno = new List<GruposValidadosVM>();
+            dadoPre.Where(x => gruposAtivo.Contains(x.IDGrupoFilial))
+                               .GroupBy(x => x.IDFilial)
+                               .Select(x => x.ToList())
+                               .Where(x => x.Count > 1)
+                               .Select(x => RetornaGruposCompartilhados(retorno, x.Select(g => g.IDGrupoFilial).ToList()))
+                               .ToList();
+            dadoPre.Where(x => gruposAtivo.Contains(x.IDGrupoFilial))
+                                 .GroupBy(x => x.IDFilial)
+                                 .Select(x => x.ToList())
+                                 .Where(x => x.Count > 1)
+                                 .Select(x => RetornaGruposTratados(retorno, x.Select(gp => gp.IDGrupoFilial).ToList()))
+                                 .ToList();
+            return retorno;
+        }
+        private static List<GruposValidadosVM> RetornaGruposTratados(List<GruposValidadosVM> retorno, List<Int16> ids)
+        {
+            for (int i = 0; i < retorno.Count; i++)
+                for (int j = 0; j < ids.Count; j++)
+                    if (retorno[i].IDGrupo != ids[j].ToString())
+                        if (!retorno[i].IDGrupoDesativar.Contains(ids[j].ToString()))
+                            retorno[i].IDGrupoDesativar.Add(ids[j].ToString());
+            return retorno;
+        }
+        private static List<GruposValidadosVM> RetornaGruposCompartilhados(List<GruposValidadosVM> retorno, List<Int16> ids)
+        {
+            for (int i = 0; i < ids.Count; i++)
+            {
+                if (retorno.Where(x => x.IDGrupo == ids[i].ToString()).Count() == 0)
+                {
+                    retorno.Add(new GruposValidadosVM(ids[i]));
+                }
+            }
+            return retorno;
+
+
         }
         #endregion
     }

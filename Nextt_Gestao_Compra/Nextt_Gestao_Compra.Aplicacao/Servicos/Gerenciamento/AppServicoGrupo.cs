@@ -24,14 +24,15 @@ namespace Nextt_Gestao_Compra.Aplicacao.Servicos.Gerenciamento
             return _servicoGrupo.BuscaGruposFiliaisCadastrados();
         }
 
-        public List<IEnumerable> CadastrarGrupo(string grpJson)
+        public void ExcluirGrupo(Parametros parametros)
         {
-            return _servicoGrupo.CadastrarGrupo(grpJson);
+            _servicoGrupo.ExcluirGrupo(parametros);
         }
 
-        public void SalvarAtualizacaoGrupos(string grpsJson)
+        public List<IEnumerable> ManipularGrupo(string grpJson)
         {
-            _servicoGrupo.SalvarAtualizacaoGrupos(grpsJson);
+            return _servicoGrupo.ManipularGrupo(grpJson);
         }
+
     }
 }

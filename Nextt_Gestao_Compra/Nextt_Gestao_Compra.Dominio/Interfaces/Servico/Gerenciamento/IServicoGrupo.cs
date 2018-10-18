@@ -12,7 +12,7 @@ namespace Nextt_Gestao_Compra.Dominio.Interfaces.Servico.Gerenciamento
     {
         List<IEnumerable> BuscaGruposFiliaisCadastrados();
         List<IEnumerable> BuscaFiliaisPorGrupos(Parametros parametros);
-        void SalvarAtualizacaoGrupos(string grpsJson);
-        List<IEnumerable> CadastrarGrupo(string grpJson);
+        List<IEnumerable> ManipularGrupo(string grpJson);
+        void ExcluirGrupo(Parametros parametros);
     }
 }

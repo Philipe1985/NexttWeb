@@ -1,4 +1,4 @@
-﻿var $frmDados, $frmCompra, $frmCusto, $lgdDados, $lgdCompra, $lgdCusto;
+﻿var $frmDados, $frmAttr, $frmCusto, $lgdDados, $lgdAttr, $lgdCusto;
 
 $(document).ready(function myfunction() {
     (function ($) {
@@ -11,7 +11,7 @@ $(document).ready(function myfunction() {
         if ($origemEl.length) {
             origem = $origemEl.attr('id').replace(/collapse-tab/g, '');
         }
-        if (origem === 'Dados' || origem === 'Foto') {
+        if (origem === 'Dados' || origem === 'Foto' || origem === 'Atributos') {
             if (!validaOperacaoPassoWizard(origem, destino)) {
                 e.preventDefault();
             } else {
@@ -29,7 +29,7 @@ $(document).ready(function myfunction() {
 
     $('.panel-group.responsive').on("hide.bs.collapse", ".collapse", function (e) {
         var currentId = $(e.target).context.id.replace(/collapse-tab/g, '');
-        if ((currentId === 'Dados' || currentId === 'Foto') && !validaOperacaoPassoWizard(currentId, currentId)) {
+        if ((currentId === 'Dados' || currentId === 'Foto' || currentId === 'Atributos') && !validaOperacaoPassoWizard(currentId, currentId)) {
             e.preventDefault();
         }
     });
@@ -45,7 +45,7 @@ $(document).ready(function myfunction() {
         if ($($destinoEl).parent().index() < $($origemEl).parent().index()) {
             $(this).tab('show');
         }
-        else if (origem === 'Dados' || origem === 'Foto') {
+        else if (origem === 'Dados' || origem === 'Foto' || origem === 'Atributos') {
             if (validaOperacaoPassoWizard(origem, destino)) {
                 $(this).tab('show');
                 if (destino === 'Pack' && tabelaPackCadastrados.length === 0 &&
@@ -72,7 +72,7 @@ $(document).ready(function myfunction() {
     $(".next-step").click(function (e) {
         var parametroTabIdOrigem = $('#wizard-cad-ped li.active').children()[0].hash.replace('#tab', ''),
             parametroTabIdDestino = $('#wizard-cad-ped li.active').next().children()[0].hash.replace('#tab', '');
-        if (parametroTabIdOrigem !== 'Dados' && parametroTabIdOrigem !== 'Foto') {
+        if (parametroTabIdOrigem !== 'Dados' && parametroTabIdOrigem !== 'Foto' && parametroTabIdOrigem !== 'Atributos') {
             if (validaOperacaoMudancaAbaWizard(parametroTabIdOrigem, parametroTabIdDestino)) {
                 mudaEtapa('#collapse-tab' + parametroTabIdDestino, '#collapse-tab' + parametroTabIdOrigem);
                 if (parametroTabIdDestino === 'Pack' && tabelaPackCadastrados.length === 0 &&
@@ -108,6 +108,7 @@ $(document).ready(function myfunction() {
             titleClass: 'red'
         }).done(function (e) {
             if (e) {
+                $('#divPaineisCadastroCompra').addClass('ocultarElemento');
                 $('.selectpicker').selectpicker('hide');
                 $(".navbar.navbar-default.navbar-fixed-top").addClass('ocultarElemento');
                 $(".bg_load").show();
@@ -149,14 +150,17 @@ function mudaEtapa(elemShow, elemHide) {
     $('#wizard-cad-ped a[href="#' + elemShow.replace('#collapse-', '') + '"]').tab('show');
 }
 function validaOperacaoPassoWizard(parametroTab, evento) {
+    console.log(parametroTab);
+    console.log(evento);
     if (!compraId || sessionStorage.getItem("pedidoStatus") === 'A') {
         if (evento !== 'back' && evento !== 'nextt') {
             switch (parametroTab) {
                 case 'Dados':
-
                     return validaAbaDadosCamposObrigatorios(parametroTab, evento);
                 case 'Foto':
                     return validaAbaFotoCamposObrigatorios(parametroTab, evento);
+                case 'Atributos':
+                    return validaAttrCadastrado();
                 case 'Grade':
                     return true;//
                 case 'Pack':
@@ -170,6 +174,8 @@ function validaOperacaoPassoWizard(parametroTab, evento) {
                     return validaAbaDadosCamposObrigatorios(parametroTab, evento);
                 case 'Foto':
                     return validaAbaFotoCamposObrigatorios(parametroTab, evento);
+                case 'Atributos':
+                    return validaAttrCadastrado();
                 case 'Grade':
                     return true; //
                 case 'Pack':
@@ -219,7 +225,7 @@ function validaOperacaoMudancaAbaWizard(origemTab, destinoTab) {
 function criaTimeOut(isNotSelect, elemento) {
     if (isMobile) {
         setTimeout(function () {
-            if (!elemento.hasClass('imagemSalvar')) {
+            if (elemento && !elemento.hasClass('imagemSalvar') ) {
                 var $frmScroll = $(elemento).closest('fieldset');
                 $('html, body').animate({ scrollTop: $frmScroll.offset().top }, 500);
             } else {
@@ -227,31 +233,40 @@ function criaTimeOut(isNotSelect, elemento) {
             }
 
             setTimeout(function () {
-                if (!elemento.hasClass('imagemSalvar')) isNotSelect ? elemento.focus().select() : elemento.selectpicker('toggle');
+                if (elemento && !elemento.hasClass('imagemSalvar')) isNotSelect ? elemento.focus().select() : elemento.selectpicker('toggle');
             }, 500);
         }, 6500);
     } else {
         setTimeout(function () {
-            if (!elemento.hasClass('imagemSalvar')) isNotSelect ? elemento.focus().select() : elemento.selectpicker('toggle');
+            if (elemento && !elemento.hasClass('imagemSalvar'))
+                isNotSelect ?
+                    elemento.focus().select() :
+                    elemento.selectpicker('toggle');
+            else {
+                $("html, body").animate({ scrollTop: 0 }, 500);
+            }
         }, 200);
     }
 }
 function recolheFieldsetDados(expande) {
-    $frmDados = $('#frmDados'); $frmCusto = $('#frmCusto');
-    $lgdDados = $frmDados.children("legend"); $lgdCusto = $frmCusto.children("legend");
+    $frmDados = $('#frmDados'); $frmCusto = $('#frmCusto'), $frmAttr = $('#frmAttrProd');
+    $lgdDados = $frmDados.children("legend"); $lgdCusto = $frmCusto.children("legend"), $lgdAttr = $frmAttr.children("legend");
 
     switch (expande) {
         case 1:
             if ($frmDados.hasClass('collapsed')) $lgdDados.click();
+            if (!$frmAttr.hasClass('collapsed')) $lgdAttr.click();
             if (!$frmCusto.hasClass('collapsed')) $lgdCusto.click();
             break;
         case 2:
             if (!$frmDados.hasClass('collapsed')) $lgdDados.click();
+            if (!$frmAttr.hasClass('collapsed')) $lgdAttr.click();
             if ($frmCusto.hasClass('collapsed')) $lgdCusto.click();
             break;
         case 3:
             if (!$frmDados.hasClass('collapsed')) $lgdDados.click();
             if (!$frmCusto.hasClass('collapsed')) $lgdCusto.click();
+            if ($frmAttr.hasClass('collapsed')) $lgdAttr.click();
             break;
     }
 }
@@ -291,6 +306,12 @@ function validacaoOcultarAbaDados() {
         retorno.elemento = $("#txtQldProdPed");
         retorno.isInput = true;
         retorno.textoMensagem = 'É necessário informar um porcentagem para quantidade de nota para recolher esta aba!';
+    } else if (!validaAttrCadastrado($("#pnlAttrPed"))) {
+        retorno = {};
+        //retorno.field = 2;
+        //retorno.elemento = $("#txtQldProdPed");
+        //retorno.isInput = true;
+        retorno.textoMensagem = 'É necessário informar os atributos obrigatórios antes de prosseguir!';
     }
     return retorno;
 }
@@ -330,6 +351,12 @@ function validacaoAvancarAbaDados() {
         retorno.elemento = $("#txtQldProdPed");
         retorno.isInput = true;
         retorno.textoMensagem = 'É necessário informar um porcentagem para quantidade de nota antes de prosseguir!';
+    } else if (!validaAttrCadastrado($("#pnlAttrPed")) ) {
+        retorno = {};
+        //retorno.field = 2;
+        //retorno.elemento = $("#txtQldProdPed");
+        //retorno.isInput = true;
+        retorno.textoMensagem = 'É necessário informar os atributos obrigatórios antes de prosseguir!';
     }
     return retorno;
 }
@@ -344,7 +371,8 @@ function validaAbaDadosCamposObrigatorios(parametroTab, evento) {
         if (validaDadosProduto() || validaImagensPendentes()) {
             isValido = false;
         }
-    }
+    } 
+
     if (isValido && retornoValidado) {
         isValido = false;
         erroCadCompra(retornoValidado.textoMensagem, "alertDadosCompra");
@@ -364,13 +392,16 @@ function validaAbaFotoCamposObrigatorios(parametroTab, evento) {
             validaOperacaoPassoWizard(parametroTab, parametroTab) ?
                 retornoValidado = validacaoAvancarAbaDados() :
                 isValido = false;
+    //if (evento === 'Grade' || evento === 'Pack') {
+    //    isValido = validaAttrCadastrado();
+    //}
     if (isValido && retornoValidado) {
         isValido = false;
         recolheFieldsetDados(retornoValidado.field);
         erroCadCompra(retornoValidado.textoMensagem, "alertEditaImg");
         criaTimeOut(retornoValidado.isInput, retornoValidado.elemento);
     } else if (!isValido) {
-        erroCadCompra('Antes de avançar para a etapa de ' + eventoExecutado + ' é necessário concluir as etapas anteriores!', "alertEditaImg");
+        erroCadCompra('Antes de avançar para a etapa de ' + evento + ' é necessário concluir as etapas anteriores!', "alertEditaImg");
     }
     return isValido;
 }
@@ -443,8 +474,92 @@ function validaDadosProduto() {
         retorno.field = 2;
         retorno.elemento = $classProdEl;
         retorno.textoMensagem = 'É necessário informar a classificação fiscal para realizar esta operação!';
+    } else if (!validaAttrCadastrado($("#pnlAttrProd"))) {
+        retorno = {};
+        var attrEl = retornaAttrProdInvalido($("#pnlAttrProd"));
+        console.log(attrEl);
+        retorno.field = 3;
+        retorno.elemento = attrEl.elemento;
+        retorno.isInput = attrEl.isInput;
+        retorno.textoMensagem = 'É necessário informar os atributos obrigatórios antes de prosseguir!';
     }
     return retorno;
+}
+function retornaAttrProdInvalido(pnl) {
+    var eleInvalido = null;
+    var elsAtributo = pnl.find('.validarAttr').not('div');
+    console.log(elsAtributo);
+    for (var i = 0; i < elsAtributo.length; i++) {
+        if (!$(elsAtributo[i]).hasClass('attrTexto') &&
+            !$(elsAtributo[i]).hasClass('attrData') &&
+            !$(elsAtributo[i]).hasClass('attrBool') &&
+            !$(elsAtributo[i]).hasClass('listAttr')) {
+            if ($(elsAtributo[i]).maskMoney('unmasked')[0] === 0) {
+                eleInvalido = {};
+                eleInvalido.elemento = $(elsAtributo[i]);
+                eleInvalido.isInput = true;
+            }
+        } else if ($(elsAtributo[i]).hasClass('listAttr')) {
+            if (!$(elsAtributo[i]).val()) {
+                eleInvalido = {};
+                eleInvalido.elemento = $(elsAtributo[i]);
+                eleInvalido.isInput = false;
+            }
+        } else {
+            if (!$(elsAtributo[i]).val()) {
+                eleInvalido = {};
+                eleInvalido.elemento = $(elsAtributo[i]);
+                eleInvalido.isInput = true;
+            }
+        }
+        if (eleInvalido) break;
+    }
+    return eleInvalido;
+}
+function validaAttrCadastrado(el) {
+    var valido = true;
+    var validaTexto = el.find('.attrTexto.validarAttr');
+    var validaNum = el.find('.attrNum.validarAttr');
+    var validaMon = el.find('.attrMon.validarAttr');
+    var validaPer = el.find('.attrPerc.validarAttr');
+    var validaDt = el.find('.attrData.validarAttr');
+    var validabol = el.find('.attrBool.validarAttr');
+    var validaList = el.find('.selectpicker.listAttr.validarAttr');
+    valido = validaElemento(validaTexto, 0) && validaElemento(validaNum, 1) && validaElemento(validaPer, 2) &&
+        validaElemento(validaMon, 3) && validaElemento(validaDt, 4) && validaElemento(validabol, 5) && validaElemento(validaList, 6);
+    return valido;
+}
+function validaElemento(elAttr, tipo) {
+    var valido = true;
+
+    for (var i = 0; i < elAttr.length; i++) {
+     
+        if (tipo === 0 && !$(elAttr[i]).val().length) {
+            valido = false;
+        }
+        if (tipo === 1 && $(elAttr[i]).maskMoney('unmasked')[0] === 0) {
+            valido = false;
+        }
+        if (tipo === 2 && $(elAttr[i]).maskMoney('unmasked')[0] === 0) {
+            valido = false;
+        }
+        if (tipo === 3 && $(elAttr[i]).maskMoney('unmasked')[0] === 0) {
+            valido = false;
+        }
+        if (tipo === 4 && !$(elAttr[i]).val().length) {
+            valido = false;
+        }
+        if (tipo === 5 && !$(elAttr[i]).val().length) {
+            valido = false;
+        }
+        if (tipo === 6 && !$(elAttr[i]).val() || !$(elAttr[i]).val().length) {
+            valido = false;
+        }
+        if (!valido) {
+            break;
+        }
+    }
+    return valido;
 }
 function atualizaCodigoProduto() {
     var idSecao = $("#drpSec").val().split('-')[0];
@@ -480,10 +595,18 @@ function continuarCompraProdNovo() {
                     $(".wrapper").show();
                     sessionStorage.removeItem('compra');
                     sessionStorage.removeItem('pedidoId');
-                    sessionStorage.removeItem("cadastroNovo")
+                    sessionStorage.removeItem("cadastroNovo");
                     window.location = "../gerenciamento/compra.cshtml";
                 }
             },
         },
     });
+}
+function validaExibeMsgAttr() {
+    var tabAtiva =
+        isMobile ?
+            $('.panel-group.responsive').find('.collapse.in').attr('id').replace(/collapse-tab/g, '') :
+            $('#wizard-cad-ped li.active').children()[0].hash.replace('#tab', '');
+    console.log(tabAtiva);
+    return tabAtiva === 'Atributos';
 }

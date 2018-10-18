@@ -105,7 +105,7 @@
 
 
     $(document).on('switchChange.bootstrapSwitch', '#ckbAdministrador', function (event, state) {
-        if (state.value) {
+        if (state) {
             $('#ucComboAdminsEditar').selectpicker('val', 'Administrador');
 
         } else {

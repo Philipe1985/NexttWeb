@@ -1,0 +1,28 @@
+
+ERROR 2018-10-03 16:24:19 - Erro ao Clonar Pedido
+System.ArgumentNullException: Valor não pode ser nulo.
+Nome do parâmetro: source
+   em System.Linq.Enumerable.ElementAt[TSource](IEnumerable`1 source, Int32 index)
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido.GerenciadorAplicacaoPedido.ClonarPedido(IAppServicoPedido pedidoServico, ParametrosVM parametroVM) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Pedido\GerenciadorAplicacaoPedido.cs:linha 46
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Cadastro.PedidoController.RetornaPedidoClonado(ParametrosVM parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Cadastro\PedidoController.cs:linha 61
+
+ERROR 2018-10-03 16:25:18 - Erro ao Clonar Pedido
+System.ArgumentNullException: Valor não pode ser nulo.
+Nome do parâmetro: source
+   em System.Linq.Enumerable.ElementAt[TSource](IEnumerable`1 source, Int32 index)
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido.GerenciadorAplicacaoPedido.ClonarPedido(IAppServicoPedido pedidoServico, ParametrosVM parametroVM) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Pedido\GerenciadorAplicacaoPedido.cs:linha 46
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Cadastro.PedidoController.RetornaPedidoClonado(ParametrosVM parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Cadastro\PedidoController.cs:linha 61
+
+ERROR 2018-10-03 16:28:42 - Erro ao Clonar Pedido
+System.ArgumentNullException: Valor não pode ser nulo.
+Nome do parâmetro: source
+   em System.Linq.Enumerable.ElementAt[TSource](IEnumerable`1 source, Int32 index)
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido.GerenciadorAplicacaoPedido.ClonarPedido(IAppServicoPedido pedidoServico, ParametrosVM parametroVM) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Pedido\GerenciadorAplicacaoPedido.cs:linha 46
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Cadastro.PedidoController.RetornaPedidoClonado(ParametrosVM parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Cadastro\PedidoController.cs:linha 61
+
+ERROR 2018-10-03 16:30:20 - Erro ao Clonar Pedido
+System.ArgumentNullException: Valor não pode ser nulo.
+Nome do parâmetro: source
+   em System.Linq.Enumerable.ElementAt[TSource](IEnumerable`1 source, Int32 index)
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido.GerenciadorAplicacaoPedido.ClonarPedido(IAppServicoPedido pedidoServico, ParametrosVM parametroVM) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Pedido\GerenciadorAplicacaoPedido.cs:linha 46
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Cadastro.PedidoController.RetornaPedidoClonado(ParametrosVM parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Cadastro\PedidoController.cs:linha 61

@@ -77,6 +77,21 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
                 Descricao = marca.Nome
             };
         }
+        public ComboFiltroVM Criar(Atributos atributos)
+        {
+
+
+            return new ComboFiltroVM
+            {
+                Valor = atributos.IDTipoAtributo.ToString(),
+                Token = atributos.IDTipoAtributo + ";" + atributos.Descricao.Trim(),
+                Descricao = atributos.Descricao.Trim(),
+                DadosAdicionais = new List<string>
+            {
+                atributos.ValorDefault
+            }
+            };
+        }
         public ComboFiltroVM Criar(Secao secao)
         {
             return new ComboFiltroVM
@@ -117,14 +132,14 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
 
         public ComboFiltroVM Criar(ClassificacaoFiscal classificacao)
         {
-           
+
             return new ComboFiltroVM
             {
                 Valor = classificacao.IDClassificacaoFiscal.ToString(),
-                Token = classificacao.Pis.ToString(CultureInfo.CreateSpecificCulture("en-US")) + 
+                Token = classificacao.Pis.ToString(CultureInfo.CreateSpecificCulture("en-US")) +
                 "," + classificacao.Confins.ToString(CultureInfo.CreateSpecificCulture("en-US")) +
                 ";" + classificacao.CodigoFiscal.Trim() + "," + classificacao.DescricaoClassificacao.Trim(),
-                Descricao = classificacao.CodigoFiscal.Trim() +" - "+ classificacao.DescricaoClassificacao.Trim(),
+                Descricao = classificacao.CodigoFiscal.Trim() + " - " + classificacao.DescricaoClassificacao.Trim(),
             };
         }
 
@@ -140,7 +155,7 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
         public ComboFiltroVM Criar(Cor cor)
         {
             return new ComboFiltroVM
-            { 
+            {
                 Valor = cor.Descricao.Trim(),
                 Token = cor.IDCor + "," + cor.Descricao.Trim(),
                 Descricao = cor.Descricao.Trim(),
@@ -158,10 +173,10 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
             {
                 throw new Exception("Existe tamanho retornado sem a coluna 'Descricao' definida para ele.");
             }
-            
+
             if (tamanho.Ordem == 0)
             {
-                dadosAdicionais.Add( ",gradeInvalida");
+                dadosAdicionais.Add(",gradeInvalida");
             }
             return new ComboFiltroVM
             {
@@ -177,15 +192,15 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
             {
                 grupo.ParticipacaoGrupo.ToString()
             };
-            if (grupo.IDGrupo == 0)
+            if (grupo.IDGrupoFilial == 0)
             {
-                throw new Exception("Existe grupo retornado sem a coluna 'IDGrupo' definida para ele.");
+                throw new Exception("Existe grupo retornado sem a coluna 'IDGrupoFilial' definida para ele.");
             }
             return new ComboFiltroVM
             {
-                Valor = grupo.IDGrupo.ToString(),
-                Token = grupo.IDGrupo + "," + grupo.DescricaoGrupo.Trim(),
-                Descricao = grupo.DescricaoGrupo.Trim(),
+                Valor = grupo.IDGrupoFilial.ToString(),
+                Token = grupo.IDGrupoFilial + "," + grupo.Descricao.Trim(),
+                Descricao = grupo.Descricao.Trim(),
                 DadosAdicionais = dadosAdicionais
             };
         }
@@ -194,8 +209,8 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
             return new ComboFiltroVM
             {
                 Valor = filial.IDFilial.ToString(),
-                Token = filial.IDFilial + "," + filial.NomeFilial.Trim(),
-                Descricao = filial.NomeFilial.Trim()
+                Token = filial.IDFilial + "," + filial.Filial_Nome.Trim(),
+                Descricao = filial.Filial_Nome.Trim()
             };
         }
         public ComboFiltroVM Criar(UsuarioGerenciamento usuario)

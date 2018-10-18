@@ -18,6 +18,7 @@ $(document).ready(function () {
         $(".wrapper").show();
         criarClonePedido(objEnvio);
     });
+    
     $(document).on('click', '.validarPedido', function (e) {
         objEnvio = {};
         objEnvio.codigo = $(this).closest('tr').children().eq(1).html();
@@ -100,7 +101,7 @@ $(document).ready(function () {
 
     });
     $(document).on('click', '.acessarPedido', function (e) {
-        sessionStorage.setItem("pedidoId", $(this).closest('tr').children().eq(1).html())
+        sessionStorage.setItem("pedidoId", $(this).closest('tr').children().eq(1).html());
         $('.selectpicker').selectpicker('hide');
         $(".navbar.navbar-default.navbar-fixed-top").addClass('ocultarElemento');
         $(".bg_load").show();
@@ -109,7 +110,7 @@ $(document).ready(function () {
 
     });
     $(document).on('click', '#btnAcessar', function (e) {
-        sessionStorage.setItem("pedidoId", $('#spnCodPed').html().replace(/\D/g, ""))
+        sessionStorage.setItem("pedidoId", $('#spnCodPed').html().replace(/\D/g, ""));
         $('.selectpicker').selectpicker('hide');
         $(".navbar.navbar-default.navbar-fixed-top").addClass('ocultarElemento');
         $(".bg_load").show();
@@ -222,7 +223,7 @@ function printElement(elem) {
     var $printSection = document.getElementById("printSection");
 
     if (!$printSection) {
-        var $printSection = document.createElement("div");
+        $printSection = document.createElement("div");
         $printSection.id = "printSection";
         document.body.appendChild($printSection);
     }

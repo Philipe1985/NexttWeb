@@ -100,6 +100,12 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
                                     .With<FormaPgto>()
                                     .With<CondicaoPgto>()
                                     .With<ClassificacaoFiscal>()
+                                    .With<Grade>()
+                                    .With<DadosUltimaCompra>()
+                                    .With<GrupoFilial>()
+                                    .With<GrupoFilial>()
+                                    .With<Atributos>()
+                                    .With<Atributos>()
                                     .Executar();
             }
             catch (Exception ex)
@@ -125,6 +131,10 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
                                    .With<ClassificacaoFiscal>()
                                    .With<Grade>()
                                    .With<DadosUltimaCompra>()
+                                   .With<GrupoFilial>()
+                                   .With<GrupoFilial>()
+                                   .With<Atributos>()
+                                   .With<Atributos>()
                                    .Executar();
             }
             catch (Exception ex)
@@ -133,13 +143,16 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
             }
         }
 
-        public List<IEnumerable> AtualizaCargaTamanho(Parametros parametros)
+        public List<GrupoTamanho> AtualizaCargaTamanho(Parametros parametros)
         {
             try
             {
                 return _Db.MultiplosResults("[dbo].[pr_consulta_tamanho_GESTAO_COMPRAS] @IDGrupoTamanho = '" + parametros.Codigo + "'")
                                     .With<GrupoTamanho>()
-                                   .Executar();
+                                    .Executar()
+                                    .ElementAt(0)
+                                    .Cast<GrupoTamanho>()
+                                    .ToList();
             }
             catch (Exception ex)
             {
@@ -151,7 +164,7 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
         {
             try
             {
-                return _Db.MultiplosResults("[dbo].[pr_consulta_grupo_GESTAO_COMPRAS]")
+                return _Db.MultiplosResults("[dbo].[pr_consulta_grupo_filial_GESTAO_COMPRAS]")
                                    .With<GrupoFilial>()
                                    .Executar();
 
@@ -254,13 +267,13 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
         {
             try
             {
-                return  _Db.MultiplosResults("[dbo].[pr_gravar_pedido_GESTAO_COMPRAS]" +
+                return _Db.MultiplosResults("[dbo].[pr_gravar_pedido_GESTAO_COMPRAS]" +
                                      " @GravarPedido = '" + pedidoJson + "'")
                                       .With<DadosUltimaCompra>()
                                      .Executar()
                                      .ElementAt(0)
                                      .Cast<DadosUltimaCompra>()
-                                     .ElementAt(0).IDPedido ;
+                                     .ElementAt(0).IDPedido;
             }
             catch (Exception ex)
             {

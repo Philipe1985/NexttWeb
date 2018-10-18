@@ -36,8 +36,8 @@ function recalculaTotalLinhaFiliais(dados) {
             qtFil++
         }
     });
-    dados[6].total = dados[8].total / dados[7].total;
-    dados[10].total = dados[10].total / qtFil;
+    dados[6].total = dados[7].total ? dados[8].total / dados[7].total : 0;
+    dados[10].total = qtFil ? dados[10].total / qtFil : 0;
     return dados;
 }
 function recalculaTotalColunas(tabelaApi) {
@@ -148,7 +148,6 @@ function validaPackRepetido(tabelaApi, idTab) {
                     msgErroDuplicidade += ' e ' + dadosRepetido[i].idTabela.replace(/\D/g, "");
                 } else if (i === 0) {
                     msgErroDuplicidade += dadosRepetido[i].idTabela.replace(/\D/g, "");
-
                 } else {
                     msgErroDuplicidade += ', ' + dadosRepetido[i].idTabela.replace(/\D/g, "");
                 }
@@ -464,6 +463,8 @@ function recalcPackGrpsFiliais(idPack, grupos) {
     for (var i = 0; i < grupos.length; i++) {
         var hashTab = 'grupo' + grupos[i].idGrupo + '_' + idPack;
         $('.nav-pills a[href="#' + hashTab + '"]').tab('show');
+//aqui
+        var colreg = geraColunaDistribuicao(grupos[i].filiais);
 
         var dadosOrganizado = transposeObjetoDistribuicaoPack(grupos[i].filiais);
         var dadosPk = [
@@ -481,10 +482,9 @@ function recalcPackGrpsFiliais(idPack, grupos) {
         ];
         dadosPck = trataDadosFilial(idPack, dadosPk)
         dadosPck = recalculaTotalLinhaFiliais(dadosPk)
-        var valTxtGrp = 0;
-        grupos[i].qtdParticipacaoGrupo ?
-            valTxtGrp = grupos[i].qtdParticipacaoGrupo :
-            valTxtGrp = grupos[i].qtdGrupoCadastrada;
+        var valTxtGrp = grupos[i].qtdParticipacaoGrupo ?
+            grupos[i].qtdParticipacaoGrupo :
+            grupos[i].qtdGrupoCadastrada;
         $("#txtQtdGrpPack" + grupos[i].idGrupo + '_' + idPack).val(valTxtGrp);
         var tbChange = $("#tblGrpPack" + grupos[i].idGrupo + '_' + idPack).dataTable().api();
         tbChange.clear();
@@ -529,22 +529,12 @@ function atualizaGrpQtdAlterado(novoValor, grupos, indiceGrp, totalGrupo) {
             }
             return obj;
         });
-        console.log(partRef);
-        console.log(totalPorcentagem);
         totalPorcentagem += partRef;
-        console.log(totalPorcentagem);
-        console.log(qtdLinha);
         var acrecimoPorcentagem = qtdLinha ? totalPorcentagem / qtdLinha : totalPorcentagem;
         grupos.map(obj => {
             if (obj.idGrupo > indiceGrp) {
                 var perc = obj.participacaoGrupo + acrecimoPorcentagem;
                 var qtdGrpNova = 0
-                console.log(perc);
-                console.log(obj.participacaoGrupo);
-                console.log(totalGrupo);
-                console.log(totalQtdDist);
-                console.log(obj.qtdParticipacaoGrupo);
-                console.log(obj.qtdGrupoCadastrada);
                 qtdGrpNova = parseInt((totalGrupo - totalQtdDist) * perc / 100);
                 obj.qtdParticipacaoGrupo ?
                     obj.qtdParticipacaoGrupo = qtdGrpNova :
@@ -774,7 +764,6 @@ function salvarPedidoOpcao() {
                     var objEnvio = {};
                     objEnvio.status = 'L'
                     objEnvio.codigo = compraId;
-                    console.log(objEnvio);
                     atualizarStatus(objEnvio);
                 }
             },
@@ -804,6 +793,7 @@ function salvarPedidoOpcao() {
                 action: function () {
                     var objEnvio = {};
                     objEnvio.status = 'A'
+                    sessionStorage.setItem('Editar', '1');
                     objEnvio.codigo = compraId;
                     atualizarStatus(objEnvio);
                 }
@@ -852,9 +842,13 @@ function geraPedidoSalvar(status) {
         });
         pedidoEnvio.condicaoPagamento = objCondNova;
     }
+    sessionStorage.setItem("salvarStatus", status)
+
     pedidoEnvio.pedido = criaObjPedido(status);
     pedidoEnvio.pedidoCondicaoFormaPagamento = criaObjCondFormaPgto();
     pedidoEnvio.pedidoPack = criaObjPedidoPack();
+    pedidoEnvio.produtoAtributo = criaArrayAtributo($("#pnlAttrProd"));
+    pedidoEnvio.pedidoAtributo = criaArrayAtributo($("#pnlAttrPed"));
     salvarPedido(pedidoEnvio);
 }
 function retornaPackCadColunas(tamanhos) {
@@ -896,7 +890,70 @@ function calculaResdistribuicaoQtdPkGrp(idTbl) {
     var objTabela = tabelaPackCadastrados.filter(function (el) { return el.idTabela === idTbl; });
     console.log(objTabela);
 }
+function criaArrayAtributo(pnl) {
+    var retorno = [];
 
+    var retorno = criaObjAttr(pnl.find('.attrTexto'), retorno);
+    var retorno = criaObjAttr(pnl.find('.attrNum'), retorno);
+    var retorno = criaObjAttr(pnl.find('.attrMon'), retorno);
+    var retorno = criaObjAttr(pnl.find('.attrPerc'), retorno);
+    var retorno = criaObjAttr(pnl.find('.attrData'), retorno);
+    var retorno = criaObjAttrBool(pnl.find('.attrBool'), retorno);
+    var retorno = criaObjAttrLista(pnl.find('.selectpicker.listAttr'), retorno);
+    return retorno;
+}
+function criaObjAttr(el, retornoArray) {
+    for (var i = 0; i < el.length; i++) {
+        var objRetorno = {};
+        objRetorno.idPedido = compraId ? parseInt(compraId) : 0;
+        objRetorno.idProduto = parseInt($("#txtIDProd").val());
+        console.log($(el[i]))
+        objRetorno.idTipoAtributo = parseInt($(el[i]).attr('id').replace(/\D/g, ""));
+        objRetorno.valor = trataAttrNumerico($(el[i]));
+        retornoArray.push(objRetorno);
+    }
+    return retornoArray;
+}
+function trataAttrNumerico(el) {
+    var retorno = '';
+    if (el.hasClass('attrNum')) {
+        if (parseInt(el.attr('data-precision')) === 0) {
+            retorno = el.val().replace('.', '')
+        } else {
+            retorno = el.maskMoney('unmasked')[0].toString()
+        }
+    } else if (el.hasClass('money') || el.hasClass('percent')) {
+        retorno = el.maskMoney('unmasked')[0].toString();
+    } else {
+        retorno = el.val();
+    }
+    return retorno;
+}
+function criaObjAttrBool(el, retornoArray) {
+    for (var i = 0; i < el.length; i++) {
+        var objRetorno = {};
+        objRetorno.idPedido = compraId ? parseInt(compraId) : 0;
+        objRetorno.idProduto = parseInt($("#txtIDProd").val());
+        objRetorno.idTipoAtributo = parseInt($(el[i]).parent().attr('id').replace(/\D/g, ""));
+        objRetorno.valor = $(el[i]).hasClass('active') ? 'true' : 'false';
+        retornoArray.push(objRetorno);
+    }
+    return retornoArray;
+}
+function criaObjAttrLista(el, retornoArray) {
+    for (var i = 0; i < el.length; i++) {
+        var $option = $(el[i]).find('option:not([data-hidden])');
+        for (var j = 0; j < $option.length; j++) {
+            var objRetorno = {};
+            objRetorno.idPedido = compraId ? parseInt(compraId) : 0;
+            objRetorno.idProduto = parseInt($("#txtIDProd").val());
+            objRetorno.idTipoAtributo = parseInt($($option[j]).val());
+            objRetorno.valor = $($option[j]).is(':selected') ? '1' : '0';
+            retornoArray.push(objRetorno);
+        }
+    }
+    return retornoArray;
+}
 //Carga Grade Dinamica
 function cargaReferencia(qtdCor, qtdTamanho) {
     var retorno = [];

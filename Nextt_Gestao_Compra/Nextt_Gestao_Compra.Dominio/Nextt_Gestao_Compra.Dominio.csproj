@@ -33,6 +33,7 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entidades\Atributos.cs" />
     <Compile Include="Entidades\CadastroProdutoSecaoEspecieMarcaFornecetor.cs" />
     <Compile Include="Entidades\ClassificacaoFiscal.cs" />
     <Compile Include="Entidades\CondicaoPgto.cs" />
@@ -40,6 +41,7 @@
     <Compile Include="Entidades\DadosGerenciamentoProdutoCompra.cs" />
     <Compile Include="Entidades\DadosPrePedido.cs" />
     <Compile Include="Entidades\DadosUltimaCompra.cs" />
+    <Compile Include="Entidades\EnumAtributoTipo.cs" />
     <Compile Include="Entidades\Especie.cs" />
     <Compile Include="Entidades\FormaPgto.cs" />
     <Compile Include="Entidades\Fornecedor.cs" />
@@ -54,6 +56,7 @@
     <Compile Include="Entidades\ReferenciaProduto.cs" />
     <Compile Include="Entidades\Secao.cs" />
     <Compile Include="Entidades\GrupoTamanho.cs" />
+    <Compile Include="Entidades\TipoLista.cs" />
     <Compile Include="Entidades\UsuarioGerenciamento.cs" />
     <Compile Include="Interfaces\Repositorio\Gerenciamento\IRepositorioCompra.cs" />
     <Compile Include="Interfaces\Repositorio\Gerenciamento\IRepositorioGrupo.cs" />

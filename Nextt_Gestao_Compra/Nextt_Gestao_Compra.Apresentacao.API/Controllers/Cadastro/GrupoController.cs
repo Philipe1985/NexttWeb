@@ -39,7 +39,7 @@ namespace Nextt_Gestao_Compra.Apresentacao.API.Controllers.Cadastro
         {
             try
             {
-                var retorno = GerenciamentoAplicacaoGrupo.RetornaFiliaisPorGrupo(_grupoServico, parametrosVM);
+                var retorno = GerenciamentoAplicacaoGrupo.RetornaFiliaisPorGrupo(_grupoServico, parametrosVM, ModelFabrica);
                 return Ok(retorno);
             }
             catch (Exception ex)
@@ -51,33 +51,33 @@ namespace Nextt_Gestao_Compra.Apresentacao.API.Controllers.Cadastro
 
         [Authorize]
         [HttpPost]
-        [Route("AtualizarGrupos")]
-        public IHttpActionResult AtualizarGrupos(ObjGruposAtualizarVM gruposAtualizarVM)
+        [Route("GerenciarGrupo")]
+        public IHttpActionResult GerenciarGrupo(GrupoFilialOperacaoVM gruposAtualizarVM)
         {
             try
             {
-                GerenciamentoAplicacaoGrupo.AtualizarGruposCadastrados(_grupoServico, gruposAtualizarVM);
-                return Ok();
+                var retorno = GerenciamentoAplicacaoGrupo.ManipularGrupos(_grupoServico, gruposAtualizarVM, ModelFabrica);
+                return Ok(retorno);
             }
             catch (Exception ex)
             {
-                log.Error("Erro ao Atualizar Grupo", ex);
+                log.Error("Erro ao Atualizar/Cadastrar Grupo", ex);
                 return InternalServerError(ex);
             }
         }
         [Authorize]
         [HttpPost]
-        [Route("CadastrarGrupo")]
-        public IHttpActionResult CadastrarGrupo(GrupoAtualizarVM grupoCadastrarVM)
+        [Route("ExcluirGrupo")]
+        public IHttpActionResult ExcluirGrupo(ParametrosVM parametros)
         {
             try
             {
-                var retorno = GerenciamentoAplicacaoGrupo.SalvarGrupoNovo(_grupoServico, grupoCadastrarVM);
-                return Ok(retorno);
+                GerenciamentoAplicacaoGrupo.ExcluirGrupos(_grupoServico, parametros);
+                return Ok();
             }
             catch (Exception ex)
             {
-                log.Error("Erro ao Cadastrar Grupo", ex);
+                log.Error("Erro ao Excluir Grupo", ex);
                 return InternalServerError(ex);
             }
         }

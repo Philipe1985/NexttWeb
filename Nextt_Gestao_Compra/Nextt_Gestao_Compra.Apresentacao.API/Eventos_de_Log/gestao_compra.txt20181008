@@ -1,0 +1,113 @@
+
+ERROR 2018-10-08 19:34:42 - Erro ao Recuperar Dados do Pedido Analítico
+System.Exception: Cores retornadas no pedido é incompativel com as cores disponível para escolha. 
+ Cor divergente:ABOBORA BANANA
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido.GerenciadorAplicacaoPedido.ValidaCorPedido(List`1 cores, List`1 produtoItems) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Pedido\GerenciadorAplicacaoPedido.cs:linha 136
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido.GerenciadorAplicacaoPedido.RetornaPedidoAnalitico(IAppServicoPedido pedidoServico, ParametrosVM parametroVM, FabricaViewModel fabrica) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Pedido\GerenciadorAplicacaoPedido.cs:linha 79
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Cadastro.PedidoController.RetornaPedidoAnalitico(ParametrosVM parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Cadastro\PedidoController.cs:linha 93
+
+ERROR 2018-10-08 20:10:13 - Erro ao Recuperar Dados do Pedido Sintético
+System.Exception: Quantidade de packs retornadas no pack 1 incompativel com a quantidade de packs a distribuir. 
+ Qtd total no pack:33
+ Qtd total nos grupos:53
+   em Nextt_Gestao_Compra.Aplicacao.ViewModel.PackVM.ValidaQtdPacksDistribuido(Int32 qtdCompradoPack) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\ViewModel\PackVM.cs:linha 38
+   em Nextt_Gestao_Compra.Aplicacao.ViewModel.PackVM..ctor(List`1 produtoItems, List`1 grupoFilials) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\ViewModel\PackVM.cs:linha 32
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido.GerenciadorAplicacaoPedido.RetornaPedidoSintetico(IAppServicoPedido pedidoServico, ParametrosVM parametroVM) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Pedido\GerenciadorAplicacaoPedido.cs:linha 64
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Cadastro.PedidoController.RetornaPedidoSintetico(ParametrosVM parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Cadastro\PedidoController.cs:linha 77
+
+ERROR 2018-10-08 20:10:54 - Erro ao Recuperar Dados do Pedido Sintético
+System.Exception: Quantidade de packs retornadas no pack 1 incompativel com a quantidade de packs a distribuir. 
+ Qtd total no pack:4
+ Qtd total nos grupos:3
+   em Nextt_Gestao_Compra.Aplicacao.ViewModel.PackVM.ValidaQtdPacksDistribuido(Int32 qtdCompradoPack) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\ViewModel\PackVM.cs:linha 38
+   em Nextt_Gestao_Compra.Aplicacao.ViewModel.PackVM..ctor(List`1 produtoItems, List`1 grupoFilials) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\ViewModel\PackVM.cs:linha 32
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido.GerenciadorAplicacaoPedido.RetornaPedidoSintetico(IAppServicoPedido pedidoServico, ParametrosVM parametroVM) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Pedido\GerenciadorAplicacaoPedido.cs:linha 64
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Cadastro.PedidoController.RetornaPedidoSintetico(ParametrosVM parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Cadastro\PedidoController.cs:linha 77
+
+ERROR 2018-10-08 20:12:00 - Erro ao Recuperar Dados do Pedido Analítico
+System.Exception: Tamanhos retornados no pedido é incompativel com os tamanhos disponível para escolha. 
+ Tamanho divergente:02
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido.GerenciadorAplicacaoPedido.ValidaTamanhoPedido(List`1 tamanhos, List`1 produtoItems) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Pedido\GerenciadorAplicacaoPedido.cs:linha 122
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido.GerenciadorAplicacaoPedido.RetornaPedidoAnalitico(IAppServicoPedido pedidoServico, ParametrosVM parametroVM, FabricaViewModel fabrica) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Pedido\GerenciadorAplicacaoPedido.cs:linha 78
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Cadastro.PedidoController.RetornaPedidoAnalitico(ParametrosVM parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Cadastro\PedidoController.cs:linha 93
+
+ERROR 2018-10-08 21:26:49 - Erro ao Recuperar Dados do Pedido Sintético
+System.Exception: Quantidade de packs retornadas no pack 1 incompativel com a quantidade de packs a distribuir. 
+ Qtd total no pack:4
+ Qtd total nos grupos:3
+   em Nextt_Gestao_Compra.Aplicacao.ViewModel.PackVM.ValidaQtdPacksDistribuido(Int32 qtdCompradoPack) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\ViewModel\PackVM.cs:linha 38
+   em Nextt_Gestao_Compra.Aplicacao.ViewModel.PackVM..ctor(List`1 produtoItems, List`1 grupoFilials) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\ViewModel\PackVM.cs:linha 32
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido.GerenciadorAplicacaoPedido.RetornaPedidoSintetico(IAppServicoPedido pedidoServico, ParametrosVM parametroVM) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Pedido\GerenciadorAplicacaoPedido.cs:linha 64
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Cadastro.PedidoController.RetornaPedidoSintetico(ParametrosVM parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Cadastro\PedidoController.cs:linha 77
+
+ERROR 2018-10-08 21:26:56 - Erro ao Recuperar Dados do Pedido Sintético
+System.Exception: Quantidade de packs retornadas no pack 1 incompativel com a quantidade de packs a distribuir. 
+ Qtd total no pack:5
+ Qtd total nos grupos:3
+   em Nextt_Gestao_Compra.Aplicacao.ViewModel.PackVM.ValidaQtdPacksDistribuido(Int32 qtdCompradoPack) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\ViewModel\PackVM.cs:linha 38
+   em Nextt_Gestao_Compra.Aplicacao.ViewModel.PackVM..ctor(List`1 produtoItems, List`1 grupoFilials) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\ViewModel\PackVM.cs:linha 32
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido.GerenciadorAplicacaoPedido.RetornaPedidoSintetico(IAppServicoPedido pedidoServico, ParametrosVM parametroVM) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Pedido\GerenciadorAplicacaoPedido.cs:linha 64
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Cadastro.PedidoController.RetornaPedidoSintetico(ParametrosVM parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Cadastro\PedidoController.cs:linha 77
+
+ERROR 2018-10-08 21:27:28 - Erro ao Recuperar Dados do Pedido Sintético
+System.Exception: Quantidade de packs retornadas no pack 1 incompativel com a quantidade de packs a distribuir. 
+ Qtd total no pack:3
+ Qtd total nos grupos:2
+   em Nextt_Gestao_Compra.Aplicacao.ViewModel.PackVM.ValidaQtdPacksDistribuido(Int32 qtdCompradoPack) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\ViewModel\PackVM.cs:linha 38
+   em Nextt_Gestao_Compra.Aplicacao.ViewModel.PackVM..ctor(List`1 produtoItems, List`1 grupoFilials) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\ViewModel\PackVM.cs:linha 32
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido.GerenciadorAplicacaoPedido.RetornaPedidoSintetico(IAppServicoPedido pedidoServico, ParametrosVM parametroVM) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Pedido\GerenciadorAplicacaoPedido.cs:linha 64
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Cadastro.PedidoController.RetornaPedidoSintetico(ParametrosVM parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Cadastro\PedidoController.cs:linha 77
+
+ERROR 2018-10-08 21:34:46 - Erro ao Recuperar Dados do Pedido Analítico
+System.Exception: Quantidade de packs retornadas no pack 1 incompativel com a quantidade de packs a distribuir. 
+ Qtd total no pack:100
+ Qtd total nos grupos:95
+   em Nextt_Gestao_Compra.Aplicacao.ViewModel.PackVM.ValidaQtdPacksDistribuido(Int32 qtdCompradoPack) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\ViewModel\PackVM.cs:linha 38
+   em Nextt_Gestao_Compra.Aplicacao.ViewModel.PackVM..ctor(List`1 produtoItems, List`1 grupoFilials) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\ViewModel\PackVM.cs:linha 32
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido.GerenciadorAplicacaoPedido.RetornaPedidoAnalitico(IAppServicoPedido pedidoServico, ParametrosVM parametroVM, FabricaViewModel fabrica) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Pedido\GerenciadorAplicacaoPedido.cs:linha 108
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Cadastro.PedidoController.RetornaPedidoAnalitico(ParametrosVM parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Cadastro\PedidoController.cs:linha 93
+
+ERROR 2018-10-08 22:30:31 - Erro ao Recuperar Dados do Pedido Sintético
+System.Exception: Quantidade de packs retornadas no pack 1 incompativel com a quantidade de packs a distribuir. 
+ Qtd total no pack:2
+ Qtd total nos grupos:1
+   em Nextt_Gestao_Compra.Aplicacao.ViewModel.PackVM.ValidaQtdPacksDistribuido(Int32 qtdCompradoPack) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\ViewModel\PackVM.cs:linha 38
+   em Nextt_Gestao_Compra.Aplicacao.ViewModel.PackVM..ctor(List`1 produtoItems, List`1 grupoFilials) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\ViewModel\PackVM.cs:linha 32
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido.GerenciadorAplicacaoPedido.RetornaPedidoSintetico(IAppServicoPedido pedidoServico, ParametrosVM parametroVM) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Pedido\GerenciadorAplicacaoPedido.cs:linha 64
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Cadastro.PedidoController.RetornaPedidoSintetico(ParametrosVM parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Cadastro\PedidoController.cs:linha 77
+
+ERROR 2018-10-08 22:31:45 - Erro ao Recuperar Dados do Pedido Sintético
+System.Exception: Quantidade de packs retornadas no pack 1 incompativel com a quantidade de packs a distribuir. 
+ Qtd total no pack:5
+ Qtd total nos grupos:3
+   em Nextt_Gestao_Compra.Aplicacao.ViewModel.PackVM.ValidaQtdPacksDistribuido(Int32 qtdCompradoPack) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\ViewModel\PackVM.cs:linha 38
+   em Nextt_Gestao_Compra.Aplicacao.ViewModel.PackVM..ctor(List`1 produtoItems, List`1 grupoFilials) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\ViewModel\PackVM.cs:linha 32
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido.GerenciadorAplicacaoPedido.RetornaPedidoSintetico(IAppServicoPedido pedidoServico, ParametrosVM parametroVM) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Pedido\GerenciadorAplicacaoPedido.cs:linha 64
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Cadastro.PedidoController.RetornaPedidoSintetico(ParametrosVM parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Cadastro\PedidoController.cs:linha 77
+
+ERROR 2018-10-08 23:16:09 - Erro ao Recuperar Dados do Pedido Sintético
+System.Exception: Quantidade de packs retornadas no pack 1 incompativel com a quantidade de packs a distribuir. 
+ Qtd total no pack:33
+ Qtd total nos grupos:53
+   em Nextt_Gestao_Compra.Aplicacao.ViewModel.PackVM.ValidaQtdPacksDistribuido(Int32 qtdCompradoPack) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\ViewModel\PackVM.cs:linha 38
+   em Nextt_Gestao_Compra.Aplicacao.ViewModel.PackVM..ctor(List`1 produtoItems, List`1 grupoFilials) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\ViewModel\PackVM.cs:linha 32
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido.GerenciadorAplicacaoPedido.RetornaPedidoSintetico(IAppServicoPedido pedidoServico, ParametrosVM parametroVM) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Pedido\GerenciadorAplicacaoPedido.cs:linha 64
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Cadastro.PedidoController.RetornaPedidoSintetico(ParametrosVM parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Cadastro\PedidoController.cs:linha 77
+
+ERROR 2018-10-08 23:25:04 - Erro ao Recuperar Dados do Pedido Sintético
+System.Exception: Quantidade de packs retornadas no pack 1 incompativel com a quantidade de packs a distribuir. 
+ Qtd total no pack:100
+ Qtd total nos grupos:95
+   em Nextt_Gestao_Compra.Aplicacao.ViewModel.PackVM.ValidaQtdPacksDistribuido(Int32 qtdCompradoPack) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\ViewModel\PackVM.cs:linha 38
+   em Nextt_Gestao_Compra.Aplicacao.ViewModel.PackVM..ctor(List`1 produtoItems, List`1 grupoFilials) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\ViewModel\PackVM.cs:linha 32
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido.GerenciadorAplicacaoPedido.RetornaPedidoSintetico(IAppServicoPedido pedidoServico, ParametrosVM parametroVM) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Pedido\GerenciadorAplicacaoPedido.cs:linha 64
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Cadastro.PedidoController.RetornaPedidoSintetico(ParametrosVM parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Cadastro\PedidoController.cs:linha 77
+
+ERROR 2018-10-08 23:26:24 - Erro ao Recuperar Dados do Pedido Sintético
+System.Exception: Quantidade de packs retornadas no pack 1 incompativel com a quantidade de packs a distribuir. 
+ Qtd total no pack:100
+ Qtd total nos grupos:95
+   em Nextt_Gestao_Compra.Aplicacao.ViewModel.PackVM.ValidaQtdPacksDistribuido(Int32 qtdCompradoPack) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\ViewModel\PackVM.cs:linha 38
+   em Nextt_Gestao_Compra.Aplicacao.ViewModel.PackVM..ctor(List`1 produtoItems, List`1 grupoFilials) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\ViewModel\PackVM.cs:linha 32
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido.GerenciadorAplicacaoPedido.RetornaPedidoSintetico(IAppServicoPedido pedidoServico, ParametrosVM parametroVM) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Pedido\GerenciadorAplicacaoPedido.cs:linha 64
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Cadastro.PedidoController.RetornaPedidoSintetico(ParametrosVM parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Cadastro\PedidoController.cs:linha 77

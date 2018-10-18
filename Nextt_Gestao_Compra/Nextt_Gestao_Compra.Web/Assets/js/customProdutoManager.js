@@ -26,7 +26,8 @@ $(document).ready(function () {
 
     $(document).on('switchChange.bootstrapSwitch', '.ckbGridProd', function (event, state) {
         var linha = $($(this).closest('tr'));
-        tbProduto.row(linha).data().selecionado = state.value;
+        console.log(state)
+        tbProduto.row(linha).data().selecionado = state;
     });
     $(document).on('keyup', '#txtFiltroProdutoCompra', function (e) {
         var keyCode = e.keyCode === 0 ? e.charCode : e.keyCode;
@@ -52,8 +53,8 @@ function buscarProdutosFiltrado() {
         erroCadCompra("Não é permitido filtrar produtos sem selecionar ao menos um parâmetro de pesquisa!", "alertProdCompra");
     } else {
         if (marcas) objEnvio.marcas = marcas.join(",");
-        if (secoes) objEnvio.secoes = trataParametroEnvio(secoes).join(",");
-        if (especies) objEnvio.especies = trataParametroEnvio(especies).join(",");
+        if (secoes) objEnvio.secoes = secoes.join(",");
+        if (especies) objEnvio.especies = especies.join(",");
         if (cnpj) objEnvio.idFornecedor = cnpj.join(",");
         $(".navbar.navbar-default.navbar-fixed-top").addClass('ocultarElemento');
         $('.selectpicker').selectpicker('hide');

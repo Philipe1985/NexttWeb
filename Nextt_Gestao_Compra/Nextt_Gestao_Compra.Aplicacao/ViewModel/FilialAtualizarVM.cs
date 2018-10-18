@@ -1,13 +1,12 @@
-﻿using System;
+﻿using Nextt_Gestao_Compra.Dominio.Entidades;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
 {
-   public class FilialCadastroVM
+    public class FilialAtualizarVM
     {
         public int IDFilial { get; set; }
+        
     }
 }

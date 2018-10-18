@@ -16,8 +16,8 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
         {
             try
             {
-                return _Db.MultiplosResults("[dbo].[pr_consulta_grupo_GESTAO_COMPRAS]" +
-                                    " @grupo = '" + parametros.IDGrupo + "'")
+                return _Db.MultiplosResults("[dbo].[pr_consulta_grupo_filial_GESTAO_COMPRAS]" +
+                                    " @IDGrupoFilial = '" + parametros.IDGrupo + "'")
                                    .With<GrupoFilial>()
                                    .With<GrupoFilial>()
                                    .Executar();
@@ -32,7 +32,7 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
         {
             try
             {
-                return _Db.MultiplosResults("[dbo].[pr_consulta_grupo_GESTAO_COMPRAS]")
+                return _Db.MultiplosResults("[dbo].[pr_consulta_grupo_filial_GESTAO_COMPRAS]")
                                    .With<GrupoFilial>()
                                    .With<GrupoFilial>()
                                    .Executar();
@@ -44,31 +44,25 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
             }
         }
 
-        public List<IEnumerable> CadastrarGrupo(string grpJson)
+        public void ExcluirGrupo(Parametros parametros)
+        {
+            _Db.MultiplosResults("[dbo].[pr_excluir_grupo_filial_GESTAO_COMPRAS]" +
+                                   " @IDGrupoFilial = " + int.Parse(parametros.IDGrupo))
+                                   .Executar();
+        }
+
+        public List<IEnumerable> ManipularGrupo(string grpJson)
         {
             try
             {
-                return _Db.MultiplosResults("[dbo].[pr_consulta_filiais_por_grupo_GESTAO_COMPRAS]" +
-                                   " @GravarGrupoFilial = '" + grpJson + "'")
+                return _Db.MultiplosResults("[dbo].[pr_gravar_grupo_filial_GESTAO_COMPRAS]" +
+                                   " @JSONGrupoFilial = '" + grpJson + "'")
                                    .With<GrupoFilial>()
                                    .Executar();
             }
             catch (Exception ex)
             {
                 throw new Exception("RepositorioGrupo.CadastrarGrupo: \n" + ex.Message, ex.InnerException);
-            }
-        }
-
-        public void SalvarAtualizacaoGrupos(string grpsJson)
-        {
-            try
-            {
-                _Db.MultiplosResults("[dbo].[pr_gravar_grupos_filiais_GESTAO_COMPRAS]" +
-                                   " @GravarGrupoFilial = '" + grpsJson + "'").Executar();
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("RepositorioGrupo.SalvarAtualizacaoGrupos: \n" + ex.Message, ex.InnerException);
             }
         }
     }

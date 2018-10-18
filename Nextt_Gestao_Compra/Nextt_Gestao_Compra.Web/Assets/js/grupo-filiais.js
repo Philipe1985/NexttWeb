@@ -48,9 +48,23 @@ $(document).ready(function () {
     $(document).on('click', '.editarGrupo', function (evento) {
         var linha = $(this).parent().parent();
         var dadoLinha = dtbCad.row($(linha)).data()
+        var objEnvio = {};
+        objEnvio.idGrupo = dadoLinha.id.toString();
+        retornaInfoGrp(objEnvio)
 
-        console.log(dadoLinha)
-        edittaGrupo(dadoLinha.descricao, dadoLinha.participacao)
+    })
+    $(document).on('click', '.excluirGrupo', function (evento) {
+        var linha = $(this).parent().parent();
+        var dadoLinha = dtbCad.row($(linha)).data()
+        var objEnvio = {};
+        objEnvio.idGrupo = dadoLinha.id.toString();
+        sessionStorage.setItem('idGrpWxc', objEnvio.idGrupo)
+        $(".bg_load").show();
+        $(".wrapper").show();
+        $('.selectpicker').selectpicker('hide');
+        $(".navbar.navbar-default.navbar-fixed-top").addClass('ocultarElemento');
+        excluirGrp(objEnvio)
+
     })
 })
 function carregar() {
@@ -59,232 +73,7 @@ function carregar() {
     //erroCadCompra("Para cadastrar uma cor nova primeiro informe o nome para ela.", "alertCadGrupoFilial");
 }
 function criaDescGrp() {
-    var value = ''
-    if (dadosGrupoNovo.descricao) {
-        value = dadosGrupoNovo.descricao;
-    }
-    $.confirm({
-        icon: 'fa fa-pencil-square-o',
-        type: 'blue',
-        title: 'Cadastro de Grupo!',
-        content: '<div class="form-group">' +
-            '<label class="control-label">Informe a Descrição do Grupo:</label>' +
-            '<input type="text" id="txtDescGrp" autofocus placeholder="Digite aqui..."  value="' + value + '" class="form-control">' +
-            '</div>',
-        buttons: {
-            confirm: {
-                text: 'Avançar',
-                btnClass: 'btn-blue',
-                action: function () {
-                    var descGrupo = this.$content.find('#txtDescGrp').val().trim();
-                    if (!descGrupo.length) {
-                        $('#txtDescGrp').popover({
-                            title: '<h5 class="custom-title"><span class="glyphicon glyphicon-exclamation-sign orange"></span> Atenção!</h5>',
-                            content: "<p>Para avançar é necessário informar uma descrição</p>",
-                            html: true,
-                            trigger: 'manual',
-                            container: this.$content,
-                            placement: 'bottom'
-                        });
-
-                        $('#txtDescGrp').popover('show');
-                        $('#txtDescGrp').focus().select();
-                        setTimeout(function () {
-                            $('#txtDescGrp').popover('destroy');
-
-                        }, 3000);
-                        return false;
-                    } else {
-                        dadosGrupoNovo.descricao = descGrupo;
-                        addFiliais();
-                    }
-
-                }
-            },
-            cancel: {
-                text: 'Cancelar',
-                action: function () {
-                    dadosGrupoNovo = {};
-                }
-            }
-        },
-        onContentReady: function () {
-            var self = this;
-            this.$content.find('#txtDescGrp').keyup(function (evento) {
-
-                var code = (evento.keyCode ? evento.keyCode : evento.which);
-                if (code === 9 || code === 13) {
-                    $(this).blur();
-                }
-            });
-
-
-        },
-    });
-}
-function addFiliais() {
-
-    $.confirm({
-        icon: 'fa fa-pie-chart',
-        type: 'blue',
-        title: 'Seleção de Filiais!',
-        content: '<div class="form-group">' +
-            '<label class="control-label">Selecione as Filiais do Novo Grupo:</label>' +
-            '<select id="drpFiliais" data-container=".jconfirm" class="selectpicker show-tick form-control" multiple data-live-search="true" title="Selecione uma filial..." data-width="100%" data-size="5">' +
-            localStorage.getItem('filiaisOption') + '</select>' +
-            '</div>',
-
-        buttons: {
-            confirm: {
-                text: 'Concluir',
-                btnClass: 'btn-success',
-                isHidden: true,
-                action: function () {
-                    dadosGrupoNovo.filiais = retornaFiliaisNovoGrupo($('#drpFiliais').val().map(Number));
-                    var objEnvio = dadosGrupoNovo;
-                    console.log(objEnvio);
-                    $(".bg_load").show();
-                    $(".wrapper").show();
-                    $('.selectpicker').selectpicker('hide');
-                    cadastrarGrupoNovo(objEnvio);
-                    dadosGrupoNovo = {};
-                }
-            },
-            back: {
-                text: 'Voltar',
-                btnClass: 'btn-info',
-                action: function () {
-                    criaDescGrp();
-                }
-            },
-            cancel: {
-                text: 'Cancelar',
-                btnClass: 'btn-danger',
-                action: function () {
-                    dadosGrupoNovo = {};
-                }
-            }
-        },
-        onContentReady: function () {
-            var self = this;
-            self.$content.find('#drpFiliais').selectpicker();
-            self.$content.find('#drpFiliais').change(function () {
-                if ($('#drpFiliais').val()) {
-                    self.buttons.confirm.show();
-                } else {
-                    self.buttons.confirm.hide();
-                }
-            });
-        },
-    });
-
-}
-function criarTabGruposSelecionados(dadosGrupos) {
-    var htmlContent = '';
-    var ulHtml = '';
-    for (var i = 0; i < dadosGrupos.length; i++) {
-        var filiaisDrp = '<div class="row"><div class="col-md-3 col-sm-12 col-xs-12">' +
-            '<div class="form-group">' +
-            '<label class="form-label" style="font-size:16px!important;">Selecione as Filiais do Grupo:</label>' +
-            '<div class="controls">' +
-            '<select name="cbFiliais' + dadosGrupos[i].idGrupo + '" id="cbFiliais' + dadosGrupos[i].idGrupo + '" data-actions-box="true" class="selectpicker show-tick form-control" data-live-search="true"' +
-            'data-select-all-text="Marcar Todas" data-deselect-all-text="Desmarcar Todas" data-count-selected-text="Selecionado {0} de {1} opções"' +
-            'data-width="100%" multiple data-select-header="true" data-size="7" data-selected-text-format="count > 0" title="Selecione uma filial...">' + localStorage.getItem('filiaisOption') + '</select>' +
-            '</div>' +
-            '</div>' +
-            '</div>' +
-            //'<div class="col-md-2 col-sm-12 col-xs-12">' +
-            //'<div class="form-group">' +
-            //'<label class="form-label">Mês Referência:</label>' +
-            //'<div class="controls">' +
-            //retornaFiltroMesGrupoCad('mesFilial' + dadosGrupos[i].idGrupo, dadosGrupos[i].idGrupo) +
-            //'</div>' +
-            //'</div>' +
-            //'</div>' +
-            //'<div class="col-md-2 col-sm-12 col-xs-12">' +
-            //'<div class="form-group">' +
-            //'<label class="form-label">Ano Referência:</label>' +
-            //'<div class="controls">' +
-            //retornaFiltroAnoGrupoCad('anoFilial' + dadosGrupos[i].idGrupo, dadosGrupos[i].idGrupo) +
-            //'</div>' +
-            //'</div>' +
-            //'</div>' +
-            '</div>';
-        //var tbHtml = $.parseHTML(retornaTabelaCadGrp("tblGrpCad" + dadosGrupos[i].idGrupo)), headerTb = criaTabelaCadGrp(dadosGrupos[i].filiais);
-        //$(tbHtml).html(headerTb);
-
-
-        //Fazer carregar combo com filiais selecionadaas
-        if ($('#divPaineisCadastroGrupo #cadGrupo li').length === 0 && i === 0) {
-            ulHtml = '<li role="presentation" class="active"><a id="grupo' + dadosGrupos[i].idGrupo + 'tab" aria-controls="grupo' + dadosGrupos[i].idGrupo + '" class="deco-none" href="#grupo' + dadosGrupos[i].idGrupo + '" data-toggle="tab"><span class="text"> ' +
-                toTitleCase(dadosGrupos[i].descricao) + ' </span></a></li>';
-            htmlContent = '<div role="tabpanel" class="tab-pane active" aria-labelledby="grupo' + dadosGrupos[i].idGrupo + 'tab" id="#grupo' + dadosGrupos[i].idGrupo +
-                '">' + filiaisDrp +
-                //'<div class="row"><div class="col-md-12 col-sm-12 col-xs-12 table-responsive">' +
-                //$(tbHtml).prop('outerHTML') + '</div>' +
-                '</div>';
-        } else if (i === 1) {
-            ulHtml = '<li role="presentation" class="next"><a  id="grupo' + dadosGrupos[i].idGrupo + 'tab" aria-controls="grupo' + dadosGrupos[i].idGrupo + '" class="deco-none" href="#grupo' + dadosGrupos[i].idGrupo + '" data-toggle="tab"><span class="text"> ' +
-                toTitleCase(dadosGrupos[i].descricao) + ' </span></a></li>';
-            htmlContent = '<div role="tabpanel" class="tab-pane" aria-labelledby="grupo' + dadosGrupos[i].idGrupo + 'tab" id="#grupo' + dadosGrupos[i].idGrupo +
-                '">' + filiaisDrp +
-                //'<div class="row"><div class="col-md-12 col-sm-12 col-xs-12 table-responsive">' +
-                //$(tbHtml).prop('outerHTML') + '</div>' +
-                '</div>';
-        } else {
-            ulHtml = '<li role="presentation"><a  id="grupo' + dadosGrupos[i].idGrupo + 'tab" aria-controls="grupo' + dadosGrupos[i].idGrupo + '" class="deco-none" href="#grupo' + dadosGrupos[i].idGrupo + '" data-toggle="tab"><span class="text"> ' +
-                toTitleCase(dadosGrupos[i].descricao) + ' </span></a></li>';
-            htmlContent = '<div role="tabpanel" class="tab-pane" aria-labelledby="grupo' + dadosGrupos[i].idGrupo + 'tab" id="#grupo' + dadosGrupos[i].idGrupo +
-                '">' + filiaisDrp +
-                //'<div class="row"><div class="col-md-12 col-sm-12 col-xs-12 table-responsive">' +
-                //$(tbHtml).prop('outerHTML') + '</div>' +
-                '</div>';
-        }
-        $('#divPaineisCadastroGrupo #cadGrupo').append(ulHtml);
-        $('#divPaineisCadastroGrupo  div.tab-content:first').append(htmlContent)
-        $(".selectpicker").selectpicker();
-        $('#cbFiliais' + dadosGrupos[i].idGrupo).selectpicker('val', dadosGrupos[i].filiais);
-    }
-    //ulHtml += '</ul>' + htmlContent + '</div>'
-    //$('#divPaineisCadastroGrupo').append($.parseHTML(ulHtml));
-    //geraCargaFiliaisGrp(dadosGrupos)
-    //var mesSelecionar = new Date().getMonth() + 1;
-    //$(".selectpicker").selectpicker();
-    //$(".mesRel").selectpicker('val', mesSelecionar.toString());
-    $('#divPaineisCadastroGrupo').removeClass('ocultarElemento');
-
-
-}
-function retornaFiltroMesGrupoCad(classe, id) {
-    var retorno = "<select id='drpFiltroMes" + id + "' class='selectpicker show-tick form-control mesRel " + classe + "'" +
-        "data-width='100%' data-size='5'>" +
-        "<option class='menuAno' data-icon='glyphicon-calendar' title='Mês Base: Janeiro' value='1'>Janeiro</option>" +
-        "<option class='menuAno' data-icon='glyphicon-calendar' title='Mês Base: Fevereiro' value='2'>Fevereiro</option>" +
-        "<option class='menuAno' data-icon='glyphicon-calendar' title='Mês Base: Março' value='3'>Março</option>" +
-        "<option class='menuAno' data-icon='glyphicon-calendar' title='Mês Base: Abril' value='4'>Abril</option>" +
-        "<option class='menuAno' data-icon='glyphicon-calendar' title='Mês Base: Maio' value='5'>Maio</option>" +
-        "<option class='menuAno' data-icon='glyphicon-calendar' title='Mês Base: Junho' value='6'>Junho</option>" +
-        "<option class='menuAno' data-icon='glyphicon-calendar' title='Mês Base: Julho' value='7'>Julho</option>" +
-        "<option class='menuAno' data-icon='glyphicon-calendar' title='Mês Base: Agosto' value='8'>Agosto</option>" +
-        "<option class='menuAno' data-icon='glyphicon-calendar' title='Mês Base: Setembro' value='9'>Setembro</option>" +
-        "<option class='menuAno' data-icon='glyphicon-calendar' title='Mês Base: Outubro' value='10'>Outubro</option>" +
-        "<option class='menuAno' data-icon='glyphicon-calendar' title='Mês Base: Novembro' value='11'>Novembro</option>" +
-        "<option class='menuAno' data-icon='glyphicon-calendar' title='Mês Base: Dezembro' value='12'>Dezembro</option>" +
-        "</select>";
-    return retorno;
-}
-function retornaFiltroAnoGrupoCad(classe, id) {
-    var ano = new Date().getFullYear();
-    var retorno = "<select id='drpFiltroAno" + id + "' class='selectpicker show-tick anoRel form-control " + classe + "'" +
-        "data-width='100%' data-size='5'>" +
-        "<option class='menuAno' data-icon='glyphicon-calendar' title='Ano Base: " + (ano - 2) + "' value='" + (ano - 2) + "'>" + (ano - 2) + "</option>" +
-        "<option class='menuAno' data-icon='glyphicon-calendar' title='Ano Base: " + (ano - 1) + "' value='" + (ano - 1) + "'>" + (ano - 1) + "</option>" +
-        "<option class='menuAno' data-icon='glyphicon-calendar' selected title='Ano Base: " + (ano) + "' value='" + (ano) + "'>" + (ano) + "</option>" +
-        "<option class='menuAno' data-icon='glyphicon-calendar' title='Ano Base: " + (ano + 1) + "' value='" + (ano + 1) + "'>" + (ano + 1) + "</option>" +
-        "<option class='menuAno' data-icon='glyphicon-calendar' title='Ano Base: " + (ano + 2) + "' value='" + (ano + 2) + "'>" + (ano + 2) + "</option>" +
-        "</select>";
-
-    return retorno;
+    manipularGrupo("Cadastrar Novo Grupo", '', 0)
 }
 
 function retornaTabelaCadGrp(id) {
@@ -343,15 +132,15 @@ function carregarCadFilial(dados) {
         lengthChange: false,
         deferRender: true,
         "ordering": true,
+        "order": [[1, "asc"]],
         responsive: true,
-        scrollX: true,
-        scrollY: '50vh',
+        
         "columnDefs": [
             {
-                "targets": [0, 3, 2],
-                'className': 'dt-body-center',
+                "targets": 2,
+                'className': 'dt-body-center partGrp',
                 "render": function (data, type, row, meta) {
-                    if (type === 'display' && meta.col === 3) {
+                    if (type === 'display' && meta.col === 2) {
                         return Math.round10(data, -2).toLocaleString('pt-BR') + '%';
                     }
                     else {
@@ -364,9 +153,13 @@ function carregarCadFilial(dados) {
                 "targets": 0
             },
             {
-                "orderable": false,
-                'className': 'dt-body-center grupoOperacao',
+                'className': 'dt-body-left descGrp',
                 "targets": 1
+            },
+            {
+                "orderable": false,
+                'className': 'dt-body-left grupoOperacao',
+                "targets": 3
             }
         ],
         "language": {
@@ -379,47 +172,33 @@ function carregarCadFilial(dados) {
         data: dados,
         "columns": [
             { "data": "id" },
-            { "data": "operacao" },
             { "data": "descricao" },
             { "data": "participacao" },
+            { "data": "operacao" },
 
         ]
     });
 }
-function criaObjetoAtualizarGrupos() {
-    var idsGrupo = $('#cbGrupos').val(), retorno = [];
-    console.log(idsGrupo)
-    if (idsGrupo) {
-        for (var i = 0; i < idsGrupo.length; i++) {
-            var objAtualizar = {};
-            var valoresGrupo = $("#cbGrupos option[value='" + idsGrupo[i] + "']").attr('data-tokens').split(',');
-            objAtualizar.descricao = valoresGrupo[1];
-            objAtualizar.idGrupoFilial = parseInt(valoresGrupo[0]);
-            console.log(valoresGrupo)
-            console.log($('#cbFiliais' + valoresGrupo[0]).val())
-
-            $('#cbFiliais' + valoresGrupo[0]).val() ?
-                objAtualizar.filiais = retornaFiliaisNovoGrupo($('#cbFiliais' + valoresGrupo[0]).val().map(Number)) :
-                objAtualizar.filiais = [];
-            retorno.push(objAtualizar);
-        }
-    }
+function criaObjetoGrupoEnvio(idFiliais, idGrupo, descGrupo, partEnvio) {
+    var listaGruposEnvio = [];
+    var objAtualizar = {};
+    objAtualizar.descricao = descGrupo;
+    objAtualizar.idGrupoFilial = idGrupo;
+    objAtualizar.ativo= true;
+    objAtualizar.participacaoGrupo = partEnvio;
+    objAtualizar.filiais = retornaFiliaisNovoGrupo(idFiliais);
+    listaGruposEnvio.push(objAtualizar);
+    retorno = { 'gruposOperacao': listaGruposEnvio }
+    $(".bg_load").show();
+    $(".wrapper").show();
+    $('.selectpicker').selectpicker('hide');
+    $(".navbar.navbar-default.navbar-fixed-top").addClass('ocultarElemento');
     return retorno;
 }
-function atualizarGrupos() {
-    if ($('#cbGrupos').val()) {
-        $(".bg_load").show();
-        $(".wrapper").show();
-        $('.selectpicker').selectpicker('hide');
-        var objEnvio = { 'grupo': criaObjetoAtualizarGrupos() };
-        console.log(objEnvio);
-        salvarAtualizacaoGrp(objEnvio);
-    }
-}
-function msgGrupoAtualizado() {
+function excluirGrupo() {
     var jc2 = $.confirm({
-        title: 'Grupos Atualizados Com Sucesso!',
-        content: 'Todas as atualizações nos grupos foram salvas.',
+        title: 'Grupo Excluído Com Sucesso!',
+        content: 'O grupo foi removido e já não está disponível para utilização.',
         icon: 'fa fa-check',
         theme: 'modern',
         closeIcon: false,
@@ -433,7 +212,32 @@ function msgGrupoAtualizado() {
         onContentReady: function () {
             setTimeout(function () {
                 jc2.close()
-            }, 4000);
+            }, 2000);
+        },
+        onOpenBefore: function () {
+            this.buttons.okButton.hide();
+        },
+    });
+}
+function msgGrupoAtualizado() {
+
+    var jc2 = $.confirm({
+        title: 'Grupo Atualizado Com Sucesso!',
+        content: 'Todas as atualizações no grupo foram salvas.',
+        icon: 'fa fa-check',
+        theme: 'modern',
+        closeIcon: false,
+        type: 'green',
+        animation: 'scale',
+        buttons: {
+            okButton: {
+                text: 'ok'
+            }
+        },
+        onContentReady: function () {
+            setTimeout(function () {
+                jc2.close()
+            }, 2000);
         },
         onOpenBefore: function () {
             this.buttons.okButton.hide();
@@ -459,7 +263,7 @@ function msgGrupoCadastrado() {
         onContentReady: function () {
             setTimeout(function () {
                 jc2.close()
-            }, 4000);
+            }, 2000);
         },
         onOpenBefore: function () {
             this.buttons.okButton.hide();
@@ -467,16 +271,15 @@ function msgGrupoCadastrado() {
     });
 
 }
-function edittaGrupo(desc, part) {
-    var value = 'sdffsfdsdfsd'
+function manipularGrupo(tit, desc, part) {
     $.confirm({
         icon: 'fa fa-pencil-square-o',
         type: 'blue',
-        title: 'Atualizar Grupo!',
+        title: tit,
         containerFluid: true,
         content: '<div class="col-md-6 form-group">' +
             '<label class="control-label">Descrição</label>' +
-            '<input type="text" id="txtDescGrp" placeholder="Digite aqui..."  value="' + desc + '" class="form-control">' +
+            '<input type="text" id="txtDescGrp" data-initial="' + desc + '" placeholder="Digite aqui..."  value="' + desc + '" class="form-control">' +
             '</div>' +
             '<div class="col-md-6 form-group">' +
             '<label class="control-label">Participação</label>' +
@@ -502,29 +305,43 @@ function edittaGrupo(desc, part) {
                 text: 'Salvar',
                 btnClass: 'btn-green',
                 action: function () {
-                    //var descGrupo = this.$content.find('#txtDescGrp').val().trim();
-                    //if (!descGrupo.length) {
-                    //    $('#txtDescGrp').popover({
-                    //        title: '<h5 class="custom-title"><span class="glyphicon glyphicon-exclamation-sign orange"></span> Atenção!</h5>',
-                    //        content: "<p>Para avançar é necessário informar uma descrição</p>",
-                    //        html: true,
-                    //        trigger: 'manual',
-                    //        container: this.$content,
-                    //        placement: 'bottom'
-                    //    });
-
-                    //    $('#txtDescGrp').popover('show');
-                    //    $('#txtDescGrp').focus().select();
-                    //    setTimeout(function () {
-                    //        $('#txtDescGrp').popover('destroy');
-
-                    //    }, 3000);
-                    //    return false;
-                    //} else {
-                    //    dadosGrupoNovo.descricao = descGrupo;
-                    //    addFiliais();
-                    //}
-
+                    var descGrupo = toTitleCase(this.$content.find('#txtDescGrp').val().trim());
+                    var partEnvio = removeMascaraMoeda(this.$content.find('#txtPartGrp').val().replace('%', ''));
+                    console.log(partEnvio)
+                    var descInicial = this.$content.find('#txtDescGrp').attr("data-initial").trim();
+                    var idEdt = localStorage.getItem("idGrpEditar") ?
+                        parseInt(localStorage.getItem("idGrpEditar")) :
+                        0;
+                    if (!descGrupo || descGrupo.length < 3) {
+                        grupoOperacaoInvalida('A descrição é um campo obrigatório e deve conter no mínimo 3 caracteres! Informe a descrição ou cancele a operação.')
+                        return false;
+                    }
+                    if (!validaDescricaoExistente(descGrupo)) {
+                        var selecionados = [];
+                        this.$content.find('li input:checked').each(function () {
+                            selecionados.push($(this).val());
+                        });
+                        var filiaisInicial = localStorage.getItem("filiaisGrupo") ?
+                            localStorage.getItem("filiaisGrupo").split(',') :
+                            [];
+                        if (selecionados.sort().join(',') === filiaisInicial.sort().join(',') && descInicial === descGrupo) {
+                            grupoOperacaoInvalida('Nenhuma alteração foi realizada! Altere alguma informação do grupo ou cancele a operação.')
+                            return false;
+                        }
+                        if (!selecionados.length) {
+                            grupoOperacaoInvalida('Nenhuma filial foi selecionada! Selecione ao menos uma filial ou cancele a operação.');
+                            return false;
+                        }
+                        if (idEdt) {
+                            salvarAtualizacaoGrp(criaObjetoGrupoEnvio(selecionados.map(Number), idEdt, descGrupo, partEnvio));
+                        } else if (selecionados.length) {
+                            cadastrarGrupoNovo(criaObjetoGrupoEnvio(selecionados.map(Number), idEdt, descGrupo, partEnvio));
+                        }
+                    }
+                    else {
+                        grupoOperacaoInvalida('Já existe um grupo cadastrado com esta descrlção! Altere a descrição ou cancele esta operação e edite o grupo existente.')
+                        return false;
+                    }
                 }
             },
             cancel: {
@@ -536,10 +353,8 @@ function edittaGrupo(desc, part) {
             }
         },
         onContentReady: function () {
-
             var self = this;
             this.$content.find('#txtDescGrp').keyup(function (evento) {
-
                 var code = (evento.keyCode ? evento.keyCode : evento.which);
                 if (code === 9 || code === 13) {
                     $(this).blur();
@@ -547,11 +362,21 @@ function edittaGrupo(desc, part) {
             });
 
 
-        }, onOpenBefore: function () {
+        },
+        onOpenBefore: function () {
             var self = this;
-
+            var idsSelecionados = localStorage.getItem("filiaisGrupo") ? localStorage.getItem("filiaisGrupo").split(',') : [];
+            console.log(idsSelecionados)
+            for (i = 0; i !== idsSelecionados.length; i++) {
+                var checkbox = self.$content.find("li input[type='checkbox'][value='" + idsSelecionados[i] + "']");
+                checkbox.attr("checked", "checked");
+            }
             self.$content.find("li input[type='checkbox']").checkboxradio();
 
+        },
+        onDestroy: function () {
+            localStorage.removeItem("idGrpEditar");
+            localStorage.removeItem("filiaisGrupo");
         },
     });
 }
@@ -559,11 +384,74 @@ function geraListaFilial(filiais) {
     var retorno = '';
     for (var i = 0; i < filiais.length; i++) {
         retorno += '<li class="phradio" data-filtro="' + filiais[i].token + '">' +
-            '<label class="phradio-info">' +
+            '<label class="phradio-info">' + 
             '<input style="margin:0px !important" type="checkbox" value="' + filiais[i].valor + '">' +
             '<span class="checkmark"> ' + filiais[i].descricao + '</span>' +
             '</label>' +
             '</li>'
     }
     return retorno;
+}
+
+function grupoOperacaoInvalida(msg) {
+    $.confirm({
+        icon: 'fa fa-warning',
+        theme: 'modern',
+        animation: 'scale',
+        typeAnimated: true,
+        type: 'red',
+        title: 'Operação Invalida!',
+        containerFluid: true,
+        content: msg,
+        buttons: {
+            ok: {
+                btnClass: 'btn-red',
+                text: 'Ok'
+            },
+        },
+    });
+}
+function validaDescricaoExistente(desc) {
+    var dadosGrupo = dtbCad.data()
+        .toArray();
+    var contador = 0;
+    var idEdt = localStorage.getItem("idGrpEditar")
+    dadosGrupo.map(obj => {
+        if ((!idEdt || obj.id !== parseInt(idEdt)) && obj.descricao === desc) {
+            contador++;
+        }
+        return obj;
+    });
+    return contador > 0;
+}
+function atualizaLinhaGrupo(dado) {
+    dtbCad.data().map(obj => {
+        if (obj.id === parseInt(dado.valor)) {
+            obj.descricao = dado.descricao;
+            obj.participacaoGrupo = parseFloat(dado.dadosAdicionais[0].replace(',', '.'));
+        }
+        return obj;
+    });
+    var dadosNovos = dtbCad.data().toArray();
+    dtbCad.clear();
+    dtbCad.data(dtbCad).rows.add(dadosNovos);
+    dtbCad.draw();
+    
+
+}
+function insereLinhaGrupo(dado) {
+    dtbCad.row.add({
+        "id": parseInt(dado.valor),
+        "descricao": dado.descricao,
+        "participacao": parseFloat(dado.dadosAdicionais[0].replace(',', '.')),
+        "operacao": '<a href="#" style="margin:3px" class="btn btn-info editarGrupo" data-toggle="tooltip" title="Editar" ><i class="fa fa-pencil" aria-hidden="true"></i></a>'
+            + '<a href="#" style="margin:3px;" class="btn btn-danger excluirGrupo" data-toggle="tooltip" title="Cancelar" ><i class="fa fa-trash" aria-hidden="true"></i></a>'
+    }).draw();
+}
+function excluirLinhaGrupo(idExc) {
+    console.log(idExc)
+    dtbCad.rows(function (idx, data, node) {
+        return data.id === idExc;
+    }).remove().draw();
+        
 }

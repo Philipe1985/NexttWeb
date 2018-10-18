@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
 {
@@ -10,6 +6,8 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
     {
         public int IDGrupoFilial { get; set; }
         public string Descricao { get; set; }
-        public List<FilialCadastroVM> Filiais { get; set; }
+        public decimal ParticipacaoGrupo { get; set; }
+        public bool Ativo { get; set; }
+        public List<FilialAtualizarVM> Filiais { get; set; }
     }
 }

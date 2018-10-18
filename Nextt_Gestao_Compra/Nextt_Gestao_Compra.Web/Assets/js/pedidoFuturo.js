@@ -9,7 +9,7 @@ var coresGrade = [], coresNovasCadastradas = [], tamanhosGrade = [], tamanhoText
     avanca = false, dadosPck;
 
 var current = new Date().getMonth(),
-    slides, currentIndex;
+    slides, currentIndex, grupoRelacionar;
 
 specialKeys.push(8); //Backspace
 specialKeys.push(43); // +
@@ -33,7 +33,7 @@ $(document).ready(function () {
     $('.percent').maskMoney('mask');
     $('.money').maskMoney('mask');
     $(document).on('keyup touchend', '.percent', function (evento) {
-        evento =evento || window.event;
+        evento = evento || window.event;
         var code = evento.which || evento.charCode || evento.keyCode, valorImputado = $(this).maskMoney('unmasked')[0];
         if (valorImputado > 100) {
             var str = valorImputado.toFixed(2);
@@ -513,7 +513,7 @@ $(document).ready(function () {
     })
     $(document).on('keydown', '#txtAreaObsPed', function (evento) {
         var inputValue = evento.keyCode ? evento.keyCode : evento.which;
-        var retorno = ((inputValue >= 65 && inputValue <= 90) || (inputValue === 111)) ||
+        var retorno = ((inputValue >= 65 && inputValue <= 90) || (inputValue === 111 || inputValue === 186)) ||
             ((inputValue >= 8 && inputValue <= 13) || (inputValue >= 27 && inputValue <= 43))
 
         if (retorno) return;
@@ -702,9 +702,9 @@ $(document).ready(function () {
             $("#drpEsp").prop('disabled', false)
             objParam.secoes = $('#drpSec').val();
             carregarEspecie(objParam);
-        } 
+        }
         atualizaCodigoProduto();
-      
+
     });
 
     $('#drpEsp').on('change', function (e) {
@@ -723,6 +723,7 @@ function carregar() {
             window.location = "../gerenciamento/compraprodutos.cshtml";
         }
     } else {
+        console.log(compraId)
         if (!compraId) {
             $("#frmDados.collapsible").collapsible({
                 animation: true,
@@ -732,10 +733,13 @@ function carregar() {
                 animation: true,
                 speed: "medium"
             });
-
+            $("#frmAttrProd.collapsible").collapsible({
+                animation: true,
+                speed: "medium"
+            });
         }
 
-        //criaInputImagem();
+        //frmAttrProd();
         if (dadosCompraCadastro) {
             dadosCompraCadastro = JSON.parse(dadosCompraCadastro)[0];
             var objEnvio = {};
@@ -753,7 +757,7 @@ function carregar() {
 
         }
     }
-
+    $(".attributo-cad").bootstrapSwitch();
 }
 
 function recuperaRangeEntregaFinal(parametro) {
@@ -806,16 +810,14 @@ function reiniciaTbGrade() {
     $("#tabelaPack2").html(retornoTbGrade);
 }
 function carregarDistribuicaoFilial(idTabelaDist, colunmsPk, dadosPk) {
-    console.log(colunmsPk);
-    console.log(dadosPk);
     tbDistribuicao = $('#' + idTabelaDist).DataTable({
         paging: false,
         searching: false,
         lengthChange: false,
         deferRender: true,
-        "ordering": false,
+        ordering: false,
         responsive: true,
-        "columnDefs": [
+        columnDefs: [
             {
                 "targets": "_all",
                 "orderable": false,
@@ -827,7 +829,7 @@ function carregarDistribuicaoFilial(idTabelaDist, colunmsPk, dadosPk) {
                         } else if (meta.row === 5) {
                             return Math.round10(data, -2).toLocaleString('pt-BR') + '%';
                         } else {
-                            return data.toLocaleString('pt-BR', {maximumFractionDigits: 2})
+                            return data.toLocaleString('pt-BR', { maximumFractionDigits: 2 })
                         }
                     } else if (meta.col === 0) {
                         var textToolip;
@@ -878,11 +880,11 @@ function carregarDistribuicaoFilial(idTabelaDist, colunmsPk, dadosPk) {
             },
 
         ],
-        "language": {
+        language: {
             "emptyTable": "Nenhum produto encontrado",
             "zeroRecords": "Nenhum produto corresponde ao filtro",
         },
-        "createdRow": function (row, data, dataIndex) {
+        createdRow: function (row, data, dataIndex) {
             if (dataIndex === 0 || dataIndex === 4) {
                 $(row).addClass('ocultarElemento');
             }
@@ -898,7 +900,7 @@ function carregarDistribuicaoFilial(idTabelaDist, colunmsPk, dadosPk) {
             }
 
         },
-        "drawCallback": function (settings) {
+        drawCallback: function (settings) {
             var api = this.api();
             var rows = api.rows().nodes();
             var colSpan = $(rows).find('td').length;
@@ -909,7 +911,7 @@ function carregarDistribuicaoFilial(idTabelaDist, colunmsPk, dadosPk) {
                 $('[data-toggle="tooltip"]').tooltip();
             });
         },
-        "info": false,
+        info: false,
         destroy: true,
         data: dadosPk,
         columns: colunmsPk
@@ -1058,7 +1060,6 @@ function addGrupo(novoPack) {
                     sourceGrupo + '</select>' +
                     '</div>';
                 self.setContent(contentOpt);
-
             }).fail(function () {
                 self.setTitle('Falha ao Carregar Grupos!');
                 self.setIcon('fa fa-exclamation-circle');
@@ -1123,15 +1124,21 @@ function addGrupo(novoPack) {
                 self.buttons.after.show();
             } else {
                 self.buttons.after.hide();
+                for (var i = 0; i < dadosPck.grpsSelecionados.length; i++) {
+                    alteraStatusGrupoSelecionado(dadosPck.grpsSelecionados[i], true);
+                }
                 this.$content.find('#drpGrupoDistribuicao').selectpicker('val', dadosPck.grpsSelecionados);
                 delete dadosPck.grpsSelecionados;
             }
-            this.$content.find('#drpGrupoDistribuicao').change(function () {
+            this.$content.find('#drpGrupoDistribuicao').on("changed.bs.select", function (e, clickedIndex, newValue, oldValue) {
+                alteraStatusGrupoSelecionado($(this).find('option').eq(clickedIndex).val(), newValue);
+
                 if ($('#drpGrupoDistribuicao').val()) {
                     self.buttons.confirm.show();
                 } else {
                     self.buttons.confirm.hide();
                 }
+                $('.selectpicker').selectpicker('render');
             });
         },
     });
@@ -1832,7 +1839,7 @@ function criarClassificacao(valor, token, desc) {
 function criarTamanho(valor, token, desc, dadosAdicionais) {
     if (dadosAdicionais && dadosAdicionais.length) {
         return "<option value=\"" + valor + "\" data-tokens=\"" + token + "\" data-content=\"<span class='badge badge-danger' style='font-size: 12px;'><img style='width:12px;height:12px;' src='../Assets/images/1_front.png' /> " + desc + "</span>\">" + desc + "</option>";
-  
+
     } else {
         return "<option value=\"" + valor + "\" data-tokens=\"" + token + "\" data-content=\"<span style='font-size: 12px;'><img style='width:12px;height:12px;' src='../Assets/images/1_front.png' /> " + desc + "</span>\">" + desc + "</option>";
 
@@ -2095,7 +2102,7 @@ function retornaLinhaOpcoesGrupo(idField, qtdPart) {
         '<div class="form-group">' +
         '<label class="form-label">Distribuir Por:</label>' +
         '<div class="controls">' +
-        '<input id="ckbGrpPack' + idField + '" type="checkbox" disabled checked class="ckbDistFilial" data-width="100" data-on-color="success" data-off-color="primary" data-on-text="&nbsp;&nbsp;Vendas &nbsp;&nbsp;" data-off-text="Cobertura">' +
+        '<input id="ckbGrpPack' + idField + '" type="checkbox" disabled="disabled" class="ckbDistFilial" data-size="normal" data-on-color="success" data-off-color="primary" data-on-text="Cobertura" data-off-text="Vendas">' +
         '</div>' +
         '</div>' +
         '</div>' +
@@ -2213,4 +2220,215 @@ function continuarNovoProd() {
     $("#txtQldNotaPed").val(dados.notaQtd.toFixed(2).replace('.', ',')).maskMoney('mask');
     sessionStorage.removeItem('continuar');
     $('#wizard-cad-ped li a[href="#tabFoto"]').click();
+}
+function alteraStatusGrupoSelecionado(idClicado, status) {
+    grupoRelacionar.map(obj => {
+        if (obj.idGrupo === idClicado) {
+            for (var i = 0; i < obj.idGrupoDesativar.length; i++) {
+                $("#drpGrupoDistribuicao option[value='" + obj.idGrupoDesativar[i] + "']").attr("disabled", status);
+            }
+        }
+    })
+}
+function validoAddAttr() {
+    if ($("#txtDescAttr").val() && $("#cbTipoDado").val()) {
+        addAtributo()
+    } else {
+        erroCadCompra("Para adicionar um atributo é necessário informar uma descrição e o tipo!", "alertCadAttr");
+    }
+}
+function addAtributo() {
+    var desc = $("#txtDescAttr").val();
+    var classeObrigatorio = $("#ckbObrigatorio").bootstrapSwitch('state') ? '<span class="obrigatorio"> *</span>' : '';
+    var validar = $("#ckbObrigatorio").bootstrapSwitch('state') ? ' validarAttr' : '';
+    var novoAttr = '<div class="col-md-6 col-sm-6 col-xs-12">' +
+        '<div class="form-group">' +
+        '<label class="form-label">' + toTitleCase(desc) + '</label>' + classeObrigatorio +
+        '<div class="controls">' +
+        retornaElementoAtributo(validar) +
+        '</div></div></div>';
+    var painelAppend = $("#ckbAttrTipo").bootstrapSwitch('state') ? $("#pnlAttrPed") : $("#pnlAttrProd");
+    if (painelAppend.find('.row').length) {
+        var ultimaLinha = painelAppend.find('.row:last')
+        if (ultimaLinha.find('div.col-md-6.col-sm-6.col-xs-12').length !== 2) {
+            ultimaLinha.append(novoAttr)
+        } else {
+            novoAttr = '<div class="row">' + novoAttr + '</div>'
+            painelAppend.append(novoAttr);
+        }
+    } else {
+        novoAttr = '<div class="row">' + novoAttr + '</div>'
+        painelAppend.append(novoAttr);
+    }
+    geraComponenteCalendarioAttr()
+    $('.attrNum').maskMoney({ thousands: '.', allowZero: true, decimal: ',', precision: 0, selectAllOnFocus: true, allowNegative: true });
+    $('.percent').maskMoney({ suffix: '%', decimal: ',', allowZero: true, selectAllOnFocus: true });
+    $('.money').maskMoney({ prefix: 'R$ ', thousands: '.', allowZero: true, decimal: ',', selectAllOnFocus: true });
+    $('.percent').maskMoney('mask');
+    $('.attrNum').maskMoney('mask');
+    $('.money').maskMoney('mask');
+    attrAdicionado()
+}
+function retornaElementoAtributo(validar, tipo, val, id, precisao, max, min) {
+    var elemento = '', isNegativo = max !== -1 && min < 0;
+    val = typeof val === "undefined" || val === null ? '' : val;
+
+    switch (tipo) {
+        case 'Texto':
+            elemento = '<input name="cbAttr' + id + '" id="cbAttr' + id + '" type="text" class="form-control attrTexto' + validar + '" value="' + val + '" />';
+            break;
+        case 'Numerico':
+            if (!val.length) {
+                val = "0"
+            } else {
+                val = val.replace('.',',')
+            }
+            elemento = '<input onkeyup="validaValor(this)" data-initial-val="' + val + '" data-select-all-on-focus="true" data-max-val="' + max +
+                '" data-min-val="' + min + '" data-affixes-stay="true" data-reverse="false" data-allow-zero="true" data-allow-negative="' + isNegativo + '" name="cbAttr' +
+                id + '" id="cbAttr' + id + '" data-precision="' + precisao + '" data-thousands="." data-decimal="," type="text" class="form-control attrNum' + validar + '" value="' + val + '" />';
+            break;
+        case 'Monetario':
+            if (!val.length) val = "0"; else val = val.replace('.', ',');
+            elemento = '<input onkeyup="validaValor(this)" data-initial-val="' + val + '" data-allow-negative="' + isNegativo + '" data-prefix="R$ " data-max-val="' + max + '" data-min-val="' + min + '" data-select-all-on-focus="true" data-affixes-stay="true" data-allow-zero="true" data-thousands="." data-decimal="," data-precision="' + precisao + '" name="cbAttr' + id + '" id="cbAttr' + id + '" type="text" class="form-control attrMon money' + validar + '" value="' + val + '" />';
+            break;
+        case 'Percentual':
+            if (!val.length) val = "0"; else val = val.replace('.', ',');
+            elemento = '<input onkeyup="validaValor(this)" data-initial-val="' + val + '" data-allow-negative="' + isNegativo + '" data-suffix="%" data-max-val="' + max + '" data-min-val="' + min + '" data-select-all-on-focus="true" data-affixes-stay="true" data-allow-zero="true" name="cbAttr' + id + '" id="cbAttr' + id + '" type="text" class="form-control attrPerc percent' + validar + '" value="' + val + '" />';
+            break;
+        case 'Data':
+            if (!val.length) {
+                val = "0"
+            }
+            elemento = '<input name="cbAttr' + id + '" data-initial-val="' + val + '" data-max-val="' + max + '" data-min-val="' + min + '" id="cbAttr' + id + '" type="text" class="form-control attrData' + validar + '" />';
+            break;
+        case 'Boleano':
+            var ativar = val === 'true' ? ' active' :'' ;
+            elemento = '<div id="cbAttr' + id + '" class="btn-group" data-toggle="buttons"><label class="btn btn-primary attrBool' + ativar + '" style="width: 56px">' +
+                '<span class="checkBoxAllow fa fa-check"></span>' +
+                '<span class="nonCheckBoxAllow fa fa-times"></span>' +
+                '</label></div>'//'<input name="cbAttr' + id + '" id="cbAttr' + id + '" type="checkbox" class="attrBool" />';
+            break;
+    }
+    return elemento;
+}
+function geraComponenteCalendarioAttr() {
+    $('.attrData').each(function () {
+        var valMax = parseInt($(this).attr("data-max-val")) === parseInt($(this).attr("data-min-val")) ?
+            null :
+            moment().add(parseInt($(this).attr("data-max-val")), 'days');
+
+        var valMin = parseInt($(this).attr("data-max-val")) === parseInt($(this).attr("data-min-val")) ?
+            null :
+            moment().add(parseInt($(this).attr("data-min-val")), 'days');
+
+        var dataSt = $(this).attr("data-initial-val").indexOf('/') > -1 ? $(this).attr("data-initial-val") : moment().add(parseInt($(this).attr("data-initial-val")), 'days').format('DD/MM/YYYY');
+        $(this).val(dataSt)
+        var configCal = {
+            locale: configuracaoCalendarios,
+            singleDatePicker: true,
+            autoUpdateInput: false,
+            showDropdowns: true,
+            startDate: dataSt,
+            maxDate: valMax,
+            minDate: valMin,
+            drops: "up"
+        };
+        $(this).daterangepicker(configCal).on('apply.daterangepicker', function (ev, picker) {
+            $(this).val(picker.startDate.format('DD/MM/YYYY'));
+        });
+    });
+
+}
+function validaValor(e) {
+    var limMax = parseInt($(e).attr("data-max-val"));
+    var limMin = parseInt($(e).attr("data-min-val"));
+    var valIni = Number($(e).attr("data-initial-val").replace(',', '.'));
+
+    if (limMax !== limMin) {
+        var valAtual = parseInt($(e).attr("data-precision")) ? $(e).maskMoney('unmasked')[0] : parseInt($(e).val().replace('.', ''));
+        console.log(valAtual)
+        console.log(valIni)
+        console.log($(e).hasClass('attrNum'))
+        console.log($(e).val())
+        var valAtu = valAtual <= limMax && valAtual >= limMin ? valAtual.toString().replace('.', ',') : valIni.toString().replace('.', ',');
+        //$(this).data().initail.toFixed(2).replace('.', ',');
+        $(e).attr("data-initial-val", valAtu);
+        $(e).val(valAtu).maskMoney('mask');
+
+    }
+
+    //$(".attributo-cad").bootstrapSwitch('state', false, true);
+    //$("#cbTipoDado").selectpicker('val', '');
+}
+function criAttrLista(mult, val, opt, obr, id) {
+    var classesCb = obr ? ' validarAttr' : '', multiple = mult ? ' multiple ' : '';
+    var sourceAttr = '<select name="cbAttr' + id + '" id="cbAttr' + id + '" class="selectpicker show-tick form-control listAttr pull-right' + classesCb + '" ' + multiple + 'data-width="100%" data-size="auto">';
+    if (!mult && !val) sourceAttr += '<option data-hidden="true"></option>';
+    for (var i = 0; i < opt.length; i++) {
+        if (val && val === opt[i].descricao) {
+            sourceAttr += "<option selected data-tokens='" + opt[i].token + "' value='" + opt[i].valor + "'>" + opt[i].descricao + "</option>"
+        } else if (opt[i].dadosAdicionais[0] === "0" || opt[i].dadosAdicionais[0] === "1") {
+            var selectedOpt = parseInt(opt[i].dadosAdicionais[0]) ? ' selected' : '';
+            sourceAttr += "<option data-tokens='" + opt[i].token + "' value='" + opt[i].valor + "'" + selectedOpt + ">" + opt[i].descricao + "</option>"
+        } else {
+            sourceAttr += "<option data-tokens='" + opt[i].token + "' value='" + opt[i].valor + "'>" + opt[i].descricao + "</option>"
+        }
+    }
+    sourceAttr += '</select>';
+    return sourceAttr;
+}
+function retornaContainerAttr(desc, obr, id, elementoCont, tipo) {
+    var classeObrigatorio = obr ? '<span class="obrigatorio"> *</span>' : '';
+    var novoAttr = '<div class="col-md-3 col-sm-6 col-xs-12">' +
+        '<div class="form-group">' +
+        '<label class="form-label">' + toTitleCase(desc) + '</label>' + classeObrigatorio +
+        '<div class="controls">' +
+        elementoCont +
+        '</div></div></div>';
+    var painelAppend = tipo ? $("#pnlAttrPed") : $("#pnlAttrProd");
+    //var painelAppend = $("#pnlAttrProd") ;
+    if (painelAppend.find('.row').length) {
+        var ultimaLinha = painelAppend.find('.row:last')
+        if (ultimaLinha.find('div.col-md-3.col-sm-3.col-xs-12').length !== 4) {
+            ultimaLinha.append(novoAttr)
+        } else {
+            novoAttr = '<div class="row">' + novoAttr + '</div>'
+            painelAppend.append(novoAttr);
+        }
+    } else {
+        novoAttr = '<div class="row">' + novoAttr + '</div>'
+        painelAppend.append(novoAttr);
+    }
+}
+function carregaAtributosPorOrdem(elementos, combos, ordemCarga, isPedido) {
+    for (var i = 0; i < ordemCarga.length; i++) {
+        if (ordemCarga[i]) {
+            var elAttr = criAttrLista(combos[0].multiplo, combos[0].valorDef, combos[0].opcoes, combos[0].obrigatorio, combos[0].idTipoAtributo);
+            retornaContainerAttr(combos[0].descricao, combos[0].obrigatorio, combos[0].idTipoAtributo, elAttr, isPedido);
+            combos.shift();
+        } else {
+            var validar = elementos[0].obrigatorio ? ' validarAttr' : '';
+            var elAttr = retornaElementoAtributo(validar, elementos[0].tipo, elementos[0].valorDef, elementos[0].idTipoAtributo, elementos[0].precisao, elementos[0].maximo, elementos[0].minimo);
+            retornaContainerAttr(elementos[0].descricao, elementos[0].obrigatorio, elementos[0].idTipoAtributo, elAttr, isPedido);
+            elementos.shift();
+        }
+    }
+}
+function retornaStatusTextoTit(status) {
+    var retorno = '';
+    switch (status) {
+        case 'A':
+            retorno = 'Aberto';
+            break;
+        case 'C':
+            retorno = 'Cancelado';
+            break;
+        case 'F':
+            retorno = 'Pendente';
+            break;
+        case 'L':
+            retorno = 'Liberado';
+            break;
+    }
+    return retorno;
 }

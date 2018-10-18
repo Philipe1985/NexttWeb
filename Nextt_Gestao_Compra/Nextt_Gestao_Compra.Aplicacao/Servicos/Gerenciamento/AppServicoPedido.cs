@@ -56,6 +56,15 @@ namespace Nextt_Gestao_Compra.Aplicacao.Servicos.Gerenciamento
         {
             return _servicoPedido.ClonarPedido(parametros);
         }
+        public List<Atributos> RetornaAtributosCampos(List<Atributos> _listaAttr)
+        {
+            return _servicoPedido.RetornaAtributosCampos(_listaAttr);
+        }
+
+        public List<TipoLista> RetornaAtributosTipoLista(List<Atributos> _listaAttr)
+        {
+            return _servicoPedido.RetornaAtributosTipoLista(_listaAttr);
+        }
 
         public List<GrupoTamanho> RetornaTamanhosAtivo(List<GrupoTamanho> _listaTamanho)
         {

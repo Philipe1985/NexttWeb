@@ -94,6 +94,10 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
                                     .With<ProdutoItem>()
                                     .With<GrupoFilial>()
                                     .With<Grade>()
+                                    .With<GrupoFilial>()
+                                    .With<GrupoFilial>()
+                                    .With<Atributos>()
+                                    .With<Atributos>()
                                     .Executar();
             }
             catch (Exception ex)

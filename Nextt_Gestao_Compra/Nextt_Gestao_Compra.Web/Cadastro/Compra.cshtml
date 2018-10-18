@@ -17,18 +17,7 @@
 <script src="../Assets/js/modalAvaliacao.js"></script>
 <div class="col-md-12 col-sm-12 col-xs-12" id="principal">
     <div class="row">
-        @*<div class="col-md-4 col-sm-12 col-xs-12">
-                <div class="form-group">
-                    <label id="lblStatusPed" style="padding-top:5px !important;text-align:right !important" class="control-label col-md-6">Status do Pedido</label>
-                    <div class="col-md-6">
-                        <button type="button" class="btn btn-primary btn-block btnStatus ocultarElemento"><span style="font-size: 12px!important;color:white!important" class="glyphicon glyphicon-pencil"></span>Digitando/Pendente</button>
-                        <button type="button" class="btn btn-danger btn-block btnStatus ocultarElemento"><span style="font-size: 12px!important;color:white!important" class="glyphicon glyphicon-remove"></span> Cancelado</button>
-                        <button type="button" class="btn btn-warning btn-block btnStatus ocultarElemento"><span style="font-size: 12px!important;color:white!important" class="glyphicon glyphicon-floppy-save"></span> Aberto/Liberado</button>
-                        <button type="button" class="btn btn-success btn-block btnStatus"><span style="font-size: 12px!important;color:white!important" class="glyphicon glyphicon-ok"></span> Aprovado/Concluído</button>
-                    </div>
-                </div>
-            </div>*@
-
+        
         <div id="divPaineisCadastroCompra" class="col-md-12 col-sm-12 col-xs-12">
             <ul class="nav nav-tabs responsive" id="wizard-cad-ped">
                 <li class="active"><a class="deco-none" href="#tabDados"><span class="fa fa-cart-arrow-down"> Fornecedor </span></a></li>
@@ -83,10 +72,10 @@
                                 </div>
                                 <div class="col-md-2 col-sm-12 col-xs-12">
                                     <div id="frmBtnCond" class="form-group ocultarElemento">
-                                        <label id="lblCadCondConcluir" class="form-label">Inserir Condição informada</label>
+                                        <label id="lblCadCondConcluir" class="form-label">Inserir Condição</label>
                                         <div class="controls">
-                                            <button type="button" class="btn btn-success addCond">Confirmar</button>
-                                            <button type="button" class="btn btn-danger clearTxtCond">Cancelar</button>
+                                            <button type="button" class="btn btn-success addCond"><i class="fa fa-check" aria-hidden="true"></i></button>
+                                            <button type="button" class="btn btn-danger clearTxtCond"><i class="fa fa-ban" aria-hidden="true"></i></button>
                                         </div>
                                     </div>
                                 </div>
@@ -109,7 +98,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-2 col-sm-12 col-xs-12">
+                                <div class="col-md-3 col-sm-12 col-xs-12">
                                     <div class="form-group">
                                         <label id="lblEntregaPed" class="form-label">Prazo da Entrega</label>
                                         <div class="controls">
@@ -117,7 +106,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-2 col-sm-12 col-xs-12">
+                                <div class="col-md-3 col-sm-12 col-xs-12">
                                     <div class="form-group">
                                         <label id="lblEntregaFinalPed" class="form-label">Tolerância de Atraso</label>
                                         <div class="controls">
@@ -133,14 +122,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-2 col-sm-12 col-xs-12">
-                                    <div class="form-group">
-                                        <label id="lblAtrPed" class="form-label">Atributo Pedido</label>
-                                        <div class="controls">
-                                            <input type="text" id="txtAtrPed" class="form-control" />
-                                        </div>
-                                    </div>
-                                </div>
+
                             </div>
                             <div class="row">
                                 <div class="col-md-12 col-sm-12 col-xs-12">
@@ -152,6 +134,12 @@
                             </div>
                         </div>
                     </fieldset>
+                    <fieldset id="frmAttrPed" class="collapsible">
+                        <legend class="blockClick" id="lgdFrmCompra">Atributos de Pedido</legend>
+                        <div id="pnlAttrPed" class="field-body container-fluid">
+                        </div>
+                    </fieldset>
+
                     <div class="row">
                         <div class="pull-right">
                             <button type="button" class="btn btn-danger cancel-change">Cancelar</button>
@@ -528,6 +516,11 @@
                                     </div>
 
                                 </div>
+                            </div>
+                        </fieldset>
+                        <fieldset id="frmAttrProd" class="collapsible">
+                            <legend class="blockClick" id="lgdFrmCompra">Atributos de Produto</legend>
+                            <div id="pnlAttrProd" class="field-body container-fluid">
                             </div>
                         </fieldset>
                         <hr>

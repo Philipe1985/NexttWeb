@@ -13,7 +13,7 @@ namespace Nextt_Gestao_Compra.Dominio.Interfaces.Servico.Gerenciamento
         List<IEnumerable> RetornaDadosPrePedido(Parametros parametros);
         List<IEnumerable> RetornaCargaInicialCadNovo(Parametros parametros);
         List<IEnumerable> RetornaGruposCadastrados();
-        List<IEnumerable> AtualizaCargaTamanho(Parametros parametros);
+        List<GrupoTamanho> AtualizaCargaTamanho(Parametros parametros);
         List<IEnumerable> RetornaFiliaisDistribuicao(Parametros parametros);
         List<string> RetornaDescricaoCor(List<Cor> _listaCores);
         List<GrupoTamanho> RetornaTamanhosAtivo(List<GrupoTamanho> _listaTamanho);
@@ -22,6 +22,8 @@ namespace Nextt_Gestao_Compra.Dominio.Interfaces.Servico.Gerenciamento
         List<FotoProduto> RetornaFotosProduto(Parametros parametros);
         FotoProduto SalvarFotosProduto(FotoProduto fotoJson);
         int GravarPedido(string pedidoJson);
+        List<TipoLista> RetornaAtributosTipoLista(List<Atributos> _listaAttr);
+        List<Atributos> RetornaAtributosCampos(List<Atributos> _listaAttr);
 
 
     }

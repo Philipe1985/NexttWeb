@@ -34,7 +34,7 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
         private void ValidaQtdPacksDistribuido(int qtdCompradoPack)
         {
             var qtdDistribuida = GruposDistribuir.Sum(x => x.Filiais.Sum(y => y.QtdePack));
-            if (qtdDistribuida != qtdCompradoPack)
+             if (qtdDistribuida != qtdCompradoPack)
             { throw new Exception("Quantidade de packs retornadas no pack " + IDPedidoPack +
                 " incompativel com a quantidade de packs a distribuir. \r\n Qtd total no pack:" + qtdCompradoPack+
                 "\r\n Qtd total nos grupos:" + qtdDistribuida); }

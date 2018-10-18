@@ -840,18 +840,53 @@ div.dataTables_wrapper {
     }
 }
 
-@media only screen and (orientation:landscape) {
+@media only screen and (orientation:landscape) and (orientation:portrait) {
 
-    @media (max-width: 768px) {
+    @media (min-width: 768px) and (min-width:681px) {
         .col-xs-6, .col-sm-6 {
-            width: 50% !important;
+            width: 31.623931623931625% !important;
+        }
+
+            .col-xs-6:nth-child(2n+0), .col-sm-6:nth-child(2n+0) {
+                margin-right: 2.564102564102564% !important;
+            }
+
+            .col-xs-6:nth-child(3n+0), .col-sm-6:nth-child(3n+0) {
+                margin-right: 0 !important;
+            }
+    }
+
+    @media (max-width: 680px) and (min-width:601px) {
+        .col-xs-6, .col-sm-6 {
+            float: left !important;
+            margin-right: 2.564102564102564% !important;
+            width: 48.717948717948715% !important;
+        }
+
+            .col-xs-6:nth-child(2n+0), .col-sm-6:nth-child(2n+0) {
+                margin-right: 0 !important;
+            }
+    }
+
+    @media (max-width: 600px) {
+        .col-xs-6, .col-sm-6 {
+            width: 100% !important;
+            margin-bottom: 1rem !important;
         }
     }
 
-    @media (max-width: 680px) {
+    @media (min-width: 992px) and (max-width:1024px) {
         .col-xs-6, .col-sm-6 {
-            width: 100% !important;
+            width: 23.076923076923077% !important;
         }
+
+            .col-xs-6:nth-child(3n+0), .col-sm-6:nth-child(3n+0) {
+                margin-right: 2.564102564102564% !important;
+            }
+
+            .col-xs-6:nth-child(4n+0), .col-sm-6:nth-child(4n+0) {
+                margin-right: 0 !important;
+            }
     }
 }
 
@@ -1571,8 +1606,9 @@ div.panel-heading {
     @page {
         size: A4; /* auto is the initial value */
         margin: margin: 10mm 15mm 10mm 15mm; /* margin you want for the content */
-         /* this affects the margin in the printer settings */
+        /* this affects the margin in the printer settings */
     }
+
     .page-break {
         page-break-after: always !important;
     }
@@ -1699,6 +1735,33 @@ ial.nav-pills > li {
 .bootstrap-select.btn-group.show-tick .dropdown-menu li a span.glyphicon {
     margin-top: 5px !important;
     font-size: 15px !important;
+}
+
+.bs-container.bootstrap-select.btn-group.show-tick .dropdown-menu li.disabled a span.check-mark {
+    position: absolute !important;
+    display: inline-block !important;
+    right: 15px !important;
+}
+
+    .bs-container.bootstrap-select.btn-group.show-tick .dropdown-menu li.disabled a span.check-mark:before {
+        content: "\e014" !important;
+        color: rgba(255, 0, 0, 0.5) !important;
+    }
+
+.btn.active span.nonCheckBoxAllow {
+    display: none;
+}
+
+.btn.active span.checkBoxAllow {
+    display: inline;
+}
+
+.btn span.nonCheckBoxAllow {
+    display: inline;
+}
+
+.btn span.checkBoxAllow {
+    display: none;
 }
 
 .bootstrap-select.btn-group.disabled, .bootstrap-select.btn-group > .disabled {
@@ -1861,16 +1924,20 @@ ial.nav-pills > li {
 td.qtdPack, td.qtdPackCadastrado, td.qtdPackFilial {
     background: white !important;
 }
-#gruposCadastrados_wrapper table.dataTable.no-footer{
+
+#gruposCadastrados_wrapper table.dataTable.no-footer {
     border-bottom: none !important;
-    
 }
 
 td.grupoOperacao, th.grupoOperacao {
     background: #eeeeee !important;
     border: none !important;
-    width: 130px!important;
-    
+    width: 75px !important;
+    /*padding: 4px 17px 4px 4px !important;*/
+}
+
+td.descGrp, th.descGrp, td.partGrp, th.partGrp {
+    width: 75px !important;
     /*padding: 4px 17px 4px 4px !important;*/
 }
 

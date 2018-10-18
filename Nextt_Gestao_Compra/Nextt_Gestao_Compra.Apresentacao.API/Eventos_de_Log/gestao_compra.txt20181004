@@ -1,0 +1,19 @@
+
+ERROR 2018-10-04 19:29:46 - Erro ao Cadastrar Grupo
+System.Exception: RepositorioGrupo.CadastrarGrupo: 
+Procedure or function 'pr_consulta_filiais_por_grupo_GESTAO_COMPRAS' expects parameter '@grupo', which was not supplied.
+   em Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento.RepositorioGrupo.CadastrarGrupo(String grpJson) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Repositorios\Gerenciamento\RepositorioGrupo.cs:linha 58
+   em Nextt_Gestao_Compra.Dominio.Servicos.Gerenciamento.ServicoGrupo.CadastrarGrupo(String grpJson) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Dominio\Servicos\Gerenciamento\ServicoGrupo.cs:linha 29
+   em Nextt_Gestao_Compra.Aplicacao.Servicos.Gerenciamento.AppServicoGrupo.CadastrarGrupo(String grpJson) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Servicos\Gerenciamento\AppServicoGrupo.cs:linha 29
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Grupo.GerenciamentoAplicacaoGrupo.SalvarGrupoNovo(IAppServicoGrupo servicoGrupo, GrupoAtualizarVM objGrupo) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Grupo\GerenciamentoAplicacaoGrupo.cs:linha 47
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Cadastro.GrupoController.CadastrarGrupo(GrupoAtualizarVM grupoCadastrarVM) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Cadastro\GrupoController.cs:linha 75
+
+ERROR 2018-10-04 23:32:22 - Erro ao Recupera Filiais por Grupo
+System.Exception: Existe grupo retornado sem a coluna 'IDGrupoFilial' definida para ele.
+   em Nextt_Gestao_Compra.Aplicacao.ViewModel.FabricaViewModel.Criar(GrupoFilial grupo) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\ViewModel\FabricaViewModel.cs:linha 182
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Grupo.GerenciamentoAplicacaoGrupo.<>c__DisplayClass1_0.<RetornaFiliaisPorGrupo>b__0(GrupoFilial x) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Grupo\GerenciamentoAplicacaoGrupo.cs:linha 31
+   em System.Linq.Enumerable.WhereSelectListIterator`2.MoveNext()
+   em System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
+   em System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Grupo.GerenciamentoAplicacaoGrupo.RetornaFiliaisPorGrupo(IAppServicoGrupo servicoGrupo, ParametrosVM parametroVM, FabricaViewModel fabrica) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Grupo\GerenciamentoAplicacaoGrupo.cs:linha 31
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Cadastro.GrupoController.RecuperaFiliaisPorGrupo(ParametrosVM parametrosVM) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Cadastro\GrupoController.cs:linha 42
