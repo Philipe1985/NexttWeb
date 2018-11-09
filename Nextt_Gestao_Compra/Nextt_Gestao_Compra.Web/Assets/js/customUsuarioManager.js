@@ -187,7 +187,6 @@ function carregarUsuario() {
 
                 $(".ckbGrid").bootstrapSwitch();
                 $(".ckbGrid").each(function () {
-    
                     $(this).bootstrapSwitch('state', $(this).is(":checked"));
                 });
                 settings.oLanguage.oPaginate.sPrevious = "Anterior";

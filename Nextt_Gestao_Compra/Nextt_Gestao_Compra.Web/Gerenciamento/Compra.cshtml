@@ -3,7 +3,7 @@
 }
 <script src="../Assets/js/customProdutoManager.js"></script>
 <div class="col-md-12 col-sm-12 col-xs-12" id="principal">
-    
+
     <div class="row">
         <div class="col-md-12 col-sm-12 col-xs-12" style="text-align:center">
             <h5 class="form-label"><strong>Selecione os Filtros Abaixo para Pesquisar Produtos Cadastrados</strong></h5>
@@ -67,11 +67,11 @@
             <div class="form-group">
                 <h5 class="form-label text-center">Clique na operação desejada para o produto:</h5>
                 <div class="controls">
-                    
+
                     <button id="btnCadastrarProduto" class="btn btn-info " onclick="cadastrarNovoProduto()">
                         <i class="fa fa-shopping-bag" aria-hidden="true"> Cadastrar Novo Produto</i>
                     </button>
-                    
+
                     <button id="btnCadastrarCompra" class="btn btn-success pull-right" onclick="validaCadastrarNovasCompras()">
                         <i class="fa fa-cart-plus" aria-hidden="true"> Comprar Produtos Selecionados</i>
                     </button>
@@ -88,31 +88,31 @@
 
         </div>
         @*<div id="divOcultaColuna" class="col-md-3 col-sm-12 col-xs-12 ocultarElemento">
-            <div class="form-group">
-                <h5 for="drpOcultaColuna" class="control-label">Marque as colunas/grupos para ocultar da tabela:</h5>
-                <div class="controls">
-                    <select id="drpOcultaColuna" class="selectpicker show-tick form-control" multiple
-                            data-count-selected-text="Ocultando {0} de {1} colunas" data-select-header="true" 
-                            title="Selecione as colunas..." data-width="100%" data-size="7" data-selected-text-format="count > 0">
-                        <optgroup label="Produto">
-                            <option value="2">Código Original</option>
-                            <option value="4">Descrição Reduzida</option>
-                        </optgroup>
-                        <optgroup label="Marca">
-                            <option value="5">Códgo</option>
-                            <option value="6">Descrição</option>
-                        </optgroup>
-                        <optgroup label="Fornecedor">
-                            <option value="7">Código</option>
-                            <option value="8">Razão Social</option>
-                            <option value="9">Nome Fantasia</option>
-                            <option value="10">Referência</option>
-                            <option value="11">CNPJ</option>
-                        </optgroup>
-                    </select>
+                <div class="form-group">
+                    <h5 for="drpOcultaColuna" class="control-label">Marque as colunas/grupos para ocultar da tabela:</h5>
+                    <div class="controls">
+                        <select id="drpOcultaColuna" class="selectpicker show-tick form-control" multiple
+                                data-count-selected-text="Ocultando {0} de {1} colunas" data-select-header="true"
+                                title="Selecione as colunas..." data-width="100%" data-size="7" data-selected-text-format="count > 0">
+                            <optgroup label="Produto">
+                                <option value="2">Código Original</option>
+                                <option value="4">Descrição Reduzida</option>
+                            </optgroup>
+                            <optgroup label="Marca">
+                                <option value="5">Códgo</option>
+                                <option value="6">Descrição</option>
+                            </optgroup>
+                            <optgroup label="Fornecedor">
+                                <option value="7">Código</option>
+                                <option value="8">Razão Social</option>
+                                <option value="9">Nome Fantasia</option>
+                                <option value="10">Referência</option>
+                                <option value="11">CNPJ</option>
+                            </optgroup>
+                        </select>
+                    </div>
                 </div>
-            </div>
-        </div>*@
+            </div>*@
 
     </div>
     <div class="row">
@@ -122,6 +122,7 @@
                     <h3 class="panel-title">Selecione os Produtos para Cadastrar Novos Pedidos</h3>
                 </div>
                 <div id="" class="panel-body">
+                    <div class="pagination-holder clearfix pull-right"></div>
                     <div class="col-md-12 col-sm-12 col-xs-12 table-responsive" style="max-height:60vh;overflow:auto">
                         <table id="tabelaProdutos" cellpadding="0" cellspacing="0" style="width:100%;" class="table-tools cell-border hover table cell nowrap stripe compact pretty">
                             <thead>

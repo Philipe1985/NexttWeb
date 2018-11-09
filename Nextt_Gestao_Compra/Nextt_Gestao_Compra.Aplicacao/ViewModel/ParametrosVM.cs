@@ -4,6 +4,8 @@
     {
         public string Marcas { get; set; }
         public string Secoes { get; set; }
+        public string Segmentos { get; set; }
+        public string Paginas { get; set; }
         public string Especies { get; set; }
         public string IDFornecedor { get; set; }
         public string IDGrupo { get; set; }

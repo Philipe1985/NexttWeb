@@ -10,6 +10,8 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
     {
         public List<ComboFiltroVM> Fornecedores { get; set; }
         public List<ComboFiltroVM> Secoes { get; set; }
+        public List<ComboFiltroVM> Segmentos { get; set; }
+        public List<ComboFiltroVM> GruposFiliais { get; set; }
         public List<ComboFiltroVM> Marcas { get; set; }
         public List<ComboFiltroVM> Especies { get; set; }
         public List<ComboFiltroVM> FormaPgto { get; set; }
@@ -98,6 +100,10 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
             Cores = pedidoServico.RetornaCoresPrincipais(cores).Select(x => fabrica.Criar(x)).ToList();
             DadosPaleta = new PaletaDadosVM(pedidoServico.RetornaCSSCor(cores), pedidoServico.RetornaDescricaoCor(cores));
         }
-       
+        public FiltrosPesquisa(List<Segmento> segmentos, FabricaViewModel fabrica)
+        {
+            Segmentos = segmentos.Select(x => fabrica.Criar(x)).ToList();
+        }
+
     }
 }

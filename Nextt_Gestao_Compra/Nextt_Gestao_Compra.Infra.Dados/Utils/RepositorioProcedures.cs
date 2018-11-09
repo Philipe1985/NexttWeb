@@ -44,9 +44,14 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Utils
                 {
                     connection.Open();
                     var command = connection.CreateCommand();
-                    
+
                     command.CommandTimeout = 0;
                     command.CommandText = "EXEC " + _storedProcedure;
+                    if (_storedProcedure.IndexOf("SELECT") >= 0)
+                    {
+                        command.CommandText = _storedProcedure;
+                    }
+
                     using (var reader = command.ExecuteReader())
                     {
                         if (reader.FieldCount == 0)

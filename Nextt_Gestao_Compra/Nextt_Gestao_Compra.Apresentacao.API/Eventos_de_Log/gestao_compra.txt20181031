@@ -1,0 +1,39 @@
+
+ERROR 2018-10-31 09:42:47 - Erro ao Recuperar Filiais dos Grupos
+System.Exception: RepositorioCompra.RetornaFiliaisDistribuicao: 
+Error converting data type varchar to int.
+   em Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento.RepositorioCompra.RetornaFiliaisDistribuicao(Parametros parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Repositorios\Gerenciamento\RepositorioCompra.cs:linha 213
+   em Nextt_Gestao_Compra.Dominio.Servicos.Gerenciamento.ServicoCompra.RetornaFiliaisDistribuicao(Parametros parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Dominio\Servicos\Gerenciamento\ServicoCompra.cs:linha 80
+   em Nextt_Gestao_Compra.Aplicacao.Servicos.Gerenciamento.AppServicoCompra.RetornaFiliaisDistribuicao(Parametros parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Servicos\Gerenciamento\AppServicoCompra.cs:linha 84
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Compra.GerenciadorAplicacaoCompra.RetornaGruposFiliaisDistribuicao(IAppServicoCompra compraServico, ParametrosVM parametroVM) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Compra\GerenciadorAplicacaoCompra.cs:linha 35
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Gerenciamento.CompraController.BuscaFiliaisGrupo(ParametrosVM parametro) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Gerenciamento\CompraController.cs:linha 109
+
+ERROR 2018-10-31 09:50:37 - Erro ao Recuperar Filiais dos Grupos
+System.Exception: RepositorioCompra.RetornaFiliaisDistribuicao: 
+Error converting data type varchar to int.
+   em Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento.RepositorioCompra.RetornaFiliaisDistribuicao(Parametros parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Repositorios\Gerenciamento\RepositorioCompra.cs:linha 213
+   em Nextt_Gestao_Compra.Dominio.Servicos.Gerenciamento.ServicoCompra.RetornaFiliaisDistribuicao(Parametros parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Dominio\Servicos\Gerenciamento\ServicoCompra.cs:linha 80
+   em Nextt_Gestao_Compra.Aplicacao.Servicos.Gerenciamento.AppServicoCompra.RetornaFiliaisDistribuicao(Parametros parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Servicos\Gerenciamento\AppServicoCompra.cs:linha 84
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Compra.GerenciadorAplicacaoCompra.RetornaGruposFiliaisDistribuicao(IAppServicoCompra compraServico, ParametrosVM parametroVM) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Compra\GerenciadorAplicacaoCompra.cs:linha 35
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Gerenciamento.CompraController.BuscaFiliaisGrupo(ParametrosVM parametro) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Gerenciamento\CompraController.cs:linha 109
+
+ERROR 2018-10-31 09:54:36 - Erro ao Recuperar Filiais dos Grupos
+System.Exception: RepositorioCompra.RetornaFiliaisDistribuicao: 
+Error converting data type varchar to int.
+   em Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento.RepositorioCompra.RetornaFiliaisDistribuicao(Parametros parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Repositorios\Gerenciamento\RepositorioCompra.cs:linha 213
+   em Nextt_Gestao_Compra.Dominio.Servicos.Gerenciamento.ServicoCompra.RetornaFiliaisDistribuicao(Parametros parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Dominio\Servicos\Gerenciamento\ServicoCompra.cs:linha 80
+   em Nextt_Gestao_Compra.Aplicacao.Servicos.Gerenciamento.AppServicoCompra.RetornaFiliaisDistribuicao(Parametros parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Servicos\Gerenciamento\AppServicoCompra.cs:linha 84
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Compra.GerenciadorAplicacaoCompra.RetornaGruposFiliaisDistribuicao(IAppServicoCompra compraServico, ParametrosVM parametroVM) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Compra\GerenciadorAplicacaoCompra.cs:linha 35
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Gerenciamento.CompraController.BuscaFiliaisGrupo(ParametrosVM parametro) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Gerenciamento\CompraController.cs:linha 109
+
+ERROR 2018-10-31 10:04:44 - Erro ao Recuperar Filiais dos Grupos
+System.Exception: RepositorioCompra.RetornaFiliaisDistribuicao: 
+Invalid length parameter passed to the LEFT or SUBSTRING function.
+Invalid length parameter passed to the LEFT or SUBSTRING function.
+The statement has been terminated.
+The statement has been terminated.
+   em Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento.RepositorioCompra.RetornaFiliaisDistribuicao(Parametros parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Repositorios\Gerenciamento\RepositorioCompra.cs:linha 213
+   em Nextt_Gestao_Compra.Dominio.Servicos.Gerenciamento.ServicoCompra.RetornaFiliaisDistribuicao(Parametros parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Dominio\Servicos\Gerenciamento\ServicoCompra.cs:linha 80
+   em Nextt_Gestao_Compra.Aplicacao.Servicos.Gerenciamento.AppServicoCompra.RetornaFiliaisDistribuicao(Parametros parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Servicos\Gerenciamento\AppServicoCompra.cs:linha 84
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Compra.GerenciadorAplicacaoCompra.RetornaGruposFiliaisDistribuicao(IAppServicoCompra compraServico, ParametrosVM parametroVM) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Compra\GerenciadorAplicacaoCompra.cs:linha 35
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Gerenciamento.CompraController.BuscaFiliaisGrupo(ParametrosVM parametro) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Gerenciamento\CompraController.cs:linha 109

@@ -2,7 +2,7 @@
 $(document).ready(function () {
     $(window).on("load", carregar);
     $(document).on('click', '.inicioPedido', function (e) {
-        
+
         var linha = $(this).closest('tr');
         var idEditar = tbProdutoCadastrar.row($(linha)).data().codProduto;
         var statudEditar = tbProdutoCadastrar.row($(linha)).data().status;
@@ -20,7 +20,7 @@ $(document).ready(function () {
         } else {
             erroCadCompra('Esta compra já foi finalizada e não pode ser alterada.', "alertProdListaCompra");
         }
-        
+
     });
     $('#btnVoltarGerenciarCompras').click(function (event) {
         var dadosNovoProd = JSON.parse(sessionStorage.getItem("produtosLista"))[0];
@@ -84,6 +84,7 @@ $(document).ready(function () {
 });
 function carregar() {
     var carga = sessionStorage.getItem("produtosLista");
+
     if (!carga) {
         localStorage.setItem("erro", "<strong>Acesso Não Autorizado!</strong> É necessário seguir o fluxo de cadastro para acessar os próximos passos.");
         window.location = "../gerenciamento/compra.cshtml";
@@ -91,6 +92,7 @@ function carregar() {
         carga = JSON.parse(carga);
         if (!carga[0].cadastrarNovo) {
             if (validaComprasPendentes(carga)) {
+                console.log(carga)
                 inicializarTbProdutoCadastrar(carga);
                 var $menuTitulo = $(".navbar.navbar-default.navbar-fixed-top");
                 $menuTitulo.find('.navbar-header .navbar-center').text('Lista de Compras');
@@ -102,7 +104,7 @@ function carregar() {
                 sessionStorage.removeItem('produtosLista');
                 sessionStorage.removeItem("produtosComprarSelecionados");
                 sessionStorage.removeItem("compra");
-                window.location = "../gerenciamento/compra.cshtml";
+                //window.location = "../gerenciamento/compra.cshtml";
             }
         }
         if (localStorage.getItem("erro") !== null) {
@@ -129,7 +131,7 @@ function inicializarTbProdutoCadastrar(dadosCarga) {
         scrollY: '65vh',
         "columnDefs": [
             {
-                "targets": [2, 3, 4, 5],
+                "targets": [3, 4, 5, 6],
                 //"orderable": false,
                 'className': 'dt-body-left'
             },
@@ -147,6 +149,7 @@ function inicializarTbProdutoCadastrar(dadosCarga) {
         destroy: true,
         data: dadosCarga,
         columns: [
+            { "data": "idFornecedor", visible: false },
             {
                 "data": 'imagem',
                 "render": function (data, type, row, meta) {
@@ -188,9 +191,9 @@ function inicializarTbProdutoCadastrar(dadosCarga) {
                 "render": function (data, type, row, meta) {
                     if (type === 'display') {
                         if (data) {
-                            return '<input type="checkbox" disabled checked class="ckbCadCompra" data-on-color="success" data-off-color="danger" data-on-text="Pendente" data-off-text="Digitando">';
+                            return '<input type="checkbox" checked class="ckbCadCompra" data-on-color="success" data-off-color="danger" data-on-text="Pendente" data-off-text="Digitando">';
                         } else {
-                            return '<input type="checkbox" disabled class="ckbCadCompra" data-on-color="success" data-off-color="danger" data-on-text="Pendente" data-off-text="Digitando">';
+                            return '<input type="checkbox" class="ckbCadCompra" data-on-color="success" data-off-color="danger" data-on-text="Pendente" data-off-text="Digitando">';
                         }
                     } else {
                         return data;
@@ -200,13 +203,20 @@ function inicializarTbProdutoCadastrar(dadosCarga) {
             {
                 "data": null,
                 "defaultContent": '<button class="btn btn-primary inicioPedido">' +
-                '<i class="fa fa-shopping-cart" aria-hidden="true"> Comprar</i>' +
-                '</button>'
+                    '<i class="fa fa-shopping-cart" aria-hidden="true"> Comprar</i>' +
+                    '</button>'
             }
 
         ],
         "drawCallback": function (settings) {
             $(".ckbCadCompra").bootstrapSwitch();
+            $(".ckbCadCompra").each(function () {
+                $(this).bootstrapSwitch('state', $(this).is(":checked"));
+                $(this).bootstrapSwitch('toggleDisabled',true)
+                //if (!$(this).is(":disabled")) {
+                   
+                //}
+            });
         }
 
     });

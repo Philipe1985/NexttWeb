@@ -1,5 +1,8 @@
 ﻿var tbProduto;
 var specialKeys = new Array();
+var objRefSelecionados = {};
+var paginasMarcadas = [];
+var prodMarcados = [];
 specialKeys.push(8); //Backspace
 specialKeys.push(46); //Delete
 specialKeys.push(96); //numpad 0
@@ -26,8 +29,58 @@ $(document).ready(function () {
 
     $(document).on('switchChange.bootstrapSwitch', '.ckbGridProd', function (event, state) {
         var linha = $($(this).closest('tr'));
-        console.log(state)
         tbProduto.row(linha).data().selecionado = state;
+        var dadoSelecionado = tbProduto.row(linha).data();
+        console.log(dadoSelecionado)
+        var contem = false;
+
+        if (state) {
+            prodMarcados.push(dadoSelecionado);
+            paginasMarcadas.map(obj => {
+                if (obj.pagina === $('.pagination-holder').pagination('getCurrentPage')) {
+                    obj.prodMarcados.push(dadoSelecionado);
+                    contem = true;
+                }
+            });
+            if (!contem) {
+                var inserir = {};
+                inserir.pagina = $('.pagination-holder').pagination('getCurrentPage');
+                inserir.prodMarcados = [];
+                inserir.prodMarcados.push(dadoSelecionado);
+                paginasMarcadas.push(inserir);
+
+            }
+        } else {
+            prodMarcados = $.grep(prodMarcados, function (el) {
+                var retorno = true;
+                if (el.idProduto === dadoSelecionado.idProduto && el.idFornecedor === dadoSelecionado.idFornecedor) {
+                    retorno = false;
+                }
+
+                return retorno;
+            });
+            paginasMarcadas.map(obj => {
+                if (obj.pagina === $('.pagination-holder').pagination('getCurrentPage')) {
+                    obj.prodMarcados = $.grep(obj.prodMarcados, function (el) {
+                        var retorno = true;
+                        if (el.idProduto === dadoSelecionado.idProduto && el.idFornecedor === dadoSelecionado.idFornecedor) {
+                            retorno = false;
+                        }
+
+                        return retorno;
+                    });
+                    contem = obj.prodMarcados.length === 0;
+                }
+                return obj;
+            });
+            if (contem) {
+                paginasMarcadas = $.grep(paginasMarcadas, function (el) {
+                    return el.pagina !== $('.pagination-holder').pagination('getCurrentPage')
+                });
+            }
+        }
+        console.log(paginasMarcadas)
+        console.log(prodMarcados)
     });
     $(document).on('keyup', '#txtFiltroProdutoCompra', function (e) {
         var keyCode = e.keyCode === 0 ? e.charCode : e.keyCode;
@@ -52,6 +105,9 @@ function buscarProdutosFiltrado() {
     if (!marcas && !secoes && !cnpj) {
         erroCadCompra("Não é permitido filtrar produtos sem selecionar ao menos um parâmetro de pesquisa!", "alertProdCompra");
     } else {
+        objRefSelecionados = {};
+        paginasMarcadas = [];
+        prodMarcados = [];
         if (marcas) objEnvio.marcas = marcas.join(",");
         if (secoes) objEnvio.secoes = secoes.join(",");
         if (especies) objEnvio.especies = especies.join(",");
@@ -156,6 +212,9 @@ function inicializarTbProduto() {
         ],
         "drawCallback": function (settings) {
             $(".ckbGridProd").bootstrapSwitch();
+            $(".ckbGridProd").each(function () {
+                $(this).bootstrapSwitch('state', $(this).is(":checked"));
+            });
         }
 
     });
@@ -169,14 +228,7 @@ function msgErro() {
     });
 }
 function validaCadastrarNovasCompras() {
-    var produtosEscolhidos = tbProduto.rows()
-        .data()
-        .filter(function (dados, index) {
-            return dados.selecionado;
-        })
-        .toArray();
-    if (produtosEscolhidos.length) {
-        sessionStorage.setItem("produtosComprarSelecionados", JSON.stringify(produtosEscolhidos));
+    if (prodMarcados.length) {
         cadastrarNovasCompras();
     } else {
         erroCadCompra("É necessário selecionar ao menos 1 produto para iniciar uma compra!", "alertProdCompra");
@@ -219,7 +271,7 @@ function finalizarOcultacaoColuna() {
 
 }
 function cadastrarNovasCompras() {
-    var result = JSON.parse(sessionStorage.getItem("produtosComprarSelecionados"));
+    var result = prodMarcados;
     $('.selectpicker').selectpicker('hide');
     $(".navbar.navbar-default.navbar-fixed-top").addClass('ocultarElemento');
     $(".bg_load").show();
@@ -227,6 +279,7 @@ function cadastrarNovasCompras() {
     var arrayCarga = [];
     for (var i = 0; i < result.length; i++) {
         var objCarga = {};
+        objCarga.idFornecedor = result[i].idFornecedor;
         objCarga.imagem = 'http://placehold.it/50x50';
         objCarga.idProduto = result[i].idProduto;
         objCarga.codProduto = result[i].codProduto;
@@ -238,15 +291,16 @@ function cadastrarNovasCompras() {
         arrayCarga.push(objCarga);
     }
     sessionStorage.setItem("produtosLista", JSON.stringify(arrayCarga));
+    sessionStorage.setItem("produtosComprarSelecionados", JSON.stringify(result));
     window.location = "../gerenciamento/compraprodutos.cshtml";
 }
 function cadastrarNovoProduto() {
-            $('.selectpicker').selectpicker('hide');
-            $(".navbar.navbar-default.navbar-fixed-top").addClass('ocultarElemento');
-            $(".bg_load").show();
-            $(".wrapper").show();
-            sessionStorage.setItem("cadastroNovo", '1');
-            window.location = "../cadastro/compra.cshtml";
+    $('.selectpicker').selectpicker('hide');
+    $(".navbar.navbar-default.navbar-fixed-top").addClass('ocultarElemento');
+    $(".bg_load").show();
+    $(".wrapper").show();
+    sessionStorage.setItem("cadastroNovo", '1');
+    window.location = "../cadastro/compra.cshtml";
 }
 function carregaFormCompraManager() {
     $("#drpMarc").selectpicker('val', '');
@@ -260,4 +314,42 @@ function carregaFormCompraManager() {
         localStorage.removeItem("erro");
         setTimeout(function () { erroCadCompra(msgFalha, "alertProdCompra"); }, 500);
     }
+}
+function geraPaginacaoGrid(qtdPg) {
+    $('.pagination-holder').pagination({
+        pages: qtdPg,
+        prevText: 'Anterior',
+        nextText: 'Próximo',
+        cssStyle: 'light-theme',
+        hrefTextPrefix: '#pagina-',
+        displayedPages: 2,
+        edges: 1,
+        onPageClick: function (pageNumber, event) {
+            $('.selectpicker').selectpicker('hide');
+            $(".navbar.navbar-default.navbar-fixed-top").addClass('ocultarElemento');
+            $(".bg_load").show();
+            $(".wrapper").show();
+            alteraPagina(atualizaObjetoMudancaPagina(pageNumber));
+        },
+    });
+}
+function validaProdSelPag() {
+    var paginaDados = $.grep(paginasMarcadas, function (el) {
+        return el.pagina === $('.pagination-holder').pagination('getCurrentPage');
+    })[0], dadosMarcados;
+    if (paginaDados) {
+        dadosMarcados = paginaDados.prodMarcados;
+    }
+    return dadosMarcados;
+}
+function atualizaDadosCarga(produtos, atualizarProd) {
+    produtos.map(function (obj) {
+        for (var i = 0; i < atualizarProd.length; i++) {
+            if (obj.idProduto === atualizarProd[i].idProduto && obj.idFornecedor === atualizarProd[i].idFornecedor) {
+                obj.selecionado = true;
+            }
+        }
+        return obj;
+    });
+    return produtos;
 }

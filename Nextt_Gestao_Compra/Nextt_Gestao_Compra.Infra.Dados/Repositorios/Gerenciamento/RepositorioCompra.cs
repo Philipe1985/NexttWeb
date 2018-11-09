@@ -5,7 +5,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlClient;
 using System.Linq;
 
 namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
@@ -40,8 +39,10 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
                                     "', @IDMarca = '" + parametros.Marcas +
                                     "', @ReferenciaForncedor = '" + parametros.ReferenciaFornecedor +
                                     "', @IDFornecedor = '" + parametros.IDFornecedor +
+                                    "', @pagina = '" + parametros.Paginas +
                                     "', @IDProduto = '" + parametros.Codigo + "'")
                                     .With<DadosGerenciamentoProdutoCompra>()
+                                    .With<Paginas>()
                                     .Executar();
             }
             catch (Exception ex)

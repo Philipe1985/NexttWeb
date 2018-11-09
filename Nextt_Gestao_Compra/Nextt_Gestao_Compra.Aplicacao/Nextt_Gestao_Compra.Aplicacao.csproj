@@ -137,14 +137,17 @@
   <ItemGroup>
     <Compile Include="Gerenciador\Compra\GerenciadorAplicacaoCompra.cs" />
     <Compile Include="Gerenciador\Grupo\GerenciamentoAplicacaoGrupo.cs" />
+    <Compile Include="Gerenciador\Movimentacao\GerenciamentoAplicacaoMovimentacao.cs" />
     <Compile Include="Gerenciador\Pedido\GerenciadorAplicacaoPedido.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Servicos\AppServicoPadrao.cs" />
     <Compile Include="Servicos\Gerenciamento\AppServicoCompra.cs" />
     <Compile Include="Servicos\Gerenciamento\AppServicoGrupo.cs" />
+    <Compile Include="Servicos\Gerenciamento\AppServicoMovimentacao.cs" />
     <Compile Include="Servicos\Gerenciamento\AppServicoPedido.cs" />
     <Compile Include="Servicos\Interfaces\Gerenciamento\IAppServicoCompra.cs" />
     <Compile Include="Servicos\Interfaces\Gerenciamento\IAppServicoGrupo.cs" />
+    <Compile Include="Servicos\Interfaces\Gerenciamento\IAppServicoMovimentacao.cs" />
     <Compile Include="Servicos\Interfaces\Gerenciamento\IAppServicoPedido.cs" />
     <Compile Include="Servicos\Interfaces\IAppServicoPadrao.cs" />
     <Compile Include="ViewModel\AtributoElementoVM.cs" />
@@ -168,6 +171,7 @@
     <Compile Include="ViewModel\NovaCorItemProduto.cs" />
     <Compile Include="ViewModel\PackItensVM.cs" />
     <Compile Include="ViewModel\PackVM.cs" />
+    <Compile Include="ViewModel\PaginasGridVM.cs" />
     <Compile Include="ViewModel\PaletaDadosVM.cs" />
     <Compile Include="ViewModel\ParametrosVM.cs" />
     <Compile Include="ViewModel\PedidoAtributoVM.cs" />

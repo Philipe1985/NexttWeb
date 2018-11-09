@@ -8,7 +8,7 @@ $(document).ready(function () {
     }
     jQuery.extend(jQuery.fn.dataTableExt.oSort, {
         "currency-pre": function (a) {
-            a = (a === "-") ? 0 : a.replace(/[^\d\-\,]/g, "").replace(',','.');
+            a = (a === "-") ? 0 : a.replace(/[^\d\-\,]/g, "").replace(',', '.');
             return parseFloat(a);
         },
 
@@ -195,7 +195,7 @@ function atualizarSenha() {
     var titulo = "Alteração de Senha";
     var senhaAtual = $('#txtSenhaAtual').val(), senhaNova = $('#txtSenhaNova').val(), confirmaNovaSenha = $('#txtConfirmaSenhaNova').val(), texto, tipoAlerta = 'warning', mantemModal = false;
     if (senhaAtual === '' || senhaNova === '' || confirmaNovaSenha === '') {
-            texto = "Existem dados em branco. Informe todos os dados antes de alterar a senha.";
+        texto = "Existem dados em branco. Informe todos os dados antes de alterar a senha.";
         modal({
             type: "alert",
             messageText: texto,
@@ -204,7 +204,7 @@ function atualizarSenha() {
         }).done(function (e) { limparModalSenha(); });
     } else {
         if (senhaNova === senhaAtual) {
-                texto = "Sua nova senha deve ser diferente da senha atual.";
+            texto = "Sua nova senha deve ser diferente da senha atual.";
             modal({
                 type: "alert",
                 messageText: texto,
@@ -216,16 +216,16 @@ function atualizarSenha() {
             if (senhaNova === confirmaNovaSenha) {
                 var validadorSenha = (/^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%&*_+.])[0-9a-zA-Z!@#$%&*_+.]{6,}$/);
                 if (validadorSenha.test(senhaNova)) {
-                        waitingDialog.show('Alterando Senha. Aguarde!', { dialogSize: 'lg', progressType: 'warning' });
+                    waitingDialog.show('Alterando Senha. Aguarde!', { dialogSize: 'lg', progressType: 'warning' });
                     alterarSenha(senhaAtual, senhaNova, confirmaNovaSenha);
                 } else {
-                        texto = 'Para cadastrar uma nova senha, é necessário respeitar as seguintes regras:</br></br>' +
-                            '<ul class="fa-ul">' +
-                            '<li><i class="fa-li fa fa-check-square"></i>Deve conter <strong>ao menos 1 letra maiúscula</strong>;</li>' +
-                            '<li><i class="fa-li fa fa-check-square"></i>Deve conter <strong>ao menos 1 letra minúscula</strong>;</li>' +
-                            '<li><i class="fa-li fa fa-check-square"></i>Deve conter <strong>ao menos 1 carácter especial (!, @, #, $, %, &, *, _, + ou .)</strong>;</li>' +
-                            '<li><i class="fa-li fa fa-check-square"></i>Deve conter <strong>no mínimo 6 dígitos</strong>;</li>' +
-                            '</ul>';
+                    texto = 'Para cadastrar uma nova senha, é necessário respeitar as seguintes regras:</br></br>' +
+                        '<ul class="fa-ul">' +
+                        '<li><i class="fa-li fa fa-check-square"></i>Deve conter <strong>ao menos 1 letra maiúscula</strong>;</li>' +
+                        '<li><i class="fa-li fa fa-check-square"></i>Deve conter <strong>ao menos 1 letra minúscula</strong>;</li>' +
+                        '<li><i class="fa-li fa fa-check-square"></i>Deve conter <strong>ao menos 1 carácter especial (!, @, #, $, %, &, *, _, + ou .)</strong>;</li>' +
+                        '<li><i class="fa-li fa fa-check-square"></i>Deve conter <strong>no mínimo 6 dígitos</strong>;</li>' +
+                        '</ul>';
 
                     modal({
                         type: "alert",
@@ -236,7 +236,7 @@ function atualizarSenha() {
                 }
 
             } else {
-                    texto = "Nova senha e confirmação de senha não conferem. Informe o mesmo valor nos dois campos";
+                texto = "Nova senha e confirmação de senha não conferem. Informe o mesmo valor nos dois campos";
                 modal({
                     messageText: texto,
                     type: "alert",
@@ -269,6 +269,17 @@ function voltarHome() {
     $(".bg_load").show();
     $(".wrapper").show();
     window.location = "../home.cshtml";
+}
+function movimentarProduto() {
+    sessionStorage.removeItem('compra');
+    sessionStorage.removeItem("pedidoId");
+    sessionStorage.removeItem("pedidoStatus");
+    sessionStorage.removeItem("cadastroNovo");
+    $(".navbar.navbar-default.navbar-fixed-top").addClass('ocultarElemento');
+    $('.selectpicker').selectpicker('hide');
+    $(".bg_load").show();
+    $(".wrapper").show();
+    window.location = "../gerenciamento/movimentacaoproduto.cshtml";
 }
 
 function desconectarSessao() {
@@ -326,12 +337,12 @@ function cliqueGrupoDpd(el) {
 }
 
 function mudarSenhaModal() {
-        $("#alteraSenhaModalTitulo").html('<i class="fa fa-user"></i>&nbsp;Alterar <strong>Senha</strong>');
-        $("#lblConfirmaSenha").html('Confirme a Nova Senha');
-        $("#lblNovaSenha").html('Informe a Nova Senha');
-        $("#lblSenhaAtual").html('Informe a Senha Atual');
-        $("#btnSalvarSenha").html('<i class="fa fa-check"></i> Alterar');
-        $("#btnCancelarSenha").html('<i class="fa fa-ban"></i> Cancelar');
+    $("#alteraSenhaModalTitulo").html('<i class="fa fa-user"></i>&nbsp;Alterar <strong>Senha</strong>');
+    $("#lblConfirmaSenha").html('Confirme a Nova Senha');
+    $("#lblNovaSenha").html('Informe a Nova Senha');
+    $("#lblSenhaAtual").html('Informe a Senha Atual');
+    $("#btnSalvarSenha").html('<i class="fa fa-check"></i> Alterar');
+    $("#btnCancelarSenha").html('<i class="fa fa-ban"></i> Cancelar');
     $('#modalAlteraSenha').modal({
         backdrop: 'static',
         keyboard: false
@@ -372,10 +383,6 @@ function configuraMascaraMoeda(valor) {
     return (parseFloat(valor)).formatMoney(2, ',', '.');
 }
 
-
-function baixarXMLZipado() {
-    baixarXMLS();
-}
 function configuraMascaraCnpj(v) {
     v = v.replace(/\D/g, ""); //Remove tudo o que não é dígito
     v = v.replace(/^(\d{2})(\d)/, "$1.$2"); //Coloca ponto entre o segundo e o terceiro dígitos
@@ -393,6 +400,14 @@ function recuperaRgb(str) {
         }
     }
     return arrayRetornoTratado.join('/');
+}
+function retornaComboTokem(id) {
+    var retorno = [];
+    $('#' + id + ' option:selected').each(function () {
+        retorno.push($(this).attr("data-tokens").replace(';', ' / '));
+       
+    });
+    return retorno;
 }
 function trataParametroEnvio(arrayParametroEnvio) {
     var retorno = [];
@@ -440,7 +455,7 @@ function formataStringData(data) {
         var mes = data.split("/")[1];
         var ano = data.split("/")[2];
         retorno = ano + '-' + ("0" + mes).slice(-2) + '-' + ("0" + dia).slice(-2);
-    }    
+    }
     return retorno;
     // Utilizo o .slice(-2) para garantir o formato com 2 digitos.
 }
@@ -474,6 +489,15 @@ function redimensionarTabelas() {
         $("span.wait").removeClass('ocultarElemento');
     });
 
+}
+function atualizaObjetoMudancaPagina(pg) {
+    var paramRetorno = JSON.parse(sessionStorage.getItem('parametrosFiltro'));
+    var indicePagina = JSON.parse(sessionStorage.getItem('paginacao'));
+    paramRetorno.paginas = indicePagina.filter(function (el) {
+        return el.paginaNum === pg; // Changed this so a home would match
+    })[0].idReferencias;
+    console.log(paramRetorno)
+    return paramRetorno;
 }
 (function () {
     var addRule;

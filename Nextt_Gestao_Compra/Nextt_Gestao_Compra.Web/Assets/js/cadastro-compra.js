@@ -392,9 +392,6 @@ function validaAbaFotoCamposObrigatorios(parametroTab, evento) {
             validaOperacaoPassoWizard(parametroTab, parametroTab) ?
                 retornoValidado = validacaoAvancarAbaDados() :
                 isValido = false;
-    //if (evento === 'Grade' || evento === 'Pack') {
-    //    isValido = validaAttrCadastrado();
-    //}
     if (isValido && retornoValidado) {
         isValido = false;
         recolheFieldsetDados(retornoValidado.field);

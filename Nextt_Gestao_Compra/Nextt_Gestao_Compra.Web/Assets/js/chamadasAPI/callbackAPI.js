@@ -123,6 +123,96 @@ function carregarEspecie(parametro) {
         }
     });
 }
+function carregarSecoes(parametro) {
+    $.ajax({
+        type: 'POST',
+        crossDomain: true,
+        async: true,
+        cache: false,
+        url: urlApi + 'gerenciamento/movimentacao/RetornaSecoes',
+        data: parametro,
+        beforeSend: function (req) {
+            req.setRequestHeader('Authorization', sessionStorage.getItem("token"));
+        },
+        success: function (result) {
+            console.log(result)
+            var sourceSec = "";
+
+            $.each(result, function (index, value) {
+                sourceSec += "<option data-tokens='" + value.token + "' value='" + value.valor + "'>" + value.descricao + "</option>";
+            });
+            $("#drpSec").html(sourceSec);
+            $("#drpSec").selectpicker("refresh")
+            $(".bg_load").fadeOut();
+            $(".wrapper").fadeOut();
+            var $menuTitulo = $(".navbar.navbar-default.navbar-fixed-top");
+            $menuTitulo.removeClass('ocultarElemento');
+
+            $("div.controls.ocultarElemento").removeClass('ocultarElemento');
+
+        },
+        error: function (erro) {
+            $(".bg_load").fadeOut();
+            $(".wrapper").fadeOut();
+            $('.selectpicker').selectpicker('show');
+            $(".navbar.navbar-default.navbar-fixed-top").removeClass('ocultarElemento');
+            modal({
+                messageText: "Ocorreu um erro durante esta operação, tente novamente.<br/>Caso o erro persista informe o administrador do sistema o horário e data da ocorrencia",
+                type: "alert",
+                modalSize: 'modal-lg',
+                headerText: "Falha Interna",
+                alertType: "warning"
+            });
+        }
+    });
+}
+function carregarFiltrosMovimentacaoProduto() {
+    $.ajax({
+        type: 'GET',
+        crossDomain: true,
+        async: true,
+        cache: false,
+        url: urlApi + 'gerenciamento/movimentacao/RecuperaFiltrosMovimentacaoProduto',
+        beforeSend: function (req) {
+            req.setRequestHeader('Authorization', sessionStorage.getItem("token"));
+        },
+        success: function (result) {
+            console.log(result)
+            var sourceSeg = "";
+            var sourceGrupo = "";
+            $.each(result.gruposFiliais, function (index, value) {
+                sourceGrupo += "<option data-tokens='" + value.token + "' value='" + value.valor + "'>" + toTitleCase(value.descricao) + "</option>";
+            });
+            $.each(result.segmentos, function (index, value) {
+                sourceSeg += "<option data-tokens='" + value.token + "' value='" + value.valor + "'>" + value.descricao + "</option>";
+            });
+            $("#drpGrps").html(sourceGrupo);
+            $("#drpSeg").html(sourceSeg);
+            $("#divGrp").removeClass('ocultarElemento');
+            $("#divSeg").removeClass('ocultarElemento');
+            $('.selectpicker').selectpicker('refresh');
+            $(".bg_load").fadeOut();
+            $(".wrapper").fadeOut();
+            var $menuTitulo = $(".navbar.navbar-default.navbar-fixed-top");
+            $menuTitulo.removeClass('ocultarElemento');
+            $menuTitulo.find('.navbar-header .navbar-center').text('Movimentação de Produtos');
+            $("div.controls.ocultarElemento").removeClass('ocultarElemento');
+        },
+        error: function (erro) {
+            $(".bg_load").fadeOut();
+            $(".wrapper").fadeOut();
+            $('.selectpicker').selectpicker('show');
+            $(".navbar.navbar-default.navbar-fixed-top").removeClass('ocultarElemento');
+            modal({
+                messageText: "Ocorreu um erro durante esta operação, tente novamente.<br/>Caso o erro persista informe o administrador do sistema o horário e data da ocorrencia",
+                type: "alert",
+                modalSize: 'modal-lg',
+                headerText: "Falha Interna",
+                alertType: "warning"
+            });
+        }
+    });
+}
 function Logar(un, pw) {
     var dadosLogin = { "grant_type": "password", "username": un, "password": pw };
     $.ajax({
@@ -535,6 +625,7 @@ function cargaInicialGerenciamentoCompra(fluxo) {
 
 }
 function geraCargaProdutoFiltrado(parametro) {
+    sessionStorage.setItem('parametrosFiltro', JSON.stringify(parametro));
     $.ajax({
         type: 'POST',
         crossDomain: true,
@@ -546,6 +637,13 @@ function geraCargaProdutoFiltrado(parametro) {
             req.setRequestHeader('Authorization', sessionStorage.getItem("token"));
         },
         success: function (result) {
+            console.log(result)
+            $('.pagination-holder').pagination('destroy');
+            sessionStorage.setItem('paginacao', JSON.stringify(result.paginasReferencia));
+            if (result.paginasReferencia.length) {
+                geraPaginacaoGrid(result.paginasReferencia.length)
+            }
+
             $("#txtFiltroProdutoCompra").val('');
             tbProduto.columns().visible(true);
             tbProduto.search('').clear();
@@ -555,6 +653,7 @@ function geraCargaProdutoFiltrado(parametro) {
 
         },
         error: function (erro) {
+            console.log(erro)
             $(".bg_load").fadeOut("slow");
             $(".wrapper").fadeOut("slow", function () {
                 $('.selectpicker').selectpicker('show');
@@ -607,7 +706,51 @@ function atualizaCargaFiltroTamanho(parametro) {
         }
     });
 }
+function alteraPagina(parametro) {
+    $.ajax({
+        type: 'POST',
+        crossDomain: true,
+        async: true,
+        cache: false,
+        url: urlApi + 'gerenciamento/compra/GeraDadosProdutoFiltrado',
+        data: parametro,
+        beforeSend: function (req) {
+            req.setRequestHeader('Authorization', sessionStorage.getItem("token"));
+        },
+        success: function (result) {
+            console.log(result)
+            if (paginasMarcadas.length) {
+                var atualizarProd = validaProdSelPag();
+                if (atualizarProd) {
+                    result.produtos = atualizaDadosCarga(result.produtos, atualizarProd)
+                }
+                
+            }
+            $("#txtFiltroProdutoCompra").val('');
+            tbProduto.columns().visible(true);
+            tbProduto.search('').clear();
+            tbProduto.data(tbProduto).rows.add(result.produtos);
+            tbProduto.draw();
+            $(".bg_load").fadeOut();
+            $(".wrapper").fadeOut();
+            $('.selectpicker').selectpicker('show');
+            $(".navbar.navbar-default.navbar-fixed-top").removeClass('ocultarElemento');
+        },
+        error: function (erro) {
+            $(".bg_load").fadeOut("slow");
+            $(".wrapper").fadeOut("slow", function () {
+                $('.selectpicker').selectpicker('show');
+            });
 
+            modal({
+                messageText: "Ocorreu um erro durante esta operação, tente novamente.<br/>Caso o erro persista informe o administrador do sistema o horário e data da ocorrencia",
+                type: "alert",
+                headerText: "Falha Interna",
+                alertType: "warning"
+            });
+        }
+    });
+}
 function atualizaFiltroCadastroNovoProdutoCompra(parametro) {
 
     $.ajax({
@@ -1104,7 +1247,7 @@ function salvarPedido(parametro) {
                 sessionStorage.setItem("idProdutoImagens", result);
                 $('#imgUpload').fileinput('upload');
             }
-           var statusSalvar= sessionStorage.getItem("salvarStatus");
+            var statusSalvar = sessionStorage.getItem("salvarStatus");
             sessionStorage.removeItem("salvarStatus");
             sessionStorage.removeItem("pedidoId");
             sessionStorage.removeItem("pedidoStatus")
@@ -1752,7 +1895,7 @@ function atualizarStatus(parametro) {
     if ($('#modalDetalhamentoPedido')) {
         $('#modalDetalhamentoPedido').modal('hide');
     }
-    
+
     $('.selectpicker').selectpicker('hide');
     $(".navbar.navbar-default.navbar-fixed-top").addClass('ocultarElemento');
     $(".bg_load").show();
@@ -1785,6 +1928,47 @@ function atualizarStatus(parametro) {
             }
 
             //Criar abas dos grupos
+        },
+        error: function (erro) {
+            $(".bg_load").fadeOut("slow");
+            $(".wrapper").fadeOut("slow", function () {
+                $('.selectpicker').selectpicker('show');
+            });
+
+            modal({
+                messageText: "Ocorreu um erro durante esta operação, tente novamente.<br/>Caso o erro persista informe o administrador do sistema o horário e data da ocorrencia",
+                type: "alert",
+                headerText: "Falha Interna",
+                alertType: "warning"
+            });
+        }
+    });
+}
+function cargaMovimentacaoProdutoOTB(parametro) {
+    $.ajax({
+        type: 'POST',
+        crossDomain: true,
+        async: true,
+        cache: false,
+        url: urlApi + 'gerenciamento/compra/BuscaFiliaisGrupo',
+        data: parametro,
+        beforeSend: function (req) {
+            req.setRequestHeader('Authorization', sessionStorage.getItem("token"));
+        },
+        success: function (result) {
+            console.log(result);
+            $("#divOTBRelatorio").removeClass('ocultarElemento');
+            carregaAbaSegmento(result);
+            geraDadosRelatorioOTB(result, 'Seg',segRelGerado)
+            carregaAbaSecao(result);
+            geraDadosRelatorioOTB(result, 'Sec', secRelGerado)
+            carregaAbaEspecie(result);
+            geraDadosRelatorioOTB(result,'Esp',espRelGerado)
+            $(".selectpicker").selectpicker('show');
+            var $menuTitulo = $(".navbar.navbar-default.navbar-fixed-top");
+            $menuTitulo.removeClass('ocultarElemento');
+            $(".bg_load").fadeOut("slow");
+            $(".wrapper").fadeOut("slow");
         },
         error: function (erro) {
             $(".bg_load").fadeOut("slow");

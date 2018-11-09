@@ -1655,6 +1655,7 @@
     <Content Include="Assets\js\jquery-1.11.1.min.js" />
     <Content Include="Assets\js\jquery-1.12.4.js" />
     <Content Include="Assets\js\jquery-migrate-1.2.1.js" />
+    <Content Include="Assets\js\movProduto.js" />
     <Content Include="Assets\js\painel-principal.js" />
     <Content Include="Assets\js\modalAvaliacao.js" />
     <Content Include="Assets\js\modalDinamico.js" />
@@ -2262,6 +2263,9 @@
     <Content Include="Assets\js\plugins\range-datepicker\moment.js" />
     <Content Include="Assets\js\plugins\range-datepicker\moment.min.js" />
     <Content Include="Assets\js\plugins\retina.js" />
+    <Content Include="Assets\js\plugins\simple-pagination\jquery.simplePagination.js" />
+    <Content Include="Assets\js\plugins\simple-pagination\LICENSE.txt" />
+    <Content Include="Assets\js\plugins\simple-pagination\simplePagination.css" />
     <Content Include="Assets\js\plugins\tab-wizard-responsive\responsive-tabs.js" />
     <Content Include="Assets\js\primeiro-acesso.js" />
     <Content Include="Assets\js\progressBarCustom.js" />
@@ -2453,6 +2457,9 @@
     <Content Include="Gerenciamento\CompraProdutos.cshtml" />
     <Content Include="Gerenciamento\GrupoFiliais.cshtml" />
     <Content Include="Gerenciamento\Configuracao.cshtml" />
+    <Content Include="Gerenciamento\MovimentacaoProduto.cshtml" />
+    <Content Include="Assets\js\plugins\simple-pagination\bower.json" />
+    <Content Include="Assets\js\plugins\simple-pagination\README.md" />
     <None Include="packages.config" />
     <Content Include="Gerenciamento\Pedido.cshtml" />
     <Content Include="Cadastro\Compra.cshtml" />

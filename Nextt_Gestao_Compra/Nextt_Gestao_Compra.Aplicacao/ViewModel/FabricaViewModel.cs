@@ -58,6 +58,15 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
                 DescricaoEspecie = dadosCadastro.DescricaoEspecie
             };
         }
+        public ComboFiltroVM Criar(Segmento segmento)
+        {
+            return new ComboFiltroVM
+            {
+                Valor = segmento.IDSegmento + "-" + segmento.Descricao.Trim(),
+                Token = segmento.IDSegmento + "-" + segmento.Descricao,
+                Descricao = segmento.Descricao.Trim()
+            };
+        }
 
         public ComboFiltroVM Criar(Fornecedor fornecedor)
         {
@@ -97,8 +106,8 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
             return new ComboFiltroVM
             {
                 Valor = secao.IDSecao + "-" + secao.Descricao.Trim(),
-                Token = secao.IDSegmento + " " + secao.IDSecao + " " + secao.Descricao.Trim(),
-                Descricao = secao.Descricao
+                Token = secao.IDSegmento + "-" + secao.IDSecao + ";" + secao.Descricao.Trim(),
+                Descricao = secao.Descricao.Trim()
             };
         }
         public ComboFiltroVM Criar(Especie especie)
@@ -106,7 +115,7 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
             return new ComboFiltroVM
             {
                 Valor = especie.IDEspecie + "-" + especie.DescricaoEspecie.Trim(),
-                Token = especie.IDSecao + " " + especie.IDEspecie + " " + especie.DescricaoSecao.Trim() + " " + especie.DescricaoEspecie.Trim(),
+                Token = especie.IDSecao + "-" + especie.DescricaoSecao.Trim() + ";" + especie.IDEspecie + "-"  + especie.DescricaoEspecie.Trim(),
                 Descricao = especie.DescricaoEspecie.Trim()
             };
         }

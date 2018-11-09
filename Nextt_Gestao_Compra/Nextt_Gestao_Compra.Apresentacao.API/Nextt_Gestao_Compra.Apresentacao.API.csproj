@@ -187,6 +187,7 @@
     <Compile Include="Controllers\Cadastro\PedidoController.cs" />
     <Compile Include="Controllers\Cadastro\GrupoController.cs" />
     <Compile Include="Controllers\Gerenciamento\CompraController.cs" />
+    <Compile Include="Controllers\Gerenciamento\MovimentacaoController.cs" />
     <Compile Include="Controllers\PadraoController.cs" />
     <Compile Include="Controllers\UsuarioController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -203,6 +204,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Movimentacao\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="log4net.config">

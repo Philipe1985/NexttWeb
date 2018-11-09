@@ -1,0 +1,128 @@
+﻿@{
+    Layout = "~/_LayoutPrincipal.cshtml";
+}
+<script src="../Assets/js/movProduto.js"></script>
+<script src="../Assets/js/calculosRelatorio.js"></script>
+<div class="col-md-12 col-sm-12 col-xs-12" id="principal">
+
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12" style="text-align:center">
+            <div id="alertProdMov" class="alertCustomizado alert-danger" style="display:none"></div>
+        </div>
+        <div id="divAnoFiltro" class="col-md-2 col-sm-4 col-xs-12">
+            <div class="form-group">
+                <h5 class="form-label">Selecione o Período</h5>
+                <div class="controls">
+                    <input type="text" name="filtroAno" id="filtroAno" class="form-control" />
+                </div>
+            </div>
+        </div>
+        <div id="divGrp" class="col-md-2 col-sm-4 col-xs-12 ocultarElemento">
+            <div class="form-group">
+                <h5 class="form-label">Selecione os Grupos:</h5>
+                <div class="controls">
+                    <select id="drpGrps" class="selectpicker show-tick form-control" data-show-subtext="true" multiple data-live-search="true"
+                            data-count-selected-text="Selecionado {0} de {1}'" title="0 selecionados..."
+                            data-width="100%" data-select-header="true" data-size="7" data-selected-text-format="count > 2"></select>
+                </div>
+            </div>
+        </div>
+        <div id="divSeg" class="col-md-2 col-sm-4 col-xs-12 ocultarElemento">
+            <div class="form-group">
+                <h5 class="form-label">Selecione as Segmentos:</h5>
+                <div class="controls">
+                    <select id="drpSeg" class="selectpicker show-tick form-control" data-show-subtext="true" multiple data-live-search="true"
+                            data-count-selected-text="Selecionado {0} de {1}" title="0 selecionados..."
+                            data-width="100%" data-select-header="true" data-size="7" data-selected-text-format="count > 2"></select>
+                </div>
+            </div>
+        </div>
+        <div id="divSec" class="col-md-2 col-sm-4 col-xs-12 ocultarElemento">
+            <div class="form-group">
+                <h5 class="form-label">Selecione as Seções:</h5>
+                <div class="controls">
+                    <select id="drpSec" class="selectpicker show-tick form-control" data-show-subtext="true" multiple data-live-search="true"
+                            data-count-selected-text="Selecionado {0} de {1}" title="0 selecionados..."
+                            data-width="100%" data-select-header="true" data-size="5" data-selected-text-format="count > 2"></select>
+                </div>
+            </div>
+        </div>
+        <div id="divEsp" class="col-md-2 col-sm-4 col-xs-12 ocultarElemento">
+            <div class="form-group">
+                <h5 class="form-label">Selecione as Espécies:</h5>
+                <div class="controls">
+                    <select id="drpEsp" class="selectpicker show-tick form-control" data-show-subtext="true" multiple data-live-search="true"
+                            data-count-selected-text="Selecionado {0} de {1}" title="0 selecionados..."
+                            data-width="100%" data-select-header="true" data-size="5" data-selected-text-format="count > 2"></select>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2 col-sm-4 col-xs-12">
+            <div class="form-group">
+                <h5 class="form-label">Pesquisar:</h5>
+                <div class="controls">
+                    <button id="btnBuscarProduto" class="btn btn-primary " onclick="buscaDadosRelatorioEspecies()">
+                        <i class="fa fa-search" aria-hidden="true"> Iniciar Pesquisa</i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div id="divOTBRelatorio" class="col-md-12 col-sm-12 col-xs-12 ocultarElemento">
+            <ul id="tabOTBRelatorio" class="nav nav-pills">
+                <li>
+                    <a href="#tabSegmento" style="border: 1px solid blue !important;" role="tab" data-toggle="tab">Segmento</a>
+                </li>
+                <li>
+                    <a href="#tabSecao" style="border: 1px solid blue !important;" role="tab" data-toggle="tab">Seção</a>
+                </li>
+                <li>
+                    <a href="#tabEspecie" style="border: 1px solid blue !important;" role="tab" data-toggle="tab">Espécie</a>
+                </li>
+            </ul>
+            <div id="contentOTBRelatorio" class="tab-content clearfix" style="border: 1px solid blue !important;">
+                <div class="tab-pane" id="tabSegmento">
+                    <div class="spanSeg">
+                        
+                    </div>
+                </div>
+                <div class="tab-pane" id="tabSecao">
+                    <div class="spanSec">
+                        
+                    </div>
+                </div>
+                <div class="tab-pane" id="tabEspecie">
+                    <div class="spanEsp">
+                        
+                    </div>
+                </div>
+            </div>
+            </div>
+    </div>
+    <div class="bg_load"></div>
+    <div class="wrapper">
+        <div class="inner">
+            <span class="wait">
+                <span>A</span>
+                <span>g</span>
+                <span>u</span>
+                <span>a</span>
+                <span>r</span>
+                <span>d</span>
+                <span>e</span>
+            </span>
+            <span class="resized ocultarElemento">
+                <span>A</span>
+                <span>j</span>
+                <span>u</span>
+                <span>s</span>
+                <span>t</span>
+                <span>a</span>
+                <span>n</span>
+                <span>d</span>
+                <span>o</span>
+            </span>
+        </div>
+    </div>
+</div>

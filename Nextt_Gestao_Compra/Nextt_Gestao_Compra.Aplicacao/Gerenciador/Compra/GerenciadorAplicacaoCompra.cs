@@ -1,12 +1,11 @@
 ﻿using AutoMapper;
+using Newtonsoft.Json;
 using Nextt_Gestao_Compra.Aplicacao.Servicos.Interfaces.Gerenciamento;
 using Nextt_Gestao_Compra.Aplicacao.ViewModel;
 using Nextt_Gestao_Compra.Dominio.Entidades;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Newtonsoft.Json;
-using System.Collections;
 
 namespace Nextt_Gestao_Compra.Aplicacao.Gerenciador.Compra
 {
@@ -87,9 +86,12 @@ namespace Nextt_Gestao_Compra.Aplicacao.Gerenciador.Compra
         public static RetornoProdutosVM RetornaProdutoFiltrado(IAppServicoCompra compraServico, ParametrosVM parametroVM)
         {
             var filtro = Mapper.Map<ParametrosVM, Parametros>(parametroVM);
-            var dados = compraServico.BuscaProdutosFiltrados(filtro).ElementAt(0).Cast<DadosGerenciamentoProdutoCompra>();
-            var listaRetorno = Mapper.Map<IEnumerable<DadosGerenciamentoProdutoCompra>, IEnumerable<ProdutosFiltradosVM>>(dados).ToList();
-            return new RetornoProdutosVM(listaRetorno);
+            var dados = compraServico.BuscaProdutosFiltrados(filtro);
+            var produtosRetorno = dados.ElementAt(0).Cast<DadosGerenciamentoProdutoCompra>();
+            var paginasRetorno = RetonaListaPagina(dados.ElementAt(1).Cast<Paginas>().ToList());
+            var listaRetorno = Mapper.Map<IEnumerable<DadosGerenciamentoProdutoCompra>, IEnumerable<ProdutosFiltradosVM>>(produtosRetorno).ToList();
+
+            return new RetornoProdutosVM(listaRetorno, paginasRetorno);
         }
 
         public static IEnumerable<RetornoEspecieFiltroVM> RetornaEspeciesFiltradas(IAppServicoCompra compraServico, ParametrosVM parametroVM, FabricaViewModel fabrica)
@@ -142,7 +144,7 @@ namespace Nextt_Gestao_Compra.Aplicacao.Gerenciador.Compra
             var listaClassificacao = dadoPre.ElementAt(6).Cast<ClassificacaoFiscal>().OrderBy(x => x.CodigoFiscal).Select(x => fabrica.Criar(x)).ToList();
             var condicoesOrdenadas = dadoPre.ElementAt(5).Cast<CondicaoPgto>().OrderBy(x => x.Condicao.Split('+').Length).Select(x => x).ToList();
             var listaCondicao = ComparaCondicaoPagamento(condicoesOrdenadas).Select(x => fabrica.Criar(x)).ToList();
-            var listaAttrProd = dadoPre.ElementAt(11).Cast<Atributos>().OrderBy(x=>x.Ordem).ToList();
+            var listaAttrProd = dadoPre.ElementAt(11).Cast<Atributos>().OrderBy(x => x.Ordem).ToList();
             var listaAttrPed = dadoPre.ElementAt(12).Cast<Atributos>().OrderBy(x => x.Ordem).ToList();
             var ordemPed = listaAttrPed.Where(x => x.IDTipoAtributo == x.IDTipoAtributoKey).Select(x => x.Lista).ToList();
             var ordemProd = listaAttrProd.Where(x => x.IDTipoAtributo == x.IDTipoAtributoKey).Select(x => x.Lista).ToList();
@@ -415,6 +417,15 @@ namespace Nextt_Gestao_Compra.Aplicacao.Gerenciador.Compra
             return retorno;
 
 
+        }
+        private static List<PaginasGridVM> RetonaListaPagina(List<Paginas> paginas)
+        {
+            var retorno = new List<PaginasGridVM>();
+            if (paginas.Count > 1)
+            {
+                retorno = paginas.Select(x => new PaginasGridVM(x)).ToList();
+            }
+            return retorno;
         }
         #endregion
     }

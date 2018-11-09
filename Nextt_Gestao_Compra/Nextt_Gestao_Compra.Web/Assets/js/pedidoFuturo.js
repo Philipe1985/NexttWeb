@@ -1081,8 +1081,8 @@ function addGrupo(novoPack) {
                     var objEnvio = dadosPck;
                     var param = {};
                     param.idGrupo = $('#drpGrupoDistribuicao').val().join(',');
-                    param.secoes = $('#drpSec').val().split('-')[0];
-                    param.especies = $('#drpEsp').val().split('-')[0];
+                    param.secoes = $('#drpSec').val().split('-')[0] + '-' + $('#drpSec').val().split('-')[2].trim() ;
+                    param.especies = $('#drpEsp').val().split('-')[0] + '-' + $('#drpEsp').val().split('-')[2].trim();
                     var dataEntregaPrev = new Date(moment($('#txtDtEntregaPed').data('daterangepicker').endDate.toDate()).add(-1, 'month'));
                     if (cadastroNovoSession) {
                         param.mes = dataEntregaPrev.getMonth() + 1
@@ -1916,7 +1916,7 @@ function criarTabGrupoFilial(grupos, indexPack) {
     $('.span' + indexPack + ' .tabbable.tabs-left').remove();
     $('.span' + indexPack).append($.parseHTML(ulHtml));
     if ($('#tabDadosDist' + indexPack + ' li').length > 1) {
-        $('#tabDadosDist' + indexPack + ' li').children('a').first().click();
+            $('#tabDadosDist' + indexPack + ' li').children('a').first().click();
         $(".selectpicker").selectpicker();
         var dataEntregaPrev = new Date(moment($('#txtDtEntregaPed').data('daterangepicker').endDate.toDate()).add(-1, 'month'));
         var dataInicialDist = '';

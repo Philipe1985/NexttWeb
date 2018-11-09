@@ -108,7 +108,7 @@ $(function () {
 });
 
 function salvarDadosCompra(comFeedback) {
-    var dadosOrigemCompra = JSON.parse(sessionStorage.getItem("produtosLista")), codProd = $("#txtProdutoPed").val();
+    var dadosOrigemCompra = JSON.parse(sessionStorage.getItem("produtosLista")), codProd = $("#txtProdutoPed").val(), codForn = $("#drpCNPJ").val();
     if (sessionStorage.getItem("cadastroNovo")) {
         continuarCompraProdNovo()
     } else {
@@ -118,10 +118,11 @@ function salvarDadosCompra(comFeedback) {
         sessionStorage.removeItem('pedidoId');
         if (dadosOrigemCompra) {
             for (var i = 0; i < dadosOrigemCompra.length; i++) {
-                if (dadosOrigemCompra[i].codProduto === codProd) {
+                if (dadosOrigemCompra[i].codProduto === codProd && dadosOrigemCompra[i].idFornecedor === parseInt(codForn)) {
                     dadosOrigemCompra[i].status = true;
                 }
             }
+            
             sessionStorage.setItem("produtosLista", JSON.stringify(dadosOrigemCompra));
             window.location = "../gerenciamento/compraprodutos.cshtml";
         } else if (compraId) {

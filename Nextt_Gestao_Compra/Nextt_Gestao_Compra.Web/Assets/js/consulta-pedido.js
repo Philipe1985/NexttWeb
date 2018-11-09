@@ -10,7 +10,6 @@ $(document).ready(function () {
         objEnvio = {};
         objEnvio.codigo = $(this).closest('tr').children().eq(1).html();
         objEnvio.idUsuarios = sessionStorage.getItem("id_usuario");
-        //funcaoInativa();
 
         $('.selectpicker').selectpicker('hide');
         $(".navbar.navbar-default.navbar-fixed-top").addClass('ocultarElemento');
@@ -18,7 +17,7 @@ $(document).ready(function () {
         $(".wrapper").show();
         criarClonePedido(objEnvio);
     });
-    
+
     $(document).on('click', '.validarPedido', function (e) {
         objEnvio = {};
         objEnvio.codigo = $(this).closest('tr').children().eq(1).html();
@@ -52,7 +51,7 @@ $(document).ready(function () {
 
         }
         carregaPedidoSintetico(objEnvio)
-        
+
         $('#modalBodyDetalhePedido').addClass('ocultarElemento');
         $('.btnFooters').addClass('ocultarElemento');
         $("#modalLoad").show();
@@ -116,12 +115,6 @@ $(document).ready(function () {
         $(".bg_load").show();
         $(".wrapper").show();
         window.location = "../cadastro/compra.cshtml";
-        //carregaPedidoSintetico(objEnvio)
-        //tabelaPackNF = [];
-        //$('#divPackCadastradosNF').html('');
-        //criarTabelaPackCadastradoNF(100);
-        //criaDistribuicaoFilialNF();
-
     });
     $(document).on('keydown', '.txtInteiro', function (e) {
         if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110]) !== -1 ||
@@ -142,10 +135,6 @@ $(document).ready(function () {
         alwaysShowCalendars: true,
         buttonClasses: "btn btn-small",
         cancelClass: "btn-primary",
-        //startDate: moment().add(-12, 'month').startOf('month'),
-        //endDate: moment().endOf("month"),
-        //opens: 'left',
-        //linkedCalendars: false,
         ranges: {
             "Na Próxima Semana": recuperaRange('semana'),
             "No Próxima Mês": recuperaRange('mes'),
@@ -167,10 +156,6 @@ $(document).ready(function () {
         alwaysShowCalendars: true,
         buttonClasses: "btn btn-small",
         cancelClass: "btn-primary",
-        //startDate: moment().add(-12, 'month').startOf('month'),
-        //endDate: moment().endOf("month"),
-        //opens: 'left',
-        //linkedCalendars: false,
         ranges: {
             "Na Próxima Semana": recuperaRange('semana'),
             "No Próxima Mês": recuperaRange('mes'),
@@ -189,14 +174,14 @@ $(document).ready(function () {
         if (ret) {
             tbPedido.search(this.value).draw();
         }
-       else if (keyCode === 13) {
+        else if (keyCode === 13) {
             document.activeElement.blur();
             $("#fTxtBusca").blur();
         }
     });
     $(document).on('click', '#btnPrint', function (e) {
         printElement(document.getElementById("modalBodyDetalhePedido"));
-      
+
     });
     $('#drpSec').on('change', function (e) {
         var objParam = {};
@@ -231,7 +216,7 @@ function printElement(elem) {
     $printSection.innerHTML = "";
     $printSection.appendChild(domClone);
     window.print();
-    
+
 }
 
 function carregarPackNF(id, dados, colunas, tbIndice) {
@@ -258,17 +243,7 @@ function carregarPackNF(id, dados, colunas, tbIndice) {
         columns: colunas
     })
     recalculaTotalColunas(tbCadPackNF);
-
-    //$('#frmPack' + tbIndice + '.collapsible').collapsible({
-    //    collapsed: false,
-    //    animation: true,
-    //    speed: "medium"
-    //});
-    //$('#frmPack' + qtdTabela + '.collapsible').children("legend").click();
-
 }
-
-
 function carregar() {
     sessionStorage.removeItem('compra');
     sessionStorage.removeItem("pedidoId");
@@ -305,7 +280,7 @@ function carregarPedidos() {
                 'type': 'date-eu'
             },
             {
-                "targets": [7,8],
+                "targets": [7, 8],
                 "orderable": true,
                 'type': 'date-eu'
             },
@@ -514,7 +489,7 @@ function carregarDistribuicaoFilialNF(idTabelaDist, colunmsPk, dadosPk) {
             if (dataIndex === 1) {
                 $(row).find('td:not(:first)').addClass('qtdPackFilial');
                 $(row).find('td:last').removeClass('qtdPackFilial');
-                
+
             }
 
         },
@@ -535,14 +510,14 @@ function carregarDistribuicaoFilialNF(idTabelaDist, colunmsPk, dadosPk) {
     tbDistribuicao.columns.adjust().draw();
 }
 
-function geraCargaDistPackFiliaisNF(grupos, indexPack,custo) {
+function geraCargaDistPackFiliaisNF(grupos, indexPack, custo) {
     var totalItemPack = $("#tblPackCad" + indexPack).dataTable().api().column(".sumItem")
         .data()
         .reduce(function (a, b) {
             return a + b;
         });
     for (var i = 0; i < grupos.length; i++) {
-        
+
         var colreg = geraColunaDistribuicaoNF(grupos[i].filiais);
 
         var dadosOrganizado = transposeObjetoDistribuicaoPack(grupos[i].filiais)
@@ -597,7 +572,7 @@ function criaObjConsulta() {
     var user = [];
     objConsulta.codigo = $('#txtCodProd').val();
     objConsulta.referenciaFornecedor = $('#txtRefProd').val();
-    objConsulta.descricaoProduto= $('#txtDescProd').val();
+    objConsulta.descricaoProduto = $('#txtDescProd').val();
     objConsulta.idPedido = $('#txtIdPed').val();
     $('#cbUsuario option:selected').each(function () {
         user.push($(this).val());

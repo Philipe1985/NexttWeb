@@ -40,6 +40,29 @@ function recalculaTotalLinhaFiliais(dados) {
     dados[10].total = qtFil ? dados[10].total / qtFil : 0;
     return dados;
 }
+function recalculaTotalLinhaMov(dados) {
+    dados[0].total = 0;
+    dados[1].total = 0;
+    dados[2].total = 0;
+    dados[3].total = 0;
+    dados[4].total = 0;
+    dados[5].total = 0;
+    dados[6].total = 0;
+    var qtFil = 0;
+    $.each(dados[1], function (key, val) {
+        if (key.indexOf("filial") > -1) {
+            dados[1].total += dados[1][key];
+            dados[3].total += dados[3][key];
+            dados[4].total += dados[4][key];
+            dados[5].total += dados[5][key];
+            dados[6].total += dados[6][key];
+            qtFil++
+        }
+    });
+    dados[2].total = dados[3].total ? dados[4].total / dados[3].total : 0;
+    dados[6].total = qtFil ? dados[6].total / qtFil : 0;
+    return dados;
+}
 function recalculaTotalColunas(tabelaApi) {
     tabelaApi.columns(".numInt").every(function () {
         $(this.footer()).html(
