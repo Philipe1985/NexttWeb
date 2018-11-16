@@ -438,43 +438,29 @@ function excluirGrupoPack(grupoExcluido, gruposCadastrados, totalPacks) {
     });
     return grpsNovos;
 }
-function recalcPckFilialAlterada(filialAtualizada, filiais, qtdAtualizar, qtdGrp) {
+function recalcPckFilialAlterada(filialAtualizada, filiais, qtdAtualizar, qtdGrp, variavelQtd, totalDistGrp) {
     var iniciarAjuste = false, valorAjuste = 0, indiceAjuste = 0;
     for (var i = 0; i < filiais.length; i++) {
         if (filiais[i].idFilial === filialAtualizada) {
-            var qtdParticipacaoFilial = filiais[i].qtdParticipacaoFilial;
-            if (!qtdParticipacaoFilial) {
-                qtdParticipacaoFilial = filiais[i].qtdePack;
-            }
-            valorAjuste = qtdParticipacaoFilial - qtdAtualizar;
-            if (filiais[i].qtdParticipacaoFilial) {
-                filiais[i].qtdParticipacaoFilial = qtdAtualizar;
-            } else {
-                filiais[i].qtdePack = qtdAtualizar;
-            }
+            var qtdParticipacaoFilial = filiais[i][variavelQtd];
+            valorAjuste = (qtdGrp - totalDistGrp) + qtdParticipacaoFilial - qtdAtualizar;
+            filiais[i][variavelQtd] = qtdAtualizar;
             iniciarAjuste = true;
             indiceAjuste = i + 1;
         }
-        if (filiais[i].qtdParticipacaoFilial) {
-            filiais[i].partAtualizada = filiais[i].qtdParticipacaoFilial * 100 / qtdGrp;
-        } else {
-            filiais[i].partAtualizada = filiais[i].qtdePack * 100 / qtdGrp;
-        }
-
+        filiais[i].partAtualizada = filiais[i][variavelQtd] * 100 / qtdGrp;
     }
-    if (filiais.length < indiceAjuste) {
+    if (filiais.length > indiceAjuste && valorAjuste) {
         while (valorAjuste !== 0) {
             for (var j = indiceAjuste; j < filiais.length; j++) {
                 if (iniciarAjuste && valorAjuste > 0) {
-                    filiais[j].qtdParticipacaoFilial ? filiais[j].qtdParticipacaoFilial += 1 : filiais[j].qtdePack += 1;
+                    filiais[j][variavelQtd] += 1;
                     valorAjuste -= 1;
-                } else if (iniciarAjuste && valorAjuste < 0 && filiais[j].qtdParticipacaoFilial > 0) {
-                    filiais[j].qtdParticipacaoFilial ? filiais[j].qtdParticipacaoFilial -= 1 : filiais[j].qtdePack -= 1;
+                } else if (iniciarAjuste && valorAjuste < 0 && filiais[j][variavelQtd] > 0) {
+                    filiais[j][variavelQtd] -= 1;
                     valorAjuste += 1;
                 }
-                filiais[j].qtdParticipacaoFilial ?
-                    filiais[j].partAtualizada = filiais[j].qtdParticipacaoFilial * 100 / qtdGrp :
-                    filiais[j].partAtualizada = filiais[j].qtdePack * 100 / qtdGrp;
+                filiais[j].partAtualizada = filiais[j][variavelQtd] * 100 / qtdGrp;
             }
         }
     } else if (valorAjuste !== 0) {
@@ -486,7 +472,7 @@ function recalcPackGrpsFiliais(idPack, grupos) {
     for (var i = 0; i < grupos.length; i++) {
         var hashTab = 'grupo' + grupos[i].idGrupo + '_' + idPack;
         $('.nav-pills a[href="#' + hashTab + '"]').tab('show');
-//aqui
+        //aqui
         var colreg = geraColunaDistribuicao(grupos[i].filiais);
 
         var dadosOrganizado = transposeObjetoDistribuicaoPack(grupos[i].filiais);

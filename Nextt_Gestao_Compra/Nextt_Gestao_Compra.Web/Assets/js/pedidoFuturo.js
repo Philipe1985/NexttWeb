@@ -6,10 +6,10 @@ var currentDate = twoDigitDate + "/" + twoDigitMonth + "/" + fullDate.getFullYea
 
 var coresGrade = [], coresNovasCadastradas = [], tamanhosGrade = [], tamanhoTexto = [], referenciaGrade = [], tabelaPackCadastrados = [], tamanhoConfeccao = [],
     tamanhoCalcados = [], specialKeys = new Array(), tbDistribuicao, valorInicialPed, tabelaPack, tabResponsive, dadoPackOriginal, gridNome, titPack = undefined,
-    avanca = false, dadosPck;
+    avanca = false, retorna = false, dadosPck;
 
 var current = new Date().getMonth(),
-    slides, currentIndex, grupoRelacionar;
+    slides, currentIndex, grupoRelacionar, gradeAlterada = false;
 
 specialKeys.push(8); //Backspace
 specialKeys.push(43); // +
@@ -221,7 +221,7 @@ $(document).ready(function () {
         linkedCalendars: false,
         ranges: {
             "Na Próxima Semana": recuperaRange('semana'),
-            "No Próxima Mês": recuperaRange('mes'),
+            "No Próximo Mês": recuperaRange('mes'),
             "Em 3 Meses": recuperaRange('trimestre'),
             "Em 6 Meses": recuperaRange('semestre')
         }
@@ -554,12 +554,13 @@ $(document).ready(function () {
 
     });
     $(document).on('keydown', '.txtInteiro', function (e) {
-        if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110]) !== -1 ||
+        if ($.inArray(e.keyCode, [46, 8, 27, 13, 110]) !== -1 ||
             (e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) ||
             (e.keyCode >= 35 && e.keyCode <= 40)) {
             return;
         }
-        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+
+        if (e.keyCode !== 9 && (e.keyCode < 48 || e.keyCode > 57) && (e.keyCode < 96 || e.keyCode > 105)) {
             e.preventDefault();
         }
     })
@@ -688,6 +689,16 @@ $(document).ready(function () {
         objEnvio.codigo = $('#drpTamanhoCategoria option:checked').attr('data-tokens').split(',')[0];
         geraCargaTamanhos(objEnvio);
     });
+    $('#drpCNPJ').on('change', function (e) {
+        var objEnvio = {};
+        if (parseInt($('#txtIDProd').val()) > 0) {
+            objEnvio.idFornecedor = $('#drpCNPJ').val();
+            objEnvio.codigo = $('#txtIDProd').val();
+            buscaDadosProdFornecedor(objEnvio);
+        }
+
+
+    });
 
     $('#drpSec').on('change', function (e) {
         var objParam = {};
@@ -744,7 +755,6 @@ function carregar() {
             dadosCompraCadastro = JSON.parse(dadosCompraCadastro)[0];
             var objEnvio = {};
             objEnvio.codigo = dadosCompraCadastro.idProduto;
-            objEnvio.idFornecedor = dadosCompraCadastro.idFornecedor;
             carregaImagemProduto(objEnvio);
             geraCargaPrePedido(objEnvio);
         } else if (cadastroNovoSession) {
@@ -759,7 +769,29 @@ function carregar() {
     }
     $(".attributo-cad").bootstrapSwitch();
 }
-
+function atualizaDtEntregaLimite() {
+    var dataRef = $('#txtDtEntregaPed').data('daterangepicker').endDate.toDate();
+    var momentObjStart = moment(dataRef).add(1, 'day');
+    var rangesRed = $('#txtDtEntregaFinalPed').data('daterangepicker').ranges;
+    $.each(rangesRed, function (key, value) {
+        if (key === '+ 1 Dia') {
+            rangesRed[key] = recuperaRangeEntregaFinal('dia')
+        }
+        else if (key === '+ 7 Dias') {
+            rangesRed[key] = recuperaRangeEntregaFinal('semana')
+        }
+        else if (key === '+ 15 Dias') {
+            rangesRed[key] = recuperaRangeEntregaFinal('quinzena')
+        }
+        else if (key === '+ 30 Dias') {
+            rangesRed[key] = recuperaRangeEntregaFinal('mes')
+        }
+    });
+    $('#txtDtEntregaFinalPed').data('daterangepicker').ranges = rangesRed;
+    $('#txtDtEntregaFinalPed').data('daterangepicker').minDate = momentObjStart;
+    $('#txtDtEntregaFinalPed').data('daterangepicker').setStartDate(momentObjStart);
+    $('#txtDtEntregaFinalPed').data('daterangepicker').setEndDate(momentObjStart);
+}
 function recuperaRangeEntregaFinal(parametro) {
     var dtRef = $('#txtDtEntregaPed').data('daterangepicker').endDate.toDate();
     if (parametro === "dia") {
@@ -807,6 +839,7 @@ function reiniciaTbGrade() {
         var tb = $('#tabelaPack2').dataTable().api();
         tb.destroy();
     }
+    gradeAlterada = true;
     $("#tabelaPack2").html(retornoTbGrade);
 }
 function carregarDistribuicaoFilial(idTabelaDist, colunmsPk, dadosPk) {
@@ -1081,8 +1114,8 @@ function addGrupo(novoPack) {
                     var objEnvio = dadosPck;
                     var param = {};
                     param.idGrupo = $('#drpGrupoDistribuicao').val().join(',');
-                    param.secoes = $('#drpSec').val().split('-')[0] + '-' + $('#drpSec').val().split('-')[2].trim() ;
-                    param.especies = $('#drpEsp').val().split('-')[0] + '-' + $('#drpEsp').val().split('-')[2].trim();
+                    param.secoes = $('#drpSec').val().split('-')[0];///+ '-' + $('#drpSec').val().split('-')[2].trim();
+                    param.especies = $('#drpEsp').val().split('-')[0];// + '-' + $('#drpEsp').val().split('-')[2].trim();
                     var dataEntregaPrev = new Date(moment($('#txtDtEntregaPed').data('daterangepicker').endDate.toDate()).add(-1, 'month'));
                     if (cadastroNovoSession) {
                         param.mes = dataEntregaPrev.getMonth() + 1
@@ -1092,8 +1125,12 @@ function addGrupo(novoPack) {
                         param.mes = new Date().getMonth();
                         param.ano = new Date().getFullYear();
                     }
-                    retornaDadosGrpFilDist(param, objEnvio);
+                    $('.selectpicker').selectpicker('hide');
+                    $(".navbar.navbar-default.navbar-fixed-top").addClass('ocultarElemento');
+                    $(".bg_load").show();
+                    $(".wrapper").show();
                     dadosPck = null;
+                    retornaDadosGrpFilDist(param, objEnvio);
                     //finalizaPackCadastrado(objEnvio);
                 }
             },
@@ -1279,28 +1316,27 @@ function atualizaDadosTxtBox() {
                 else
                     $(cell).html(txtref.val());
                 if (param !== parseInt(valorInicialPed)) {
-
                     var tbPrincipal = 'tblPackCad' + gridNome.split('_')[1];
                     var indiceGrupo = parseInt(gridNome.split('_')[0].replace(/\D/g, ""));
                     var idFilialAtualizada = tbPlanejamento.row(row - 1).data()['filial' + col];
+                    var qtdTotalDist = tbPlanejamento.row(row).data().total;
+                    var variavelQtd = camelCase(tbPlanejamento.row(row).data().descricao);
                     //['filial' + col]
                     tabelaPackCadastrados.map(obj => {
                         if (obj.idTabela === tbPrincipal) {
                             for (var i = 0; i < obj.packGrupos.length; i++) {
                                 if (obj.packGrupos[i].idGrupo === indiceGrupo) {
                                     var qtdGrupoEditar = obj.packGrupos[i].qtdParticipacaoGrupo;
-                                    if (!qtdGrupoEditar) {
+                                    if (!qtdGrupoEditar && obj.packGrupos[i].qtdGrupoCadastrada > 0) {
                                         qtdGrupoEditar = obj.packGrupos[i].qtdGrupoCadastrada;
                                     }
-                                    obj.packGrupos[i].filiais = recalcPckFilialAlterada(idFilialAtualizada, obj.packGrupos[i].filiais, param, qtdGrupoEditar);
+                                    obj.packGrupos[i].filiais = recalcPckFilialAlterada(idFilialAtualizada, obj.packGrupos[i].filiais, param, qtdGrupoEditar, variavelQtd, qtdTotalDist);
                                     var dadosOrganizado = transposeObjetoDistribuicaoPack(obj.packGrupos[i].filiais)
-                                    var qtdParticipacaoFilial = dadosOrganizado.qtdParticipacaoFilial;
-                                    if (!qtdParticipacaoFilial) {
-                                        qtdParticipacaoFilial = dadosOrganizado.qtdePack;
-                                    }
+
+
                                     var dadosPk = [
                                         dadosOrganizado.idFilial,
-                                        qtdParticipacaoFilial,
+                                        dadosOrganizado[variavelQtd],
                                         dadosOrganizado.totalItens,
                                         dadosOrganizado.totalCusto,
                                         dadosOrganizado.partAtualizada,
@@ -1311,7 +1347,8 @@ function atualizaDadosTxtBox() {
                                         dadosOrganizado.qtdeCarteira,
                                         dadosOrganizado.vlrMedio
                                     ];
-                                    dadosPck = recalculaTotalLinhaFiliais(dadosPk)
+                                    dadosPk = trataDadosFilial(obj.idTabela.replace('tblPackCad', ''), dadosPk);
+                                    dadosPk = recalculaTotalLinhaFiliais(dadosPk);
 
                                     tbPlanejamento.clear();
                                     tbPlanejamento.data(tbPlanejamento).rows.add(dadosPk);
@@ -1355,12 +1392,27 @@ function atualizaDadosPack() {
             })
             console.log(tabelaPackCadastrados)
         }
+        if (retorna) {
+            var linhaIndice = tbPlanejamento.rows().count() - 1;
+            retorna = false;
+            var proximaLinha = tbPlanejamento.rows(linhaIndice).nodes()[0];//;
+            cell = $(proximaLinha).find('td.qtdPack:last');
+            if ($(cell).html()) {
+                col = $(cell).parent().children().index($(cell));
+                row = $(cell).parent()[0];
+                valorInicial = $(cell).html();
+                $(cell).html(geraEditor(1, valorInicial));
+                $(cell).find('input[type="text"]').focus().select();
+            }
+        }
+
     }
 
 }
 function perdeFoco() {
     var tbPlanejamento = $('#' + gridNome).dataTable().api();
-
+    var totalRows = tbPlanejamento.rows().count() - 1;
+    var linhaIndice = tbPlanejamento.row(row).index();
     var colunaAtualizada = "tamanho" + $(tbPlanejamento.column(col).header()).html();
     var txtref = $('#' + gridNome).find('.txtInteiro')
     var param = parseInt(txtref.val());
@@ -1371,29 +1423,66 @@ function perdeFoco() {
     }
     ((txtref.val() === valorInicial) ? $(cell).html(valorInicial) : $(cell).html(txtref.val()));
     if (param !== parseInt(valorInicial)) {
+        var qtdPackAtual = tbPlanejamento.row(row).data().qtdePack;
         tbPlanejamento.row(row).data()[colunaAtualizada] = param;
         recalculaTotalLinha(tbPlanejamento);
         recalculaTotalColunas(tbPlanejamento);
-        tbPlanejamento.rows().invalidate().draw()
-        recalculaDistCustosPackAtualizado(gridNome);
+        tbPlanejamento.rows().invalidate().draw();
+        if (qtdPackAtual > 0) {
+            recalculaDistCustosPackAtualizado(gridNome);
+        }
     }
     if (avanca) {
         avanca = false;
+
         cell = $(cell).next('td.qtdPack');
+        if (linhaIndice < totalRows && !cell.length) {
+            var proximaLinha = tbPlanejamento.rows(linhaIndice + 1).nodes()[0];//;
+            cell = $(proximaLinha).find('td.qtdPack:first');
+        }
         if ($(cell).html()) {
             col = $(cell).parent().children().index($(cell));
             row = $(cell).parent()[0];
             valorInicial = $(cell).html();
             $(cell).html(geraEditor(1, $(cell).html()));
             $(cell).find('input[type="text"]').focus().select();
+        } else {
+            var editaQtdPack = tbPlanejamento.rows(0).nodes()[0];//;
+            cell = $(editaQtdPack).find('td.qtdPackCadastrado:first');
+            $(cell).trigger('click')
         }
-
+    }
+    if (retorna) {
+        retorna = false;
+        cell = $(cell).prev('td.qtdPack');
+        if (linhaIndice > 0 && !cell.length) {
+            var proximaLinha = tbPlanejamento.rows(linhaIndice - 1).nodes()[0];//;
+            cell = $(proximaLinha).find('td.qtdPack:last');
+        }
+        if ($(cell).html()) {
+            col = $(cell).parent().children().index($(cell));
+            row = $(cell).parent()[0];
+            valorInicial = $(cell).html();
+            $(cell).html(geraEditor(1, valorInicial));
+            $(cell).find('input[type="text"]').focus().select();
+        }
+        if (linhaIndice === 0 && !cell.length) {
+            var editaQtdPack = tbPlanejamento.rows(0).nodes()[0];//;
+            cell = $(editaQtdPack).find('td.qtdPackCadastrado:first');
+            $(cell).trigger('click')
+        }
     }
 
 }
 function bloqueiaRefreshQtdPack(elemento, evento) {
     var code = (evento.keyCode ? evento.keyCode : evento.which);
-    if (code === 9 || code === 13) {
+    if (evento.keyCode === 9 && evento.shiftKey === true) {
+        evento.preventDefault();
+        retorna = true;
+        $(elemento).blur();
+    }
+    if (code === 9 && evento.shiftKey === false || code === 13) {
+        evento.preventDefault();
         avanca = true;
         $(elemento).blur();
     }
@@ -1916,7 +2005,7 @@ function criarTabGrupoFilial(grupos, indexPack) {
     $('.span' + indexPack + ' .tabbable.tabs-left').remove();
     $('.span' + indexPack).append($.parseHTML(ulHtml));
     if ($('#tabDadosDist' + indexPack + ' li').length > 1) {
-            $('#tabDadosDist' + indexPack + ' li').children('a').first().click();
+        $('#tabDadosDist' + indexPack + ' li').children('a').first().click();
         $(".selectpicker").selectpicker();
         var dataEntregaPrev = new Date(moment($('#txtDtEntregaPed').data('daterangepicker').endDate.toDate()).add(-1, 'month'));
         var dataInicialDist = '';
@@ -2281,7 +2370,7 @@ function retornaElementoAtributo(validar, tipo, val, id, precisao, max, min) {
             if (!val.length) {
                 val = "0"
             } else {
-                val = val.replace('.',',')
+                val = val.replace('.', ',')
             }
             elemento = '<input onkeyup="validaValor(this)" data-initial-val="' + val + '" data-select-all-on-focus="true" data-max-val="' + max +
                 '" data-min-val="' + min + '" data-affixes-stay="true" data-reverse="false" data-allow-zero="true" data-allow-negative="' + isNegativo + '" name="cbAttr' +
@@ -2302,11 +2391,12 @@ function retornaElementoAtributo(validar, tipo, val, id, precisao, max, min) {
             elemento = '<input name="cbAttr' + id + '" data-initial-val="' + val + '" data-max-val="' + max + '" data-min-val="' + min + '" id="cbAttr' + id + '" type="text" class="form-control attrData' + validar + '" />';
             break;
         case 'Boleano':
-            var ativar = val === 'true' ? ' active' :'' ;
-            elemento = '<div id="cbAttr' + id + '" class="btn-group" data-toggle="buttons"><label class="btn btn-primary attrBool' + ativar + '" style="width: 56px">' +
-                '<span class="checkBoxAllow fa fa-check"></span>' +
-                '<span class="nonCheckBoxAllow fa fa-times"></span>' +
-                '</label></div>'//'<input name="cbAttr' + id + '" id="cbAttr' + id + '" type="checkbox" class="attrBool" />';
+            var ativar = val === 'true' ? ' active' : '';
+            elemento = '<input name="cbAttr' + id + '" id="cbAttr' + id + '" type="checkbox" class="attrBool" data-on-color="success" data-off-color="danger" data-on-text="Sim" data-off-text="Não" />';
+            //'<div id="cbAttr' + id + '" class="btn-group" data-toggle="buttons"><label class="btn btn-primary attrBool' + ativar + '" style="width: 56px">' +
+            // '<span class="checkBoxAllow fa fa-check"></span>' +
+            // '<span class="nonCheckBoxAllow fa fa-times"></span>' +
+            // '</label></div>'//
             break;
     }
     return elemento;
@@ -2362,8 +2452,10 @@ function validaValor(e) {
 }
 function criAttrLista(mult, val, opt, obr, id) {
     var classesCb = obr ? ' validarAttr' : '', multiple = mult ? ' multiple ' : '';
-    var sourceAttr = '<select name="cbAttr' + id + '" id="cbAttr' + id + '" class="selectpicker show-tick form-control listAttr pull-right' + classesCb + '" ' + multiple + 'data-width="100%" data-size="auto">';
-    if (!mult && !val) sourceAttr += '<option data-hidden="true"></option>';
+    var sourceAttr = '<select name="cbAttr' + id + '" id="cbAttr' + id + '" class="selectpicker show-tick form-control listAttr pull-right' +
+        classesCb + '" ' + multiple + 'data-width="100%" data-size="auto">';
+
+    if (!mult) sourceAttr += '<option value="">Nenhum</option>';
     for (var i = 0; i < opt.length; i++) {
         if (val && val === opt[i].descricao) {
             sourceAttr += "<option selected data-tokens='" + opt[i].token + "' value='" + opt[i].valor + "'>" + opt[i].descricao + "</option>"
@@ -2401,6 +2493,12 @@ function retornaContainerAttr(desc, obr, id, elementoCont, tipo) {
     }
 }
 function carregaAtributosPorOrdem(elementos, combos, ordemCarga, isPedido) {
+    if (!ordemCarga.length) {
+        var painelAppend = isPedido ? $("#pnlAttrPed") : $("#pnlAttrProd");
+        var msgSemAttr = '<h5 style="color:blue" class="text-center"><strong>Não existe nenhum atributo cadastrado.</h5>' +
+            '<hr>'
+        painelAppend.append(msgSemAttr);
+    }
     for (var i = 0; i < ordemCarga.length; i++) {
         if (ordemCarga[i]) {
             var elAttr = criAttrLista(combos[0].multiplo, combos[0].valorDef, combos[0].opcoes, combos[0].obrigatorio, combos[0].idTipoAtributo);

@@ -1,0 +1,9 @@
+
+ERROR 2018-11-11 15:49:13 - Erro ao Recuperar Dados do Pedido Analítico
+System.Exception: RepositorioPedido.RetornaPedidoAnalitico: 
+Invalid length parameter passed to the LEFT or SUBSTRING function.
+   em Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento.RepositorioPedido.RetornaPedidoAnalitico(Parametros parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Repositorios\Gerenciamento\RepositorioPedido.cs:linha 105
+   em Nextt_Gestao_Compra.Dominio.Servicos.Gerenciamento.ServicoPedido.RetornaPedidoAnalitico(Parametros parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Dominio\Servicos\Gerenciamento\ServicoPedido.cs:linha 32
+   em Nextt_Gestao_Compra.Aplicacao.Servicos.Gerenciamento.AppServicoPedido.RetornaPedidoAnalitico(Parametros parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Servicos\Gerenciamento\AppServicoPedido.cs:linha 29
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido.GerenciadorAplicacaoPedido.RetornaPedidoAnalitico(IAppServicoPedido pedidoServico, ParametrosVM parametroVM, FabricaViewModel fabrica) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Pedido\GerenciadorAplicacaoPedido.cs:linha 71
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Cadastro.PedidoController.RetornaPedidoAnalitico(ParametrosVM parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Cadastro\PedidoController.cs:linha 93

@@ -4,7 +4,9 @@ $(document).ready(function () {
     $(document).on('click', '.inicioPedido', function (e) {
 
         var linha = $(this).closest('tr');
+
         var idEditar = tbProdutoCadastrar.row($(linha)).data().codProduto;
+
         var statudEditar = tbProdutoCadastrar.row($(linha)).data().status;
         if (!statudEditar) {
             var dadosEditar = JSON.parse(sessionStorage.getItem("produtosComprarSelecionados"));
@@ -18,7 +20,8 @@ $(document).ready(function () {
             sessionStorage.setItem("compra", JSON.stringify(editarCompra));
             window.location = "../cadastro/compra.cshtml";
         } else {
-            erroCadCompra('Esta compra já foi finalizada e não pode ser alterada.', "alertProdListaCompra");
+            sessionStorage.setItem("pedidoId", tbProdutoCadastrar.row($(linha)).data().idPedido)
+            window.location = "../cadastro/compra.cshtml";
         }
 
     });
@@ -100,11 +103,10 @@ function carregar() {
                 $(".bg_load").fadeOut();
                 $(".wrapper").fadeOut();
             } else {
-
                 sessionStorage.removeItem('produtosLista');
                 sessionStorage.removeItem("produtosComprarSelecionados");
                 sessionStorage.removeItem("compra");
-                //window.location = "../gerenciamento/compra.cshtml";
+                window.location = "../gerenciamento/compra.cshtml";
             }
         }
         if (localStorage.getItem("erro") !== null) {
@@ -131,7 +133,7 @@ function inicializarTbProdutoCadastrar(dadosCarga) {
         scrollY: '65vh',
         "columnDefs": [
             {
-                "targets": [3, 4, 5, 6],
+                "targets": [1,2,3, 4],
                 //"orderable": false,
                 'className': 'dt-body-left'
             },
@@ -149,7 +151,6 @@ function inicializarTbProdutoCadastrar(dadosCarga) {
         destroy: true,
         data: dadosCarga,
         columns: [
-            { "data": "idFornecedor", visible: false },
             {
                 "data": 'imagem',
                 "render": function (data, type, row, meta) {
@@ -181,19 +182,13 @@ function inicializarTbProdutoCadastrar(dadosCarga) {
                 }
             },
             {
-                "data": "nomeFantasia",
-                "render": function (data, type, row, meta) {
-                    return type === 'display' ? toTitleCase(data) : data;
-                }
-            },
-            {
                 "data": 'status',
                 "render": function (data, type, row, meta) {
                     if (type === 'display') {
                         if (data) {
-                            return '<input type="checkbox" checked class="ckbCadCompra" data-on-color="success" data-off-color="danger" data-on-text="Pendente" data-off-text="Digitando">';
+                            return '<input type="checkbox" checked class="ckbCadCompra" data-on-color="success" data-off-color="danger" data-on-text="Concluído" data-off-text="Pendente">';
                         } else {
-                            return '<input type="checkbox" class="ckbCadCompra" data-on-color="success" data-off-color="danger" data-on-text="Pendente" data-off-text="Digitando">';
+                            return '<input type="checkbox" class="ckbCadCompra" data-on-color="success" data-off-color="danger" data-on-text="Concluído" data-off-text="Pendente">';
                         }
                     } else {
                         return data;
@@ -201,10 +196,22 @@ function inicializarTbProdutoCadastrar(dadosCarga) {
                 }
             },
             {
-                "data": null,
-                "defaultContent": '<button class="btn btn-primary inicioPedido">' +
-                    '<i class="fa fa-shopping-cart" aria-hidden="true"> Comprar</i>' +
-                    '</button>'
+                "data": 'idPedido',
+                "render": function (data, type, row, meta) {
+                    if (type === 'display') {
+                        if (data > 0) {
+                            return '<button class="btn btn-primary inicioPedido">' +
+                                '<i class="fa fa-edit" aria-hidden="true"> Editar</i>' +
+                                '</button>';
+                        } else {
+                            return '<button class="btn btn-primary inicioPedido">' +
+                                '<i class="fa fa-shopping-cart" aria-hidden="true"> Comprar</i>' +
+                                '</button>';
+                        }
+                    } else {
+                        return data;
+                    }
+                }
             }
 
         ],
@@ -212,9 +219,9 @@ function inicializarTbProdutoCadastrar(dadosCarga) {
             $(".ckbCadCompra").bootstrapSwitch();
             $(".ckbCadCompra").each(function () {
                 $(this).bootstrapSwitch('state', $(this).is(":checked"));
-                $(this).bootstrapSwitch('toggleDisabled',true)
+                $(this).bootstrapSwitch('toggleDisabled', true)
                 //if (!$(this).is(":disabled")) {
-                   
+
                 //}
             });
         }
@@ -264,5 +271,6 @@ function geraTimeoutCadProdIncompleto(isNotSelect, elemento) {
     }
 }
 function validaComprasPendentes(listaCompras) {
+    console.log(listaCompras.filter(e => !e.status).length > 0)
     return listaCompras.filter(e => !e.status).length > 0;
 }

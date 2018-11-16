@@ -35,10 +35,7 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
         public decimal Icms { get; set; }
         public decimal QualidadeValor { get; set; }
         public decimal QualidadeQtde { get; set; }
-        public DateTime DataEntregaInicio { get; set; }
-        public DateTime DataEntregaFinal { get; set; }
-        public DateTime DataToleranciaAtrasoInicio { get; set; }
-        public DateTime DataToleranciaAtrasoFinal { get; set; }
+      
         public string Status { get; set; }
         public List<PackVM> Packs { get; set; }
 
@@ -67,10 +64,7 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
             Icms = pedidoCadastrado.Icms;
             QualidadeValor = pedidoCadastrado.QualidadeValor;
             QualidadeQtde = pedidoCadastrado.QualidadeQtde;
-            DataEntregaInicio = pedidoCadastrado.DataEntregaInicio;
-            DataEntregaFinal = pedidoCadastrado.DataEntregaFinal;
-            DataToleranciaAtrasoInicio = pedidoCadastrado.DataToleranciaAtrasoInicio;
-            DataToleranciaAtrasoFinal = pedidoCadastrado.DataToleranciaAtrasoFinal;
+            
             Status = pedidoCadastrado.Status;
         }
     }

@@ -6,6 +6,7 @@ namespace Nextt_Gestao_Compra.Aplicacao.Servicos.Interfaces.Gerenciamento
 {
     public interface IAppServicoCompra : IAppServicoPadrao<Parametros>
     {
+        List<IEnumerable> RetornaInformacaoFornecedorCompra(Parametros parametros);
         List<IEnumerable> BuscaProdutosFiltrados(Parametros parametros);
         List<IEnumerable> RetornaCargaInicialFiltros();
         List<IEnumerable> RetornaCargaEspeciesFiltros(string secoes);

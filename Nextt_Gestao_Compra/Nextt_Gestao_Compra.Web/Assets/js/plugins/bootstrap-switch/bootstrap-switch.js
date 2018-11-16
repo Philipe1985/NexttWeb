@@ -758,7 +758,7 @@
         handleWidth: 'auto',
         labelWidth: 'auto',
         baseClass: 'bootstrap-switch',
-        wrapperClass: 'wrapper',
+        wrapperClass: 'wrapper', 
         onInit: function onInit() { },
         onSwitchChange: function onSwitchChange() { }
     };

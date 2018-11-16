@@ -195,7 +195,8 @@ function validaGrade(evento) {
         erroCadCompra("É necessário inserir ao menos uma cor, um tamanho e uma referência para prosseguir!", "alertCadGrade");
     }
     var retorno = tamanhosGrade.length > 0 && coresGrade.length > 0 && referenciaGrade.length > 0;
-    if (retorno && evento === 'Pack') {
+    if (retorno && evento === 'Pack' && gradeAlterada) {
+        gradeAlterada = false;
         addColunaPack();
     }
     return retorno || evento !== 'Pack';

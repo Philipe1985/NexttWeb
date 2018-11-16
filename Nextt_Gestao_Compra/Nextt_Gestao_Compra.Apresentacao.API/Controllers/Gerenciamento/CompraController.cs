@@ -150,6 +150,22 @@ namespace Nextt_Gestao_Compra.Apresentacao.API.Controllers.Gerenciamento
         }
         [Authorize]
         [HttpPost]
+        [Route("AtualizaDadosCompraFornecedor")]
+        public IHttpActionResult AtualizaDadosCompraFornecedor(ParametrosVM parametro)
+        {
+            try
+            {
+                var retorno = GerenciadorAplicacaoCompra.RetornaDadosCompraFornecedor(_compraServico, parametro);
+                return Ok(retorno);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Erro ao Recuperar Dados do Cadastro de Pedido", ex);
+                return InternalServerError(ex);
+            }
+        }
+        [Authorize]
+        [HttpPost]
         [Route("BuscaImagensProduto")]
         public IHttpActionResult BuscaImagensProduto(ParametrosVM parametro)
         {

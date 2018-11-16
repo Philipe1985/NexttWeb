@@ -1,0 +1,6 @@
+
+ERROR 2018-11-13 12:01:32 - Erro ao Recuperar Dados do Cadastro de Pedido
+System.NullReferenceException: Referência de objeto não definida para uma instância de um objeto.
+   em Nextt_Gestao_Compra.Aplicacao.ViewModel.FornecedorProdDadosVM..ctor(DadosConfigPadraoVM dadosConfigPadrao, List`1 ultimaCompras, DadosCompraFornecedor fornecedor) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\ViewModel\FornecedorProdDadosVM.cs:linha 23
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Compra.GerenciadorAplicacaoCompra.RetornaDadosCompraFornecedor(IAppServicoCompra compraServico, ParametrosVM parametroVM) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Compra\GerenciadorAplicacaoCompra.cs:linha 141
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Gerenciamento.CompraController.AtualizaDadosCompraFornecedor(ParametrosVM parametro) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Gerenciamento\CompraController.cs:linha 158

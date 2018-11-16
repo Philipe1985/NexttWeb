@@ -112,5 +112,10 @@ namespace Nextt_Gestao_Compra.Dominio.Servicos.Gerenciamento
             return _listaAttr.Where(x => x.Lista == false && x.Ativo == true && x.IDTipoAtributo == x.IDTipoAtributoKey).ToList();  
             //throw new System.NotImplementedException();
         }
+
+        public List<IEnumerable> RetornaInformacaoFornecedorCompra(Parametros parametros)
+        {
+            return _compraRepositorio.RetornaInformacaoFornecedorCompra(parametros);
+        }
     }
 }

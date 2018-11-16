@@ -3,6 +3,7 @@
     public class Parametros
     {
         public string Marcas { get; set; }
+        public string CodigoOriginal { get; set; }
         public string Secoes { get; set; }
         public string Segmentos { get; set; }
         public string Especies { get; set; }

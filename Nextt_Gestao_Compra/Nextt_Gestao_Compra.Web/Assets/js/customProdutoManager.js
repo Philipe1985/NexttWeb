@@ -53,7 +53,7 @@ $(document).ready(function () {
         } else {
             prodMarcados = $.grep(prodMarcados, function (el) {
                 var retorno = true;
-                if (el.idProduto === dadoSelecionado.idProduto && el.idFornecedor === dadoSelecionado.idFornecedor) {
+                if (el.idProduto === dadoSelecionado.idProduto) {
                     retorno = false;
                 }
 
@@ -63,7 +63,7 @@ $(document).ready(function () {
                 if (obj.pagina === $('.pagination-holder').pagination('getCurrentPage')) {
                     obj.prodMarcados = $.grep(obj.prodMarcados, function (el) {
                         var retorno = true;
-                        if (el.idProduto === dadoSelecionado.idProduto && el.idFornecedor === dadoSelecionado.idFornecedor) {
+                        if (el.idProduto === dadoSelecionado.idProduto) {
                             retorno = false;
                         }
 
@@ -95,6 +95,7 @@ function carregar() {
     sessionStorage.removeItem('compra');
     sessionStorage.removeItem('cadastroNovo');
     sessionStorage.removeItem('produtosLista');
+    sessionStorage.removeItem("produtosComprarSelecionados");
     sessionStorage.removeItem("pedidoId");
     sessionStorage.removeItem("pedidoStatus");
     cargaInicialGerenciamentoCompra('produto');
@@ -133,7 +134,7 @@ function inicializarTbProduto() {
         scrollY: '40vh',
         "columnDefs": [
             {
-                "targets": [1, 2, 3, 4, 6, 7, 8, 10],
+                "targets": [2, 3, 4, 5, 7,8],
                 //"orderable": false,
                 'className': 'dt-body-left'
             },
@@ -166,7 +167,7 @@ function inicializarTbProduto() {
                 }
                 //"defaultContent": '<input type="checkbox" class="ckbGridProd" data-on-color="success" data-off-color="danger" data-on-text="Sim" data-off-text="Não">'
             },
-            { "data": "idProduto" },
+            { "data": "idProduto",visible:false },
             { "data": "codProduto" },
             { "data": "codOriginal" },
             {
@@ -181,6 +182,7 @@ function inicializarTbProduto() {
                     return type === 'display' ? toTitleCase(data) : data;
                 }
             },
+            { "data": "referencia" },
             { "data": "idMarca" },
             {
                 "data": "descricaoMarca",
@@ -188,27 +190,6 @@ function inicializarTbProduto() {
                     return type === 'display' ? toTitleCase(data) : data;
                 }
             },
-            { "data": "idFornecedor" },
-            {
-                "data": "razaoSocial",
-                "render": function (data, type, row, meta) {
-                    return type === 'display' ? toTitleCase(data) : data;
-                }
-            },
-            {
-                "data": "nomeFantasia",
-                "render": function (data, type, row, meta) {
-                    return type === 'display' ? toTitleCase(data) : data;
-                }
-            },
-            { "data": "referencia" },
-            {
-                "data": "cnpj",
-                "render": function (data, type, row, meta) {
-                    return type === 'display' ? configuraMascaraCnpj(data) : data;
-                }
-            }
-
         ],
         "drawCallback": function (settings) {
             $(".ckbGridProd").bootstrapSwitch();
@@ -258,10 +239,10 @@ function ocultarColunas(indexColunas) {
         tbProduto.columns(indexColunas).visible(false, false);
     }
     tbProduto.draw(false);
-    $(".bg_load").fadeOut();
-    $(".wrapper").fadeOut();
-    $('.selectpicker').selectpicker('show');
-    $(".navbar.navbar-default.navbar-fixed-top").removeClass('ocultarElemento');
+        $(".bg_load").fadeOut();
+        $(".wrapper").fadeOut();
+        $('.selectpicker').selectpicker('show');
+        $(".navbar.navbar-default.navbar-fixed-top").removeClass('ocultarElemento');
 
 }
 
@@ -279,14 +260,14 @@ function cadastrarNovasCompras() {
     var arrayCarga = [];
     for (var i = 0; i < result.length; i++) {
         var objCarga = {};
-        objCarga.idFornecedor = result[i].idFornecedor;
+        result[i].idPedido = 0; 
+        objCarga.idPedido = result[i].idPedido;
         objCarga.imagem = 'http://placehold.it/50x50';
         objCarga.idProduto = result[i].idProduto;
         objCarga.codProduto = result[i].codProduto;
         objCarga.descricaoProduto = result[i].descricaoProduto;
         objCarga.descricaoReduzida = result[i].descricaoReduzida;
         objCarga.descricaoMarca = result[i].descricaoMarca;
-        objCarga.nomeFantasia = result[i].nomeFantasia;
         objCarga.status = !result[i].selecionado;
         arrayCarga.push(objCarga);
     }

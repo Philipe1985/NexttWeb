@@ -94,7 +94,10 @@ namespace Nextt_Gestao_Compra.Aplicacao.Servicos.Gerenciamento
             return _servicoCompra.RetornaGruposCadastrados();
         }
 
-
+        public List<IEnumerable> RetornaInformacaoFornecedorCompra(Parametros parametros)
+        {
+            return _servicoCompra.RetornaInformacaoFornecedorCompra(parametros);
+        }
 
         public List<GrupoTamanho> RetornaTamanhosAtivo(List<GrupoTamanho> _listaTamanho)
         {

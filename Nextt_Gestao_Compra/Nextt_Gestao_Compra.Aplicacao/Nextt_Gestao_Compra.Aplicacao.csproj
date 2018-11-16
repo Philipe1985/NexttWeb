@@ -154,11 +154,13 @@
     <Compile Include="ViewModel\ComboAtributoVM.cs" />
     <Compile Include="ViewModel\ComboFiliaisVM.cs" />
     <Compile Include="ViewModel\CondicaoFormaPgtoVM.cs" />
+    <Compile Include="ViewModel\DadosConfigPadraoVM.cs" />
     <Compile Include="ViewModel\FabricaViewModel.cs" />
     <Compile Include="ViewModel\ComboFiltroVM.cs" />
     <Compile Include="ViewModel\FiliaisVM.cs" />
     <Compile Include="ViewModel\FiltrosCadastroGrupoVM.cs" />
     <Compile Include="ViewModel\FiltrosPesquisa.cs" />
+    <Compile Include="ViewModel\FornecedorProdDadosVM.cs" />
     <Compile Include="ViewModel\GradePadraoVM.cs" />
     <Compile Include="ViewModel\GrupoAtualizarVM.cs" />
     <Compile Include="ViewModel\FilialAtualizarVM.cs" />

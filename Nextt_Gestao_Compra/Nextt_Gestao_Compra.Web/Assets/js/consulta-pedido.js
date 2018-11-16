@@ -21,7 +21,7 @@ $(document).ready(function () {
     $(document).on('click', '.validarPedido', function (e) {
         objEnvio = {};
         objEnvio.codigo = $(this).closest('tr').children().eq(1).html();
-        var statusAtual = retornaStatusValor($(this).closest('tr').children().eq(11).html());
+        var statusAtual = retornaStatusValor($(this).closest('tr').children().eq(12).html());
         $('.btnFooters .btn').removeClass('ocultarElemento');
         if (sessionStorage.getItem("perfilSistema") === 'undefined' && sessionStorage.getItem("perfilAdmin") === 'undefined') {
             $('#btnAprovar').addClass('ocultarElemento');
@@ -67,6 +67,13 @@ $(document).ready(function () {
         objEnvio.status = 'C';
         atualizarStatus(objEnvio);
     });
+    $(document).on('click', '.finalizarPedido', function (e) {
+        objEnvio = {};
+        objEnvio.codigo = $(this).closest('tr').children().eq(1).html();
+        objEnvio.status = 'F';
+        atualizarStatus(objEnvio);
+    });
+   
     $(document).on('click', '#btnCancelar', function (e) {
         objEnvio = {};
         objEnvio.codigo = $('#spnCodPed').html().replace(/\D/g, "");
@@ -119,12 +126,24 @@ $(document).ready(function () {
     $(document).on('keydown', '.txtInteiro', function (e) {
         if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110]) !== -1 ||
             (e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) ||
+            (e.keyCode === 86 && (e.ctrlKey === true || e.metaKey === true)) ||
             (e.keyCode >= 35 && e.keyCode <= 40)) {
             return;
         }
         if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
             e.preventDefault();
         }
+    })
+    $(document).on('paste', '.txtInteiro', function (e) {
+        var paste = e.originalEvent.clipboardData.getData('Text');
+        console.log(paste);
+        console.log(isNumber(paste));
+        console.log(Math.floor(paste));
+        console.log(parseInt(paste));
+        if (isNumber(paste) && Math.floor(paste) == parseInt(paste)) {
+            return;
+        }
+        e.preventDefault();
     })
     $('#txtDtEntregaPed').daterangepicker({
         locale: configuracaoCalendariosPedido,
@@ -247,6 +266,8 @@ function carregarPackNF(id, dados, colunas, tbIndice) {
 function carregar() {
     sessionStorage.removeItem('compra');
     sessionStorage.removeItem("pedidoId");
+    sessionStorage.removeItem('produtosLista');
+    sessionStorage.removeItem("produtosComprarSelecionados");
     sessionStorage.removeItem("pedidoStatus");
     sessionStorage.removeItem("cadastroNovo");
     cargaInicialPedido();
@@ -270,9 +291,13 @@ function carregarPedidos() {
                 'className': 'dt-body-center'
             },
             {
-                "targets": [10],
+                "targets": [12],
                 "orderable": true,
                 'type': 'currency'
+            },
+            {
+                "targets": [2],
+                 visible: false 
             },
             {
                 "targets": [0, -1],
@@ -280,12 +305,12 @@ function carregarPedidos() {
                 'type': 'date-eu'
             },
             {
-                "targets": [7, 8],
+                "targets": [9,10],
                 "orderable": true,
                 'type': 'date-eu'
             },
             {
-                "targets": [9],
+                "targets": [11],
                 "orderable": true,
                 'type': 'formatted-num'
             },
@@ -298,6 +323,11 @@ function carregarPedidos() {
                 "previous": "Anterior",
                 "next": "Próximo"
             }
+        },
+        drawCallback: function (settings) {
+            $(function () {
+                $('[data-toggle="tooltip"]').tooltip();
+            });
         },
         "ajax": {
             'type': 'POST',
@@ -314,7 +344,17 @@ function carregarPedidos() {
                 for (var i = 0; i < json.length; i++) {
                     retorno.push(geraLinhaRetornoPedido(json[i]))
                 }
-                console.log(json);
+
+                $(".bg_load").fadeOut();
+                $(".wrapper").fadeOut();
+                $(".navbar.navbar-default.navbar-fixed-top").removeClass('ocultarElemento');
+                $("div.controls.ocultarElemento").removeClass('ocultarElemento');
+                $("#divForn").removeClass('ocultarElemento');
+                $("#divMarca").removeClass('ocultarElemento');
+                $("#divSec").removeClass('ocultarElemento');
+                $(".selectpicker").selectpicker('show');
+                $("#divOcultaColuna").removeClass('ocultarElemento');
+
                 return retorno;
             }
         }
@@ -322,28 +362,33 @@ function carregarPedidos() {
 }
 function geraLinhaRetornoPedido(retorno) {
     var statusAtual = retorno.status;
-    var btnClonar = '<a href="#" class="btn btn-primary clonarPedido" data-toggle="tooltip" title="Copiar Pedido" style="margin:auto"><i class="fa fa-plus-square" aria-hidden="true"></i></a>'
+    var btnClonar = '<a href="#" class="btn btn-primary clonarPedido" data-toggle="tooltip" data-container="body" title="Copiar Pedido" style="margin:auto"><i class="fa fa-plus-square" aria-hidden="true"></i></a>'
     //if (statusAtual !== 'A' ) {
     //    btnClonar ='<a href="#" class="btn btn-primary" disabled data-toggle="tooltip" title="Copiar Pedido" style="margin:auto"><i class="fa fa-plus-square" aria-hidden="true"></i></a>'
     //}
-    var btnOperacoes = '<a href="#" class="btn btn-primary validarPedido" data-toggle="tooltip" title="Detalhamento" style="margin:3px"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>' +
-        '<a href="#" class="btn btn-primary acessarPedido" data-toggle="tooltip" title="Acessar" style="margin:3px"><i class="fa fa-external-link-square" aria-hidden="true"></i></a>';
+    var btnOperacoes = '<a href="#" class="btn btn-primary validarPedido" data-toggle="tooltip" data-container="body" title="Detalhamento" style="margin:3px"><i class="fa fa-external-link-square" aria-hidden="true"></i></a>' +
+        '<a href="#" class="btn btn-primary acessarPedido" data-toggle="tooltip" data-container="body" title="Acessar" style="margin:3px"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>';
     if (sessionStorage.getItem("perfilSistema") === 'undefined' && sessionStorage.getItem("perfilAdmin") === 'undefined') {
         if (statusAtual === 'A' || statusAtual === 'F' || statusAtual === 'C') {
             if (retorno.status === 'A') {
-                btnOperacoes += '<a href="#" class="btn btn-danger cancelarPedido" data-toggle="tooltip" title="Cancelar" style="margin:3px"><i class="fa fa-close" aria-hidden="true"></i></a>';
+                btnOperacoes += '<a href="#" class="btn btn-danger cancelarPedido" data-toggle="tooltip" data-container="body" title="Cancelar" style="margin:3px"><i class="fa fa-close" aria-hidden="true"></i></a>';
             }
 
         }
     } else {
         if (retorno.status === 'A' || retorno.status === 'F') {
             if (retorno.status === 'F') {
-                btnOperacoes += '<a href="#" class="btn btn-success aprovarPedido" data-toggle="tooltip" title="Aprovar" style="margin:3px"><i class="fa fa-check" aria-hidden="true"></i></a>' +
-                    '<a href="#" class="btn btn-warning devolverPedido" data-toggle="tooltip" title="Reprovar" style="margin:3px"><i class="fa fa-mail-reply" aria-hidden="true"></i></a>' +
-                    '<a href="#" class="btn btn-danger cancelarPedido" data-toggle="tooltip" title="Cancelar" style="margin:3px"><i class="fa fa-close" aria-hidden="true"></i></a>';
+                btnOperacoes += '<a href="#" class="btn btn-success aprovarPedido" data-toggle="tooltip" data-container="body" title="Aprovar" style="margin:3px"><i class="fa fa-check" aria-hidden="true"></i></a>' +
+                    '<a href="#" class="btn btn-warning devolverPedido" data-toggle="tooltip" data-container="body" title="Reprovar" style="margin:3px"><i class="fa fa-mail-reply" aria-hidden="true"></i></a>' +
+                    '<a href="#" class="btn btn-danger cancelarPedido" data-toggle="tooltip" data-container="body" title="Cancelar" style="margin:3px"><i class="fa fa-close" aria-hidden="true"></i></a>';
             } else {
-                btnOperacoes += '<a href="#" class="btn btn-success aprovarPedido" data-toggle="tooltip" title="Aprovar" style="margin:3px"><i class="fa fa-check" aria-hidden="true"></i></a>' +
-                    '<a href="#" class="btn btn-danger cancelarPedido" data-toggle="tooltip" title="Cancelar" style="margin:3px"><i class="fa fa-close" aria-hidden="true"></i></a>';
+                btnOperacoes += '<a href="#" class="btn btn-success finalizarPedido" data-toggle="tooltip" data-container="body" title="Enviar Para Aprovação" style="margin:3px"><i class="fa fa-mail-forward" aria-hidden="true"></i></a>' +
+                    '<a href="#" class="btn btn-danger cancelarPedido" data-toggle="tooltip" data-container="body" title="Cancelar" style="margin:3px"><i class="fa fa-close" aria-hidden="true"></i></a>';
+            }
+        } else if (retorno.status === 'C' || retorno.status === 'L') {
+            btnOperacoes += '<a href="#" class="btn btn-warning finalizarPedido" data-toggle="tooltip" data-container="body" title="Alterar Para Pendente" style="margin:3px"><i class="fa fa-retweet" aria-hidden="true"></i></a>';
+            if (retorno.status === 'L') {
+                btnOperacoes += '<a href="#" class="btn btn-danger cancelarPedido" data-toggle="tooltip" data-container="body" title="Cancelar" style="margin:3px"><i class="fa fa-close" aria-hidden="true"></i></a>';
             }
         }
     }
@@ -351,6 +396,8 @@ function geraLinhaRetornoPedido(retorno) {
         btnOperacoes,
         retorno.idPedido,
         retorno.idProduto,
+        retorno.codProduto,
+        retorno.codigoOriginal,
         toTitleCase(retorno.descricaoProduto),
         configuraMascaraCnpj(retorno.cnpj),
         toTitleCase(retorno.nomeFantasia),
@@ -565,12 +612,17 @@ function retornaTabela(id) {
     return '<table id="' + id + '" cellpadding="0" cellspacing="0" class="tbPackCad cell-border hover table cell nowrap stripe compact pretty"></table>';
 }
 function buscarPedidosFiltrado() {
+    $('.selectpicker').selectpicker('hide');
+    $(".navbar.navbar-default.navbar-fixed-top").addClass('ocultarElemento');
+    $(".bg_load").show();
+    $(".wrapper").show();
     tbPedido.ajax.reload();
 }
 function criaObjConsulta() {
     var objConsulta = {};
     var user = [];
     objConsulta.codigo = $('#txtCodProd').val();
+    objConsulta.codigoOriginal = $('#txtCodOri').val();
     objConsulta.referenciaFornecedor = $('#txtRefProd').val();
     objConsulta.descricaoProduto = $('#txtDescProd').val();
     objConsulta.idPedido = $('#txtIdPed').val();

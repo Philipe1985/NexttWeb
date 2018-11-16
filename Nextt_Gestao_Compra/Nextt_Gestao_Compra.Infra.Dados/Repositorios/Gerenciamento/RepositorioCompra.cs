@@ -102,7 +102,6 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
                                     .With<CondicaoPgto>()
                                     .With<ClassificacaoFiscal>()
                                     .With<Grade>()
-                                    .With<DadosUltimaCompra>()
                                     .With<GrupoFilial>()
                                     .With<GrupoFilial>()
                                     .With<Atributos>()
@@ -121,8 +120,7 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
             {
                 return _Db.MultiplosResults("[dbo].[pr_informacao_cadastro_produto_dados_inicial_GESTAO_COMPRAS]" +
                                    " @IDProduto = '" + parametros.Codigo +
-                                   "', @CadastroNovo = " + false +
-                                    ", @IDFornecedor = '" + parametros.IDFornecedor + "'")
+                                   "', @CadastroNovo = " + false )
                                    .With<DadosPrePedido>()
                                    .With<ReferenciaProduto>()
                                    .With<GrupoTamanho>()
@@ -131,12 +129,12 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
                                    .With<CondicaoPgto>()
                                    .With<ClassificacaoFiscal>()
                                    .With<Grade>()
-                                   .With<DadosUltimaCompra>()
                                    .With<GrupoFilial>()
                                    .With<GrupoFilial>()
                                    .With<Atributos>()
                                    .With<Atributos>()
-                                   .Executar();
+                                   .With<Fornecedor>()
+                                 .Executar();
             }
             catch (Exception ex)
             {
@@ -281,6 +279,25 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
                 throw new Exception("RepositorioCompra.GravarPedido: \n" + ex.Message, ex.InnerException);
             }
 
+        }
+
+        public List<IEnumerable> RetornaInformacaoFornecedorCompra(Parametros parametros)
+        {
+            try
+            {
+                return _Db.MultiplosResults("[dbo].[pr_retorna_dados_ultima_compra_GESTAO_COMPRAS]" +
+                                    " @IDProduto = '" + parametros.Codigo +
+                                    "', @IDFornecedor = '" + parametros.IDFornecedor + "'")
+                                      .With<ConfigDefault>()
+                                      .With<DadosCompraFornecedor>()
+                                      .With<DadosUltimaCompra>()
+                                      .Executar();
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("RepositorioCompra.RetornaFiliaisDistribuicao: \n" + ex.Message, ex.InnerException);
+            }
         }
     }
 

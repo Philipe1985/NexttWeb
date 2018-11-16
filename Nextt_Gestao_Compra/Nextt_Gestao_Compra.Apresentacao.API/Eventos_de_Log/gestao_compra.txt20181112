@@ -1,0 +1,15 @@
+
+ERROR 2018-11-12 17:17:09 - Erro ao Recuperar Filtros de Movimentacao
+System.Exception: RepositorioMovimentacao.RetornaSegmentoGrupos: 
+Could not find stored procedure 'dbo.pr_consulta_grupofilial_segmento_GESTAO_COMPRAS'.
+   em Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento.RepositorioMovimentacao.RetornaSegmentoGrupos() na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Repositorios\Gerenciamento\RepositorioMovimentacao.cs:linha 60
+   em Nextt_Gestao_Compra.Dominio.Servicos.Gerenciamento.ServicoMovimentacao.RetornaSegmentoGrupos() na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Dominio\Servicos\Gerenciamento\ServicoMovimentacao.cs:linha 33
+   em Nextt_Gestao_Compra.Aplicacao.Servicos.Gerenciamento.AppServicoMovimentacao.RetornaSegmentoGrupos() na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Servicos\Gerenciamento\AppServicoMovimentacao.cs:linha 33
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Movimentacao.GerenciamentoAplicacaoMovimentacao.RetornaGruposSegmentoMarca(IAppServicoMovimentacao servicoMovimentacao, FabricaViewModel fabrica) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Movimentacao\GerenciamentoAplicacaoMovimentacao.cs:linha 14
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Gerenciamento.MovimentacaoController.RecuperaFiltrosMovimentacaoProduto() na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Gerenciamento\MovimentacaoController.cs:linha 25
+
+ERROR 2018-11-12 23:13:15 - Erro ao Recuperar Dados do Cadastro de Pedido
+System.NullReferenceException: Referência de objeto não definida para uma instância de um objeto.
+   em Nextt_Gestao_Compra.Aplicacao.ViewModel.FornecedorProdDadosVM..ctor(DadosConfigPadraoVM dadosConfigPadrao, List`1 ultimaCompras, DadosCompraFornecedor fornecedor) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\ViewModel\FornecedorProdDadosVM.cs:linha 23
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Compra.GerenciadorAplicacaoCompra.RetornaDadosCompraFornecedor(IAppServicoCompra compraServico, ParametrosVM parametroVM) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Compra\GerenciadorAplicacaoCompra.cs:linha 141
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Gerenciamento.CompraController.AtualizaDadosCompraFornecedor(ParametrosVM parametro) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Gerenciamento\CompraController.cs:linha 158

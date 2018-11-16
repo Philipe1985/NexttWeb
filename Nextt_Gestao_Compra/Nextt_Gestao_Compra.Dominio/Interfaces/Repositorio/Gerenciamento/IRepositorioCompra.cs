@@ -14,6 +14,7 @@ namespace Nextt_Gestao_Compra.Dominio.Interfaces.Repositorio.Gerenciamento
         List<IEnumerable> RetornaFiliaisDistribuicao(Parametros parametros);
         List<IEnumerable> RetornaCargaEspeciesFiltros(string secoes);
         List<IEnumerable> RetornaCargaInicialCadNovo(Parametros parametros);
+        List<IEnumerable> RetornaInformacaoFornecedorCompra(Parametros parametros);
         List<GrupoTamanho> AtualizaCargaTamanho(Parametros parametros);
         List<FotoProduto> RetornaFotosProduto(Parametros parametros);
         FotoProduto SalvarFotosProduto(FotoProduto fotoJson);

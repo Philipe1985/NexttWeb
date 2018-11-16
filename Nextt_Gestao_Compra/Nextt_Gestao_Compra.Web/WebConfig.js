@@ -133,6 +133,10 @@ function geraEditorPackCadastrado(tipo, valorInicial) {
 }
 function bloqueiaRefresh(elemento, evento) {
     var code = evento.keyCode ? evento.keyCode : evento.which;
+    if (evento.keyCode === 9 && evento.shiftKey === true) {
+        retorna = true;
+        evento.preventDefault();
+    }
     if (code === 9 || code === 13) {
         $(elemento).blur();
     }

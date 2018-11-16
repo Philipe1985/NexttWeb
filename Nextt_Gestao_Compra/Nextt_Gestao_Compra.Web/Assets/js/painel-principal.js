@@ -1,15 +1,23 @@
 ﻿$(document).ready(function () {
     $('.panel-hover').on('click', function (e) {
-        $(".navbar.navbar-default.navbar-fixed-top").addClass('ocultarElemento');
-        $(".bg_load").show();
-        $(".wrapper").show();
-        window.location = "../gerenciamento/" + $(this).attr('id') + ".cshtml";
+        
+        if ($(this).attr('id').toLowerCase().indexOf('movimentacaoproduto') > -1) {
+            funcaoInativa();
+        } else {
+            $(".navbar.navbar-default.navbar-fixed-top").addClass('ocultarElemento');
+            $(".bg_load").show();
+            $(".wrapper").show();
+            window.location = "../gerenciamento/" + $(this).attr('id') + ".cshtml";
+        }
+        
     });
     $(window).on("load", carregar);
 });
 function carregar() {
     sessionStorage.removeItem('compra');
     sessionStorage.removeItem("pedidoId");
+    sessionStorage.removeItem('produtosLista');
+    sessionStorage.removeItem("produtosComprarSelecionados");
     sessionStorage.removeItem("pedidoStatus");
     sessionStorage.removeItem("cadastroNovo");
     if (sessionStorage.getItem("perfilSistema") === 'undefined' && sessionStorage.getItem("perfilAdmin") === 'undefined') {

@@ -37,7 +37,9 @@
     <Compile Include="Entidades\CadastroProdutoSecaoEspecieMarcaFornecetor.cs" />
     <Compile Include="Entidades\ClassificacaoFiscal.cs" />
     <Compile Include="Entidades\CondicaoPgto.cs" />
+    <Compile Include="Entidades\ConfigDefault.cs" />
     <Compile Include="Entidades\Cor.cs" />
+    <Compile Include="Entidades\DadosCompraFornecedor.cs" />
     <Compile Include="Entidades\DadosGerenciamentoProdutoCompra.cs" />
     <Compile Include="Entidades\DadosPrePedido.cs" />
     <Compile Include="Entidades\DadosUltimaCompra.cs" />

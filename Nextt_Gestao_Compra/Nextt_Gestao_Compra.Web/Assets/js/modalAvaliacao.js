@@ -114,15 +114,15 @@ function salvarDadosCompra(comFeedback) {
     } else {
         $(".bg_load").show();
         $(".wrapper").show();
-        sessionStorage.removeItem('compra');
-        sessionStorage.removeItem('pedidoId');
         if (dadosOrigemCompra) {
             for (var i = 0; i < dadosOrigemCompra.length; i++) {
-                if (dadosOrigemCompra[i].codProduto === codProd && dadosOrigemCompra[i].idFornecedor === parseInt(codForn)) {
+                if (dadosOrigemCompra[i].codProduto === codProd) {
                     dadosOrigemCompra[i].status = true;
+                    dadosOrigemCompra[i].idPedido = compraId;
                 }
             }
-            
+            sessionStorage.removeItem('compra');
+            sessionStorage.removeItem('pedidoId');
             sessionStorage.setItem("produtosLista", JSON.stringify(dadosOrigemCompra));
             window.location = "../gerenciamento/compraprodutos.cshtml";
         } else if (compraId) {

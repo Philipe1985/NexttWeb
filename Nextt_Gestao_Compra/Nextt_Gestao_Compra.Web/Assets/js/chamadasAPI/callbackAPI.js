@@ -645,12 +645,14 @@ function geraCargaProdutoFiltrado(parametro) {
             }
 
             $("#txtFiltroProdutoCompra").val('');
-            tbProduto.columns().visible(true);
+
             tbProduto.search('').clear();
             tbProduto.data(tbProduto).rows.add(result.produtos);
             tbProduto.draw();
-            finalizarOcultacaoColuna();
-
+            $(".bg_load").fadeOut();
+            $(".wrapper").fadeOut();
+            $('.selectpicker').selectpicker('show');
+            $(".navbar.navbar-default.navbar-fixed-top").removeClass('ocultarElemento');
         },
         error: function (erro) {
             console.log(erro)
@@ -685,6 +687,9 @@ function atualizaCargaFiltroTamanho(parametro) {
                 sourceTamanho += criarTamanho(value.valor, value.descricao);
             });
             $('#drpTamanhoGrade').html(sourceTamanho);
+            if ($("#drpTamanhoGrade option").length < 7) {
+                configuraCombosOpcoes('#drpTamanhoGrade');
+            }
             $(".selectpicker").selectpicker('refresh');
             $(".bg_load").fadeOut();
             $(".wrapper").fadeOut();
@@ -724,7 +729,7 @@ function alteraPagina(parametro) {
                 if (atualizarProd) {
                     result.produtos = atualizaDadosCarga(result.produtos, atualizarProd)
                 }
-                
+
             }
             $("#txtFiltroProdutoCompra").val('');
             tbProduto.columns().visible(true);
@@ -735,6 +740,68 @@ function alteraPagina(parametro) {
             $(".wrapper").fadeOut();
             $('.selectpicker').selectpicker('show');
             $(".navbar.navbar-default.navbar-fixed-top").removeClass('ocultarElemento');
+        },
+        error: function (erro) {
+            $(".bg_load").fadeOut("slow");
+            $(".wrapper").fadeOut("slow", function () {
+                $('.selectpicker').selectpicker('show');
+            });
+
+            modal({
+                messageText: "Ocorreu um erro durante esta operação, tente novamente.<br/>Caso o erro persista informe o administrador do sistema o horário e data da ocorrencia",
+                type: "alert",
+                headerText: "Falha Interna",
+                alertType: "warning"
+            });
+        }
+    });
+}
+function buscaDadosProdFornecedor(parametro) {
+    $.ajax({
+        type: 'POST',
+        crossDomain: true,
+        async: true,
+        cache: false,
+        url: urlApi + 'gerenciamento/compra/AtualizaDadosCompraFornecedor',
+        data: parametro,
+        beforeSend: function (req) {
+            req.setRequestHeader('Authorization', sessionStorage.getItem("token"));
+        },
+        success: function (result) {
+            console.log(result)
+            configuraRangeCalendarioFornecedor('#txtDtEntregaPed', result.dadosConfigPadrao.dataEntregaInicio, result.dadosConfigPadrao.dataEntregaFinal)
+            atualizaDtEntregaLimite();
+            configuraRangeCalendarioFornecedor('#txtDtEntregaFinalPed', result.dadosConfigPadrao.dataToleranciaAtrasoInicio, result.dadosConfigPadrao.dataToleranciaAtrasoFinal)
+            $("#drpCondPgtoPed option[value='" + result.ultimaCondicao + "']").attr('selected', 'selected')
+
+            $('#drpFrmPgtoPed').selectpicker('val', result.ultimaForma);
+            $(".selectpicker").selectpicker('refresh');
+            $('#txtAreaObsPed').val(result.observacao);
+            var refCarga = result.referencia ? result.referencia : 'Sem Referência'
+            $("#txtRefPed").val(refCarga);
+            var valQualiNota = result.qualidadeQtde;
+            var valQuantNota = result.qualidadeValor;
+            if (valQualiNota === 0) {
+                valQualiNota = 100;
+            }
+            if (valQuantNota === 0) {
+                valQuantNota = 100;
+            }
+            $("#txtQldProdPed").val(valQualiNota.toFixed(2).replace('.', ','));
+            $("#txtQldNotaPed").val(valQuantNota.toFixed(2).replace('.', ','));
+            $("#txtCustoBrutoPed").val(result.precoCusto.toFixed(2).replace('.', ','));
+            $("#txtPrVendaPed").val(result.precoVenda.toFixed(2).replace('.', ','));
+            $("#txtDescontoPedPerc").val(result.desconto.toFixed(2).replace('.', ','));
+            $("#txtIPIPercPed").val(result.ipi.toFixed(2).replace('.', ','));
+            $("#txtIcmsPercPed").val(result.icms.toFixed(2).replace('.', ','));
+            calculaAlteracaoCusto();
+            $('.percent').maskMoney('mask');
+            $('.money').maskMoney('mask');
+
+            //$(".bg_load").fadeOut();
+            //$(".wrapper").fadeOut();
+            //$('.selectpicker').selectpicker('show');
+            //$(".navbar.navbar-default.navbar-fixed-top").removeClass('ocultarElemento');
         },
         error: function (erro) {
             $(".bg_load").fadeOut("slow");
@@ -843,7 +910,7 @@ function geraCargaPrePedido(parametro) {
                 sourceSec += "<option selected data-tokens='" + value.token + "' value='" + value.valor + "'>" + value.descricao + "</option>";
             });
             $.each(result.filtrosPrePedido.fornecedores, function (index, value) {
-                sourceCNPJ += "<option selected data-tokens='" + value.token + "' value='" + value.valor + "'>" + value.descricao + "</option>";
+                sourceCNPJ += "<option data-tokens='" + value.token + "' value='" + value.valor + "'>" + value.descricao + "</option>";
             });
             $.each(result.filtrosPrePedido.marcas, function (index, value) {
                 sourceMarca += "<option selected data-tokens='" + value.token + "' value='" + value.valor + "'>" + value.descricao + "</option>";
@@ -861,7 +928,7 @@ function geraCargaPrePedido(parametro) {
                 sourceCondicao += criarCondPgto(value.valor, value.descricao, 'calculator');
             });
             $.each(result.filtrosPrePedido.cores, function (index, value) {
-                sourceCores += criarCor(value.valor, value.descricao, value.token, value.dadosAdicionais);
+                sourceCores += criarCor(value.valor, toTitleCase(value.descricao), value.token, value.dadosAdicionais);
             });
             $.each(result.filtrosPrePedido.referencias, function (index, value) {
                 if (!parseInt(value.token.split(',')[0])) {
@@ -879,19 +946,28 @@ function geraCargaPrePedido(parametro) {
             $("#drpEsp").html(sourceEspecie).attr('disabled', true);
             $("#drpMarc").html(sourceMarca).attr('disabled', true);
             $("#drpSec").html(sourceSec).attr('disabled', true);
-            $("#drpCNPJ").html(sourceCNPJ).attr('disabled', true);
+            $("#drpCNPJ").html(sourceCNPJ).selectpicker('val', '');
             $("#drpCoresGrade").html(sourceCores);
             $("#drpTamanhoGrade").html(sourceTamanho);
+            if ($("#drpTamanhoGrade option").length < 7) {
+                configuraCombosOpcoes('#drpTamanhoGrade');
+            }
+
             $("#drpTamanhoCategoria").html(sourceTamanhoGrupo);
             $('#drpReferenciaGrade').html(sourceReferencia);
             $('#drpClassificacao').html(souceClass).selectpicker('val', '');
             $("#drpCondPgtoPed").html(sourceCondicao).selectpicker('val', '');
             $("#drpCondPgtoPed option[value='" + result.ultimaCondicao + "']").attr('selected', 'selected');
+            if (result.ultimaClassificacao)
+                $("#drpClassificacao option[value='" + result.ultimaClassificacao + "']").attr('selected', 'selected');
             $("#drpFrmPgtoPed").html(sourceForma).selectpicker('val', result.ultimaForma);
             if (result.filtrosPrePedido.tamanhoGrupo.length === 1) {
                 $("#drpTamanhoCategoria option[value='" + result.filtrosPrePedido.tamanhoGrupo[0].valor + "']").attr('selected', 'selected')
             }
-            //$(".attrBool").checkboxradio();
+            configuraRangeCalendarioFornecedor('#txtDtEntregaPed', result.filtrosPrePedido.dataEntregaInicio, result.filtrosPrePedido.dataEntregaFinal)
+            atualizaDtEntregaLimite();
+            configuraRangeCalendarioFornecedor('#txtDtEntregaFinalPed', result.filtrosPrePedido.dataToleranciaAtrasoInicio, result.filtrosPrePedido.dataToleranciaAtrasoFinal)
+
             $(".attrNum").maskMoney();
             $(".attrMon").maskMoney();
             $(".attrPerc").maskMoney();
@@ -1014,12 +1090,18 @@ function geraCargaCadNovo() {
             $("#drpTamanhoCategoria").html(sourceTamanho).selectpicker('val', '');
             $('#drpClassificacao').html(souceClass).selectpicker('val', '');
             $("#drpCoresGrade").html(sourceCores);
+
+            configuraRangeCalendarioFornecedor('#txtDtEntregaPed', result.dataEntregaInicio, result.dataEntregaFinal)
+            atualizaDtEntregaLimite();
+            configuraRangeCalendarioFornecedor('#txtDtEntregaFinalPed', result.dataToleranciaAtrasoInicio, result.dataToleranciaAtrasoFinal)
+            $(".attrBool").bootstrapSwitch();
             $(".attrNum").maskMoney();
             $(".attrMon").maskMoney();
             $(".attrPerc").maskMoney();
             $(".attrNum").maskMoney('mask');
             $(".attrMon").maskMoney('mask');
             $(".attrPerc").maskMoney('mask');
+            $(".attrBool").bootstrapSwitch();
             geraComponenteCalendarioAttr()
 
             $(".selectpicker").selectpicker();
@@ -1146,7 +1228,10 @@ function retornaDadosGrpFilDist(parametro, qtdRef) {
                 }
             }
 
-
+            $('.selectpicker').selectpicker('show');
+            $(".navbar.navbar-default.navbar-fixed-top").removeClass('ocultarElemento');
+            $(".bg_load").fadeOut();
+            $(".wrapper").fadeOut();
         },
         error: function (erro) {
             $(".bg_load").fadeOut("slow");
@@ -1282,7 +1367,10 @@ function salvarPedido(parametro) {
                     onOpenBefore: function () {
                         this.buttons.okButton.hide();
                     },
-                    onDestroy: function () { salvarDadosCompra(true) }
+                    onDestroy: function () {
+                        compraId = result;
+                        salvarDadosCompra(true)
+                    }
                 });
             });
 
@@ -1604,14 +1692,14 @@ function cargaInicialPedido() {
             localStorage.setItem('primeiroAcesso', '1')
             carregaFormCompraManager();
 
-            $(".bg_load").fadeOut();
-            $(".wrapper").fadeOut();
-            $(".navbar.navbar-default.navbar-fixed-top").removeClass('ocultarElemento');
-            $("div.controls.ocultarElemento").removeClass('ocultarElemento');
-            $("#divForn").removeClass('ocultarElemento');
-            $("#divMarca").removeClass('ocultarElemento');
-            $("#divSec").removeClass('ocultarElemento');
-            $("#divOcultaColuna").removeClass('ocultarElemento');
+            //$(".bg_load").fadeOut();
+            //$(".wrapper").fadeOut();
+            //$(".navbar.navbar-default.navbar-fixed-top").removeClass('ocultarElemento');
+            //$("div.controls.ocultarElemento").removeClass('ocultarElemento');
+            //$("#divForn").removeClass('ocultarElemento');
+            //$("#divMarca").removeClass('ocultarElemento');
+            //$("#divSec").removeClass('ocultarElemento');
+            //$("#divOcultaColuna").removeClass('ocultarElemento');
 
         },
         error: function (error) {
@@ -1755,13 +1843,13 @@ function geraCargaPedidoAnalitico(parametro) {
             $(".attrNum").maskMoney();
             $(".attrMon").maskMoney();
             $(".attrPerc").maskMoney();
+            $(".attrBool").bootstrapSwitch();
             geraComponenteCalendarioAttr()
-
-            $('#txtDtEntregaPed').data('daterangepicker').minDate = moment(new Date(result.dataEntregaInicio));
-            $('#txtDtEntregaPed').data('daterangepicker').setStartDate(new Date(result.dataEntregaInicio));
-            $('#txtDtEntregaPed').data('daterangepicker').setEndDate(new Date(result.dataEntregaFinal));
-            $('#txtDtEntregaFinalPed').data('daterangepicker').setStartDate(new Date(result.dataToleranciaAtrasoInicio));
-            $('#txtDtEntregaFinalPed').data('daterangepicker').setEndDate(new Date(result.dataToleranciaAtrasoFinal));
+            $('#txtDtEntregaPed').data('daterangepicker').minDate = moment(new Date(result.filtrosPrePedido.dataEntregaInicio));
+            $('#txtDtEntregaPed').data('daterangepicker').setStartDate(new Date(result.filtrosPrePedido.dataEntregaInicio));
+            $('#txtDtEntregaPed').data('daterangepicker').setEndDate(new Date(result.filtrosPrePedido.dataEntregaFinal));
+            $('#txtDtEntregaFinalPed').data('daterangepicker').setStartDate(new Date(result.filtrosPrePedido.dataToleranciaAtrasoInicio));
+            $('#txtDtEntregaFinalPed').data('daterangepicker').setEndDate(new Date(result.filtrosPrePedido.dataToleranciaAtrasoFinal));
 
             $("#drpEsp").html(sourceEspecie).attr('disabled', true);
             $("#drpMarc").html(sourceMarca).attr('disabled', true);
@@ -1769,6 +1857,9 @@ function geraCargaPedidoAnalitico(parametro) {
             $("#drpCNPJ").html(sourceCNPJ).attr('disabled', true);
             $("#drpCoresGrade").html(sourceCores);
             $("#drpTamanhoGrade").html(sourceTamanho);
+            if ($("#drpTamanhoGrade option").length < 7) {
+                configuraCombosOpcoes('#drpTamanhoGrade');
+            }
             $("#drpTamanhoCategoria").html(sourceTamanhoGrupo);
             $('#drpReferenciaGrade').html(sourceReferencia);
             $('#drpClassificacao').html(souceClass).selectpicker('val', '');
@@ -1869,6 +1960,7 @@ function geraCargaPedidoAnalitico(parametro) {
             sessionStorage.removeItem('compra');
             sessionStorage.removeItem("pedidoId");
             sessionStorage.removeItem("pedidoStatus");
+
             $(".bg_load").fadeOut("slow");
             $(".wrapper").fadeOut("slow", function () {
                 $('.selectpicker').selectpicker('show');
@@ -1884,7 +1976,13 @@ function geraCargaPedidoAnalitico(parametro) {
 
                     $(".bg_load").show();
                     $(".wrapper").show();
-                    window.location = "../gerenciamento/pedido.cshtml";
+                    var dadosOrigemCompra = JSON.parse(sessionStorage.getItem("produtosLista"));
+                    if (dadosOrigemCompra) {
+                        window.location = "../gerenciamento/compraprodutos.cshtml";
+                    } else {
+                        window.location = "../gerenciamento/pedido.cshtml";
+                    }
+
                 }
             });;
         }
@@ -1923,7 +2021,9 @@ function atualizarStatus(parametro) {
                     sessionStorage.removeItem('Editar');
                     location.reload();
                 } else {
-                    window.location = "../gerenciamento/pedido.cshtml";
+                    sessionStorage.getItem("produtosLista") ?
+                        window.location = "../gerenciamento/compraprodutos.cshtml" :
+                        window.location = "../gerenciamento/pedido.cshtml";
                 }
             }
 
@@ -1959,11 +2059,11 @@ function cargaMovimentacaoProdutoOTB(parametro) {
             console.log(result);
             $("#divOTBRelatorio").removeClass('ocultarElemento');
             carregaAbaSegmento(result);
-            geraDadosRelatorioOTB(result, 'Seg',segRelGerado)
+            geraDadosRelatorioOTB(result, 'Seg', segRelGerado)
             carregaAbaSecao(result);
             geraDadosRelatorioOTB(result, 'Sec', secRelGerado)
             carregaAbaEspecie(result);
-            geraDadosRelatorioOTB(result,'Esp',espRelGerado)
+            geraDadosRelatorioOTB(result, 'Esp', espRelGerado)
             $(".selectpicker").selectpicker('show');
             var $menuTitulo = $(".navbar.navbar-default.navbar-fixed-top");
             $menuTitulo.removeClass('ocultarElemento');

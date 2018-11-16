@@ -5,6 +5,8 @@ namespace Nextt_Gestao_Compra.Dominio.Entidades
     public class PedidoConsulta
     {
         public int IDPedido { get; set; }
+        public string CodProduto { get; set; }
+        public string CodigoOriginal { get; set; }
         public int IDProduto { get; set; }
         public string DescricaoProduto { get; set; }
         public string NomeFantasia { get; set; }

@@ -3,7 +3,6 @@ using Newtonsoft.Json;
 using Nextt_Gestao_Compra.Aplicacao.Servicos.Interfaces.Gerenciamento;
 using Nextt_Gestao_Compra.Aplicacao.ViewModel;
 using Nextt_Gestao_Compra.Dominio.Entidades;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace Nextt_Gestao_Compra.Aplicacao.Gerenciador.Grupo
@@ -13,7 +12,7 @@ namespace Nextt_Gestao_Compra.Aplicacao.Gerenciador.Grupo
         public static FiltrosCadastroGrupoVM RetornaGruposFiliais(IAppServicoGrupo servicoGrupo, FabricaViewModel fabrica)
         {
             var dados = servicoGrupo.BuscaGruposCadastrados();
-            var listaGrupo = dados.ElementAt(0).Cast<GrupoFilial>().Select(x => fabrica.Criar(x)).ToList();
+            var listaGrupo = dados.ElementAt(0).Cast<GrupoFilial>().Where(x => x.Ativo).Select(x => fabrica.Criar(x)).ToList();
             var listaFiliais = dados.ElementAt(1).Cast<GrupoFilial>().Select(x => new  { x.IDFilial, x.Filial_Nome}).Distinct()
                                         .Select(x => fabrica.CriarComboFilial(new GrupoFilial {IDFilial= x.IDFilial,Filial_Nome= x.Filial_Nome }))
                                         .ToList();

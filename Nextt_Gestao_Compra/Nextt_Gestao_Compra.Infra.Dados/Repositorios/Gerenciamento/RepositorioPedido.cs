@@ -41,6 +41,7 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
                                     "', @DataEntregaPedidoFinal = '" + parametros.DtEntregaFinal +
                                     "', @IDFornecedor = '" + parametros.IDFornecedor +
                                     "', @CodigoProduto = '" + parametros.Codigo +//string ou int
+                                    "', @CodigoOriginal = '" + parametros.CodigoOriginal+//string ou int
                                     "', @ReferenciaFornecedor = '" + parametros.ReferenciaFornecedor +
                                     "', @IDPedido = '" + parametros.IDPedido + //string ou int
                                     "', @DescricaoProduto = '" + parametros.DescricaoProduto +

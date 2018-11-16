@@ -23,16 +23,16 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
         }
 
 
-        public Fornecedor CriarFornecedor(DadosPrePedido dadosCadastro)
-        {
-            return new Fornecedor()
-            {
-                IDFornecedor = dadosCadastro.IDFornecedor,
-                CNPJ = String.Empty,
-                RazaoSocial = dadosCadastro.RazaoSocial,
-                NomeFantasia = dadosCadastro.RazaoSocial
-            };
-        }
+        //public Fornecedor CriarFornecedor(DadosPrePedido dadosCadastro)
+        //{
+        //    return new Fornecedor()
+        //    {
+        //        IDFornecedor = dadosCadastro.IDFornecedor,
+        //        CNPJ = String.Empty,
+        //        RazaoSocial = dadosCadastro.RazaoSocial,
+        //        NomeFantasia = dadosCadastro.RazaoSocial
+        //    };
+        //}
         public Marca CriarMarca(DadosPrePedido dadosCadastro)
         {
             return new Marca()
@@ -183,7 +183,7 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
                 throw new Exception("Existe tamanho retornado sem a coluna 'Descricao' definida para ele.");
             }
 
-            if (tamanho.Ordem == 0)
+            if (tamanho.ForaGrade)
             {
                 dadosAdicionais.Add(",gradeInvalida");
             }

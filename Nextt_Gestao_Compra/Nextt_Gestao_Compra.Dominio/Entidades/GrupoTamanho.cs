@@ -10,6 +10,7 @@ namespace Nextt_Gestao_Compra.Dominio.Entidades
         //public string DescricaoTamanho { get; set; }
         //public string DescricaoGrupo { get; set; }
         public bool Ativo { get; set; }
+        public bool ForaGrade { get; set; }
         public Int16 Ordem { get; set; }
     }
 }

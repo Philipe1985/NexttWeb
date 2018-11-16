@@ -96,6 +96,10 @@ namespace Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido
 
             var filtrosPesquisa = new FiltrosPesquisa(dadosPedido, fabrica, dadosCores, pedidoServico)
             {
+                DataEntregaInicio = dadosPedido.DataEntregaInicio,
+                DataEntregaFinal = dadosPedido.DataEntregaFinal,
+                DataToleranciaAtrasoInicio = dadosPedido.DataToleranciaAtrasoInicio,
+                DataToleranciaAtrasoFinal = dadosPedido.DataToleranciaAtrasoFinal,
                 OrdemPed = ordemPed,
                 OrdemProd = ordemProd,
                 AttrEleListaProd = listaElemProd.ToList(),

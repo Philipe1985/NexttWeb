@@ -30,6 +30,10 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
         public List<ComboAtributoVM> AttrListaProd { get; set; }
         public List<ComboAtributoVM> AttrListaPed { get; set; }
         public List<AtributoElementoVM> AttrEleListaProd { get; set; }
+        public DateTime DataEntregaInicio { get; set; }
+        public DateTime DataEntregaFinal { get; set; }
+        public DateTime DataToleranciaAtrasoInicio { get; set; }
+        public DateTime DataToleranciaAtrasoFinal { get; set; }
         public List<AtributoElementoVM> AttrEleListaPed { get; set; }
         public FiltrosPesquisa(List<ComboFiltroVM> _fornecedores, List<ComboFiltroVM> _secoes, List<ComboFiltroVM> _marcas)
         {
@@ -52,7 +56,6 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
         public FiltrosPesquisa(DadosPrePedido dadosCadastro, IAppServicoCompra compraServico, FabricaViewModel fabrica, List<Cor> cores,
             List<GrupoTamanho> tamanhos, List<ReferenciaProduto> referencias)
         {
-            Fornecedores = new List<ComboFiltroVM>() { fabrica.Criar(fabrica.CriarFornecedor(dadosCadastro)) };
             Marcas = new List<ComboFiltroVM>() { fabrica.Criar(fabrica.CriarMarca(dadosCadastro)) };
             Secoes = new List<ComboFiltroVM>() { fabrica.Criar(fabrica.CriarSecao(dadosCadastro)) };
             Especies = new List<ComboFiltroVM>() { fabrica.Criar(fabrica.CriarEspecie(dadosCadastro)) };

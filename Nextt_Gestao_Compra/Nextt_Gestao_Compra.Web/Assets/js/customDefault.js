@@ -270,17 +270,6 @@ function voltarHome() {
     $(".wrapper").show();
     window.location = "../home.cshtml";
 }
-function movimentarProduto() {
-    sessionStorage.removeItem('compra');
-    sessionStorage.removeItem("pedidoId");
-    sessionStorage.removeItem("pedidoStatus");
-    sessionStorage.removeItem("cadastroNovo");
-    $(".navbar.navbar-default.navbar-fixed-top").addClass('ocultarElemento');
-    $('.selectpicker').selectpicker('hide');
-    $(".bg_load").show();
-    $(".wrapper").show();
-    window.location = "../gerenciamento/movimentacaoproduto.cshtml";
-}
 
 function desconectarSessao() {
     var mensagem, tituloLogout, btconfirma, btcancela;
@@ -405,7 +394,7 @@ function retornaComboTokem(id) {
     var retorno = [];
     $('#' + id + ' option:selected').each(function () {
         retorno.push($(this).attr("data-tokens").replace(';', ' / '));
-       
+
     });
     return retorno;
 }
@@ -489,6 +478,23 @@ function redimensionarTabelas() {
         $("span.wait").removeClass('ocultarElemento');
     });
 
+}
+function configuraRangeCalendarioFornecedor(elemento, dataIni, dataFinal) {
+    var dtInicial = new Date(dataIni);
+    var dtFinal = new Date(dataFinal);
+
+    if (dtInicial.getFullYear() >= new Date().getFullYear() && dtInicial <= dtFinal) {
+        $(elemento).data('daterangepicker').setStartDate(dtInicial);
+        $(elemento).data('daterangepicker').setEndDate(dtFinal);
+    }
+}
+function configuraCombosOpcoes(elemento) {
+    $(elemento).selectpicker('destroy').selectpicker({
+        liveSearch: false,
+        actionsBox: false,
+    });
+
+    
 }
 function atualizaObjetoMudancaPagina(pg) {
     var paramRetorno = JSON.parse(sessionStorage.getItem('parametrosFiltro'));

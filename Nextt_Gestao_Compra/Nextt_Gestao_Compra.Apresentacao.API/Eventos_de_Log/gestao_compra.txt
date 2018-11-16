@@ -1,9 +1,158 @@
 
-ERROR 2018-11-07 19:34:11 - Erro ao Recuperar Seções
-System.Exception: RepositorioMovimentacao.RetornaCargaSecaoFiltros: 
-Incorrect syntax near 'Feminino'.
-   em Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento.RepositorioMovimentacao.RetornaCargaSecaoFiltros(Parametros parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Repositorios\Gerenciamento\RepositorioMovimentacao.cs:linha 45
-   em Nextt_Gestao_Compra.Dominio.Servicos.Gerenciamento.ServicoMovimentacao.RetornaCargaSecaoFiltros(Parametros parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Dominio\Servicos\Gerenciamento\ServicoMovimentacao.cs:linha 28
-   em Nextt_Gestao_Compra.Aplicacao.Servicos.Gerenciamento.AppServicoMovimentacao.RetornaCargaSecaoFiltros(Parametros parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Servicos\Gerenciamento\AppServicoMovimentacao.cs:linha 28
-   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Movimentacao.GerenciamentoAplicacaoMovimentacao.RetornaSecoes(IAppServicoMovimentacao servicoMovimentacao, FabricaViewModel fabrica, ParametrosVM parametroVM) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Movimentacao\GerenciamentoAplicacaoMovimentacao.cs:linha 26
-   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Gerenciamento.MovimentacaoController.RetornaSecoes(ParametrosVM parametro) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Gerenciamento\MovimentacaoController.cs:linha 57
+ERROR 2018-11-15 14:54:54 - Erro ao Recuperar Produtos Filtrados
+System.Exception: RepositorioCompra.BuscaProdutosFiltrados: 
+Cannot resolve the collation conflict between "Latin1_General_CI_AS" and "SQL_Latin1_General_CP1_CI_AS" in the equal to operation.
+   em Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento.RepositorioCompra.BuscaProdutosFiltrados(Parametros parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Repositorios\Gerenciamento\RepositorioCompra.cs:linha 50
+   em Nextt_Gestao_Compra.Dominio.Servicos.Gerenciamento.ServicoCompra.BuscaProdutosFiltrados(Parametros parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Dominio\Servicos\Gerenciamento\ServicoCompra.cs:linha 30
+   em Nextt_Gestao_Compra.Aplicacao.Servicos.Gerenciamento.AppServicoCompra.BuscaProdutosFiltrados(Parametros parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Servicos\Gerenciamento\AppServicoCompra.cs:linha 29
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Compra.GerenciadorAplicacaoCompra.RetornaProdutoFiltrado(IAppServicoCompra compraServico, ParametrosVM parametroVM) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Compra\GerenciadorAplicacaoCompra.cs:linha 96
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Gerenciamento.CompraController.GeraDadosProdutoFiltrado(ParametrosVM parametro) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Gerenciamento\CompraController.cs:linha 77
+
+ERROR 2018-11-15 14:58:59 - Erro ao Recuperar Dados do Pedido Analítico
+System.Exception: RepositorioPedido.RetornaPedidoAnalitico: 
+String or binary data would be truncated.
+The statement has been terminated.
+   em Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento.RepositorioPedido.RetornaPedidoAnalitico(Parametros parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Repositorios\Gerenciamento\RepositorioPedido.cs:linha 106
+   em Nextt_Gestao_Compra.Dominio.Servicos.Gerenciamento.ServicoPedido.RetornaPedidoAnalitico(Parametros parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Dominio\Servicos\Gerenciamento\ServicoPedido.cs:linha 32
+   em Nextt_Gestao_Compra.Aplicacao.Servicos.Gerenciamento.AppServicoPedido.RetornaPedidoAnalitico(Parametros parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Servicos\Gerenciamento\AppServicoPedido.cs:linha 29
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido.GerenciadorAplicacaoPedido.RetornaPedidoAnalitico(IAppServicoPedido pedidoServico, ParametrosVM parametroVM, FabricaViewModel fabrica) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Pedido\GerenciadorAplicacaoPedido.cs:linha 71
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Cadastro.PedidoController.RetornaPedidoAnalitico(ParametrosVM parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Cadastro\PedidoController.cs:linha 93
+
+ERROR 2018-11-15 15:01:08 - Erro ao Recuperar Dados do Pedido Analítico
+System.Exception: RepositorioPedido.RetornaPedidoAnalitico: 
+String or binary data would be truncated.
+The statement has been terminated.
+   em Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento.RepositorioPedido.RetornaPedidoAnalitico(Parametros parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Repositorios\Gerenciamento\RepositorioPedido.cs:linha 106
+   em Nextt_Gestao_Compra.Dominio.Servicos.Gerenciamento.ServicoPedido.RetornaPedidoAnalitico(Parametros parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Dominio\Servicos\Gerenciamento\ServicoPedido.cs:linha 32
+   em Nextt_Gestao_Compra.Aplicacao.Servicos.Gerenciamento.AppServicoPedido.RetornaPedidoAnalitico(Parametros parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Servicos\Gerenciamento\AppServicoPedido.cs:linha 29
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido.GerenciadorAplicacaoPedido.RetornaPedidoAnalitico(IAppServicoPedido pedidoServico, ParametrosVM parametroVM, FabricaViewModel fabrica) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Pedido\GerenciadorAplicacaoPedido.cs:linha 71
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Cadastro.PedidoController.RetornaPedidoAnalitico(ParametrosVM parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Cadastro\PedidoController.cs:linha 93
+
+ERROR 2018-11-15 15:03:21 - Erro ao Recuperar Dados do Pedido Analítico
+System.Exception: RepositorioPedido.RetornaPedidoAnalitico: 
+String or binary data would be truncated.
+The statement has been terminated.
+   em Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento.RepositorioPedido.RetornaPedidoAnalitico(Parametros parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Repositorios\Gerenciamento\RepositorioPedido.cs:linha 106
+   em Nextt_Gestao_Compra.Dominio.Servicos.Gerenciamento.ServicoPedido.RetornaPedidoAnalitico(Parametros parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Dominio\Servicos\Gerenciamento\ServicoPedido.cs:linha 32
+   em Nextt_Gestao_Compra.Aplicacao.Servicos.Gerenciamento.AppServicoPedido.RetornaPedidoAnalitico(Parametros parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Servicos\Gerenciamento\AppServicoPedido.cs:linha 29
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido.GerenciadorAplicacaoPedido.RetornaPedidoAnalitico(IAppServicoPedido pedidoServico, ParametrosVM parametroVM, FabricaViewModel fabrica) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Pedido\GerenciadorAplicacaoPedido.cs:linha 71
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Cadastro.PedidoController.RetornaPedidoAnalitico(ParametrosVM parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Cadastro\PedidoController.cs:linha 93
+
+ERROR 2018-11-15 15:19:53 - Erro ao Recuperar Dados do Pedido Sintético
+System.Exception: Quantidade de packs retornadas no pack 1 incompativel com a quantidade de packs a distribuir. 
+ Qtd total no pack:12
+ Qtd total nos grupos:18
+   em Nextt_Gestao_Compra.Aplicacao.ViewModel.PackVM.ValidaQtdPacksDistribuido(Int32 qtdCompradoPack) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\ViewModel\PackVM.cs:linha 38
+   em Nextt_Gestao_Compra.Aplicacao.ViewModel.PackVM..ctor(List`1 produtoItems, List`1 grupoFilials) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\ViewModel\PackVM.cs:linha 32
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido.GerenciadorAplicacaoPedido.RetornaPedidoSintetico(IAppServicoPedido pedidoServico, ParametrosVM parametroVM) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Pedido\GerenciadorAplicacaoPedido.cs:linha 64
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Cadastro.PedidoController.RetornaPedidoSintetico(ParametrosVM parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Cadastro\PedidoController.cs:linha 77
+
+ERROR 2018-11-15 15:20:32 - Erro ao Recuperar Dados do Pedido Sintético
+System.Exception: Quantidade de packs retornadas no pack 1 incompativel com a quantidade de packs a distribuir. 
+ Qtd total no pack:12
+ Qtd total nos grupos:17
+   em Nextt_Gestao_Compra.Aplicacao.ViewModel.PackVM.ValidaQtdPacksDistribuido(Int32 qtdCompradoPack) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\ViewModel\PackVM.cs:linha 38
+   em Nextt_Gestao_Compra.Aplicacao.ViewModel.PackVM..ctor(List`1 produtoItems, List`1 grupoFilials) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\ViewModel\PackVM.cs:linha 32
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido.GerenciadorAplicacaoPedido.RetornaPedidoSintetico(IAppServicoPedido pedidoServico, ParametrosVM parametroVM) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Pedido\GerenciadorAplicacaoPedido.cs:linha 64
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Cadastro.PedidoController.RetornaPedidoSintetico(ParametrosVM parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Cadastro\PedidoController.cs:linha 77
+
+ERROR 2018-11-15 15:28:20 - Erro ao Recuperar Dados do Pedido Sintético
+System.Exception: Quantidade de packs retornadas no pack 1 incompativel com a quantidade de packs a distribuir. 
+ Qtd total no pack:12
+ Qtd total nos grupos:17
+   em Nextt_Gestao_Compra.Aplicacao.ViewModel.PackVM.ValidaQtdPacksDistribuido(Int32 qtdCompradoPack) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\ViewModel\PackVM.cs:linha 38
+   em Nextt_Gestao_Compra.Aplicacao.ViewModel.PackVM..ctor(List`1 produtoItems, List`1 grupoFilials) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\ViewModel\PackVM.cs:linha 32
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido.GerenciadorAplicacaoPedido.RetornaPedidoSintetico(IAppServicoPedido pedidoServico, ParametrosVM parametroVM) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Pedido\GerenciadorAplicacaoPedido.cs:linha 64
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Cadastro.PedidoController.RetornaPedidoSintetico(ParametrosVM parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Cadastro\PedidoController.cs:linha 77
+
+ERROR 2018-11-15 15:29:09 - Erro ao Recuperar Dados do Pedido Sintético
+System.Exception: Quantidade de packs retornadas no pack 1 incompativel com a quantidade de packs a distribuir. 
+ Qtd total no pack:12
+ Qtd total nos grupos:17
+   em Nextt_Gestao_Compra.Aplicacao.ViewModel.PackVM.ValidaQtdPacksDistribuido(Int32 qtdCompradoPack) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\ViewModel\PackVM.cs:linha 38
+   em Nextt_Gestao_Compra.Aplicacao.ViewModel.PackVM..ctor(List`1 produtoItems, List`1 grupoFilials) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\ViewModel\PackVM.cs:linha 32
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido.GerenciadorAplicacaoPedido.RetornaPedidoSintetico(IAppServicoPedido pedidoServico, ParametrosVM parametroVM) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Pedido\GerenciadorAplicacaoPedido.cs:linha 64
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Cadastro.PedidoController.RetornaPedidoSintetico(ParametrosVM parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Cadastro\PedidoController.cs:linha 77
+
+ERROR 2018-11-15 17:38:52 - Erro ao Recuperar Dados do Pedido Analítico
+System.Exception: RepositorioPedido.RetornaPedidoAnalitico: 
+String or binary data would be truncated.
+The statement has been terminated.
+   em Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento.RepositorioPedido.RetornaPedidoAnalitico(Parametros parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Repositorios\Gerenciamento\RepositorioPedido.cs:linha 106
+   em Nextt_Gestao_Compra.Dominio.Servicos.Gerenciamento.ServicoPedido.RetornaPedidoAnalitico(Parametros parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Dominio\Servicos\Gerenciamento\ServicoPedido.cs:linha 32
+   em Nextt_Gestao_Compra.Aplicacao.Servicos.Gerenciamento.AppServicoPedido.RetornaPedidoAnalitico(Parametros parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Servicos\Gerenciamento\AppServicoPedido.cs:linha 29
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido.GerenciadorAplicacaoPedido.RetornaPedidoAnalitico(IAppServicoPedido pedidoServico, ParametrosVM parametroVM, FabricaViewModel fabrica) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Pedido\GerenciadorAplicacaoPedido.cs:linha 71
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Cadastro.PedidoController.RetornaPedidoAnalitico(ParametrosVM parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Cadastro\PedidoController.cs:linha 93
+
+ERROR 2018-11-15 17:44:44 - Erro ao Recuperar Dados do Pedido Analítico
+System.Exception: RepositorioPedido.RetornaPedidoAnalitico: 
+String or binary data would be truncated.
+The statement has been terminated.
+   em Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento.RepositorioPedido.RetornaPedidoAnalitico(Parametros parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Repositorios\Gerenciamento\RepositorioPedido.cs:linha 106
+   em Nextt_Gestao_Compra.Dominio.Servicos.Gerenciamento.ServicoPedido.RetornaPedidoAnalitico(Parametros parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Dominio\Servicos\Gerenciamento\ServicoPedido.cs:linha 32
+   em Nextt_Gestao_Compra.Aplicacao.Servicos.Gerenciamento.AppServicoPedido.RetornaPedidoAnalitico(Parametros parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Servicos\Gerenciamento\AppServicoPedido.cs:linha 29
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido.GerenciadorAplicacaoPedido.RetornaPedidoAnalitico(IAppServicoPedido pedidoServico, ParametrosVM parametroVM, FabricaViewModel fabrica) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Pedido\GerenciadorAplicacaoPedido.cs:linha 71
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Cadastro.PedidoController.RetornaPedidoAnalitico(ParametrosVM parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Cadastro\PedidoController.cs:linha 93
+
+ERROR 2018-11-15 22:56:33 - Erro ao Recuperar Dados do Pedido Sintético
+System.Exception: Quantidade de packs retornadas no pack 1 incompativel com a quantidade de packs a distribuir. 
+ Qtd total no pack:12
+ Qtd total nos grupos:17
+   em Nextt_Gestao_Compra.Aplicacao.ViewModel.PackVM.ValidaQtdPacksDistribuido(Int32 qtdCompradoPack) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\ViewModel\PackVM.cs:linha 38
+   em Nextt_Gestao_Compra.Aplicacao.ViewModel.PackVM..ctor(List`1 produtoItems, List`1 grupoFilials) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\ViewModel\PackVM.cs:linha 32
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido.GerenciadorAplicacaoPedido.RetornaPedidoSintetico(IAppServicoPedido pedidoServico, ParametrosVM parametroVM) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Pedido\GerenciadorAplicacaoPedido.cs:linha 64
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Cadastro.PedidoController.RetornaPedidoSintetico(ParametrosVM parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Cadastro\PedidoController.cs:linha 77
+
+ERROR 2018-11-15 23:34:35 - Erro ao Recuperar Dados do Pedido Analítico
+System.Exception: RepositorioPedido.RetornaPedidoAnalitico: 
+String or binary data would be truncated.
+The statement has been terminated.
+   em Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento.RepositorioPedido.RetornaPedidoAnalitico(Parametros parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Repositorios\Gerenciamento\RepositorioPedido.cs:linha 106
+   em Nextt_Gestao_Compra.Dominio.Servicos.Gerenciamento.ServicoPedido.RetornaPedidoAnalitico(Parametros parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Dominio\Servicos\Gerenciamento\ServicoPedido.cs:linha 32
+   em Nextt_Gestao_Compra.Aplicacao.Servicos.Gerenciamento.AppServicoPedido.RetornaPedidoAnalitico(Parametros parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Servicos\Gerenciamento\AppServicoPedido.cs:linha 29
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido.GerenciadorAplicacaoPedido.RetornaPedidoAnalitico(IAppServicoPedido pedidoServico, ParametrosVM parametroVM, FabricaViewModel fabrica) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Pedido\GerenciadorAplicacaoPedido.cs:linha 71
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Cadastro.PedidoController.RetornaPedidoAnalitico(ParametrosVM parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Cadastro\PedidoController.cs:linha 93
+
+ERROR 2018-11-15 23:35:02 - Erro ao Recuperar Dados do Pedido Analítico
+System.Exception: Referências retornadas no pedido é incompativel com as referências disponível para escolha. 
+ Referência divergente:PW74B
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido.GerenciadorAplicacaoPedido.ValidaReferenciaPedido(List`1 referencias, List`1 produtoItems) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Pedido\GerenciadorAplicacaoPedido.cs:linha 174
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido.GerenciadorAplicacaoPedido.RetornaPedidoAnalitico(IAppServicoPedido pedidoServico, ParametrosVM parametroVM, FabricaViewModel fabrica) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Pedido\GerenciadorAplicacaoPedido.cs:linha 80
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Cadastro.PedidoController.RetornaPedidoAnalitico(ParametrosVM parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Cadastro\PedidoController.cs:linha 93
+
+ERROR 2018-11-15 23:40:53 - Erro ao Recuperar Dados do Pedido Analítico
+System.Exception: Referências retornadas no pedido é incompativel com as referências disponível para escolha. 
+ Referência divergente:PW74B
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido.GerenciadorAplicacaoPedido.ValidaReferenciaPedido(List`1 referencias, List`1 produtoItems) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Pedido\GerenciadorAplicacaoPedido.cs:linha 174
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido.GerenciadorAplicacaoPedido.RetornaPedidoAnalitico(IAppServicoPedido pedidoServico, ParametrosVM parametroVM, FabricaViewModel fabrica) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Pedido\GerenciadorAplicacaoPedido.cs:linha 80
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Cadastro.PedidoController.RetornaPedidoAnalitico(ParametrosVM parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Cadastro\PedidoController.cs:linha 93
+
+ERROR 2018-11-15 23:41:33 - Erro ao Recuperar Dados do Pedido Analítico
+System.Exception: RepositorioPedido.RetornaPedidoAnalitico: 
+String or binary data would be truncated.
+The statement has been terminated.
+   em Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento.RepositorioPedido.RetornaPedidoAnalitico(Parametros parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Repositorios\Gerenciamento\RepositorioPedido.cs:linha 106
+   em Nextt_Gestao_Compra.Dominio.Servicos.Gerenciamento.ServicoPedido.RetornaPedidoAnalitico(Parametros parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Dominio\Servicos\Gerenciamento\ServicoPedido.cs:linha 32
+   em Nextt_Gestao_Compra.Aplicacao.Servicos.Gerenciamento.AppServicoPedido.RetornaPedidoAnalitico(Parametros parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Servicos\Gerenciamento\AppServicoPedido.cs:linha 29
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido.GerenciadorAplicacaoPedido.RetornaPedidoAnalitico(IAppServicoPedido pedidoServico, ParametrosVM parametroVM, FabricaViewModel fabrica) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Pedido\GerenciadorAplicacaoPedido.cs:linha 71
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Cadastro.PedidoController.RetornaPedidoAnalitico(ParametrosVM parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Cadastro\PedidoController.cs:linha 93
+
+ERROR 2018-11-15 23:42:02 - Erro ao Recuperar Dados do Pedido Analítico
+System.Exception: RepositorioPedido.RetornaPedidoAnalitico: 
+String or binary data would be truncated.
+The statement has been terminated.
+   em Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento.RepositorioPedido.RetornaPedidoAnalitico(Parametros parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Repositorios\Gerenciamento\RepositorioPedido.cs:linha 106
+   em Nextt_Gestao_Compra.Dominio.Servicos.Gerenciamento.ServicoPedido.RetornaPedidoAnalitico(Parametros parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Dominio\Servicos\Gerenciamento\ServicoPedido.cs:linha 32
+   em Nextt_Gestao_Compra.Aplicacao.Servicos.Gerenciamento.AppServicoPedido.RetornaPedidoAnalitico(Parametros parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Servicos\Gerenciamento\AppServicoPedido.cs:linha 29
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido.GerenciadorAplicacaoPedido.RetornaPedidoAnalitico(IAppServicoPedido pedidoServico, ParametrosVM parametroVM, FabricaViewModel fabrica) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Pedido\GerenciadorAplicacaoPedido.cs:linha 71
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Cadastro.PedidoController.RetornaPedidoAnalitico(ParametrosVM parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Cadastro\PedidoController.cs:linha 93
+
+ERROR 2018-11-15 23:43:19 - Erro ao Recuperar Dados do Pedido Analítico
+System.Exception: RepositorioPedido.RetornaPedidoAnalitico: 
+String or binary data would be truncated.
+The statement has been terminated.
+   em Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento.RepositorioPedido.RetornaPedidoAnalitico(Parametros parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Repositorios\Gerenciamento\RepositorioPedido.cs:linha 106
+   em Nextt_Gestao_Compra.Dominio.Servicos.Gerenciamento.ServicoPedido.RetornaPedidoAnalitico(Parametros parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Dominio\Servicos\Gerenciamento\ServicoPedido.cs:linha 32
+   em Nextt_Gestao_Compra.Aplicacao.Servicos.Gerenciamento.AppServicoPedido.RetornaPedidoAnalitico(Parametros parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Servicos\Gerenciamento\AppServicoPedido.cs:linha 29
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido.GerenciadorAplicacaoPedido.RetornaPedidoAnalitico(IAppServicoPedido pedidoServico, ParametrosVM parametroVM, FabricaViewModel fabrica) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Pedido\GerenciadorAplicacaoPedido.cs:linha 71
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Cadastro.PedidoController.RetornaPedidoAnalitico(ParametrosVM parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Cadastro\PedidoController.cs:linha 93

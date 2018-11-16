@@ -27,31 +27,36 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
         public List<string> ReferenciasGrade { get; set; }
         public List<string> UltimaForma { get; set; }
         public string UltimaCondicao { get; set; }
+        public string UltimaClassificacao { get; set; }
         public List<string> CoresGrade { get; set; }
         public List<string> TamanhosGrade { get; set; }
 
-        public RetornoPrePedidoVM(FiltrosPesquisa filtrosPrePedido, DadosPrePedido dados, List<Grade> grades, List<DadosUltimaCompra> ultimaCompras)
+        public RetornoPrePedidoVM(FiltrosPesquisa filtrosPrePedido, DadosPrePedido dados, List<Grade> grades)
         {
             GradePadrao = Mapper.Map<List<Grade>, List<GradePadraoVM>>(grades);
             FiltrosPrePedido = filtrosPrePedido;
             IDProduto = dados.IDProduto;
+            if (dados.IDClassificacaoFiscal > 0)
+            {
+                UltimaClassificacao = dados.IDClassificacaoFiscal.ToString();
+            }
             CodOriginal = dados.CodigoOriginal;
             CodProduto = dados.CodProduto;
-            Referencia = dados.ReferenciaFornecedor;
+            //Referencia = dados.ReferenciaFornecedor;
             Descricao = dados.DescricaoProduto;
             DescricaoReduzida = dados.DescricaoReduzidaProduto;
-            PrecoCusto = dados.PrecoCusto_UltPedido;
-            PrecoVenda = dados.PrecoVenda_UltPedido;
-            Desconto = dados.Desconto_UltPedido;
-            IPI = dados.IPI_UltPedido;
-            ICMS = dados.ICMS_UltPedido;
-            QualidadeQtde = dados.QualidadeQtde_UltPedido;
-            QualidadeValor = dados.QualidadeValor_UltPedido;
+            //PrecoCusto = dados.PrecoCusto_UltPedido;
+            //PrecoVenda = dados.PrecoVenda_UltPedido;
+            //Desconto = dados.Desconto_UltPedido;
+            //IPI = dados.IPI_UltPedido;
+            //ICMS = dados.ICMS_UltPedido;
+            //QualidadeQtde = dados.QualidadeQtde_UltPedido;
+            //QualidadeValor = dados.QualidadeValor_UltPedido;
             ReferenciasGrade = grades.Select(x => x.Referencia.Trim()).Distinct().ToList();
             CoresGrade = grades.Select(x => x.DescricaoCor.Trim()).Distinct().ToList();
             TamanhosGrade = grades.Select(x => x.DescricaoTamanho.Trim()).Distinct().ToList();
-            UltimaCondicao = ultimaCompras.Select(x => x.IDCondicaoPagamento.ToString()).FirstOrDefault();
-            UltimaForma = ultimaCompras.Select(x => x.IDFormaPagamento.ToString()).Distinct().ToList();
+            //UltimaCondicao = ultimaCompras.Select(x => x.IDCondicaoPagamento.ToString()).FirstOrDefault();
+            //UltimaForma = ultimaCompras.Select(x => x.IDFormaPagamento.ToString()).Distinct().ToList();
         }
     }
 }
