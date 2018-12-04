@@ -113,16 +113,28 @@
                                                     <span class="checkmark"> Cadastrar Produto Novo</span>
                                                 </label>
                                             </li>
-                                            <li data-filtro="Cadastrar Atributo de Pedido">
+                                            <li data-filtro="Cadastrar Pedido">
                                                 <label class="containerLabel">
-                                                    <input style="margin:0px !important" type="checkbox" value="Cadastrar Atributo de Pedido">
-                                                    <span class="checkmark"> Cadastrar Atributo de Pedido</span>
+                                                    <input style="margin:0px !important" type="checkbox" value="Cadastrar Pedido">
+                                                    <span class="checkmark"> Cadastrar Pedido</span>
                                                 </label>
                                             </li>
-                                            <li data-filtro="Cadastrar Atributo de Produto">
+                                            <li data-filtro="Gerenciar Grupos">
                                                 <label class="containerLabel">
-                                                    <input style="margin:0px !important" type="checkbox" value="Cadastrar Atributo de Produto">
-                                                    <span class="checkmark"> Cadastrar Atributo de Produto</span>
+                                                    <input style="margin:0px !important" type="checkbox" value="Gerenciar Grupos">
+                                                    <span class="checkmark"> Gerenciar Grupos</span>
+                                                </label>
+                                            </li>
+                                            <li data-filtro="Acessar Movimentação de Produto">
+                                                <label class="containerLabel">
+                                                    <input style="margin:0px !important" type="checkbox" value="Acessar Movimentação de Produto">
+                                                    <span class="checkmark"> Acessar Movimentação de Produto</span>
+                                                </label>
+                                            </li>
+                                            <li data-filtro="Acessar Movimentação de Pedido">
+                                                <label class="containerLabel">
+                                                    <input style="margin:0px !important" type="checkbox" value="Acessar Movimentação de Pedido">
+                                                    <span class="checkmark"> Acessar Movimentação de Pedido</span>
                                                 </label>
                                             </li>
                                             <li data-filtro="Cadastrar Novas Condições de Pagamento">
@@ -155,10 +167,10 @@
                                                     <span class="checkmark"> Excluir Fotos</span>
                                                 </label>
                                             </li>
-                                            <li data-filtro="Filtrar Planejamento OTB">
+                                            <li data-filtro="Alterar Comprador">
                                                 <label class="containerLabel">
-                                                    <input style="margin:0px !important" type="checkbox" value="Filtrar Planejamento OTB">
-                                                    <span class="checkmark"> Filtrar Planejamento OTB</span>
+                                                    <input style="margin:0px !important" type="checkbox" value="Alterar Comprador">
+                                                    <span class="checkmark"> Alterar Comprador</span>
                                                 </label>
                                             </li>
                                             <li data-filtro="Alterar Quantidade Distribuida nos Grupos">
@@ -174,7 +186,12 @@
                                                 </label>
                                             </li>
 
-
+                                            <li data-filtro="Gerenciar Usuários">
+                                                <label class="containerLabel">
+                                                    <input style="margin:0px !important" type="checkbox" value="Gerenciar Usuários">
+                                                    <span class="checkmark"> Gerenciar Usuários</span>
+                                                </label>
+                                            </li>
                                             <li data-filtro="Bloquear/Desbloquear Usuário">
                                                 <label class="containerLabel">
                                                     <input style="margin:0px !important" type="checkbox" value="Bloquear/Desbloquear Usuário">
@@ -267,12 +284,6 @@
                                                     <span class="checkmark"> Imprimir Pedidos</span>
                                                 </label>
                                             </li>
-                                            <li data-filtro="Enviar por Email">
-                                                <label class="containerLabel">
-                                                    <input style="margin:0px !important" type="checkbox" value="Adicionar Fotos">
-                                                    <span class="checkmark"> Adicionar Fotos</span>
-                                                </label>
-                                            </li>
                                             <li data-filtro="Aprovar os Próprios Pedidos">
                                                 <label class="containerLabel">
                                                     <input style="margin:0px !important" type="checkbox" value="Aprovar os Próprios Pedidos">
@@ -356,7 +367,7 @@
                             <div class="form-group">
                                 <label id="lblDescPerfil" class="form-label">Descrição do Perfil</label>
                                 <div class="controls">
-                                    <input type="text" ID="txtDescPerfil" MaxLength="200" class="form-control" />
+                                    <input type="text" id="txtDescPerfil" maxlength="50" class="form-control" />
                                 </div>
                             </div>
                         </div>
@@ -365,6 +376,15 @@
                                 <label id="lblPerfilExistente" class="form-label">Gerencie um Perfil Existente</label>
                                 <div class="controls">
                                     <select name="cbPerfilExistente" id="cbPerfilExistente" class="selectpicker" data-width="100%" title="Selecione um perfil..."></select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label id="lblPermissoesPerfil" class="form-label">Selecione as Permissões do Perfil</label>
+                                <div class="controls">
+                                    <select name="cbPermissoesPerfil" id="cbPermissoesPerfil" multiple class="selectpicker show-tick form-control"  data-live-search="true" data-selected-text-format="count > 1"
+                                                    data-width="100%" data-size="5" data-count-selected-text="Selecionado {0} de {1} formas" title="Selecione um perfil..."></select>
                                 </div>
                             </div>
                         </div>

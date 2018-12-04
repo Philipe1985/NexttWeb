@@ -1,6 +1,6 @@
 ﻿$(document).ready(function () {
     $('.panel-hover').on('click', function (e) {
-        
+
         if ($(this).attr('id').toLowerCase().indexOf('movimentacaoproduto') > -1) {
             funcaoInativa();
         } else {
@@ -9,7 +9,7 @@
             $(".wrapper").show();
             window.location = "../gerenciamento/" + $(this).attr('id') + ".cshtml";
         }
-        
+
     });
     $(window).on("load", carregar);
 });
@@ -17,11 +17,18 @@ function carregar() {
     sessionStorage.removeItem('compra');
     sessionStorage.removeItem("pedidoId");
     sessionStorage.removeItem('produtosLista');
+    sessionStorage.removeItem('fornSelecionado');
     sessionStorage.removeItem("produtosComprarSelecionados");
     sessionStorage.removeItem("pedidoStatus");
     sessionStorage.removeItem("cadastroNovo");
-    if (sessionStorage.getItem("perfilSistema") === 'undefined' && sessionStorage.getItem("perfilAdmin") === 'undefined') {
+    if (permissoesUsuarioLogado.indexOf('Gerenciar Grupos') === -1) {
         $("#grupofiliais").addClass("ocultarElemento");
+    }
+    if (permissoesUsuarioLogado.indexOf('Acessar Movimentação de Produto') === -1) {
+        $("#movimentacaoproduto").addClass("ocultarElemento");
+    }
+    if (permissoesUsuarioLogado.indexOf('Cadastrar Pedido') === -1) {
+        $("#compra").addClass("ocultarElemento");
     }
     $("#homeOpcao").addClass("ocultarElemento");
     var $menuTitulo = $(".navbar.navbar-default.navbar-fixed-top");

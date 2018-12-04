@@ -6,11 +6,11 @@
 
     $.ajax({
         type: 'POST',
-        cache: false,
         crossDomain: true,
         url: urlApi + 'Cadastrar',
         statusCode: {
             201: function (retorno) {
+                console.log(retorno)
                 waitingDialog.hide();
                 $('#modalCadastroUsuario').modal('hide');
                 var texto = '';
@@ -37,10 +37,16 @@
         },
         data: obj,
         async: true,
+        xhrFields: {
+            withCredentials: true
+        },
         beforeSend: function (req) {
-            req.setRequestHeader('Authorization', sessionStorage.getItem("token"));
+            if (sessionStorage.getItem("token")) {
+                req.setRequestHeader('Authorization', sessionStorage.getItem("token"));
+            }
         },
         error: function (error) {
+            console.log(error)
             modal({
                 messageText: "Ocorreu um erro durante a operação. Informe o administrador do sistema o erro abaixo: <br/>Erro " + error.status + ": " + tratamentoErro(error),
                 type: "alert",
@@ -142,7 +148,7 @@ function carregarSecoes(parametro) {
                 sourceSec += "<option data-tokens='" + value.token + "' value='" + value.valor + "'>" + value.descricao + "</option>";
             });
             $("#drpSec").html(sourceSec);
-            $("#drpSec").selectpicker("refresh")
+            $("#drpSec").selectpicker("refresh");
             $(".bg_load").fadeOut();
             $(".wrapper").fadeOut();
             var $menuTitulo = $(".navbar.navbar-default.navbar-fixed-top");
@@ -188,6 +194,7 @@ function carregarFiltrosMovimentacaoProduto() {
             });
             $("#drpGrps").html(sourceGrupo);
             $("#drpSeg").html(sourceSeg);
+            $("#divTipoRel").removeClass('ocultarElemento');
             $("#divGrp").removeClass('ocultarElemento');
             $("#divSeg").removeClass('ocultarElemento');
             $('.selectpicker').selectpicker('refresh');
@@ -223,11 +230,15 @@ function Logar(un, pw) {
         url: urlToken + 'oauth/token',
         data: dadosLogin,
         success: function (result) {
+            var permissoes = geraPermissoesAtivas(result);
+            console.log(permissoes);
             sessionStorage.setItem("token", result.token_type + ' ' + result.access_token);
             sessionStorage.setItem("id_usuarioLogado", result.nome);
             sessionStorage.setItem("id_usuario", result.userID);
             sessionStorage.setItem("perfilSistema", result.perfil);
             sessionStorage.setItem("perfilAdmin", result.gerenciarUsuario);
+            sessionStorage.setItem("permissoes", JSON.stringify(permissoes));
+
             localStorage.removeItem("erro");
             window.location = "../home.cshtml";
         },
@@ -248,11 +259,6 @@ function carregaComboPerfil() {
     $.ajax({
         type: 'POST',
         crossDomain: true,
-        statusCode: {
-            404: function () {
-                falha("Nos parametros informados, existem dados nulos ou inválidos. Verifique e tente novamente!");
-            }
-        },
         cache: false,
         url: urlApi + 'RecuperarTodosPerfis',
         beforeSend: function (req) {
@@ -261,7 +267,8 @@ function carregaComboPerfil() {
         success: function (result) {
             $.each(result, function (index, value) {
                 $("#ucComboAdmins").append("<option value='" + value.id + "'>" + value.name + "</option>");
-                $("#cbPerfil").append("<option value='" + value.name + "'>" + value.name + "</option>");
+                $("#cbPerfil").append("<option value='" + value.id + "'>" + value.name + "</option>");
+                $("#cbPerfilNovo").append("<option value='" + value.permissoes + "'>" + value.name + "</option>");
             });
             $('.selectpicker').selectpicker({
                 size: 7
@@ -270,6 +277,37 @@ function carregaComboPerfil() {
             $('#cbPerfil').selectpicker('refresh');
             $('#ucComboAtivos').selectpicker('refresh');
             $('#cbPerfilNovo').selectpicker('refresh');
+
+        },
+        error: function (erro) {
+            modal({
+                messageText: "Ocorreu um erro durante a operação. Informe o administrador do sistema o erro abaixo: <br/>Erro " + erro.status + ": " + tratamentoErro(erro),
+                type: "alert",
+                headerText: "Falha Interna",
+                alertType: "warning"
+            });
+        }
+    });
+}
+function carregaComboPermissao() {
+    $.ajax({
+        type: 'POST',
+        crossDomain: true,
+        cache: false,
+        url: urlApi + 'RetornaPermissoesCadastradas',
+        beforeSend: function (req) {
+            req.setRequestHeader('Authorization', sessionStorage.getItem("token"));
+        },
+        
+        success: function (result) {
+            console.log(result)
+            $.each(result, function (index, value) {
+                $("#cbPermissaoConceder").append("<option value='" + value.id + "'>" + value.descricao + "</option>");
+            });
+            $('.selectpicker').selectpicker({
+                size: 7
+            });
+            $('#cbPermissaoConceder').selectpicker('refresh');
 
         },
         error: function (erro) {
@@ -521,12 +559,12 @@ function atualizarUsuario(usuarioAtualzado) {
         }
     });
 }
-function criarPerfilNovo(descricao, permissoes) {
-    var obj = { 'descricaoPerfil': descricao, 'permissoesConsedidas': permissoes }, textoLoad = 'Cadastrando Perfil!';
-    if (sessionStorage.getItem("Ingles") === "true") {
-        textoLoad = 'Registering profile!';
-    }
-    waitingDialog.show(textoLoad, { dialogSize: 'lg', progressType: 'warning' });
+function criarPerfilNovo(parametro) {
+    //var obj = { 'descricaoPerfil': descricao, 'permissoesConsedidas': permissoes }, textoLoad = 'Cadastrando Perfil!';
+    //if (sessionStorage.getItem("Ingles") === "true") {
+    //    textoLoad = 'Registering profile!';
+    //}
+    waitingDialog.show('Cadastrando Perfil!', { dialogSize: 'lg', progressType: 'warning' });
     $.ajax({
         type: 'POST',
         cache: false,
@@ -535,10 +573,24 @@ function criarPerfilNovo(descricao, permissoes) {
         statusCode: {
             200: function (retorno) {
                 var texto = 'Novo perfil cadastrado com sucesso, e já pode ser atribuido aos usuários', titulo = 'Cadastro de Perfil';
-                if (sessionStorage.getItem("Ingles") === "true") {
-                    titulo = 'Profile Registration';
-                    texto = 'New profile successfully registered, and can already be assigned to users.';
-                }
+                var sourcePerm = "<option value=''>Nenhum</option>", sourcePerf = '';
+
+                $.each(retorno, function (index, value) {
+                    sourcePerm += "<option data-tokens='" + value.name + "' value='" + value.id + "'>" + value.name + "</option>";
+                });
+                $('.selectpicker').selectpicker({
+                    size: 7
+                });
+                $('#ucComboAdmins').html(sourcePerm);
+                $('#cbPerfil').html(sourcePerm);
+                $('#cbPerfilNovo').html(sourcePerm);
+                $('#cbPerfilExistente').html(sourcePerm);
+                $('#cbPermissaoConceder').selectpicker('deselectAll');                
+                $('#cbPermissoesPerfil').selectpicker('deselectAll');
+                $('.selectpicker').selectpicker('refresh');
+                $('#txtDescPerfil').val('');
+
+                deleteCookie();
                 waitingDialog.hide();
                 modal({
                     messageText: texto,
@@ -546,14 +598,25 @@ function criarPerfilNovo(descricao, permissoes) {
                     headerText: titulo,
                     alertType: "success"
                 }).done(function (e) {
-                    location.reload();
+                    if (!sessionStorage.getItem("token")) {
+                        localStorage.removeItem("erro");
+                        window.location = "../conta/login.cshtml"
+                    }
+                    else {
+                        location.reload();
+                    }
                 });
             }
         },
-        data: obj,
+        data: parametro,
         async: true,
+        xhrFields: {
+            withCredentials: true
+        },
         beforeSend: function (req) {
-            req.setRequestHeader('Authorization', sessionStorage.getItem("token"));
+            if (sessionStorage.getItem("token")) {
+                req.setRequestHeader('Authorization', sessionStorage.getItem("token"));
+            }
         },
         error: function (error) {
             modal({
@@ -576,12 +639,14 @@ function cargaInicialGerenciamentoCompra(fluxo) {
             req.setRequestHeader('Authorization', sessionStorage.getItem("token"));
         },
         success: function (result) {
-            var sourceSec = "", sourceCNPJ = "", sourceMarca = "";
+            console.log(result)
+            var sourceSec = "", sourceCNPJ = "", sourceMarca = "", sourceAttr="";
             if (fluxo !== 'cadastro' && fluxo !== 'produto') {
 
                 sourceSec = '<option selected value="">Nenhuma</option>';
                 sourceCNPJ = '<option selected value="">Nenhum</option>';
                 sourceMarca = '<option selected value="">Nenhuma</option>';
+                //sourceAttr = '<option selected value="">Nenhuma</option>';
                 var sourceEspecie = '<option selected value="">Nenhuma</option>';
                 $("#drpEsp").html(sourceEspecie);
             }
@@ -591,6 +656,12 @@ function cargaInicialGerenciamentoCompra(fluxo) {
             $.each(result.fornecedores, function (index, value) {
                 sourceCNPJ += "<option data-tokens='" + value.token + "' value='" + value.valor + "'>" + value.descricao + "</option>";
             });
+            if (result.attrFornecedores) {
+                $.each(result.attrFornecedores, function (index, value) {
+                    sourceAttr += "<option data-tokens='" + value.token + "' value='" + value.valor + "'>" + value.descricao + "</option>";
+                });
+
+            }
             $.each(result.marcas, function (index, value) {
                 sourceMarca += "<option data-tokens='" + value.token + "' value='" + value.valor + "'>" + value.descricao + "</option>";
             });
@@ -599,6 +670,7 @@ function cargaInicialGerenciamentoCompra(fluxo) {
             $("#drpMarc").html(sourceMarca);
             $("#drpSec").html(sourceSec);
             $("#drpCNPJ").html(sourceCNPJ);
+            $("#cbAttrForn").html(sourceAttr);
             $(".selectpicker").selectpicker();
 
             carregaFormCompraManager();
@@ -612,6 +684,7 @@ function cargaInicialGerenciamentoCompra(fluxo) {
             $("#divForn").removeClass('ocultarElemento');
             $("#divMarca").removeClass('ocultarElemento');
             $("#divSec").removeClass('ocultarElemento');
+            $("#divAttr").removeClass('ocultarElemento');
             $("#divOcultaColuna").removeClass('ocultarElemento');
 
         },
@@ -769,6 +842,12 @@ function buscaDadosProdFornecedor(parametro) {
         },
         success: function (result) {
             console.log(result)
+            if (result.dadosConfigPadrao.addCores) {
+                if ($('#frmGradeCor2').hasClass("ocultarElemento"))
+                    $('#frmGradeCor2').removeClass("ocultarElemento");
+                if ($('#frmGradeCor3').hasClass("ocultarElemento"))
+                    $('#frmGradeCor3').removeClass("ocultarElemento");
+            }
             configuraRangeCalendarioFornecedor('#txtDtEntregaPed', result.dadosConfigPadrao.dataEntregaInicio, result.dadosConfigPadrao.dataEntregaFinal)
             atualizaDtEntregaLimite();
             configuraRangeCalendarioFornecedor('#txtDtEntregaFinalPed', result.dadosConfigPadrao.dataToleranciaAtrasoInicio, result.dadosConfigPadrao.dataToleranciaAtrasoFinal)
@@ -903,17 +982,24 @@ function geraCargaPrePedido(parametro) {
             grupoRelacionar = result.filtrosPrePedido.relacionamentoGrupos;
             var sourceSec = "", sourceCNPJ = "", souceClass = "", sourceMarca = "", sourceEspecie = "",
                 sourceForma = "", sourceCondicao = "", sourceCores = "", sourceTamanho = "",
-                sourceTamanhoGrupo = "", sourceReferencia = "";
+                sourceTamanhoGrupo = "", sourceReferencia = "", sourceMedida = "", sourceComprador = "";
             carregaAtributosPorOrdem(result.filtrosPrePedido.attrEleListaPed, result.filtrosPrePedido.attrListaPed, result.filtrosPrePedido.ordemPed, true);
             carregaAtributosPorOrdem(result.filtrosPrePedido.attrEleListaProd, result.filtrosPrePedido.attrListaProd, result.filtrosPrePedido.ordemProd, false)
             $.each(result.filtrosPrePedido.secoes, function (index, value) {
                 sourceSec += "<option selected data-tokens='" + value.token + "' value='" + value.valor + "'>" + value.descricao + "</option>";
             });
             $.each(result.filtrosPrePedido.fornecedores, function (index, value) {
-                sourceCNPJ += "<option data-tokens='" + value.token + "' value='" + value.valor + "'>" + value.descricao + "</option>";
+                var isSelect = fornSelCadCpr && value.valor === fornSelCadCpr ? ' selected' : '';
+                sourceCNPJ += "<option data-tokens='" + value.token + "' value='" + value.valor + "'" + isSelect + ">" + value.descricao + "</option>";
             });
             $.each(result.filtrosPrePedido.marcas, function (index, value) {
                 sourceMarca += "<option selected data-tokens='" + value.token + "' value='" + value.valor + "'>" + value.descricao + "</option>";
+            });
+            $.each(result.filtrosPrePedido.compradores, function (index, value) {
+                sourceComprador += "<option data-tokens='" + value.token + "' value='" + value.valor + "'>" + value.descricao + "</option>";
+            });
+            $.each(result.filtrosPrePedido.uniMedida, function (index, value) {
+                sourceMedida += "<option data-tokens='" + value.token + "' value='" + value.valor + "'>" + value.descricao + "</option>";
             });
             $.each(result.filtrosPrePedido.especies, function (index, value) {
                 sourceEspecie += "<option selected data-tokens='" + value.token + "' value='" + value.valor + "'>" + value.descricao + "</option>";
@@ -946,8 +1032,13 @@ function geraCargaPrePedido(parametro) {
             $("#drpEsp").html(sourceEspecie).attr('disabled', true);
             $("#drpMarc").html(sourceMarca).attr('disabled', true);
             $("#drpSec").html(sourceSec).attr('disabled', true);
-            $("#drpCNPJ").html(sourceCNPJ).selectpicker('val', '');
+            $("#drpCNPJ").html(sourceCNPJ);
+            if (!fornSelCadCpr) $("#drpCNPJ").html(sourceCNPJ).selectpicker('val', '');
+
             $("#drpCoresGrade").html(sourceCores);
+            $("#drpCompPed").html(sourceComprador);
+            $("#drpUnidadeMed").html(sourceMedida).selectpicker('val', '');
+            $("#txDtCadProd").val(result.dtCadastroProduto).attr('disabled', true);
             $("#drpTamanhoGrade").html(sourceTamanho);
             if ($("#drpTamanhoGrade option").length < 7) {
                 configuraCombosOpcoes('#drpTamanhoGrade');
@@ -1003,6 +1094,12 @@ function geraCargaPrePedido(parametro) {
             $("#txtQldProdPed").val(valQualiNota.toFixed(2).replace('.', ','));
             $("#txtQldNotaPed").val(valQuantNota.toFixed(2).replace('.', ','));
             calculaAlteracaoCusto();
+            if (fornSelCadCpr) {
+                var objEnvioForn = {};
+                objEnvioForn.idFornecedor = $('#drpCNPJ').val();
+                objEnvioForn.codigo = $('#txtIDProd').val();
+                buscaDadosProdFornecedor(objEnvioForn);
+            }
             $('.percent').maskMoney('mask');
             $('.money').maskMoney('mask');
             criaPaletas();
@@ -1447,8 +1544,8 @@ function recuperaGruposCadastrados() {
                 retorno.id = parseInt(value.valor);
                 retorno.descricao = toTitleCase(value.descricao);
                 retorno.participacao = parseFloat(value.dadosAdicionais[0].replace(',', '.'));
-                retorno.operacao = '<a href="#" style="margin:3px" class="btn btn-info editarGrupo" data-toggle="tooltip" title="Editar" ><i class="fa fa-pencil" aria-hidden="true"></i></a>'
-                    + '<a href="#" style="margin:3px;" class="btn btn-danger excluirGrupo" data-toggle="tooltip" title="Cancelar" ><i class="fa fa-trash" aria-hidden="true"></i></a>';
+                retorno.status = value.dadosAdicionais[1];
+                retorno.operacao = retornaOperacaoGrupoGrid(value.dadosAdicionais[1])
                 sourceGrupo.push(retorno);
             });
             var lista = geraListaFilial(result.filiais);
@@ -1506,11 +1603,12 @@ function retornaInfoGrp(parametro) {
             var idEditar = result.grupos[0].valor;
             var desc = toTitleCase(result.grupos[0].descricao);
             var part = parseFloat(result.grupos[0].dadosAdicionais[0].replace(',', '.'));
+            var tit = result.grupos[0].dadosAdicionais[1] === "Ativo" ? 'Atualizar Grupo' : 'Reativar Grupo'
             localStorage.setItem("filiaisGrupo", sourceFiliais);
             localStorage.setItem("idGrpEditar", idEditar);
-            //var filiaisExis = localStorage.getItem('filiaisLista');//Criar abas dos grupos
-            //geraListaFilial(filiais)
-            manipularGrupo('Atualizar Grupo', desc, part);
+
+
+            manipularGrupo(tit, desc, part);
         },
         error: function (erro) {
             $(".bg_load").fadeOut("slow");
@@ -1578,7 +1676,7 @@ function excluirGrp(parametro) {
         success: function (result) {
             var excId = parseInt(sessionStorage.getItem('idGrpWxc'));
             sessionStorage.removeItem('idGrpWxc')
-            excluirLinhaGrupo(excId);
+            //excluirLinhaGrupo(excId);
             $(".navbar.navbar-default.navbar-fixed-top").removeClass('ocultarElemento');
             $(".bg_load").fadeOut("slow");
             $(".wrapper").fadeOut("slow", function () {
@@ -1649,13 +1747,17 @@ function cargaInicialPedido() {
             req.setRequestHeader('Authorization', sessionStorage.getItem("token"));
         },
         success: function (result) {
-            var sourceSec = "", sourceCNPJ = "", sourceMarca = "", sourseUsuario = "";
+            console.log(result)
+            var sourceSec = "", sourceCNPJ = "", sourceMarca = "", sourseUsuario = "",sourseForn = "";
 
             $.each(result.secoes, function (index, value) {
                 sourceSec += "<option data-tokens='" + value.token + "' value='" + value.valor + "'>" + value.descricao + "</option>";
             });
             $.each(result.fornecedores, function (index, value) {
                 sourceCNPJ += "<option data-tokens='" + value.token + "' value='" + value.valor + "'>" + value.descricao + "</option>";
+            });
+            $.each(result.attrFornecedores, function (index, value) {
+                sourseForn += "<option data-tokens='" + value.token + "' value='" + value.valor + "'>" + value.descricao + "</option>";
             });
             $.each(result.marcas, function (index, value) {
                 sourceMarca += "<option data-tokens='" + value.token + "' value='" + value.valor + "'>" + value.descricao + "</option>";
@@ -1673,6 +1775,7 @@ function cargaInicialPedido() {
 
             $("#drpMarc").html(sourceMarca);
             $("#drpSec").html(sourceSec);
+            $("#cbAttrForn").html(sourseForn);
             $("#drpCNPJ").html(sourceCNPJ);
             $("#cbUsuario").html(sourseUsuario);
 
@@ -1800,10 +1903,11 @@ function geraCargaPedidoAnalitico(parametro) {
             objEnvio.codigo = result.idProduto;
             sessionStorage.setItem("pedidoStatus", result.status);
             grupoRelacionar = result.filtrosPrePedido.relacionamentoGrupos;
-
+            console.log(grupoRelacionar);
             carregaImagemProduto(objEnvio);
             var sourceSec = "", sourceCNPJ = "", souceClass = "", sourceMarca = "", sourceEspecie = "", sourceForma = "",
-                sourceCondicao = "", sourceCores = "", sourceTamanho = "", sourceTamanhoGrupo = "", sourceReferencia = "";
+                sourceCondicao = "", sourceCores = "", sourceTamanho = "", sourceTamanhoGrupo = "", sourceReferencia = "",
+                sourceMedida = "", sourceComprador = "";
             carregaAtributosPorOrdem(result.filtrosPrePedido.attrEleListaPed, result.filtrosPrePedido.attrListaPed, result.filtrosPrePedido.ordemPed, true);
             carregaAtributosPorOrdem(result.filtrosPrePedido.attrEleListaProd, result.filtrosPrePedido.attrListaProd, result.filtrosPrePedido.ordemProd, false)
             $.each(result.filtrosPrePedido.secoes, function (index, value) {
@@ -1839,7 +1943,13 @@ function geraCargaPedidoAnalitico(parametro) {
             $.each(result.filtrosPrePedido.tamanhoOpcoes, function (index, value) {
                 sourceTamanho += criarTamanho(value.valor, value.token, value.descricao);
             });
-
+            $.each(result.filtrosPrePedido.compradores, function (index, value) {
+                sourceComprador += "<option data-tokens='" + value.token + "' value='" + value.valor + "'>" + value.descricao + "</option>";
+            });
+            $.each(result.filtrosPrePedido.uniMedida, function (index, value) {
+                var selecionado = value.valor == result.idUnidadeMedida ? " selected " : "";
+                sourceMedida += "<option data-tokens='" + value.token + "' "+ selecionado+" value='" + value.valor + "'>" + value.descricao + "</option>";
+            });
             $(".attrNum").maskMoney();
             $(".attrMon").maskMoney();
             $(".attrPerc").maskMoney();
@@ -1850,7 +1960,9 @@ function geraCargaPedidoAnalitico(parametro) {
             $('#txtDtEntregaPed').data('daterangepicker').setEndDate(new Date(result.filtrosPrePedido.dataEntregaFinal));
             $('#txtDtEntregaFinalPed').data('daterangepicker').setStartDate(new Date(result.filtrosPrePedido.dataToleranciaAtrasoInicio));
             $('#txtDtEntregaFinalPed').data('daterangepicker').setEndDate(new Date(result.filtrosPrePedido.dataToleranciaAtrasoFinal));
-
+            $("#drpCompPed").html(sourceComprador);
+            $("#drpUnidadeMed").html(sourceMedida);
+            $("#txDtCadProd").val(result.dtCadastroProduto).attr('disabled', true);
             $("#drpEsp").html(sourceEspecie).attr('disabled', true);
             $("#drpMarc").html(sourceMarca).attr('disabled', true);
             $("#drpSec").html(sourceSec).attr('disabled', true);
@@ -1860,6 +1972,19 @@ function geraCargaPedidoAnalitico(parametro) {
             if ($("#drpTamanhoGrade option").length < 7) {
                 configuraCombosOpcoes('#drpTamanhoGrade');
             }
+            if (result.historicos.length) {
+                var colHitorico = retornaDescColunaTabelaHitorico(result.historicos[0]);
+                var colRef = geraColunaHistorico(colHitorico);
+                var colDesc = colHitorico.map(obj => {
+                    return toTitleCase(obj.replace(/([A-Z]+)/g, " $1").replace(/([A-Z][a-z])/g, "$1"));
+                });
+                var headTB = criaTabelaHistorico(colDesc);
+                $("#tabelaHitorico").html(headTB);
+                console.log(colHitorico);
+                console.log(colRef);
+                carregarHistoricoTB(colRef, result.historicos)
+
+            }
             $("#drpTamanhoCategoria").html(sourceTamanhoGrupo);
             $('#drpReferenciaGrade').html(sourceReferencia);
             $('#drpClassificacao').html(souceClass).selectpicker('val', '');
@@ -1867,6 +1992,8 @@ function geraCargaPedidoAnalitico(parametro) {
             $("#drpFrmPgtoPed").html(sourceForma);
             ordenaOpcao();
             $(".selectpicker").selectpicker();
+            $("#drpCompPed").selectpicker('val', result.compradoresSelecionados.split(','));
+            
             $("#drpCoresGrade").selectpicker('val', result.coresSelecionadas.split(','));
             $("#drpTamanhoGrade").selectpicker('val', result.tamanhosSelecionadas.split(','));
             $('#drpReferenciaGrade').selectpicker('val', result.referenciasSelecionadas.split(','));
@@ -1886,6 +2013,8 @@ function geraCargaPedidoAnalitico(parametro) {
             nomesCoresCSS = repartirArray(result.filtrosPrePedido.dadosPaleta.valoresCSS);
             nomesCoresPtCSS = repartirArray(result.filtrosPrePedido.dadosPaleta.descricoes);
             $("#txtCustoBrutoPed").val(result.precoCusto.toFixed(2).replace('.', ','));
+            $("#txtValorResumoPed").val(result.valorTotal.toFixed(2).replace('.', ','));
+            $("#txtItensResumoPed").val(result.qtdeItens.toLocaleString('pt-BR'));
             $("#txtPrVendaPed").val(result.precoVenda.toFixed(2).replace('.', ','));
             $("#txtDescontoPedPerc").val(result.desconto.toFixed(2).replace('.', ','));
             $("#txtPercVendor").val(result.acrescimo.toFixed(2).replace('.', ','));
@@ -2084,4 +2213,96 @@ function cargaMovimentacaoProdutoOTB(parametro) {
             });
         }
     });
+}
+function validarPrimeiroAcesso() {
+    //document.cookie = "session-id=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/gerenciamento/configuracao.cshtml";
+    sessionStorage.removeItem("cookies");
+    console.log(document.cookie);
+    $.ajax({
+        type: 'GET',
+        crossDomain: true,
+        //dataType: 'jsonp',
+        url: urlApi + 'ValidarPrimeiroAcesso',
+        success: function (result) {
+            if (result.headers) {
+                var coockiesServer = result.headers[0];
+                console.log(result)
+                console.log(JSON.stringify(coockiesServer));
+                if (coockiesServer && coockiesServer.key === "Set-Cookie") {
+                    var coks = coockiesServer.value[0];
+                    sessionStorage.setItem("cookies", JSON.stringify(coockiesServer));
+                    console.log(coks);
+                    //document.cookie = coks;
+                    //console.log(document.cookie);
+                    window.location = "../gerenciamento/configuracao.cshtml";
+                }
+
+            }
+            else {
+
+                $(".bg_load").fadeOut();
+                $(".wrapper").fadeOut();
+            }
+            //sessionStorage.setItem("id_usuarioLogado", result.nome);
+            //sessionStorage.setItem("id_usuario", result.userID);
+            //sessionStorage.setItem("perfilSistema", result.perfil);
+            //sessionStorage.setItem("perfilAdmin", result.gerenciarUsuario);
+            ////window.location = "../home.cshtml";
+        },
+        error: function (error) {
+            console.log(error)
+            if (error.status === 401) {
+                localStorage.setItem("erro", "Acesso negado! Verifique usuario e senha. Caso o erro persista, entre em contato com o administrador do sistema para confirmar se está autorizado a logar");
+                //location.reload();
+            }
+            else {
+                localStorage.setItem("erro", "Acesso negado! " + tratamentoErro(error));
+                //    location.reload();
+            }
+        }
+    });
+}
+function cadastrarPermissoes(parametro) {
+    waitingDialog.show('Cadastrando Permissão!', { dialogSize: 'lg', progressType: 'warning' });
+
+    var objEnvio = { 'descricoes': parametro };
+    $.ajax({
+        type: 'POST',
+        crossDomain: true,
+        cache: false,
+        //dataType: 'jsonp',
+        url: urlApi + 'CadastraPermissao',
+        xhrFields: {
+            withCredentials: true
+        },
+        data: objEnvio,
+        success: function (result) {
+            console.log(result);
+            var sourcePerm = "";
+            $.each(result, function (index, value) {
+                sourcePerm += "<option data-tokens='" + value.descricao + "' value='" + value.id + "'>" + value.descricao + "</option>";
+            });
+            $("#cbPermissoesPerfil").html(sourcePerm).selectpicker("refresh");
+            var texto = 'Novo perfil cadastrado com sucesso, e já pode ser atribuido aos usuários', titulo = 'Cadastro de Perfil';
+
+            waitingDialog.hide();
+
+            $('#tabSetupInicial li a[href="#perfilApp"]').closest('li').removeClass("disabled");
+            $('#tabSetupInicial li a[href="#permissaoApp"]').closest('li').addClass("disabled tabFinalizada");
+            $('#tabSetupInicial li a[href="#permissaoApp"] i').removeClass("ocultarElemento");
+            $('#tabSetupInicial li a[href="#perfilApp"]').tab('show');
+        },
+        error: function (error) {
+            console.log(error)
+            if (error.status === 401) {
+                localStorage.setItem("erro", "Acesso negado! Verifique usuario e senha. Caso o erro persista, entre em contato com o administrador do sistema para confirmar se está autorizado a logar");
+                location.reload();
+            }
+            else {
+                localStorage.setItem("erro", "Acesso negado! " + tratamentoErro(error));
+                location.reload();
+            }
+        }
+    });
+
 }

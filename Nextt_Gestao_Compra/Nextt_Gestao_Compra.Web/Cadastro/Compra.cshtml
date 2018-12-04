@@ -17,16 +17,74 @@
 <script src="../Assets/js/modalAvaliacao.js"></script>
 <div class="col-md-12 col-sm-12 col-xs-12" id="principal">
     <div class="row">
-        
+
         <div id="divPaineisCadastroCompra" class="col-md-12 col-sm-12 col-xs-12">
             <ul class="nav nav-tabs responsive" id="wizard-cad-ped">
-                <li class="active"><a class="deco-none" href="#tabDados"><span class="fa fa-cart-arrow-down"> Fornecedor </span></a></li>
+                <li class="active"><a class="deco-none" href="#tabResumo"><span class="fa fa-folder-open"> Resumo</span></a></li>
+                <li><a class="deco-none" href="#tabDados"><span class="fa fa-cart-arrow-down"> Pedido </span></a></li>
                 <li><a class="deco-none" href="#tabFoto"><span class="fa fa-gift"> Produto </span></a></li>
                 <li><a class="deco-none" href="#tabGrade"><span class="fa fa-cubes"> Grade </span></a></li>
                 <li><a class="deco-none" href="#tabPack"><span class="fa fa-briefcase"> Pack </span></a></li>
             </ul>
             <div class="tab-content responsive">
-                <div class="tab-pane active" id="tabDados">
+                <div class="tab-pane active" id="tabResumo">
+
+                    <fieldset id="frmResumoPed" class="collapsible">
+                        <legend class="blockClick" id="lgdResumoPed">Detalhes</legend>
+                        <div id="pnlResumoPed" class="field-body container-fluid">
+                            <div class="row">
+                                <div class="col-md-3 col-sm-12 col-xs-12">
+                                    <div class="form-group">
+                                        <label id="lblCompPed" class="form-label">Comprador</label>@*<span class="obrigatorio"> *</span>*@
+                                        <div class="controls ocultarElemento">
+                                            <select id="drpCompPed" class="selectpicker show-tick form-control" multiple data-live-search="true" data-selected-text-format="count > 1"
+                                                    data-width="100%" data-size="5" title="Selecione..." data-count-selected-text="Selecionado {0} de {1} formas"></select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 col-sm-12 col-xs-12">
+                                    <div class="form-group">
+                                        <label id="lblCadProd" class="form-label">Dt. Cadastro</label>
+                                        <div class="controls">
+                                            <input type="text" id="txDtCadProd" disabled style="font-weight:bold!important" maxlength="50" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-sm-12 col-xs-12">
+                                    <div class="form-group text-center">
+                                        <label id="lblItensResumoPed" class="form-label">Qtde. de Itens</label>
+                                        <div class="controls">
+                                            <input type="text" id="txtItensResumoPed" maxlength="50" value="0" disabled style="text-align:center!important;font-weight:bold!important" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-sm-12 col-xs-12">
+                                    <div class="form-group text-center">
+                                        <label id="lblValorResumoPed" class="form-label">Valor Total</label>
+                                        <div class="controls">
+                                            <input type="text" id="txtValorResumoPed" maxlength="50" disabled style="text-align:center!important;font-weight:bold!important" class="form-control money" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <h5><strong>Histórico de Edição</strong></h5>
+                                <div class="col-md-12 col-sm-12 col-xs-12 table-responsive" style="max-height:50vh;overflow:auto">
+                                    <table id="tabelaHitorico" cellpadding="0" cellspacing="0" class="cell-border hover table cell nowrap stripe compact pretty"></table>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <div class="row">
+                        <div class="pull-right">
+                            <button type="button" class="btn btn-danger cancel-change">Cancelar</button>
+                            <button type="button" class="btn btn-primary next-step">Avançar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane" id="tabDados">
                     <div class="col-md-12 col-sm-12 col-xs-12" style="text-align:center">
                         <div id="alertDadosCompra" class="alertCustomizado alert-danger" style="display:none"></div>
                     </div>
@@ -84,7 +142,7 @@
                             <div class="row">
                                 <div class="col-md-2 col-sm-12 col-xs-12">
                                     <div class="form-group">
-                                        <label id="lblQldNotaPed" class="form-label">Qld. Nota</label><span class="obrigatorio"> *</span>
+                                        <label id="lblQldNotaPed" class="form-label">Ql. Nota</label><span class="obrigatorio"> *</span>
                                         <div class="controls">
                                             <input type="text" id="txtQldNotaPed" maxlength="7" class="form-control percent" />
                                         </div>
@@ -92,12 +150,13 @@
                                 </div>
                                 <div class="col-md-2 col-sm-12 col-xs-12">
                                     <div class="form-group">
-                                        <label id="lblQldProdPed" class="form-label">Qtd. Nota</label><span class="obrigatorio"> *</span>
+                                        <label id="lblQldProdPed" class="form-label">Qt. Nota</label><span class="obrigatorio"> *</span>
                                         <div class="controls">
                                             <input type="text" id="txtQldProdPed" maxlength="7" class="form-control percent" />
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="col-md-3 col-sm-12 col-xs-12">
                                     <div class="form-group">
                                         <label id="lblEntregaPed" class="form-label">Prazo da Entrega</label>
@@ -188,14 +247,14 @@
                                         </div>
                                     </fieldset>
                                     <br />
-                                    <fieldset id="frmGradeCor2" class="collapsibleChild frmCores">
+                                    <fieldset id="frmGradeCor2" class="collapsibleChild frmCores ocultarElemento">
                                         <legend class="blockClick">Informe a Descrição para Nova Cor</legend>
                                         <div class="col-md-12 col-sm-12 col-xs-12">
                                             <input type="text" id="txtNomeNovaCor" name="txtNomeNovaCor" style="width:100%" placeholder="Ex:Preto/Branco/Verde" class="form-control" />
                                         </div>
                                     </fieldset>
                                     <br />
-                                    <fieldset id="frmGradeCor3" class="collapsibleChild frmCores">
+                                    <fieldset id="frmGradeCor3" class="collapsibleChild frmCores ocultarElemento">
                                         <legend class="blockClick">Selecione as Novas Cores</legend>
                                         <div class="col-md-12 col-sm-12 col-xs-12">
                                             <span>
@@ -290,8 +349,8 @@
                         <fieldset id="frmDados" class="collapsible">
                             <legend id="lgdFrmDados">Dados do Produto</legend>
                             <div class="field-body">
-                                <div class="rowEspecial">
-                                    <div class="col-md-2 col-sm-4 col-xs-12">
+                                <div class="row">
+                                    <div class="col-md-2 col-sm-12 col-xs-12">
                                         <div class="form-group">
                                             <label id="lblIDProd" class="form-label">ID. Produto</label>
                                             <div class="controls">
@@ -299,7 +358,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-2 col-sm-4 col-xs-12">
+                                    <div class="col-md-2 col-sm-12 col-xs-12">
                                         <div class="form-group">
                                             <label id="lblDesc" class="form-label">Cod. Produto</label>
                                             <div class="controls">
@@ -316,7 +375,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-3 col-sm-12 col-xs-12">
+                                    <div class="col-md-2 col-sm-12 col-xs-12">
                                         <div class="form-group">
                                             <label id="lblSec" class="form-label">Seção</label><span class="obrigatorio"> *</span>
                                             <div class="controls ocultarElemento">
@@ -325,7 +384,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-3 col-sm-12 col-xs-12">
+                                    <div class="col-md-2 col-sm-12 col-xs-12">
                                         <div class="form-group">
                                             <label id="lblEsp" class="form-label">Espécie</label><span class="obrigatorio"> *</span>
                                             <div class="controls ocultarElemento">
@@ -334,8 +393,17 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="col-md-2 col-sm-12 col-xs-12">
+                                        <div class="form-group">
+                                            <label id="lblMedida" class="form-label">Unidade Medida</label>@*<span class="obrigatorio"> *</span>*@
+                                            <div class="controls ocultarElemento">
+                                                <select id="drpUnidadeMed" class="selectpicker show-tick form-control" data-show-subtext="true" data-live-search="true"
+                                                        title="Selecione..." data-width="100%" data-select-header="true" data-size="auto"></select>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="rowEspecial">
+                                <div class="row">
                                     <div class="col-md-2 col-sm-12 col-xs-12">
                                         <div class="form-group">
                                             <label id="lblPrVendaPed" class="form-label">Preço Venda</label><span class="obrigatorio"> *</span>
@@ -344,7 +412,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-2 col-sm-4 col-xs-12">
+                                    <div class="col-md-2 col-sm-12 col-xs-12">
                                         <div class="form-group">
                                             <label id="lblCodOriPed" class="form-label">Cod. Original</label>
                                             <div class="controls">
@@ -352,7 +420,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-2 col-sm-4 col-xs-12">
+                                    <div class="col-md-2 col-sm-12 col-xs-12">
                                         <div class="form-group">
                                             <label id="lblRefPed" class="form-label">Referência</label><span class="obrigatorio"> *</span>
                                             <div class="controls">
@@ -377,6 +445,7 @@
                                             </div>
                                         </div>
                                     </div>
+
 
                                 </div>
                             </div>

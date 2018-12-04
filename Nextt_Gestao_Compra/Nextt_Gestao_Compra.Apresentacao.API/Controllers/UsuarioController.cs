@@ -1,11 +1,16 @@
 ﻿using Microsoft.AspNet.Identity;
 using RDI_Gerenciador_Usuario.Aplicacao.Gerenciador;
 using RDI_Gerenciador_Usuario.Aplicacao.ViewModel;
+using RDI_Gerenciador_Usuario.Aplicacao.ViewModels;
+using RDI_Gerenciador_Usuario.Infra.CrossCutting.Helpers;
+using RDI_Gerenciador_Usuario.ManagerStart;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Web.Http;
 
@@ -19,12 +24,13 @@ namespace Nextt_Gestao_Compra.Apresentacao.API.Controllers
         #endregion
 
         #region Actions
-        [Authorize(Roles = "Administrador Sistema, Administrador")]
+        [FiltroAutorizacaoCustom(PermissaoTipo = "Cadastrar Usuário", PermissaoValor = "1")]
         [Route("Cadastrar")]
         public async Task<IHttpActionResult> CadastrarUsuario(UsuarioCadastroViewModel cadastro)
         {
             try
             {
+                var teste = Request.Headers.GetCookies();
                 if (!ModelState.IsValid || cadastro.Perfis.Count == 0)
                     return BadRequest(ModelState);
 
@@ -72,7 +78,7 @@ namespace Nextt_Gestao_Compra.Apresentacao.API.Controllers
             }
         }
 
-        [Authorize(Roles = "Administrador Sistema, Administrador")]
+        [Authorize]
         [HttpGet]
         [Route("RecuperaUsuario/{id:guid}", Name = "RecuperarPorId")]
         public async Task<IHttpActionResult> RecuperaUsuario(string Id)
@@ -84,7 +90,7 @@ namespace Nextt_Gestao_Compra.Apresentacao.API.Controllers
             return NotFound();
         }
 
-        [Authorize(Roles = "Administrador Sistema, Administrador")]
+        [FiltroAutorizacaoCustom(PermissaoTipo = "Gerenciar Usuários", PermissaoValor = "1")]
         [Route("ListarUsuarios")]
         public IHttpActionResult RecuperarTodosUsuarios()
         {
@@ -99,7 +105,7 @@ namespace Nextt_Gestao_Compra.Apresentacao.API.Controllers
             }
         }
 
-        [Authorize(Roles = "Administrador Sistema, Administrador")]
+        [FiltroAutorizacaoCustom(PermissaoTipo = "Gerenciar Usuários", PermissaoValor = "1")]
         [Route("RecuperarUsuariosFiltrado")]
         public async Task<IHttpActionResult> RecuperarUsuariosFiltrado(FiltroUsuarioVM Filtro)
         {
@@ -116,7 +122,7 @@ namespace Nextt_Gestao_Compra.Apresentacao.API.Controllers
             }
         }
 
-        [Authorize(Roles = "Administrador Sistema, Administrador")]
+        [FiltroAutorizacaoCustom(PermissaoTipo = "Gerenciar Usuários", PermissaoValor = "1")]
         [Route("RecuperarTodosPerfis")]
         public IHttpActionResult RecuperarTodosPerfis()
         {
@@ -153,7 +159,7 @@ namespace Nextt_Gestao_Compra.Apresentacao.API.Controllers
 
         [HttpPost]
         [Route("ResetarSenha/{id:guid}")]
-        [Authorize(Roles = "Administrador Sistema, Administrador")]
+        [FiltroAutorizacaoCustom(PermissaoTipo = "Redefinir Senha", PermissaoValor = "1")]
         public async Task<IHttpActionResult> ResetarSenha(string Id)
         {
             try
@@ -174,7 +180,7 @@ namespace Nextt_Gestao_Compra.Apresentacao.API.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Administrador Sistema, Administrador")]
+        [FiltroAutorizacaoCustom(PermissaoTipo = "Bloquear/Desbloquear Usuário", PermissaoValor = "1")]
         [Route("BloquearUsuario")]
         public async Task<IHttpActionResult> BloquearUsuario(BloqueioUsuarioVM usuarioBloqueioVM)
         {
@@ -200,7 +206,7 @@ namespace Nextt_Gestao_Compra.Apresentacao.API.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Administrador Sistema, Administrador")]
+        [Authorize]
         [Route("AtualizaUsuario")]
         public async Task<IHttpActionResult> AtualizaUsuario(UsuarioVM usuarioAtualizarVM)
         {
@@ -221,27 +227,31 @@ namespace Nextt_Gestao_Compra.Apresentacao.API.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Administrador Sistema, Administrador")]
+        [FiltroAutorizacaoCustom(PermissaoTipo = "Cadastrar Perfil", PermissaoValor = "1")]
         [Route("CadastraPerfil")]
         public async Task<IHttpActionResult> CadastraPerfil(NovoPerfilVM usuarioAtualizarVM)
         {
             try
             {
+
                 if (!ModelState.IsValid)
                     return BadRequest(ModelState);
                 var retorno = await GerenciadorLogin.CadastrarNovoPerfil(usuarioAtualizarVM, AppGerenciadorPapel);
                 if (retorno.Succeeded)
-                    return Ok();
+                {
+                    var permissaoNova = GerenciadorLogin.RecuperaPerfilExistente(AppGerenciadorPapel);
+                    return Ok(permissaoNova);
+                }
+
                 return RetornaErro(retorno);
             }
             catch (Exception ex)
             {
                 return InternalServerError(ex);
             }
-
         }
 
-        [Authorize(Roles = "Administrador Sistema, Administrador")]
+        [FiltroAutorizacaoCustom(PermissaoTipo = "Editar Usuário", PermissaoValor = "1")]
         [Route("AtualizarPermissaoUsuario")]
         [HttpPost]
         public async Task<IHttpActionResult> AtualizarPermissaoUsuario(PermissaoUsuarioVM usuarioPermissao)
@@ -266,9 +276,89 @@ namespace Nextt_Gestao_Compra.Apresentacao.API.Controllers
             }
         }
 
+        [FiltroAutorizacaoCustom(PermissaoTipo = "Cadastra Permissao", PermissaoValor = "1")]
+        [Route("CadastraPermissao")]
+        [HttpPost]
+        public async Task<IHttpActionResult> CadastraPermissao(PermissoesVM permissoesAdd)
+        {
+            try
+            {
+                if (!ModelState.IsValid || permissoesAdd.Descricoes.Count == 0)
+                    return BadRequest(ModelState);
 
+                var retorno = await SetupImplantacao.CadastrarFuncoesAplicacao(AppGerenciadorPapel, permissoesAdd);
+                if (retorno != null)
+                    return Ok(retorno);
+                return BadRequest();
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
+        [AllowAnonymous]
+        [Route("ValidarPrimeiroAcesso")]
+        [HttpGet]
+        public IHttpActionResult ValidarPrimeiroAcesso()
+        {
+            try
+            {
+                if (bool.Parse(ConfigurationManager.AppSettings["PrimeiroCadastro"]))
+                {
+                    var retorno = SetupImplantacao.PrimeiroAcesso();
+                    var resp = new HttpResponseMessage();
+                    if (retorno)
+                    {
+                        DateTime sourceDate = DateTime.Now.AddMinutes(20);
+                        DateTimeOffset targetTime;
+
+                        DateTime localTime = DateTime.SpecifyKind(sourceDate, DateTimeKind.Local);
+                        targetTime = new DateTimeOffset(localTime, TimeZoneInfo.Local.GetUtcOffset(localTime));
+                        //DateTimeOffset firstDate = new DateTimeOffset(DateTime.Now,
+                        //                                              new TimeSpan(0, -1, 0));
+                        var cookieRetorno = new CookieHeaderValue("session-id", "tempGuest")
+                        {
+                            Expires = targetTime,
+                            Domain = Request.RequestUri.Host,//ConfigurationManager.AppSettings["ProvedorIP"],
+                            Path = "/"
+
+                            //Path = "/gerenciamento/configuracao.cshtml"
+                        };
+                        resp.Headers.AddCookies(new CookieHeaderValue[] { cookieRetorno });
+                    }
+                    return Ok(resp);
+
+                }
+                return Ok();
+
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
         #endregion
 
+        [FiltroAutorizacaoCustom(PermissaoTipo = "Gerenciar Usuários", PermissaoValor = "1")]
+        [Route("RetornaPermissoesCadastradas")]
+        [HttpPost]
+        public IHttpActionResult RetornaPermissoesCadastradas()
+        {
+            try
+            {
+               
+
+                var retorno =  GerenciamentoPermissoes.RetornaPermissoesCadastradas();
+                if (retorno.Count() > 0)
+                    return Ok(retorno);
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
         #region Construtores
         public UsuarioController()
         {

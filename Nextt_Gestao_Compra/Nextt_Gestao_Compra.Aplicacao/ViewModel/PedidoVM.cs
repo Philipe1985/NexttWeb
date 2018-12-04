@@ -5,6 +5,7 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
     public class PedidoVM
     {
         public int IDPedido { get; set; }
+        public int IDUnidadeMedida { get; set; }
         public int IDProduto { get; set; }
         public int Codigo { get; set; }
         public int IDFornecedor { get; set; }

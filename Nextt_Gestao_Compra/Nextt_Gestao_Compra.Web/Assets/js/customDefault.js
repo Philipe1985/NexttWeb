@@ -1,5 +1,5 @@
 ﻿var isMobile = false, resizeId; //initiate as false
-
+var permissoesUsuarioLogado = sessionStorage.getItem("permissoes");
 $(document).ready(function () {
     // device detection
     if (/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|ipad|iris|kindle|Android|Silk|lge |maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i.test(navigator.userAgent)
@@ -108,7 +108,9 @@ $(document).ready(function () {
     });
 
     if (sessionStorage.getItem("id_usuarioLogado") === null) {
-        window.location = "../conta/login.cshtml"
+        if (sessionStorage.getItem("cookies") === null) {
+            window.location = "../conta/login.cshtml"
+        }
     } else {
         $(".username").html("Olá, <strong>" + sessionStorage.getItem("id_usuarioLogado") + "</strong>!")
     }
@@ -148,7 +150,14 @@ $(document).ready(function () {
     $(document).on("mouseup touchend", ".bootstrap-select .dropdown-header", function () {
         $(this).closest('.bootstrap-select').find('select').attr('id').indexOf('OcultaColuna') > 0 ? iniciarOcultacaoColuna(this) : cliqueGrupoDpd(this);
     });
+    bloqueiaOpcoesPrincipais();
 });
+
+function bloqueiaOpcoesPrincipais() {
+    if (permissoesUsuarioLogado && permissoesUsuarioLogado.indexOf('Gerenciar Usuários') === -1) {
+        $("#usuarioOpcao").css("display", "none");
+    };
+}
 
 function gerenciarUsuario() {
 
@@ -181,8 +190,9 @@ function gerenciarUsuario() {
 }
 
 function navBrandClick() {
-    var destino = '../home.cshtml';
-    window.location = destino;
+    if (sessionStorage.getItem("cookies") === null) {
+        window.location = "../home.cshtml"
+    }
 }
 
 function limparModalSenha() {
@@ -493,8 +503,11 @@ function configuraCombosOpcoes(elemento) {
         liveSearch: false,
         actionsBox: false,
     });
-
-    
+}
+function deleteCookie() {
+    if (document.cookie.indexOf("session-id=") >-1) {
+        document.cookie = 'session-id=tempGuest; expires=expires=Thu, 01-Jan-1970 00:00:01 GMT; domain=localhost; path=/';
+    }       
 }
 function atualizaObjetoMudancaPagina(pg) {
     var paramRetorno = JSON.parse(sessionStorage.getItem('parametrosFiltro'));

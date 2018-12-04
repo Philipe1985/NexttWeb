@@ -24,7 +24,7 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
             }
             catch (Exception ex)
             {
-                throw new Exception("RepositorioGrupo.BuscaFiliaisPorGrupos: \n" + ex.Message, ex.InnerException);
+                throw new Exception("RepositorioGrupo.BuscaFiliaisPorGrupos: \n" + ex.Message, ex);
             }
         }
 
@@ -40,15 +40,23 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
             }
             catch (Exception ex)
             {
-                throw new Exception("RepositorioGrupo.BuscaGruposFiliaisExistentes: \n" + ex.Message, ex.InnerException);
+                throw new Exception("RepositorioGrupo.BuscaGruposFiliaisExistentes: \n" + ex.Message, ex);
             }
         }
 
         public void ExcluirGrupo(Parametros parametros)
         {
-            _Db.MultiplosResults("[dbo].[pr_excluir_grupo_filial_GESTAO_COMPRAS]" +
+            try
+            {
+                _Db.MultiplosResults("[dbo].[pr_excluir_grupo_filial_GESTAO_COMPRAS]" +
                                    " @IDGrupoFilial = " + int.Parse(parametros.IDGrupo))
                                    .Executar();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("RepositorioGrupo.ExcluirGrupo: \n" + ex.Message, ex);
+            }
+            
         }
 
         public List<IEnumerable> ManipularGrupo(string grpJson)
@@ -62,12 +70,9 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
             }
             catch (Exception ex)
             {
-                throw new Exception("RepositorioGrupo.CadastrarGrupo: \n" + ex.Message, ex.InnerException);
+                
+                throw new Exception("RepositorioGrupo.CadastrarGrupo: \n" + ex.Message, ex);
             }
         }
     }
-
-    //Gravar GruposFiliais
-
-    //Buscar Filiais por grupo
 }

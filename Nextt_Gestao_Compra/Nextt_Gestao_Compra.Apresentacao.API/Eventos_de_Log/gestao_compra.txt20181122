@@ -1,0 +1,9 @@
+
+ERROR 2018-11-22 22:08:20 - Erro ao Recuperar Filtros de Movimentacao
+System.Exception: RepositorioMovimentacao.RetornaSegmentoGrupos: 
+The EXECUTE permission was denied on the object 'pr_carraga_filtro_movimentacao_produtos_GESTAO_COMPRAS', database 'Nextt.ComprasPolo', schema 'dbo'.
+   em Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento.RepositorioMovimentacao.RetornaSegmentoGrupos() na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Repositorios\Gerenciamento\RepositorioMovimentacao.cs:linha 66
+   em Nextt_Gestao_Compra.Dominio.Servicos.Gerenciamento.ServicoMovimentacao.RetornaSegmentoGrupos() na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Dominio\Servicos\Gerenciamento\ServicoMovimentacao.cs:linha 33
+   em Nextt_Gestao_Compra.Aplicacao.Servicos.Gerenciamento.AppServicoMovimentacao.RetornaSegmentoGrupos() na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Servicos\Gerenciamento\AppServicoMovimentacao.cs:linha 33
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Movimentacao.GerenciamentoAplicacaoMovimentacao.RetornaGruposSegmentoMarca(IAppServicoMovimentacao servicoMovimentacao, FabricaViewModel fabrica) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Movimentacao\GerenciamentoAplicacaoMovimentacao.cs:linha 14
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Gerenciamento.MovimentacaoController.RecuperaFiltrosMovimentacaoProduto() na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Gerenciamento\MovimentacaoController.cs:linha 25

@@ -100,20 +100,23 @@
     </Reference>
     <Reference Include="RDI_Gerenciador_Usuario.Aplicacao, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\RDI_Gerenciador_Usuario\RDI_Gerenciador_Usuario.ManagerStart\bin\Debug\RDI_Gerenciador_Usuario.Aplicacao.dll</HintPath>
+      <HintPath>..\..\..\..\..\RDI_Gerenciador_Usuario\RDI_Gerenciador_Usuario.Aplicacao\bin\Debug\RDI_Gerenciador_Usuario.Aplicacao.dll</HintPath>
     </Reference>
-    <Reference Include="RDI_Gerenciador_Usuario.Dominio">
+    <Reference Include="RDI_Gerenciador_Usuario.Dominio, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\RDI_Gerenciador_Usuario\RDI_Gerenciador_Usuario.ManagerStart\bin\Debug\RDI_Gerenciador_Usuario.Dominio.dll</HintPath>
     </Reference>
-    <Reference Include="RDI_Gerenciador_Usuario.Infra.CrossCutting">
+    <Reference Include="RDI_Gerenciador_Usuario.Infra.CrossCutting, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\RDI_Gerenciador_Usuario\RDI_Gerenciador_Usuario.ManagerStart\bin\Debug\RDI_Gerenciador_Usuario.Infra.CrossCutting.dll</HintPath>
     </Reference>
-    <Reference Include="RDI_Gerenciador_Usuario.Infra.Dados">
+    <Reference Include="RDI_Gerenciador_Usuario.Infra.Dados, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\RDI_Gerenciador_Usuario\RDI_Gerenciador_Usuario.ManagerStart\bin\Debug\RDI_Gerenciador_Usuario.Infra.Dados.dll</HintPath>
     </Reference>
     <Reference Include="RDI_Gerenciador_Usuario.ManagerStart, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\RDI_Gerenciador_Usuario\RDI_Gerenciador_Usuario.ManagerStart\bin\Debug\RDI_Gerenciador_Usuario.ManagerStart.dll</HintPath>
+      <HintPath>..\..\..\..\..\RDI_Gerenciador_Usuario\RDI_Gerenciador_Usuario.ManagerStart\bin\Debug\RDI_Gerenciador_Usuario.ManagerStart.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -194,7 +197,9 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>

@@ -126,13 +126,23 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-3 col-sm-12 col-xs-12">
+                <div class="col-md-2 col-sm-12 col-xs-12">
                     <div class="form-group">
                         <h5 class="form-label">Selecione os Compradores:</h5>
                         <div class="controls ocultarElemento">
-                            <select name="cbUsuario" id="cbUsuario" data-actions-box="true" class="selectpicker show-tick form-control pull-right" data-live-search="true"
-                                    data-select-all-text="Marcar Todas" data-deselect-all-text="Desmarcar Todas" data-count-selected-text="Selecionado {0} de {1} opções"
+                            <select name="cbUsuario" id="cbUsuario" class="selectpicker show-tick form-control pull-right" 
+                                    data-count-selected-text="Selecionado {0} de {1} opções"
                                     data-width="100%" multiple data-select-header="true" data-size="auto" data-selected-text-format="count > 2" title="Compradores..."></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <h5 class="form-label">Atributo Fornecedor:</h5>
+                        <div class="controls ocultarElemento">
+                            <select name="cbAttrForn" id="cbAttrForn" data-actions-box="true" class="selectpicker show-tick form-control pull-right" data-live-search="true"
+                                    data-select-all-text="Marcar Todas" data-deselect-all-text="Desmarcar Todas" data-count-selected-text="Selecionado {0} de {1} opções"
+                                    data-width="100%" multiple data-select-header="true" data-size="auto" data-selected-text-format="count > 2" title="Selecione..."></select>
                         </div>
                     </div>
                 </div>
@@ -154,9 +164,9 @@
                 </div>
                 <div class="col-md-3 col-sm-12 col-xs-12">
                     <h5 class="form-label">Filtrar Resultados</h5>
-                    <input type="text" id="fTxtBusca" placeholder="Buscar por caracter..." class="form-control" />
+                    <input type="text" id="fTxtBusca" maxlength="50" placeholder="Buscar por caracter..." class="form-control" />
                 </div>
-                <div class="col-md-3 col-sm-12 col-xs-12">
+                <div class="col-md-2 col-sm-12 col-xs-12">
                     <div class="form-group">
                         <h5 class="form-label">Pesquisar Pedidos:</h5>
                         <div class="controls">

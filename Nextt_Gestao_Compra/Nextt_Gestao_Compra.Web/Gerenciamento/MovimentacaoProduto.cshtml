@@ -9,11 +9,20 @@
         <div class="col-md-12 col-sm-12 col-xs-12" style="text-align:center">
             <div id="alertProdMov" class="alertCustomizado alert-danger" style="display:none"></div>
         </div>
-        <div id="divAnoFiltro" class="col-md-2 col-sm-4 col-xs-12">
-            <div class="form-group">
-                <h5 class="form-label">Selecione o Período</h5>
+        <div id="divAnoFiltro" style="padding-right:3px!important" class="col-md-1 col-sm-4 col-xs-12">
+            <div class="form-group text-center">
+                <h5 class="form-label">Período</h5>
                 <div class="controls">
-                    <input type="text" name="filtroAno" id="filtroAno" class="form-control" />
+                    <input type="text" maxlength="7" style="text-align:center!important" name="filtroAno" id="filtroAno" class="form-control calendarioAno" />
+                </div>
+            </div>
+        </div>
+        <div id="divTipoRel" class="col-md-2 col-sm-4 col-xs-12 ocultarElemento">
+            <div class="form-group text-center">
+                <h5 class="form-label">Tipo de Consulta:</h5>
+                <div class="controls">
+                    <input id="ckbTipoRel" name="ckbTipoRel" type="checkbox" data-on-color="success" data-off-color="primary"
+                           data-off-text="Grupos" data-on-text="Sintético">
                 </div>
             </div>
         </div>
@@ -57,12 +66,12 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-2 col-sm-4 col-xs-12">
+        <div class="col-md-1 col-sm-4 col-xs-12">
             <div class="form-group">
                 <h5 class="form-label">Pesquisar:</h5>
                 <div class="controls">
                     <button id="btnBuscarProduto" class="btn btn-primary " onclick="buscaDadosRelatorioEspecies()">
-                        <i class="fa fa-search" aria-hidden="true"> Iniciar Pesquisa</i>
+                        <i class="fa fa-search" aria-hidden="true"> Iniciar</i>
                     </button>
                 </div>
             </div>

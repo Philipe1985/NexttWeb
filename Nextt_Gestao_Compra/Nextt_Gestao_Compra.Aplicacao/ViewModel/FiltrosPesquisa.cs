@@ -9,6 +9,9 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
     public class FiltrosPesquisa
     {
         public List<ComboFiltroVM> Fornecedores { get; set; }
+        public List<ComboFiltroVM> AttrFornecedores { get; set; }
+        public List<ComboFiltroVM> Compradores { get; set; }
+        public List<ComboFiltroVM> UniMedida { get; set; }
         public List<ComboFiltroVM> Secoes { get; set; }
         public List<ComboFiltroVM> Segmentos { get; set; }
         public List<ComboFiltroVM> GruposFiliais { get; set; }
@@ -48,11 +51,11 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
             Fornecedores = _fornecedores;
             Secoes = _secoes;
             Marcas = _marcas;
-            Tamanhos = new TamanhoGrupoVM(compraServico, fabrica, tamanhos); 
+            Tamanhos = new TamanhoGrupoVM(compraServico, fabrica, tamanhos);
             Cores = compraServico.RetornaCoresPrincipais(cores).Select(x => fabrica.Criar(x)).ToList();
             DadosPaleta = new PaletaDadosVM(compraServico.RetornaCSSCor(cores), compraServico.RetornaDescricaoCor(cores));
         }
-         
+
         public FiltrosPesquisa(DadosPrePedido dadosCadastro, IAppServicoCompra compraServico, FabricaViewModel fabrica, List<Cor> cores,
             List<GrupoTamanho> tamanhos, List<ReferenciaProduto> referencias)
         {

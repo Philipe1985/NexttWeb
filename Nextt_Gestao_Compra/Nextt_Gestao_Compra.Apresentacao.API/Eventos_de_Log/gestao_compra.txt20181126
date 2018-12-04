@@ -1,0 +1,57 @@
+
+ERROR 2018-11-26 20:09:01 - Erro ao Recuperar Dados do Pedido Analítico
+System.Exception: RepositorioPedido.RetornaPedidoAnalitico: 
+The specified cast from a materialized 'System.Byte' type to the 'System.Int16' type is not valid. ---> System.InvalidOperationException: The specified cast from a materialized 'System.Byte' type to the 'System.Int16' type is not valid.
+   em System.Data.Entity.Core.Common.Internal.Materialization.Shaper.ErrorHandlingValueReader`1.GetValue(DbDataReader reader, Int32 ordinal)
+   em lambda_method(Closure , Shaper )
+   em System.Data.Entity.Core.Common.Internal.Materialization.Coordinator`1.ReadNextElement(Shaper shaper)
+   em System.Data.Entity.Core.Common.Internal.Materialization.Shaper`1.SimpleEnumerator.MoveNext()
+   em System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
+   em System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
+   em Nextt_Gestao_Compra.Infra.Dados.Utils.RepositorioProcedures.MultiplosResultSetEncapsulador.<>c__4`1.<With>b__4_0(IObjectContextAdapter adapter, DbDataReader reader) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Utils\RepositorioProcedures.cs:linha 34
+   em Nextt_Gestao_Compra.Infra.Dados.Utils.RepositorioProcedures.MultiplosResultSetEncapsulador.Executar() na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Utils\RepositorioProcedures.cs:linha 64
+   em Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento.RepositorioPedido.RetornaPedidoAnalitico(Parametros parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Repositorios\Gerenciamento\RepositorioPedido.cs:linha 86
+   --- Fim do rastreamento de pilha de exceções internas ---
+   em Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento.RepositorioPedido.RetornaPedidoAnalitico(Parametros parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Repositorios\Gerenciamento\RepositorioPedido.cs:linha 106
+   em Nextt_Gestao_Compra.Dominio.Servicos.Gerenciamento.ServicoPedido.RetornaPedidoAnalitico(Parametros parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Dominio\Servicos\Gerenciamento\ServicoPedido.cs:linha 32
+   em Nextt_Gestao_Compra.Aplicacao.Servicos.Gerenciamento.AppServicoPedido.RetornaPedidoAnalitico(Parametros parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Servicos\Gerenciamento\AppServicoPedido.cs:linha 29
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido.GerenciadorAplicacaoPedido.RetornaPedidoAnalitico(IAppServicoPedido pedidoServico, ParametrosVM parametroVM, FabricaViewModel fabrica) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Pedido\GerenciadorAplicacaoPedido.cs:linha 71
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Cadastro.PedidoController.RetornaPedidoAnalitico(ParametrosVM parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Cadastro\PedidoController.cs:linha 93
+
+ERROR 2018-11-26 20:43:34 - Erro ao Recuperar Dados do Pedido Analítico
+System.Exception: RepositorioPedido.RetornaPedidoAnalitico: 
+The specified cast from a materialized 'System.Byte' type to the 'System.Int16' type is not valid. ---> System.InvalidOperationException: The specified cast from a materialized 'System.Byte' type to the 'System.Int16' type is not valid.
+   em System.Data.Entity.Core.Common.Internal.Materialization.Shaper.ErrorHandlingValueReader`1.GetValue(DbDataReader reader, Int32 ordinal)
+   em lambda_method(Closure , Shaper )
+   em System.Data.Entity.Core.Common.Internal.Materialization.Coordinator`1.ReadNextElement(Shaper shaper)
+   em System.Data.Entity.Core.Common.Internal.Materialization.Shaper`1.SimpleEnumerator.MoveNext()
+   em System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
+   em System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
+   em Nextt_Gestao_Compra.Infra.Dados.Utils.RepositorioProcedures.MultiplosResultSetEncapsulador.<>c__4`1.<With>b__4_0(IObjectContextAdapter adapter, DbDataReader reader) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Utils\RepositorioProcedures.cs:linha 34
+   em Nextt_Gestao_Compra.Infra.Dados.Utils.RepositorioProcedures.MultiplosResultSetEncapsulador.Executar() na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Utils\RepositorioProcedures.cs:linha 64
+   em Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento.RepositorioPedido.RetornaPedidoAnalitico(Parametros parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Repositorios\Gerenciamento\RepositorioPedido.cs:linha 86
+   --- Fim do rastreamento de pilha de exceções internas ---
+   em Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento.RepositorioPedido.RetornaPedidoAnalitico(Parametros parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Repositorios\Gerenciamento\RepositorioPedido.cs:linha 106
+   em Nextt_Gestao_Compra.Dominio.Servicos.Gerenciamento.ServicoPedido.RetornaPedidoAnalitico(Parametros parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Dominio\Servicos\Gerenciamento\ServicoPedido.cs:linha 32
+   em Nextt_Gestao_Compra.Aplicacao.Servicos.Gerenciamento.AppServicoPedido.RetornaPedidoAnalitico(Parametros parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Servicos\Gerenciamento\AppServicoPedido.cs:linha 29
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido.GerenciadorAplicacaoPedido.RetornaPedidoAnalitico(IAppServicoPedido pedidoServico, ParametrosVM parametroVM, FabricaViewModel fabrica) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Pedido\GerenciadorAplicacaoPedido.cs:linha 71
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Cadastro.PedidoController.RetornaPedidoAnalitico(ParametrosVM parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Cadastro\PedidoController.cs:linha 93
+
+ERROR 2018-11-26 20:47:27 - Erro ao Recuperar Dados do Pedido Analítico
+System.Exception: RepositorioPedido.RetornaPedidoAnalitico: 
+The specified cast from a materialized 'System.Byte' type to the 'System.Int16' type is not valid. ---> System.InvalidOperationException: The specified cast from a materialized 'System.Byte' type to the 'System.Int16' type is not valid.
+   em System.Data.Entity.Core.Common.Internal.Materialization.Shaper.ErrorHandlingValueReader`1.GetValue(DbDataReader reader, Int32 ordinal)
+   em lambda_method(Closure , Shaper )
+   em System.Data.Entity.Core.Common.Internal.Materialization.Coordinator`1.ReadNextElement(Shaper shaper)
+   em System.Data.Entity.Core.Common.Internal.Materialization.Shaper`1.SimpleEnumerator.MoveNext()
+   em System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
+   em System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
+   em Nextt_Gestao_Compra.Infra.Dados.Utils.RepositorioProcedures.MultiplosResultSetEncapsulador.<>c__4`1.<With>b__4_0(IObjectContextAdapter adapter, DbDataReader reader) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Utils\RepositorioProcedures.cs:linha 34
+   em Nextt_Gestao_Compra.Infra.Dados.Utils.RepositorioProcedures.MultiplosResultSetEncapsulador.Executar() na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Utils\RepositorioProcedures.cs:linha 64
+   em Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento.RepositorioPedido.RetornaPedidoAnalitico(Parametros parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Repositorios\Gerenciamento\RepositorioPedido.cs:linha 86
+   --- Fim do rastreamento de pilha de exceções internas ---
+   em Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento.RepositorioPedido.RetornaPedidoAnalitico(Parametros parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Repositorios\Gerenciamento\RepositorioPedido.cs:linha 106
+   em Nextt_Gestao_Compra.Dominio.Servicos.Gerenciamento.ServicoPedido.RetornaPedidoAnalitico(Parametros parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Dominio\Servicos\Gerenciamento\ServicoPedido.cs:linha 32
+   em Nextt_Gestao_Compra.Aplicacao.Servicos.Gerenciamento.AppServicoPedido.RetornaPedidoAnalitico(Parametros parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Servicos\Gerenciamento\AppServicoPedido.cs:linha 29
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido.GerenciadorAplicacaoPedido.RetornaPedidoAnalitico(IAppServicoPedido pedidoServico, ParametrosVM parametroVM, FabricaViewModel fabrica) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Pedido\GerenciadorAplicacaoPedido.cs:linha 71
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Cadastro.PedidoController.RetornaPedidoAnalitico(ParametrosVM parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Cadastro\PedidoController.cs:linha 93

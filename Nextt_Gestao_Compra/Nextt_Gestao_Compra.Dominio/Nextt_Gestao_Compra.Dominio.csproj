@@ -36,6 +36,7 @@
     <Compile Include="Entidades\Atributos.cs" />
     <Compile Include="Entidades\CadastroProdutoSecaoEspecieMarcaFornecetor.cs" />
     <Compile Include="Entidades\ClassificacaoFiscal.cs" />
+    <Compile Include="Entidades\Comprador.cs" />
     <Compile Include="Entidades\CondicaoPgto.cs" />
     <Compile Include="Entidades\ConfigDefault.cs" />
     <Compile Include="Entidades\Cor.cs" />
@@ -50,6 +51,7 @@
     <Compile Include="Entidades\FotoProduto.cs" />
     <Compile Include="Entidades\Grade.cs" />
     <Compile Include="Entidades\GrupoFilial.cs" />
+    <Compile Include="Entidades\HistoricoPedido.cs" />
     <Compile Include="Entidades\Marca.cs" />
     <Compile Include="Entidades\Paginas.cs" />
     <Compile Include="Entidades\Parametros.cs" />
@@ -57,10 +59,12 @@
     <Compile Include="Entidades\PedidoConsulta.cs" />
     <Compile Include="Entidades\ProdutoItem.cs" />
     <Compile Include="Entidades\ReferenciaProduto.cs" />
+    <Compile Include="Entidades\ResumoPedido.cs" />
     <Compile Include="Entidades\Secao.cs" />
     <Compile Include="Entidades\GrupoTamanho.cs" />
     <Compile Include="Entidades\Segmento.cs" />
     <Compile Include="Entidades\TipoLista.cs" />
+    <Compile Include="Entidades\UnidadeMedida.cs" />
     <Compile Include="Entidades\UsuarioGerenciamento.cs" />
     <Compile Include="Interfaces\Repositorio\Gerenciamento\IRepositorioCompra.cs" />
     <Compile Include="Interfaces\Repositorio\Gerenciamento\IRepositorioGrupo.cs" />

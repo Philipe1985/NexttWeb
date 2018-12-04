@@ -829,7 +829,7 @@ div.dataTables_wrapper {
 }
 
 .panel-heading span {
-    margin-top: -20px;
+    margin-top: -28px;
     font-size: 15px;
 }
 
@@ -1536,7 +1536,7 @@ a.accordion-toggle {
 }
 
 div.panel-heading {
-    padding: 0 !important;
+    padding: 5px 10px !important;
 }
 
 @media screen and (max-width: 700px) {
@@ -1952,4 +1952,10 @@ tr.groupOtb td {
     font-weight: bold !important;
     color: #fff !important;
     text-transform: uppercase !important;
+}
+.datepicker table tr td span.disabled,
+.datepicker table tr td span.disabled:hover {
+    background: none !important;
+    color: #999 !important;
+    cursor: not-allowed !important;
 }

@@ -12,9 +12,9 @@ namespace Nextt_Gestao_Compra.Aplicacao.Gerenciador.Grupo
         public static FiltrosCadastroGrupoVM RetornaGruposFiliais(IAppServicoGrupo servicoGrupo, FabricaViewModel fabrica)
         {
             var dados = servicoGrupo.BuscaGruposCadastrados();
-            var listaGrupo = dados.ElementAt(0).Cast<GrupoFilial>().Where(x => x.Ativo).Select(x => fabrica.Criar(x)).ToList();
-            var listaFiliais = dados.ElementAt(1).Cast<GrupoFilial>().Select(x => new  { x.IDFilial, x.Filial_Nome}).Distinct()
-                                        .Select(x => fabrica.CriarComboFilial(new GrupoFilial {IDFilial= x.IDFilial,Filial_Nome= x.Filial_Nome }))
+            var listaGrupo = dados.ElementAt(0).Cast<GrupoFilial>().Select(x => fabrica.Criar(x)).ToList();
+            var listaFiliais = dados.ElementAt(1).Cast<GrupoFilial>().Select(x => new { x.IDFilial, x.Filial_Nome }).Distinct()
+                                        .Select(x => fabrica.CriarComboFilial(new GrupoFilial { IDFilial = x.IDFilial, Filial_Nome = x.Filial_Nome }))
                                         .ToList();
             var retorno = new FiltrosCadastroGrupoVM
             {
@@ -23,7 +23,7 @@ namespace Nextt_Gestao_Compra.Aplicacao.Gerenciador.Grupo
             };
             return retorno;
         }
-        public static FiltrosCadastroGrupoVM RetornaFiliaisPorGrupo(IAppServicoGrupo servicoGrupo,ParametrosVM parametroVM, FabricaViewModel fabrica)
+        public static FiltrosCadastroGrupoVM RetornaFiliaisPorGrupo(IAppServicoGrupo servicoGrupo, ParametrosVM parametroVM, FabricaViewModel fabrica)
         {
             var filtro = Mapper.Map<ParametrosVM, Parametros>(parametroVM);
             var dados = servicoGrupo.BuscaFiliaisPorGrupos(filtro);
@@ -34,7 +34,7 @@ namespace Nextt_Gestao_Compra.Aplicacao.Gerenciador.Grupo
                 Filiais = listaFiliais,
                 Grupos = listaGrupo
             };
-            
+
             return retorno;
         }
         public static ComboFiltroVM ManipularGrupos(IAppServicoGrupo servicoGrupo, GrupoFilialOperacaoVM objGrupos, FabricaViewModel fabrica)
@@ -48,7 +48,7 @@ namespace Nextt_Gestao_Compra.Aplicacao.Gerenciador.Grupo
         {
             var filtro = Mapper.Map<ParametrosVM, Parametros>(parametroVM);
             servicoGrupo.ExcluirGrupo(filtro);
-            
+
         }
     }
 }

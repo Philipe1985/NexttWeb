@@ -2,29 +2,32 @@
 var dt = formatarDataEnvio(new Date()).split('-'), dtAtual = dt[1] + '/' + dt[0];
 
 $(document).ready(function () {
+    $("#ckbTipoRel").bootstrapSwitch();
     $(window).on("load", carregar);
     $('#drpSeg').on('change', function (e) {
+        $('#divEsp').addClass('ocultarElemento');
+        $("#drpEsp").html('');
+        $('#divSec').addClass('ocultarElemento');
+        $("#drpSec").html('');
+        if (!$("#divOTBRelatorio").hasClass('ocultarElemento')) {
+            resetarRelatorios();
+        }
         var objParam = {};
         if ($('#drpSeg').val()) {
             if ($('#divSec').hasClass('ocultarElemento')) {
                 $('#divSec').removeClass('ocultarElemento');
             }
             objParam.segmentos = $('#drpSeg').val().join(',').replace(/[^\d,]/g, '');
-            console.log(objParam)
             carregarSecoes(objParam);
-        } else {
-            if (!$('#divEsp').hasClass('ocultarElemento')) {
-                $('#divEsp').addClass('ocultarElemento');
-                $("#drpEsp").html('');
-            }
-            if (!$('#divSec').hasClass('ocultarElemento')) {
-                $('#divSec').addClass('ocultarElemento');
-                $("#drpSec").html('');
-            }
         }
     });
     $('#drpSec').on('change', function (e) {
         var objParam = {};
+        $('#divEsp').addClass('ocultarElemento');
+        $("#drpEsp").html('');
+        if (!$("#divOTBRelatorio").hasClass('ocultarElemento')) {
+            resetarRelatorios();
+        }
         if ($('#drpSec').val()) {
             $('.selectpicker').selectpicker('hide');
             $(".navbar.navbar-default.navbar-fixed-top").addClass('ocultarElemento');
@@ -32,37 +35,127 @@ $(document).ready(function () {
             $(".wrapper").show();
             objParam.secoes = $('#drpSec').val().join(',');
             carregarEspecie(objParam);
-        } else {
-            $('#divEsp').addClass('ocultarElemento');
-            $("#drpEsp").html('');
-
         }
     });
+    $('#drpEsp').on('change', function (e) {
+        if (!$("#divOTBRelatorio").hasClass('ocultarElemento')) {
+            resetarRelatorios();
+        }
+    });
+    $('#drpGrps').on('change', function (e) {
+        if (!$("#divOTBRelatorio").hasClass('ocultarElemento') && !$("#ckbTipoRel").bootstrapSwitch('state')) {
+            resetarRelatorios();
+        }
+    });
+
     $('#filtroAno').val(dtAtual)
     $('#filtroAno').datepicker({
         format: "mm/yyyy",
         startView: 'decade',
+        startDate: '-2y',
+        endDate: 'y',
         minView: 'decade',
         defaultViewDate: 'year',
         title: "Ano a Consultar"
     }).on('changeMonth', function (ev) {
         $(this).datepicker('update', ev.date);
+        if (!$("#divOTBRelatorio").hasClass('ocultarElemento')) {
+            resetarRelatorios();
+        }
         $(this).datepicker('hide');
         if ($('#segFiltro  option:selected').length > 0) {
             $("#btnFiltrar").attr("disabled", false);
         }
     });
+    $('#filtroAno').blur(function (e) {
+        var valor = $(this).val().split('/');
+        var novaData = valor[1] + '-' + valor[0];
+        var d = new Date(novaData);
+        var optDtPk = $(this).data('datepicker');
+
+        var strAno = optDtPk.startDate.getFullYear();
+        var endAno = optDtPk.endDate.getFullYear();
+        var strMes = optDtPk.startDate.getMonth() + 1;
+        var endMes = optDtPk.endDate.getMonth() + 1;
+        if (!$(this).val()) {
+            $(this).val(endMes + "/" + endAno)
+            if (!$("#divOTBRelatorio").hasClass('ocultarElemento')) {
+                resetarRelatorios();
+            }
+        } else if (d.toString() === 'Invalid Date') {
+            $(this).focus();
+        } else if (d.getFullYear() === strAno) {
+            if ((d.getUTCMonth() + 1) < strMes) {
+                $(this).val(strMes + "/" + strAno)
+                optDtPk.date = optDtPk.startDate;
+                if (!$("#divOTBRelatorio").hasClass('ocultarElemento')) {
+                    resetarRelatorios();
+                }
+            }
+        } else if (d.getFullYear() === endAno) {
+            if ((d.getUTCMonth() + 1) > endMes) {
+                $(this).val(endMes + "/" + endAno)
+                optDtPk.date = optDtPk.endDate;
+                if (!$("#divOTBRelatorio").hasClass('ocultarElemento')) {
+                    resetarRelatorios();
+                }
+            }
+        } else if (d.getFullYear() < strAno) {
+            $(this).val(strMes + "/" + strAno)
+            optDtPk.date = optDtPk.startDate;
+            if (!$("#divOTBRelatorio").hasClass('ocultarElemento')) {
+                resetarRelatorios();
+            }
+        } else if (d.getFullYear() > endAno) {
+            $(this).val(endMes + "/" + endAno)
+            optDtPk.date = optDtPk.endDate;
+            if (!$("#divOTBRelatorio").hasClass('ocultarElemento')) {
+                resetarRelatorios();
+            }
+        }
+        //$('#filtroAno').datepicker('show');
+    });
+    $(document).on('click', '.panel-heading span.clickable.pull-right', function (e) {
+        var $this = $(this);
+        var paineisExistentes = $('.panel-heading span.clickable.pull-right')
+        if (!$this.hasClass('panel-collapsed')) {
+            $this.parents('.panel').find('.panel-body').slideUp();
+            $this.addClass('panel-collapsed');
+
+            $this.find('i').removeClass('glyphicon-chevron-up').addClass('glyphicon-chevron-down');
+        } else {
+
+            $this.parents('.panel').find('.panel-body').slideDown();
+            $this.removeClass('panel-collapsed');
+
+            $this.find('i').removeClass('glyphicon-chevron-down').addClass('glyphicon-chevron-up');
+        }
+    })
+    $(document).on('switchChange.bootstrapSwitch', '#ckbTipoRel', function (event, state) {
+        if (!$("#divOTBRelatorio").hasClass('ocultarElemento')) {
+            resetarRelatorios();
+        }
+        if (state) {
+            $('#drpGrps').selectpicker('deselectAll');
+            if ($("#divGrp .bootstrap-select").hasClass('open')) {
+                $('#drpGrps').selectpicker('toggle');
+            }
+            $("#divGrp").addClass('ocultarElemento');
+        } else {
+            $("#divGrp").removeClass('ocultarElemento');
+        }
+    });
 
 });
 function carregar() {
-    $('#movProdOpcao').addClass('ocultarElemento');
     sessionStorage.removeItem('compra');
     sessionStorage.removeItem("pedidoId");
     sessionStorage.removeItem("pedidoStatus");
     sessionStorage.removeItem("cadastroNovo");
+
     carregarFiltrosMovimentacaoProduto();
 }
-function geraDadosRelatorioOTB(grupos, abaRef,arrayRef) {
+function geraDadosRelatorioOTB(grupos, abaRef, arrayRef) {
     for (var i = 0; i < grupos.length; i++) {
         var hashTab = 'grupo' + grupos[i].idGrupo + '_' + abaRef;
         $('.nav-pills a[href="#' + hashTab + '"]').tab('show');
@@ -108,7 +201,7 @@ function carregaAbaSecao(grupos) {
 function carregaAbaEspecie(grupos) {
     $('.nav-pills a[href="#tabEspecie]').tab('show');
     $('.spanEsp .tabbable.tabs-left').remove();
-    $('.spanEsp').append($.parseHTML(criaAbaGruposRelatorio(grupos, 'Esp',espRelGerado)));
+    $('.spanEsp').append($.parseHTML(criaAbaGruposRelatorio(grupos, 'Esp', espRelGerado)));
     $('#tabDadosGrupoEsp li').children('a').first().click();
 
 }
@@ -126,7 +219,7 @@ function criaAbaGruposRelatorio(grupos, abaRef, arrayRef) {
             $(tbHtml).removeClass('tbPackCad').html(headerTb);
             pnlAppend += criaPainelRelatorio(arrayRef[j], $(tbHtml).prop('outerHTML'))
         }
-      
+
         htmlContent += '<div class="tab-pane" id="grupo' + grupos[i].idGrupo + '_' + abaRef + '">' + pnlAppend + '</div>';
     }
     ulHtml += '</ul>' + htmlContent + '</div></div>';
@@ -214,8 +307,16 @@ function geraGridRelatorioOTB(idTabelaDist, colunmsPk, dadosPk) {
 }
 function buscaDadosRelatorioEspecies() {
     var objEnvio = { 'segmentos': '', 'idGrupo': '', 'secoes': '', 'especies': '', 'ano': '', 'mes': '' }, seg = $("#drpSeg").val(), secoes = $("#drpSec").val(),
-        especies = $("#drpEsp").val(), grp = $("#drpGrps").val(), periodo = $('#filtroAno').val();
-    if (!periodo || !seg || !grp) {
+        especies = $("#drpEsp").val(), grp = $("#drpGrps").val(), periodo = $('#filtroAno').val(), relTipo = $("#ckbTipoRel").bootstrapSwitch('state');
+    if (relTipo) {
+        modal({
+            messageText: "A consulta sintética está inativa, pois necessita de um modelo de como será exibido o grid.",
+            type: "alert",
+            modalSize: 'modal-lg',
+            headerText: "Operação Inválida",
+            alertType: "warning"
+        });
+    } else if (!periodo || !seg || !grp) {
         erroCadCompra("Não é permitido pesquisar sem selecionar ao menos um período, um grupo e um segmento!", "alertProdMov");
     } else {
         segRelGerado = retornaComboTokem('drpSeg');
@@ -225,14 +326,14 @@ function buscaDadosRelatorioEspecies() {
         objEnvio.ano = periodo.split('/')[1];
         objEnvio.segmentos = seg.join(',');
         objEnvio.idGrupo = grp.join(',');
-        if (secoes) objEnvio.secoes = secoes.join(",");
-        if (especies) objEnvio.especies = especies.join(",");
+        if (secoes) objEnvio.secoes = '72';//secoes.join(",");
+        if (especies) objEnvio.especies = '2';//especies.join(",");
         $(".navbar.navbar-default.navbar-fixed-top").addClass('ocultarElemento');
         $('.selectpicker').selectpicker('hide');
         $(".bg_load").show();
         $(".wrapper").show();
         cargaMovimentacaoProdutoOTB(objEnvio);
-        //console.log(objEnvio)
+        // console.log(objEnvio)
     }
 }
 function criaPainelRelatorio(titulo, htmlBody) {
@@ -241,7 +342,7 @@ function criaPainelRelatorio(titulo, htmlBody) {
         '<div class="panel panel-primary">' +
         '<div class="panel-heading">' +
         '<h3 class="panel-title"> ' + titulo + '</h3>' +
-        //'<span class="pull-right clickable panel-collapsed"><i class="glyphicon glyphicon-chevron-down"></i></span>' +
+        '<span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>' +
         '</div>' +
         '<div class="panel-body">' +
         '<div class="col-md-12 col-sm-12 col-xs-12 table-responsive">' +
@@ -312,4 +413,10 @@ function geraColunaRelOTB(filiais) {
     }
     colunasDistribuicao.push({ "data": "total" });
     return colunasDistribuicao;
+}
+function resetarRelatorios() {
+    $("#divOTBRelatorio").addClass('ocultarElemento');
+    $('div.spanSeg').html('');
+    $('div.spanSec').html('');
+    $('div.spanEsp').html('');
 }

@@ -18,9 +18,9 @@ namespace Nextt_Gestao_Compra.Dominio.Servicos.Gerenciamento
             _movimentacaoRepositorio = movimentacaoRepositorio;
         }
 
-        public List<IEnumerable> RetornaCargaEspeciesFiltros(Parametros parametros)
+        public List<IEnumerable> RetornaCargaRelatorios(Parametros parametros)
         {
-            return _movimentacaoRepositorio.RetornaCargaEspeciesFiltros(parametros);
+            return _movimentacaoRepositorio.RetornaCargaRelatorios(parametros);
         }
 
         public List<IEnumerable> RetornaCargaSecaoFiltros(Parametros parametros)

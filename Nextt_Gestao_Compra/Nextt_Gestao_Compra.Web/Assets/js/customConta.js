@@ -1,4 +1,5 @@
 ﻿$(document).ready(function () {
+    $(window).on("load", validarPrimeiroAcesso);
     if (localStorage.getItem("erro") !== null) {
         if (localStorage.getItem("erro").length > 0) {
             var msg = localStorage.getItem("erro");
@@ -53,5 +54,15 @@
 function falhaAutenticar(msgErro) {
     localStorage.setItem("erro", msgErro);
     location.reload();
+}
+
+function geraPermissoesAtivas(jsonPermissao) {
+    var retorno = [];
+    $.each(jsonPermissao, function (key, value) {
+        if (value === "1") {
+            retorno.push(key);
+        }
+    });
+    return retorno;
 }
 

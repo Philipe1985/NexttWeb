@@ -2,6 +2,7 @@
 using Microsoft.AspNet.Identity.Owin;
 using Nextt_Gestao_Compra.Aplicacao.ViewModel;
 using RDI_Gerenciador_Usuario.Aplicacao.Gerenciador;
+using System;
 using System.Net.Http;
 using System.Web.Http;
 
@@ -11,6 +12,7 @@ namespace Nextt_Gestao_Compra.Apresentacao.API.Controllers
     {
         private GerenciadorUsuarioAplicacao _AppGerenciadorUsuario = null;
         private GerenciadorFuncoesAplicacao _AppGerenciadorPerfil = null;
+        private GerenciadorPermissaoAplicacao _AppGerenciadorPermissao = null;
 
         public static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private GerenciadorLoginAplicacao _AppGerenciadorLogin = null;
@@ -49,6 +51,13 @@ namespace Nextt_Gestao_Compra.Apresentacao.API.Controllers
                 return _AppGerenciadorLogin ?? Request.GetOwinContext().GetUserManager<GerenciadorLoginAplicacao>();
             }
         }
+        protected GerenciadorPermissaoAplicacao AppGerenciadorPermissao
+        {
+            get
+            {
+                return _AppGerenciadorPermissao ?? Request.GetOwinContext().GetUserManager<GerenciadorPermissaoAplicacao>();
+            }
+        }
         #region Construtor de resposta de erros
         protected IHttpActionResult RetornaErro(IdentityResult result)
         {
@@ -60,7 +69,7 @@ namespace Nextt_Gestao_Compra.Apresentacao.API.Controllers
             if (!result.Succeeded)
             {
                 if (result.Errors != null)
-                {
+                { 
                     foreach (string error in result.Errors)
                     {
                         ModelState.AddModelError("motivo", error);
@@ -79,6 +88,15 @@ namespace Nextt_Gestao_Compra.Apresentacao.API.Controllers
             return null;
         }
 
+        protected IHttpActionResult RetornaErro(Exception ex)
+        {
+            //if (ex.)
+            //{
+
+            //}
+
+            return null;
+        }
 
         #endregion
 

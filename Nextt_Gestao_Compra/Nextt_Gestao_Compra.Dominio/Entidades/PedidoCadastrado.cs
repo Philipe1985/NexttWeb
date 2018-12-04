@@ -12,7 +12,9 @@ namespace Nextt_Gestao_Compra.Dominio.Entidades
         public int IDPedido { get; set; }
         public int IDClassificacaoFiscal { get; set; }
         public int IDProduto { get; set; }
+        public DateTime DataCadastroProduto { get; set; }
         public Int16 IDSecao { get; set; }
+        public Int16? IDUnidadeMedida { get; set; }
         public Int16 IDCondicaoPagamento { get; set; }
         public Int16 IDGrupoTamanho { get; set; }
         public Int16 IDEspecie { get; set; }

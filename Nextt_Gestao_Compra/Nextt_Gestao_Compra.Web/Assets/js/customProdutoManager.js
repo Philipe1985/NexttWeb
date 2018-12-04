@@ -2,6 +2,7 @@
 var specialKeys = new Array();
 var objRefSelecionados = {};
 var paginasMarcadas = [];
+var fornSelConsulta;
 var prodMarcados = [];
 specialKeys.push(8); //Backspace
 specialKeys.push(46); //Delete
@@ -94,6 +95,7 @@ $(document).ready(function () {
 function carregar() {
     sessionStorage.removeItem('compra');
     sessionStorage.removeItem('cadastroNovo');
+    sessionStorage.removeItem('fornSelecionado');
     sessionStorage.removeItem('produtosLista');
     sessionStorage.removeItem("produtosComprarSelecionados");
     sessionStorage.removeItem("pedidoId");
@@ -102,21 +104,27 @@ function carregar() {
 }
 function buscarProdutosFiltrado() {
     var objEnvio = { 'marcas': '', 'secoes': '', 'especies': '', 'idFornecedor': '' }, marcas = $("#drpMarc").val(), secoes = $("#drpSec").val(),
-        especies = $("#drpEsp").val(), cnpj = $("#drpCNPJ").val();
+        especies = $("#drpEsp").val(), cnpj = $("#drpCNPJ").val(), fornAttr = $("#cbAttrForn").val();
     if (!marcas && !secoes && !cnpj) {
         erroCadCompra("Não é permitido filtrar produtos sem selecionar ao menos um parâmetro de pesquisa!", "alertProdCompra");
     } else {
         objRefSelecionados = {};
         paginasMarcadas = [];
         prodMarcados = [];
+        fornSelConsulta = null;
         if (marcas) objEnvio.marcas = marcas.join(",");
+        if (fornAttr) objEnvio.attrFornecedor = fornAttr.join(",");
         if (secoes) objEnvio.secoes = secoes.join(",");
         if (especies) objEnvio.especies = especies.join(",");
-        if (cnpj) objEnvio.idFornecedor = cnpj.join(",");
+        if (cnpj) {
+            objEnvio.idFornecedor = cnpj.join(",");
+            if (cnpj.length === 1) fornSelConsulta = cnpj[0];
+        }
         $(".navbar.navbar-default.navbar-fixed-top").addClass('ocultarElemento');
         $('.selectpicker').selectpicker('hide');
         $(".bg_load").show();
         $(".wrapper").show();
+        console.log(fornSelConsulta)
         geraCargaProdutoFiltrado(objEnvio);
     }
 
@@ -134,7 +142,7 @@ function inicializarTbProduto() {
         scrollY: '40vh',
         "columnDefs": [
             {
-                "targets": [2, 3, 4, 5, 7,8],
+                "targets": [2, 3, 4, 5, 7, 8],
                 //"orderable": false,
                 'className': 'dt-body-left'
             },
@@ -167,7 +175,7 @@ function inicializarTbProduto() {
                 }
                 //"defaultContent": '<input type="checkbox" class="ckbGridProd" data-on-color="success" data-off-color="danger" data-on-text="Sim" data-off-text="Não">'
             },
-            { "data": "idProduto",visible:false },
+            { "data": "idProduto", visible: false },
             { "data": "codProduto" },
             { "data": "codOriginal" },
             {
@@ -239,10 +247,10 @@ function ocultarColunas(indexColunas) {
         tbProduto.columns(indexColunas).visible(false, false);
     }
     tbProduto.draw(false);
-        $(".bg_load").fadeOut();
-        $(".wrapper").fadeOut();
-        $('.selectpicker').selectpicker('show');
-        $(".navbar.navbar-default.navbar-fixed-top").removeClass('ocultarElemento');
+    $(".bg_load").fadeOut();
+    $(".wrapper").fadeOut();
+    $('.selectpicker').selectpicker('show');
+    $(".navbar.navbar-default.navbar-fixed-top").removeClass('ocultarElemento');
 
 }
 
@@ -260,7 +268,7 @@ function cadastrarNovasCompras() {
     var arrayCarga = [];
     for (var i = 0; i < result.length; i++) {
         var objCarga = {};
-        result[i].idPedido = 0; 
+        result[i].idPedido = 0;
         objCarga.idPedido = result[i].idPedido;
         objCarga.imagem = 'http://placehold.it/50x50';
         objCarga.idProduto = result[i].idProduto;
@@ -272,6 +280,10 @@ function cadastrarNovasCompras() {
         arrayCarga.push(objCarga);
     }
     sessionStorage.setItem("produtosLista", JSON.stringify(arrayCarga));
+    if (fornSelConsulta) {
+        sessionStorage.setItem("fornSelecionado", fornSelConsulta);
+    }
+    
     sessionStorage.setItem("produtosComprarSelecionados", JSON.stringify(result));
     window.location = "../gerenciamento/compraprodutos.cshtml";
 }

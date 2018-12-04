@@ -27,6 +27,7 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
         public List<string> ReferenciasGrade { get; set; }
         public List<string> UltimaForma { get; set; }
         public string UltimaCondicao { get; set; }
+        public string DtCadastroProduto { get; set; }
         public string UltimaClassificacao { get; set; }
         public List<string> CoresGrade { get; set; }
         public List<string> TamanhosGrade { get; set; }
@@ -40,6 +41,7 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
             {
                 UltimaClassificacao = dados.IDClassificacaoFiscal.ToString();
             }
+            DtCadastroProduto = dados.DataCadastroProduto.ToString("dd/MM/yyyy");
             CodOriginal = dados.CodigoOriginal;
             CodProduto = dados.CodProduto;
             //Referencia = dados.ReferenciaFornecedor;

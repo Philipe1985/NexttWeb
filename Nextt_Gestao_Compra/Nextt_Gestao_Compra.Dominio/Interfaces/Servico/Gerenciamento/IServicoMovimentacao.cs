@@ -12,6 +12,6 @@ namespace Nextt_Gestao_Compra.Dominio.Interfaces.Servico.Gerenciamento
     {
         List<IEnumerable> RetornaSegmentoGrupos();
         List<IEnumerable> RetornaCargaSecaoFiltros(Parametros parametros);
-        List<IEnumerable> RetornaCargaEspeciesFiltros(Parametros parametros);
+        List<IEnumerable> RetornaCargaRelatorios(Parametros parametros);
     }
 }

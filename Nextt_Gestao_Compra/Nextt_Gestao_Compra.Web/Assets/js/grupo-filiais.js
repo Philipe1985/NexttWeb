@@ -1,5 +1,5 @@
 ﻿var dadosGrupoNovo = {};
-var dtbCad;
+var dtbCad, reativado = false;
 $(document).ready(function () {
 
     $(window).on("load", carregar);
@@ -50,6 +50,11 @@ $(document).ready(function () {
         var dadoLinha = dtbCad.row($(linha)).data()
         var objEnvio = {};
         objEnvio.idGrupo = dadoLinha.id.toString();
+        $(".bg_load").show();
+        $(".wrapper").show();
+        $('.selectpicker').selectpicker('hide');
+        $(".navbar.navbar-default.navbar-fixed-top").addClass('ocultarElemento');
+
         retornaInfoGrp(objEnvio)
 
     })
@@ -73,6 +78,11 @@ function carregar() {
     //erroCadCompra("Para cadastrar uma cor nova primeiro informe o nome para ela.", "alertCadGrupoFilial");
 }
 function criaDescGrp() {
+    $(".bg_load").show();
+    $(".wrapper").show();
+    $('.selectpicker').selectpicker('hide');
+    $(".navbar.navbar-default.navbar-fixed-top").addClass('ocultarElemento');
+
     manipularGrupo("Cadastrar Novo Grupo", '', 0)
 }
 
@@ -132,9 +142,9 @@ function carregarCadFilial(dados) {
         lengthChange: false,
         deferRender: true,
         "ordering": true,
-        "order": [[1, "asc"]],
+        "order": [[3, "asc"]],
         responsive: true,
-        
+
         "columnDefs": [
             {
                 "targets": 2,
@@ -159,7 +169,7 @@ function carregarCadFilial(dados) {
             {
                 "orderable": false,
                 'className': 'dt-body-left grupoOperacao',
-                "targets": 3
+                "targets": 4
             }
         ],
         "language": {
@@ -174,6 +184,7 @@ function carregarCadFilial(dados) {
             { "data": "id" },
             { "data": "descricao" },
             { "data": "participacao" },
+            { "data": "status" },
             { "data": "operacao" },
 
         ]
@@ -184,7 +195,7 @@ function criaObjetoGrupoEnvio(idFiliais, idGrupo, descGrupo, partEnvio) {
     var objAtualizar = {};
     objAtualizar.descricao = descGrupo;
     objAtualizar.idGrupoFilial = idGrupo;
-    objAtualizar.ativo= true;
+    objAtualizar.ativo = true;
     objAtualizar.participacaoGrupo = partEnvio;
     objAtualizar.filiais = retornaFiliaisNovoGrupo(idFiliais);
     listaGruposEnvio.push(objAtualizar);
@@ -198,7 +209,7 @@ function criaObjetoGrupoEnvio(idFiliais, idGrupo, descGrupo, partEnvio) {
 function excluirGrupo() {
     var jc2 = $.confirm({
         title: 'Grupo Excluído Com Sucesso!',
-        content: 'O grupo foi removido e já não está disponível para utilização.',
+        content: 'O grupo foi removido e não estará disponível para reativação, caso não esteja vinculado a pelo menos um pedido.',
         icon: 'fa fa-check',
         theme: 'modern',
         closeIcon: false,
@@ -217,13 +228,22 @@ function excluirGrupo() {
         onOpenBefore: function () {
             this.buttons.okButton.hide();
         },
+        onDestroy: function () {
+            $(".bg_load").show();
+            $(".wrapper").show();
+            $('.selectpicker').selectpicker('hide');
+            $(".navbar.navbar-default.navbar-fixed-top").addClass('ocultarElemento');
+            location.reload();
+        }
     });
 }
 function msgGrupoAtualizado() {
-
+    var titAtualizado = reativado ? 'Grupo Reativado Com Sucesso!' : 'Grupo Atualizado Com Sucesso!';
+    var msgAtualizado = reativado ? 'O grupo foi reativado e todas as atualizações feitas nele foram salvas.' : 'Todas as atualizações no grupo foram salvas.';
+    reativado = false;
     var jc2 = $.confirm({
-        title: 'Grupo Atualizado Com Sucesso!',
-        content: 'Todas as atualizações no grupo foram salvas.',
+        title: titAtualizado,
+        content: msgAtualizado,
         icon: 'fa fa-check',
         theme: 'modern',
         closeIcon: false,
@@ -307,11 +327,11 @@ function manipularGrupo(tit, desc, part) {
                 action: function () {
                     var descGrupo = toTitleCase(this.$content.find('#txtDescGrp').val().trim());
                     var partEnvio = removeMascaraMoeda(this.$content.find('#txtPartGrp').val().replace('%', ''));
-                    console.log(partEnvio)
                     var descInicial = this.$content.find('#txtDescGrp').attr("data-initial").trim();
                     var idEdt = localStorage.getItem("idGrpEditar") ?
                         parseInt(localStorage.getItem("idGrpEditar")) :
                         0;
+                    reativado = $(this.$$confirm).text() === 'Ativar';
                     if (!descGrupo || descGrupo.length < 3) {
                         grupoOperacaoInvalida('A descrição é um campo obrigatório e deve conter no mínimo 3 caracteres! Informe a descrição ou cancele a operação.')
                         return false;
@@ -324,12 +344,16 @@ function manipularGrupo(tit, desc, part) {
                         var filiaisInicial = localStorage.getItem("filiaisGrupo") ?
                             localStorage.getItem("filiaisGrupo").split(',') :
                             [];
-                        if (selecionados.sort().join(',') === filiaisInicial.sort().join(',') && descInicial === descGrupo) {
+                        if (selecionados.sort().join(',') === filiaisInicial.sort().join(',') && descInicial === descGrupo && !reativado) {
                             grupoOperacaoInvalida('Nenhuma alteração foi realizada! Altere alguma informação do grupo ou cancele a operação.')
                             return false;
                         }
                         if (!selecionados.length) {
-                            grupoOperacaoInvalida('Nenhuma filial foi selecionada! Selecione ao menos uma filial ou cancele a operação.');
+                            if (reativado) {
+                                grupoOperacaoInvalida('Nenhuma filial foi selecionada! Selecione ao menos uma filial para reativar este grupo ou cancele a operação.');
+                            } else {
+                                grupoOperacaoInvalida('Nenhuma filial foi selecionada! Selecione ao menos uma filial ou cancele a operação e execute a opção de excluir grupo, caso deseje remover esse grupo do cadastro.');
+                            }
                             return false;
                         }
                         if (idEdt) {
@@ -348,12 +372,13 @@ function manipularGrupo(tit, desc, part) {
                 text: 'Cancelar',
                 btnClass: 'btn-red',
                 action: function () {
-                    //dadosGrupoNovo = {};
+                    reativado = false;
                 }
             }
         },
         onContentReady: function () {
             var self = this;
+
             this.$content.find('#txtDescGrp').keyup(function (evento) {
                 var code = (evento.keyCode ? evento.keyCode : evento.which);
                 if (code === 9 || code === 13) {
@@ -366,12 +391,22 @@ function manipularGrupo(tit, desc, part) {
         onOpenBefore: function () {
             var self = this;
             var idsSelecionados = localStorage.getItem("filiaisGrupo") ? localStorage.getItem("filiaisGrupo").split(',') : [];
-            console.log(idsSelecionados)
+
+            if (tit.toLowerCase().indexOf('reativar') > -1) {
+                self.buttons.confirm.setText('Ativar')
+            } else if(tit.toLowerCase().indexOf('atualizar') > -1) {
+                self.buttons.confirm.setText('Atualizar')
+            }
+
             for (i = 0; i !== idsSelecionados.length; i++) {
                 var checkbox = self.$content.find("li input[type='checkbox'][value='" + idsSelecionados[i] + "']");
                 checkbox.attr("checked", "checked");
             }
             self.$content.find("li input[type='checkbox']").checkboxradio();
+            $(".bg_load").hide();
+            $(".wrapper").hide();
+            var $menuTitulo = $(".navbar.navbar-default.navbar-fixed-top");
+            $menuTitulo.removeClass('ocultarElemento');
 
         },
         onDestroy: function () {
@@ -384,7 +419,7 @@ function geraListaFilial(filiais) {
     var retorno = '';
     for (var i = 0; i < filiais.length; i++) {
         retorno += '<li class="phradio" data-filtro="' + filiais[i].token + '">' +
-            '<label class="phradio-info">' + 
+            '<label class="phradio-info">' +
             '<input style="margin:0px !important" type="checkbox" value="' + filiais[i].valor + '">' +
             '<span class="checkmark"> ' + filiais[i].descricao + '</span>' +
             '</label>' +
@@ -429,6 +464,9 @@ function atualizaLinhaGrupo(dado) {
         if (obj.id === parseInt(dado.valor)) {
             obj.descricao = dado.descricao;
             obj.participacaoGrupo = parseFloat(dado.dadosAdicionais[0].replace(',', '.'));
+            obj.status = dado.dadosAdicionais[1];
+            obj.operacao = retornaOperacaoGrupoGrid(dado.dadosAdicionais[1])
+
         }
         return obj;
     });
@@ -436,7 +474,7 @@ function atualizaLinhaGrupo(dado) {
     dtbCad.clear();
     dtbCad.data(dtbCad).rows.add(dadosNovos);
     dtbCad.draw();
-    
+
 
 }
 function insereLinhaGrupo(dado) {
@@ -444,14 +482,18 @@ function insereLinhaGrupo(dado) {
         "id": parseInt(dado.valor),
         "descricao": dado.descricao,
         "participacao": parseFloat(dado.dadosAdicionais[0].replace(',', '.')),
+        "status": "Ativo",
         "operacao": '<a href="#" style="margin:3px" class="btn btn-info editarGrupo" data-toggle="tooltip" title="Editar" ><i class="fa fa-pencil" aria-hidden="true"></i></a>'
             + '<a href="#" style="margin:3px;" class="btn btn-danger excluirGrupo" data-toggle="tooltip" title="Cancelar" ><i class="fa fa-trash" aria-hidden="true"></i></a>'
     }).draw();
 }
-function excluirLinhaGrupo(idExc) {
-    console.log(idExc)
-    dtbCad.rows(function (idx, data, node) {
-        return data.id === idExc;
-    }).remove().draw();
-        
+function retornaOperacaoGrupoGrid(status) {
+    var operacao = '';
+    if (status === "Ativo") {
+        operacao = '<a href="#" style="margin:3px" class="btn btn-info editarGrupo" data-toggle="tooltip" title="Editar" ><i class="fa fa-pencil" aria-hidden="true"></i></a>'
+            + '<a href="#" style="margin:3px;" class="btn btn-danger excluirGrupo" data-toggle="tooltip" title="Excluir" ><i class="fa fa-trash" aria-hidden="true"></i></a>';
+    } else {
+        operacao = '<a href="#" style="margin:3px;" class="btn btn-primary editarGrupo" data-toggle="tooltip" title="Ativar" ><i class="fa fa-check-square-o" aria-hidden="true"></i></a>';
+    }
+    return operacao;
 }

@@ -68,12 +68,18 @@
 })
 function carregar() {
     $('#user-header').addClass('ocultarElemento');
+    var temp = JSON.parse(sessionStorage.getItem("cookies"));
+    document.cookie = temp.value[0];
+    //$('#tabSetupInicial li a[href="#permissaoApp"]').closest('li').removeClass("disabled");
+    //$('#tabSetupInicial li a[href="#usuarioAdmin"]').closest('li').addClass("disabled tabFinalizada");
+    //$('#tabSetupInicial li a[href="#usuarioAdmin"] i').removeClass("ocultarElemento");
+    $('#tabSetupInicial li a[href="#usuarioAdmin"]').tab('show');
     $(".bg_load").fadeOut();
     $(".wrapper").fadeOut();
     var $menuTitulo = $(".navbar.navbar-default.navbar-fixed-top");
     $menuTitulo.find('.navbar-header .navbar-center').text('Configuração de Primeiro Acesso');
     $menuTitulo.removeClass('ocultarElemento');
-   
+
 
 }
 function mover(fonte, destino) {
@@ -91,31 +97,42 @@ function mover(fonte, destino) {
 }
 function cadastrarUsuarioAdmin() {
     var email = $("#txtEmail").val().toLowerCase();
-    var user = $("#txtUserName").val();
-    var nome = $("#txtNome").val();
-    var sobnome = $("#txtSobrenome").val();
-    var perfil = $("#cbPerfil").val() ? [$("#cbPerfil").val()] : [];
-    var emailConfirmado = true;
-    var textoLoad = 'Cadastrando. Aguarde!', titulo = "Falha no Cadastro", texto = 'Para cadastrar um novo usuário, é necessário preencher todos os campos.';
 
-    if (perfil.length === 0 || nome === '' || user === '' || email === '' || sobnome === '') {
+    if (validaEmail(email)) {
+        var user = $("#txtUserName").val();
+        var nome = $("#txtNome").val();
+        var sobnome = $("#txtSobrenome").val();
+        var perfil = $("#cbPerfil").val() ? [$("#cbPerfil").val()] : [];
+        var emailConfirmado = true;
+        var textoLoad = 'Cadastrando. Aguarde!', titulo = "Falha no Cadastro", texto = 'Para cadastrar um novo usuário, é necessário preencher todos os campos.';
 
+        if (perfil.length === 0 || nome === '' || user === '' || email === '' || sobnome === '') {
+            modal({
+                type: "alert",
+                messageText: texto,
+                alertType: 'warning',
+                headerText: titulo
+            });
+        } else {
+
+            waitingDialog.show(textoLoad, { dialogSize: 'lg', progressType: 'warning' });
+            cadastrarUsuario(email, user, nome, sobnome, perfil, emailConfirmado);
+
+            //$('#tabSetupInicial li a[href="#permissaoApp"]').closest('li').removeClass("disabled");
+            //$('#tabSetupInicial li a[href="#usuarioAdmin"]').closest('li').addClass("disabled tabFinalizada");
+            //$('#tabSetupInicial li a[href="#usuarioAdmin"] i').removeClass("ocultarElemento");
+            //$('#tabSetupInicial li a[href="#permissaoApp"]').tab('show');
+        }
+    } else {
+        var titulo = "Formato de E-mail Inválido", texto = 'Para cadastrar o usuário é necessário informar um e-mail válido.';
         modal({
             type: "alert",
             messageText: texto,
             alertType: 'warning',
             headerText: titulo
-        }).done(function (e) { focoCadastroInvalido(); });
-    } else {
-
-        //waitingDialog.show(textoLoad, { dialogSize: 'lg', progressType: 'warning' });
-        //cadastrarUsuario(email, user, nome, sobnome, perfil, emailConfirmado);
-
-        $('#tabSetupInicial li a[href="#permissaoApp"]').closest('li').removeClass("disabled");
-        $('#tabSetupInicial li a[href="#usuarioAdmin"]').closest('li').addClass("disabled tabFinalizada");
-        $('#tabSetupInicial li a[href="#usuarioAdmin"] i').removeClass("ocultarElemento");
-        $('#tabSetupInicial li a[href="#permissaoApp"]').tab('show');
+        });
     }
+
 
 }
 function cadastrarFuncoes() {
@@ -124,14 +141,31 @@ function cadastrarFuncoes() {
     funcoesAgrupado.each(function () {
         funcoesCadastrar.push($(this).find('input').val());
     });
-    console.log(funcoesCadastrar)
-    $('#tabSetupInicial li a[href="#perfilApp"]').closest('li').removeClass("disabled");
-    $('#tabSetupInicial li a[href="#permissaoApp"]').closest('li').addClass("disabled tabFinalizada");
-    $('#tabSetupInicial li a[href="#permissaoApp"] i').removeClass("ocultarElemento");
-    $('#tabSetupInicial li a[href="#perfilApp"]').tab('show');
+
+    cadastrarPermissoes(funcoesCadastrar)
+
 }
 function cadastrarPerfis() {
-    $('#tabSetupInicial li a[href="#perfilApp"]').closest('li').addClass("disabled tabFinalizada");
-    $('#tabSetupInicial li a[href="#perfilApp"] i').removeClass("ocultarElemento");
+    if (!$("#txtDescPerfil").val() || !$("#cbPermissoesPerfil").val()) {
+        modal({
+            type: "alert",
+            messageText: "Para cadastrar um perfil é necessário informar uma descrição e selecionar as permissões!",
+            alertType: 'warning',
+            headerText: "Atenção!"
+        });
+    } else {
+        var descPerfil = $("#txtDescPerfil").val() ? toTitleCase($("#txtDescPerfil").val().trim()) : '';
+        var permissoesConcedidas = [];
+        $("#cbPermissoesPerfil option:selected").each(function () {
+            permissoesConcedidas.push({ id: $(this).val(), descricao: $(this).text() });
+        });
+        var objEnvio = { descricaoPerfil: descPerfil, permissoes: permissoesConcedidas }
+        var teste = JSON.stringify(objEnvio)
+        console.log(teste);
+        console.log(objEnvio);
+        criarPerfilNovo(objEnvio);
+        $('#tabSetupInicial li a[href="#perfilApp"]').closest('li').addClass("disabled tabFinalizada");
+        $('#tabSetupInicial li a[href="#perfilApp"] i').removeClass("ocultarElemento");
+    }
 
 }

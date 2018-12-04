@@ -31,22 +31,7 @@ namespace Nextt_Gestao_Compra.Apresentacao.API.Controllers.Gerenciamento
                 return InternalServerError(ex);
             }
         }
-        [Authorize]
-        [HttpPost]
-        [Route("RetornaEspecies")]
-        public IHttpActionResult RetornaEspecies(ParametrosVM parametro)
-        {
-            try
-            {
-                var retorno = GerenciamentoAplicacaoMovimentacao.RetornaEspecies(_movimentacaoServico, ModelFabrica, parametro);
-                return Ok(retorno);
-            }
-            catch (Exception ex)
-            {
-                log.Error("Erro ao Recuperar Especies", ex);
-                return InternalServerError(ex);
-            }
-        }
+
         [Authorize]
         [HttpPost]
         [Route("RetornaSecoes")]

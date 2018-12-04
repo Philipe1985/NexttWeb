@@ -168,6 +168,7 @@
     <Compile Include="ViewModel\GrupoFiliaisValidadorVM.cs" />
     <Compile Include="ViewModel\GrupoFilialOperacaoVM.cs" />
     <Compile Include="ViewModel\GruposValidadosVM.cs" />
+    <Compile Include="ViewModel\HistoricoPedidoVM.cs" />
     <Compile Include="ViewModel\ImagensProdutoVM.cs" />
     <Compile Include="ViewModel\NovaCondicaoPgtoVM.cs" />
     <Compile Include="ViewModel\NovaCorItemProduto.cs" />
@@ -183,6 +184,7 @@
     <Compile Include="ViewModel\PedidosFiltradoVM.cs" />
     <Compile Include="ViewModel\PedidoVM.cs" />
     <Compile Include="ViewModel\ProdutoAtributoVM.cs" />
+    <Compile Include="ViewModel\ProdutoCompradorVM.cs" />
     <Compile Include="ViewModel\ProdutoItemVM.cs" />
     <Compile Include="ViewModel\ProdutosFiltradosVM.cs" />
     <Compile Include="ViewModel\RetornoEspecieFiltroVM.cs" />

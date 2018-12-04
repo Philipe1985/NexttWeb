@@ -74,7 +74,7 @@
 		}
 		$(document).on('mousedown', function (e) {
 			// Clicked outside the datepicker, hide it
-			if ($(e.target).closest('.datepicker').length === 0) {
+            if ($(e.target).closest('.datepicker').length === 0 && !$(e.target).hasClass('calendarioAno')) {
 				that.hide();
 			}
 		});
@@ -136,7 +136,7 @@
 				this._events = [
 					[this.element, {
 						focus: $.proxy(this.show, this),
-						keyup: $.proxy(this.update, this),
+                        keyup: $.proxy(this.update, this),
 						keydown: $.proxy(this.keydown, this)
 					}]
 				];
@@ -312,15 +312,15 @@
 				fromArgs = true;
 			} else {
 				date = this.isInput ? this.element.val() : this.element.data('date') || this.element.find('input').val();
-			}
-
-			this.date = DPGlobal.parseDate(date, this.format, this.language);
-
-			if(fromArgs) this.setValue();
+            }
+            
+            this.date = DPGlobal.parseDate(date, this.format, this.language);
+            
+            if (fromArgs) this.setValue();
 
 			var oldViewDate = this.viewDate;
 			if (this.date < this.startDate) {
-				this.viewDate = new Date(this.startDate);
+                this.viewDate = new Date(this.endDate);
 			} else if (this.date > this.endDate) {
 				this.viewDate = new Date(this.endDate);
 			} else {
@@ -703,12 +703,12 @@
 					break;
 				case 13: // enter
 					this.hide();
-					e.preventDefault();
+                    $(this.element).blur();
 					break;
 				case 9: // tab
 					this.hide();
 					break;
-			}
+            }
 			if (dateChanged){
 				this.element.trigger({
 					type: 'changeDate',

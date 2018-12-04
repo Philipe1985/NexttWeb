@@ -1,0 +1,30 @@
+
+ERROR 2018-12-03 12:42:28 - Erro ao Recuperar Filtros da Pesquisa de Compra de Grupos
+System.ArgumentOutOfRangeException: O índice estava fora do intervalo. Ele deve ser não-negativo e menor que o tamanho da coleção.
+Nome do parâmetro: index
+   em System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
+   em System.Collections.Generic.List`1.get_Item(Int32 index)
+   em System.Linq.Enumerable.ElementAt[TSource](IEnumerable`1 source, Int32 index)
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Compra.GerenciadorAplicacaoCompra.RetornaDadosFiltroInicial(IAppServicoCompra compraServico, FabricaViewModel fabrica) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Compra\GerenciadorAplicacaoCompra.cs:linha 23
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Gerenciamento.CompraController.RecuperaFiltrosPesquisaCompra() na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Gerenciamento\CompraController.cs:linha 29
+
+ERROR 2018-12-03 12:49:14 - Erro ao Recuperar Dados do Cadastro de Produto
+System.InvalidCastException: Não é possível converter um objeto do tipo 'Nextt_Gestao_Compra.Dominio.Entidades.GrupoFilial' no tipo 'Nextt_Gestao_Compra.Dominio.Entidades.Atributos'.
+   em System.Linq.Enumerable.<CastIterator>d__97`1.MoveNext()
+   em System.Linq.Buffer`1..ctor(IEnumerable`1 source)
+   em System.Linq.OrderedEnumerable`1.<GetEnumerator>d__1.MoveNext()
+   em System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
+   em System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Compra.GerenciadorAplicacaoCompra.RetornaDadosCadInicial(IAppServicoCompra compraServico, FabricaViewModel fabrica) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Compra\GerenciadorAplicacaoCompra.cs:linha 63
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Gerenciamento.CompraController.BuscaDadosCadNovo() na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Gerenciamento\CompraController.cs:linha 45
+
+ERROR 2018-12-03 13:07:02 - Erro ao Recuperar Filtros da Pesquisa de Pedidos
+System.InvalidCastException: Não é possível converter um objeto do tipo 'Nextt_Gestao_Compra.Dominio.Entidades.Atributos' no tipo 'Nextt_Gestao_Compra.Dominio.Entidades.UsuarioGerenciamento'.
+   em System.Linq.Enumerable.<CastIterator>d__97`1.MoveNext()
+   em System.Linq.Buffer`1..ctor(IEnumerable`1 source)
+   em System.Linq.OrderedEnumerable`1.<GetEnumerator>d__1.MoveNext()
+   em System.Linq.Enumerable.WhereSelectEnumerableIterator`2.MoveNext()
+   em System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
+   em System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido.GerenciadorAplicacaoPedido.RetornaFiltroInicial(IAppServicoPedido pedidoServico, FabricaViewModel fabrica) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Pedido\GerenciadorAplicacaoPedido.cs:linha 24
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Cadastro.PedidoController.CarregaFiltrosPesquisa() na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Cadastro\PedidoController.cs:linha 29

@@ -20,6 +20,7 @@ $.fn.hasAttr = function (name) {
 var dadosCompraCadastro = sessionStorage.getItem("compra");
 var compraId = sessionStorage.getItem("pedidoId");
 var cadastroNovoSession = sessionStorage.getItem("cadastroNovo");
+var fornSelCadCpr = sessionStorage.getItem("fornSelecionado");
 var statusPedido = null;
 sessionStorage.setItem("cores", "");
 
@@ -576,10 +577,11 @@ $(document).ready(function () {
         }
     })
     $("#txtNomeNovaRef").blur(function () {
-        if ($(this).val().length && !validaReferenciaCadastrada($(this).val())) {
-            var referenciaNova = $(this).val().toLowerCase().replace(/\b[a-z]/g, function (letter) {
+        var refNova = $(this).val() ? $(this).val().trim() : null;
+        if (refNova.length && !validaReferenciaCadastrada(refNova)) {
+            var referenciaNova = refNova.toLowerCase().replace(/\b[a-z]/g, function (letter) {
                 return letter.toUpperCase();
-            });;
+            });
             $('#drpReferenciaGrade').append(cadastraReferencia(referenciaNova));
             $('#drpReferenciaGrade').selectpicker('refresh');
             if ($('#drpReferenciaGrade').val()) {
@@ -754,7 +756,9 @@ function carregar() {
         if (dadosCompraCadastro) {
             dadosCompraCadastro = JSON.parse(dadosCompraCadastro)[0];
             var objEnvio = {};
+            
             objEnvio.codigo = dadosCompraCadastro.idProduto;
+            
             carregaImagemProduto(objEnvio);
             geraCargaPrePedido(objEnvio);
         } else if (cadastroNovoSession) {
@@ -953,6 +957,28 @@ function carregarDistribuicaoFilial(idTabelaDist, colunmsPk, dadosPk) {
 
     tbDistribuicao.columns.adjust().draw();
 }
+function carregarHistoricoTB(colunmsHist, dadosHist) {
+    $('#tabelaHitorico').DataTable({
+        paging: false,
+        searching: false,
+        lengthChange: false,
+        deferRender: true,
+        ordering: false,
+        responsive: true,
+        columnDefs: [
+            {
+                "targets": "_all",
+                "orderable": false,
+                'className': 'dt-body-center',
+            },
+
+        ],
+        info: false,
+        destroy: true,
+        data: dadosHist,
+        columns: colunmsHist
+    });
+}
 function carregarPackCad(id, qtd, qtdTabela) {
     var tbCadPackNovo = $('#' + id).DataTable({
         paging: false, /* define se a tabela deve usar paginação */
@@ -975,7 +1001,7 @@ function carregarPackCad(id, qtd, qtdTabela) {
         "info": false,
         columns: geraColunaPackCadastrado()
     })
-    recalculaTotalColunas(tbCadPackNovo);
+    recalculaTotalColunas(tbCadPackNovo,qtd.texto);
     tabelaPackCadastrados.push({
         'idTabela': id,
         'dadosLinha': tbCadPackNovo.rows().data(),
@@ -1010,7 +1036,6 @@ function carregarPackPedidoCadastrado(id, qtd, dados, colunas) {
         "info": false,
         columns: colunas
     })
-    recalculaTotalColunas(tbCadPackNovo);
     tabelaPackCadastrados.push({
         'idTabela': id,
         'dadosLinha': tbCadPackNovo.rows().data(),
@@ -1019,11 +1044,12 @@ function carregarPackPedidoCadastrado(id, qtd, dados, colunas) {
         'distOriginal': qtd
     });
     recalculaDistCustos()
+    recalculaTotalColunas(tbCadPackNovo, qtd.texto);
     console.log(tabelaPackCadastrados);
     tbCadPackNovo.columns.adjust().draw();
 
 }
-function carregarPackGradeAtualizada(id, config) {
+function carregarPackGradeAtualizada(id, config,qtdPack) {
     var tbCadPackNovo = $('#' + id).DataTable({
         paging: false, /* define se a tabela deve usar paginação */
         searching: false, /* define se deve usar o campo Buscar dentro da tabela */
@@ -1045,7 +1071,7 @@ function carregarPackGradeAtualizada(id, config) {
         "info": false,
         columns: config.colunas
     })
-    recalculaTotalColunas(tbCadPackNovo);
+    recalculaTotalColunas(tbCadPackNovo,qtdPack);
     recalculaDistCustos();
     return tbCadPackNovo;
 
@@ -1259,6 +1285,13 @@ function geraColunaDistribuicao(filiais) {
     colunasDistribuicao.push({ "data": "total" });
     return colunasDistribuicao;
 }
+function geraColunaHistorico(dados) {
+    var colunasDistribuicao = [];
+    for (var i = 0; i < dados.length; i++) {
+        colunasDistribuicao.push({ "data": dados[i] });
+    }
+    return colunasDistribuicao;
+}
 function geraColunaPack() {
     var colunasPack = [{ "data": "referencia", 'className': 'separaDireita' }, { "data": "cores", 'className': 'separaDireita' }];
     for (var i = 0; i < tamanhosGrade.length; i++) {
@@ -1374,8 +1407,10 @@ function atualizaDadosPack() {
         if (param !== parseInt(valorInicialPed)) {
             tbPlanejamento.rows().every(function (rowIdx, tableLoop, rowLoop) {
                 var data = this.data();
-                data.qtdPack = param;
+                data.hasOwnProperty('qtdPack') ? 
+                    data.qtdPack = param : data.qtdePack = param;                
             });
+            recalculaTotalColunas(tbPlanejamento,param)
             tbPlanejamento.columns.adjust().draw();
             tbPlanejamento.rowsgroup.update();
             tabelaPackCadastrados.map(obj => {
@@ -1390,6 +1425,7 @@ function atualizaDadosPack() {
                 }
                 return obj;
             })
+            recalculaDadosPedido()
             console.log(tabelaPackCadastrados)
         }
         if (retorna) {
@@ -1424,13 +1460,18 @@ function perdeFoco() {
     ((txtref.val() === valorInicial) ? $(cell).html(valorInicial) : $(cell).html(txtref.val()));
     if (param !== parseInt(valorInicial)) {
         var qtdPackAtual = tbPlanejamento.row(row).data().qtdePack;
+        if (!qtdPackAtual) {
+            qtdPackAtual = tbPlanejamento.row(row).data().qtdPack;
+        }
+        
         tbPlanejamento.row(row).data()[colunaAtualizada] = param;
         recalculaTotalLinha(tbPlanejamento);
-        recalculaTotalColunas(tbPlanejamento);
+        recalculaTotalColunas(tbPlanejamento, qtdPackAtual);
         tbPlanejamento.rows().invalidate().draw();
         if (qtdPackAtual > 0) {
             recalculaDistCustosPackAtualizado(gridNome);
         }
+        recalculaDadosPedido();
     }
     if (avanca) {
         avanca = false;
@@ -1628,7 +1669,7 @@ function ordenaOpcao() {
 
 function validaReferenciaCadastrada(ref) {
     var listaReferencia = [], retorno = false, listaValores = [];
-
+    //aqui
     $("#drpReferenciaGrade option").each(function () {
         listaReferencia.push($(this).val().toUpperCase());
     });
@@ -1748,7 +1789,7 @@ function criarTabelaPackCadastrada() {
         '<th class="groupHeaderTable" rowspan="2">Cores</th>' +
         '<th class="groupHeaderTable" colspan="' + (tamanhosGrade.length) + '">Tamanho</th>' +
         '<th class="groupHeaderTable numInt sumItem" rowspan="2" >Total</th>' +
-        '<th class="groupHeaderTable" rowspan="2" >Qtd. Pack Cadastrada</th>' +
+        '<th class="groupHeaderTable totalPackItens" rowspan="2" >Qtd. Pack Cadastrada</th>' +
         '</tr><tr>';
     for (var i = 0; i < tamanhosGrade.length; i++) {
         tabelaHtml += '<th class="groupHeaderTableRigth separaDireita numInt">' + tamanhosGrade[i].toUpperCase() + '</th>'
@@ -1763,6 +1804,15 @@ function criaTabelaDistribuicao(colunas) {
         tabelaHtml += '<th class="groupHeaderTable">' + colunas[i].nome + '</th>'
     }
     tabelaHtml += '<th class="groupHeaderTable">Total/Média</th>'
+
+    tabelaHtml += '</tr></thead>';
+    return tabelaHtml;
+}
+function criaTabelaHistorico(colunas) {
+    var tabelaHtml = '<thead><tr>';
+    for (var i = 0; i < colunas.length; i++) {
+        tabelaHtml += '<th class="groupHeaderTable">' + colunas[i] + '</th>'
+    }
 
     tabelaHtml += '</tr></thead>';
     return tabelaHtml;
@@ -2452,8 +2502,9 @@ function validaValor(e) {
 }
 function criAttrLista(mult, val, opt, obr, id) {
     var classesCb = obr ? ' validarAttr' : '', multiple = mult ? ' multiple ' : '';
+    var searchBox = opt.length > 7 ? 'data-live-search="true" ':''
     var sourceAttr = '<select name="cbAttr' + id + '" id="cbAttr' + id + '" class="selectpicker show-tick form-control listAttr pull-right' +
-        classesCb + '" ' + multiple + 'data-width="100%" data-size="auto">';
+        classesCb + '" ' + multiple + searchBox +'data-width="100%" data-size="auto">';
 
     if (!mult) sourceAttr += '<option value="">Nenhum</option>';
     for (var i = 0; i < opt.length; i++) {
@@ -2529,4 +2580,8 @@ function retornaStatusTextoTit(status) {
             break;
     }
     return retorno;
+}
+function retornaDescColunaTabelaHitorico(obj) {
+    return Object.keys(obj)
+
 }

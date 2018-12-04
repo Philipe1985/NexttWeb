@@ -132,7 +132,8 @@ function cadastrarNovo() {
     var nome = $("#txtNome").val();
     var sobnome = $("#txtSobrenome").val();
     var perfil = $("#cbPerfil").val() ? [$("#cbPerfil").val()] : [];
-    var textoLoad = 'Cadastrando. Aguarde!', titulo = "Falha no Cadastro", texto = 'Para cadastrar um novo usuário, é necessário preencher todos os campos.';
+    var textoLoad = 'Cadastrando. Aguarde!', titulo = "Falha no Cadastro",
+        texto = 'Para cadastrar um novo usuário, é necessário preencher todos os campos.';
 
     if (perfil.length === 0 || nome === '' || user === '' || email === '' || sobnome === '') {
 
@@ -249,6 +250,7 @@ function carregarUsuario() {
 
         $('#tabelaUsuarios thead tr th').removeClass('sorting_asc');
         carregaComboPerfil();
+        carregaComboPermissao();
 
     }
 }
@@ -309,7 +311,13 @@ function carregarGridUsuario(retorno) {
 function abrirModalNovoUsuario() {
     document.getElementById('novoUsuario').click();
 }
-
+function abrirModalPerfil() {
+    //if (!contains.call(permissoes, 'Cadastrar Perfil')) {
+    //    acessoNegado();
+    //} else {
+    document.getElementById('novoPerfil').click();
+    //}
+}
 function id(el) {
     return document.getElementById(el);
 }
@@ -364,3 +372,22 @@ function obterAdmins() {
     return perfilIdRetorno;
 }
 
+function cadastrarNovoPerfil() {
+
+    if (!$("#txtNomePerfil").val() || !$("#cbPermissaoConceder").val()) {
+        modal({
+            type: "alert",
+            messageText: "Para cadastrar um perfil é necessário informar uma descrição e selecionar as permissões!",
+            alertType: 'warning',
+            headerText: "Atenção!"
+        });
+    } else {
+        var nomePerfilNovo = toTitleCase($("#txtNomePerfil").val().trim());
+        var permissoesConcedidas = [];
+        $("#cbPermissaoConceder option:selected").each(function () {
+            permissoesConcedidas.push({ id: $(this).val(), descricao: $(this).text() });
+        });
+        var objEnvio = { descricaoPerfil: nomePerfilNovo, permissoes: permissoesConcedidas }
+        criarPerfilNovo(objEnvio);
+    }
+}

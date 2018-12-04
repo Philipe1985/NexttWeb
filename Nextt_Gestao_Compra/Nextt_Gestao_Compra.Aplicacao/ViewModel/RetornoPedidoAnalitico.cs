@@ -14,8 +14,10 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
         public string ReferenciasSelecionadas { get; set; }
         public string CoresSelecionadas { get; set; }
         public string FormasSelecionadas { get; set; }
+        public string IDUnidadeMedida { get; set; }
         public string TamanhosSelecionadas { get; set; }
         public string CondicaoSeleciona { get; set; }
+        public string CompradoresSelecionados { get; set; }
         public string ClassificacaoSelecionada { get; set; }
         public string CodProduto { get; set; }
         public string CodigoOriginal { get; set; }
@@ -23,6 +25,7 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
         public string DescricaoMarca { get; set; }
         public string ReferenciaFornecedor { get; set; }
         public string Observacao { get; set; }
+        public string DtCadastroProduto { get; set; }
         public string DescricaoReduzidaProduto { get; set; }
         public decimal PrecoCusto { get; set; }
         public decimal PrecoVenda { get; set; }
@@ -35,11 +38,13 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
         public decimal Icms { get; set; }
         public decimal QualidadeValor { get; set; }
         public decimal QualidadeQtde { get; set; }
-      
+        public int QtdeItens { get; set; }
+        public decimal ValorTotal { get; set; }
         public string Status { get; set; }
         public List<PackVM> Packs { get; set; }
+        public List<HistoricoPedidoVM> Historicos { get; set; }
 
-        public RetornoPedidoAnalitico(PedidoCadastrado pedidoCadastrado, FiltrosPesquisa filtrosPesquisa)
+        public RetornoPedidoAnalitico(PedidoCadastrado pedidoCadastrado, FiltrosPesquisa filtrosPesquisa,ResumoPedido resumo)
         {
             Packs = new List<PackVM>();
             FiltrosPrePedido = filtrosPesquisa;
@@ -51,6 +56,10 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
             CondicaoSeleciona = pedidoCadastrado.IDCondicaoPagamento.ToString();
             DescricaoMarca = pedidoCadastrado.DescricaoMarca;
             CodigoOriginal = pedidoCadastrado.CodigoOriginal;
+            DtCadastroProduto = resumo.DataCadastro.ToString("dd/MM/yyyy");
+            QtdeItens = resumo.QtdeItens;
+            ValorTotal = resumo.ValorTotal;
+            IDUnidadeMedida = pedidoCadastrado.IDUnidadeMedida.ToString();
             DescricaoProduto = pedidoCadastrado.DescricaoProduto;
             DescricaoReduzidaProduto = pedidoCadastrado.DescricaoReduzidaProduto;
             PrecoCusto = pedidoCadastrado.PrecoCusto;
@@ -64,7 +73,7 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
             Icms = pedidoCadastrado.Icms;
             QualidadeValor = pedidoCadastrado.QualidadeValor;
             QualidadeQtde = pedidoCadastrado.QualidadeQtde;
-            
+            IDUnidadeMedida = pedidoCadastrado.IDUnidadeMedida.ToString();
             Status = pedidoCadastrado.Status;
         }
     }

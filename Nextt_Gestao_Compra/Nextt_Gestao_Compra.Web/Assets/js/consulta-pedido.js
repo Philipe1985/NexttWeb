@@ -73,7 +73,7 @@ $(document).ready(function () {
         objEnvio.status = 'F';
         atualizarStatus(objEnvio);
     });
-   
+
     $(document).on('click', '#btnCancelar', function (e) {
         objEnvio = {};
         objEnvio.codigo = $('#spnCodPed').html().replace(/\D/g, "");
@@ -270,6 +270,7 @@ function carregar() {
     sessionStorage.removeItem("produtosComprarSelecionados");
     sessionStorage.removeItem("pedidoStatus");
     sessionStorage.removeItem("cadastroNovo");
+    sessionStorage.removeItem('fornSelecionado');
     cargaInicialPedido();
 }
 function carregarPedidos() {
@@ -297,7 +298,7 @@ function carregarPedidos() {
             },
             {
                 "targets": [2],
-                 visible: false 
+                visible: false
             },
             {
                 "targets": [0, -1],
@@ -305,7 +306,7 @@ function carregarPedidos() {
                 'type': 'date-eu'
             },
             {
-                "targets": [9,10],
+                "targets": [9, 10],
                 "orderable": true,
                 'type': 'date-eu'
             },
@@ -631,6 +632,7 @@ function criaObjConsulta() {
     });
     $('#drpSec').val() ? objConsulta.secoes = $('#drpSec').val().join(',') : objConsulta.secoes = '';
     $('#drpEsp').val() ? objConsulta.especies = $('#drpEsp').val().join(',') : objConsulta.especies = '';
+    $('#cbAttrForn').val() ? objConsulta.attrFornecedor = $('#cbAttrForn').val().join(',') : objConsulta.attrFornecedor = '';
     objConsulta.idUsuarios = user.join(',');
     $('#drpCNPJ').val() ? objConsulta.idFornecedor = $('#drpCNPJ').val().join(',') : objConsulta.idFornecedor = '';
     $('#drpMarc').val() ? objConsulta.marcas = $('#drpMarc').val().join(',') : objConsulta.marcas = '';

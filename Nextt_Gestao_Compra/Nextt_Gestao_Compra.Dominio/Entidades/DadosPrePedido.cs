@@ -18,7 +18,7 @@ namespace Nextt_Gestao_Compra.Dominio.Entidades
         public string DescricaoMarca { get; set; }
         public string DescricaoReduzidaProduto { get; set; }
         public string DescricaoReduzida { get; set; }
-      
+        public DateTime DataCadastroProduto { get; set; }
         public int IDClassificacaoFiscal { get; set; }
       
     }

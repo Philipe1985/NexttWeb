@@ -25,7 +25,7 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
             }
             catch (Exception ex)
             {
-                throw new Exception("RepositorioCompra.AtualizaFiltrosCadastroProduto: \n" + ex.Message, ex.InnerException);
+                throw new Exception("RepositorioCompra.AtualizaFiltrosCadastroProduto: \n" + ex.Message, ex);
             }
         }
 
@@ -38,6 +38,7 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
                                     "', @IDEspecie = '" + parametros.Especies +
                                     "', @IDMarca = '" + parametros.Marcas +
                                     "', @ReferenciaForncedor = '" + parametros.ReferenciaFornecedor +
+                                    "', @AtributoFornecedor = '" + parametros.AttrFornecedor +
                                     "', @IDFornecedor = '" + parametros.IDFornecedor +
                                     "', @pagina = '" + parametros.Paginas +
                                     "', @IDProduto = '" + parametros.Codigo + "'")
@@ -47,7 +48,7 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
             }
             catch (Exception ex)
             {
-                throw new Exception("RepositorioCompra.BuscaProdutosFiltrados: \n" + ex.Message, ex.InnerException);
+                throw new Exception("RepositorioCompra.BuscaProdutosFiltrados: \n" + ex.Message, ex);
             }
         }
 
@@ -64,7 +65,7 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
             }
             catch (Exception ex)
             {
-                throw new Exception("RepositorioCompra.RetornaCargaEspeciesFiltros: \n" + ex.Message, ex.InnerException);
+                throw new Exception("RepositorioCompra.RetornaCargaEspeciesFiltros: \n" + ex.Message, ex);
             }
         }
 
@@ -77,11 +78,12 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
                                     .With<Fornecedor>()
                                     .With<Marca>()
                                     .With<Secao>()
+                                    .With<Atributos>()
                                     .Executar();
             }
             catch (Exception ex)
             {
-                throw new Exception("RepositorioCompra.RetornaCargaInicialFiltros: \n" + ex.Message, ex.InnerException);
+                throw new Exception("RepositorioCompra.RetornaCargaInicialFiltros: \n" + ex.Message, ex);
             }
         }
 
@@ -96,6 +98,7 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
                                     .With<Fornecedor>()
                                     .With<Marca>()
                                     .With<Secao>()
+                                    .With<Atributos>()
                                     .With<GrupoTamanho>()
                                     .With<Cor>()
                                     .With<FormaPgto>()
@@ -106,11 +109,13 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
                                     .With<GrupoFilial>()
                                     .With<Atributos>()
                                     .With<Atributos>()
+                                    .With<Comprador>()
+                                    .With<UnidadeMedida>()
                                     .Executar();
             }
             catch (Exception ex)
             {
-                throw new Exception("RepositorioCompra.RetornaCargaInicialCadNovo: \n" + ex.Message, ex.InnerException);
+                throw new Exception("RepositorioCompra.RetornaCargaInicialCadNovo: \n" + ex.Message, ex);
             }
         }
 
@@ -134,11 +139,13 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
                                    .With<Atributos>()
                                    .With<Atributos>()
                                    .With<Fornecedor>()
+                                   .With<Comprador>()
+                                   .With<UnidadeMedida>()
                                  .Executar();
             }
             catch (Exception ex)
             {
-                throw new Exception("RepositorioCompra.RetornaDadosPrePedido: \n" + ex.Message, ex.InnerException);
+                throw new Exception("RepositorioCompra.RetornaDadosPrePedido: \n" + ex.Message, ex);
             }
         }
 
@@ -155,7 +162,7 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
             }
             catch (Exception ex)
             {
-                throw new Exception("RepositorioCompra.AtualizaCargaTamanho: \n" + ex.Message, ex.InnerException);
+                throw new Exception("RepositorioCompra.AtualizaCargaTamanho: \n" + ex.Message, ex);
             }
         }
 
@@ -163,14 +170,14 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
         {
             try
             {
-                return _Db.MultiplosResults("[dbo].[pr_consulta_grupo_filial_GESTAO_COMPRAS]")
+                return _Db.MultiplosResults("[dbo].[pr_consulta_grupo_filial_GESTAO_COMPRAS] @Origem=true")
                                    .With<GrupoFilial>()
                                    .Executar();
 
             }
             catch (Exception ex)
             {
-                throw new Exception("RepositorioCompra.RetornaGruposCadastrados: \n" + ex.Message, ex.InnerException);
+                throw new Exception("RepositorioCompra.RetornaGruposCadastrados: \n" + ex.Message, ex);
             }
         }
 
@@ -189,7 +196,7 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
             }
             catch (Exception ex)
             {
-                throw new Exception("RepositorioCompra.RetornaFotosProduto: \n" + ex.Message, ex.InnerException);
+                throw new Exception("RepositorioCompra.RetornaFotosProduto: \n" + ex.Message, ex);
             }
         }
 
@@ -209,7 +216,7 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
             }
             catch (Exception ex)
             {
-                throw new Exception("RepositorioCompra.RetornaFiliaisDistribuicao: \n" + ex.Message, ex.InnerException);
+                throw new Exception("RepositorioCompra.RetornaFiliaisDistribuicao: \n" + ex.Message, ex);
             }
         }
 
@@ -258,7 +265,7 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
             }
             catch (Exception ex)
             {
-                throw new Exception("RepositorioCompra.SalvarFotosProduto: \n" + ex.Message, ex.InnerException);
+                throw new Exception("RepositorioCompra.SalvarFotosProduto: \n" + ex.Message, ex);
             }
         }
 
@@ -276,7 +283,7 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
             }
             catch (Exception ex)
             {
-                throw new Exception("RepositorioCompra.GravarPedido: \n" + ex.Message, ex.InnerException);
+                throw new Exception("RepositorioCompra.GravarPedido: \n" + ex.Message, ex);
             }
 
         }
@@ -296,7 +303,7 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
             }
             catch (Exception ex)
             {
-                throw new Exception("RepositorioCompra.RetornaFiliaisDistribuicao: \n" + ex.Message, ex.InnerException);
+                throw new Exception("RepositorioCompra.RetornaFiliaisDistribuicao: \n" + ex.Message, ex);
             }
         }
     }

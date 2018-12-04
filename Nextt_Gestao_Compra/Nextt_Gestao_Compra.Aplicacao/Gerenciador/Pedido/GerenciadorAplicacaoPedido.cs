@@ -21,10 +21,12 @@ namespace Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido
             var listaMarcas = dados.ElementAt(1).Cast<Marca>().OrderBy(x => x.Nome).Select(x => fabrica.Criar(x)).ToList();
 
             var listaSecoes = dados.ElementAt(2).Cast<Secao>().OrderBy(x => x.Descricao).Select(x => fabrica.Criar(x)).ToList();
-            var listaUsuarios = dados.ElementAt(3).Cast<UsuarioGerenciamento>().OrderBy(x => x.NomeUsuario).Select(x => fabrica.Criar(x)).ToList();
+            var listaUsuarios = dados.ElementAt(4).Cast<UsuarioGerenciamento>().OrderBy(x => x.NomeUsuario).Select(x => fabrica.Criar(x)).ToList();
+            var listaAttrForn = dados.ElementAt(3).Cast<Atributos>().OrderBy(x => x.Descricao).Select(x => fabrica.Criar(x)).ToList();
             var retorno = new FiltrosPesquisa(listaFornecedores, listaSecoes, listaMarcas)
             {
-                Usuarios = listaUsuarios
+                Usuarios = listaUsuarios,
+                AttrFornecedores = listaAttrForn
             };
             return retorno;
         }
@@ -89,13 +91,19 @@ namespace Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido
             var listaForma = dados.ElementAt(4).Cast<FormaPgto>().OrderBy(x => x.DescricaoFormaPagamento).Select(x => x).ToList();
             var condicoesOrdenadas = dados.ElementAt(5).Cast<CondicaoPgto>().OrderBy(x => x.Condicao.Split('+').Length).Select(x => fabrica.Criar(x)).ToList();
             var listaClassificacao = dados.ElementAt(6).Cast<ClassificacaoFiscal>().OrderBy(x => x.CodigoFiscal).Select(x => fabrica.Criar(x)).ToList();
+            var listaComprador = dados.ElementAt(14).Cast<Comprador>().OrderBy(x => x.Nome).Select(x => fabrica.Criar(x)).ToList();
+            var listaMedida = dados.ElementAt(15).Cast<UnidadeMedida>().OrderBy(x => x.Descricao).Select(x => fabrica.Criar(x)).ToList();
             var listaDistribuicaoPackAgrupado = dados.ElementAt(8).Cast<GrupoFilial>().OrderBy(x => x.Pack).GroupBy(x => x.Pack).Select(x => x.ToList());
             var dadosGrade = dados.ElementAt(9).Cast<Grade>().ToList();
-            var gruposAtivo = RetornaGruposAtivos(dados.ElementAt(10).Cast<GrupoFilial>().ToList());
+            var gruposAtivo = RetornaGruposAtivos(dados.ElementAt(10).Cast<GrupoFilial>().ToList()).Select(x => new GruposValidadosVM(x)).ToList();
             var gruposRelacionadosDesativar = RetornaGruposRelacionados(dados.ElementAt(11).Cast<GrupoFilial>().ToList(), gruposAtivo);
-
+            var resumoPedido = dados.ElementAt(16).Cast<ResumoPedido>().FirstOrDefault();
+            var historicoPedido = dados.ElementAt(17).Cast<HistoricoPedido>().Select(x=>new HistoricoPedidoVM(x)).ToList();
+            var compradoresSel = String.Join(", ", dados.ElementAt(18).Cast<Comprador>().Select(x => x.IDComprador).ToArray());
             var filtrosPesquisa = new FiltrosPesquisa(dadosPedido, fabrica, dadosCores, pedidoServico)
             {
+                Compradores = listaComprador,
+                UniMedida = listaMedida,
                 DataEntregaInicio = dadosPedido.DataEntregaInicio,
                 DataEntregaFinal = dadosPedido.DataEntregaFinal,
                 DataToleranciaAtrasoInicio = dadosPedido.DataToleranciaAtrasoInicio,
@@ -113,8 +121,10 @@ namespace Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido
                 CondicaoPgto = condicoesOrdenadas,
                 RelacionamentoGrupos = gruposRelacionadosDesativar
             };
-            var retorno = new RetornoPedidoAnalitico(dadosPedido, filtrosPesquisa)
+            var retorno = new RetornoPedidoAnalitico(dadosPedido, filtrosPesquisa, resumoPedido)
             {
+                Historicos = historicoPedido,
+                CompradoresSelecionados = compradoresSel,
                 CoresSelecionadas = String.Join(",", listaItensPackAgrupado.ElementAt(0).Select(x => x.DescricaoCor.Trim()).Distinct().ToList()),
                 ReferenciasSelecionadas = String.Join(",", listaItensPackAgrupado.ElementAt(0).Select(x => x.ReferenciaItem.Trim()).Distinct().ToList()),
                 FormasSelecionadas = String.Join(",", listaForma.Where(x => x.ContemPedido == true).Select(x => x.IDFormaPagamento).ToList()),
@@ -192,43 +202,26 @@ namespace Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido
         {
             return dadoPre.Where(x => x.Ativo == true).Select(x => x.IDGrupoFilial).ToList();
         }
-        private static List<GruposValidadosVM> RetornaGruposRelacionados(List<GrupoFilial> dadoPre, List<short> gruposAtivo)
+        private static List<GruposValidadosVM> RetornaGruposRelacionados(List<GrupoFilial> dadoPre, List<GruposValidadosVM> gruposAtivo)
         {
-            var retorno = new List<GruposValidadosVM>();
-            dadoPre.Where(x => gruposAtivo.Contains(x.IDGrupoFilial))
-                               .GroupBy(x => x.IDFilial)
-                               .Select(x => x.ToList())
-                               .Where(x => x.Count > 1)
-                               .Select(x => RetornaGruposCompartilhados(retorno, x.Select(g => g.IDGrupoFilial).ToList()))
-                               .ToList();
-            dadoPre.Where(x => gruposAtivo.Contains(x.IDGrupoFilial))
-                                 .GroupBy(x => x.IDFilial)
-                                 .Select(x => x.ToList())
-                                 .Where(x => x.Count > 1)
-                                 .Select(x => RetornaGruposTratados(retorno, x.Select(gp => gp.IDGrupoFilial).ToList()))
-                                 .ToList();
-            return retorno;
+            dadoPre.GroupBy(x => x.IDFilial).Where(x => x.Count() > 1)
+                  .Select(x => x.ToList().Select(gp => gp.IDGrupoFilial)
+                  .ToList()).Select(x => RetornaGruposTratados(gruposAtivo, x))
+                  .ToList();
+            return gruposAtivo;
         }
         private static List<GruposValidadosVM> RetornaGruposTratados(List<GruposValidadosVM> retorno, List<Int16> ids)
         {
             for (int i = 0; i < retorno.Count; i++)
-                for (int j = 0; j < ids.Count; j++)
-                    if (retorno[i].IDGrupo != ids[j].ToString())
-                        if (!retorno[i].IDGrupoDesativar.Contains(ids[j].ToString()))
-                            retorno[i].IDGrupoDesativar.Add(ids[j].ToString());
+                if (ids.Any(x => x.ToString() == retorno[i].IDGrupo))
+                    for (int j = 0; j < ids.Count; j++)
+                        if (retorno[i].IDGrupo != ids[j].ToString())
+                            if (!retorno[i].IDGrupoDesativar.Contains(ids[j].ToString()))
+                                retorno[i].IDGrupoDesativar.Add(ids[j].ToString());
+
             return retorno;
         }
-        private static List<GruposValidadosVM> RetornaGruposCompartilhados(List<GruposValidadosVM> retorno, List<Int16> ids)
-        {
-            for (int i = 0; i < ids.Count; i++)
-            {
-                if (retorno.Where(x => x.IDGrupo == ids[i].ToString()).Count() == 0)
-                {
-                    retorno.Add(new GruposValidadosVM(ids[i]));
-                }
-            }
-            return retorno;
-        }
+
         #endregion
     }
 }

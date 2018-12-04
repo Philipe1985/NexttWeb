@@ -16,9 +16,9 @@
                 <div class="col-md-1">
                     <a id="btnAddUsuario" href="#" class="btn btn-primary" data-toggle="tooltip" title="Adicionar Novo Usuário" onclick="abrirModalNovoUsuario();"><i class="fa fa-user-plus" aria-hidden="true"></i></a>
                 </div>
-                @*<div class="col-md-1">
-            <a id="btnAddPerfil" href="#" class="btn btn-primary-3d btn3d" data-toggle="tooltip" title="Adicionar Novo Perfil" onclick="abrirModalPerfil();" style="margin-top:0px;padding-bottom:1px"><i class="fa fa-unlock-alt" aria-hidden="true"></i></a>
-        </div>*@
+                <div class="col-md-1">
+                    <a id="btnAddPerfil" href="#" class="btn btn-primary" data-toggle="tooltip" title="Adicionar Novo Perfil" onclick="abrirModalPerfil();"><i class="fa fa-unlock" aria-hidden="true"></i></a>
+                </div>
                 <div class="col-md-3">
                     <input type="text" id="fTxtBusca" placeholder="Busque aqui..." class="form-control" />
                 </div>
@@ -155,80 +155,17 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label id="lblClonePerfil" class="form-label">Clonar</label><span id="spanCriacaoPerfilClone" class="tips"> (Opcional) Copia as permissões do perfil selecionado</span>
+                                    <label id="lblPermissaoConceder" class="form-label">Permitir Acesso a:</label><span id="spmConceder" style="display:none" class="tips"> Não é possível conceder permissões</span>
                                     <div class="controls">
-                                        <select name="cbPerfilNovo" id="cbPerfilNovo" class="selectpicker show-tick" data-width="100%">
-                                            <option title="Selecione um perfil...">Nenhum</option>
+                                        <select name="cbPermissaoConceder" id="cbPermissaoConceder" class="selectpicker" data-live-search="true" data-count-selected-text="Selecionado {0} de {1} opções" data-size="auto" data-width="100%" multiple data-selected-text-format="count > 3" title="Selecione uma função...">
+                                 
                                         </select>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label id="lblPermissaoConceder" class="form-label">Permitir Acesso a:</label><span id="spmConceder" style="display:none" class="tips"> Não é possível conceder permissões</span>
-                                    <div class="controls">
-                                        <select name="cbPermissaoConceder" id="cbPermissaoConceder" class="selectpicker" data-live-search="true" data-count-selected-text="Selecionado {0} de {1} opções" data-size="auto" data-width="100%" multiple data-selected-text-format="count > 3" title="Selecione uma função...">
-                                            <optgroup label="Opções Gerais">
-                                                <option value="Gerenciar Usuários">Gerenciar Usuários</option>
-                                            </optgroup>
-                                            <optgroup label="Opções de Relatório">
-                                                <option value="Alterar Ano de Filtro">Alterar Ano de Filtro</option>
-                                                <option value="Salvar Relatórios">Salvar Relatórios</option>
-                                                <option value="Editar Relatórios">Editar Relatórios</option>
-                                                <option value="Exportar Relatórios">Exportar Relatórios para Excel</option>
-                                                <option value="Visualizar Relatórios de Produtos">Visualizar Relatórios de Produtos</option>
-                                                <option value="Visualizar Relatórios de Vendas Compartilhada">Visualizar Relatórios de Vendas Compartilhada</option>
-                                            </optgroup>
-                                            <optgroup label="Gerenciamento de Usuário">
-                                                <option value="Bloquear/Desbloquear Usuário">Bloquear/Desbloquear Usuário</option>
-                                                <option value="Cadastrar Usuário">Cadastrar Usuário</option>
-                                                <option value="Editar Usuário">Editar Usuário</option>
-                                                <option value="Cadastrar Perfil">Cadastrar Perfil</option>
-                                                <option value="Editar Dados Basicos">Editar Dados Basicos</option>
-                                                <option value="Adicionar Perfil ao Usuário">Adicionar Perfil ao Usuário</option>
-                                                <option value="Conceder Permissão Especial">Conceder Permissão Especial</option>
-                                                <option value="Negar Permissão Especial">Negar Permissão Especial</option>
-                                                <option value="Redefinir Senha">Redefinir Senha</option>
-                                            </optgroup>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label id="lblPermissaoNegar" class="form-label">Negar Acesso a:</label>
-                                    <div class="controls">
-                                        <select name="cbPermissaoNegar" id="cbPermissaoNegar" class="selectpicker" data-live-search="true" data-count-selected-text="Selecionado {0} de {1} opções" data-width="100%" multiple data-selected-text-format="count > 3" title="Selecione uma função...">
-                                            <optgroup label="Opções Gerais">
-                                                <option value="Gerenciar Usuários">Gerenciar Usuários</option>
-                                            </optgroup>
-                                            <optgroup label="Opções de Relatório">
-                                                <option value="Alterar Ano de Filtro">Alterar Ano de Filtro</option>
-                                                <option value="Salvar Relatórios">Salvar Relatórios</option>
-                                                <option value="Editar Relatórios">Editar Relatórios</option>
-                                                <option value="Exportar Relatórios">Exportar Relatórios para Excel</option>
-                                                <option value="Visualizar Relatórios de Produtos">Visualizar Relatórios de Produtos</option>
-                                                <option value="Visualizar Relatórios de Vendas Compartilhada">Visualizar Relatórios de Vendas Compartilhada</option>
-                                            </optgroup>
-                                            <optgroup label="Gerenciamento de Usuário">
-                                                <option value="Bloquear/Desbloquear Usuário">Bloquear/Desbloquear Usuário</option>
-                                                <option value="Cadastrar Usuário">Cadastrar Usuário</option>
-                                                <option value="Editar Usuário">Editar Usuário</option>
-                                                <option value="Cadastrar Perfil">Cadastrar Perfil</option>
-                                                <option value="Editar Dados Basicos">Editar Dados Basicos</option>
-                                                <option value="Adicionar Perfil ao Usuário">Adicionar Perfil ao Usuário</option>
-                                                <option value="Conceder Permissão Especial">Conceder Permissão Especial</option>
-                                                <option value="Negar Permissão Especial">Negar Permissão Especial</option>
-                                                <option value="Redefinir Senha">Redefinir Senha</option>
-                                            </optgroup>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        
                     </form>
                     <br />
                 </div>

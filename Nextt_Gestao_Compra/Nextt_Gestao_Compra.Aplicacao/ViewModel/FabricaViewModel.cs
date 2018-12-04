@@ -5,8 +5,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Http.Routing;
 
 namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
@@ -15,9 +13,10 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
     {
         private UrlHelper _UrlHelper;
         private GerenciadorUsuarioAplicacao _appGerenciadorUsuario;
-
+        private TextInfo textInfo;
         public FabricaViewModel(HttpRequestMessage request, GerenciadorUsuarioAplicacao appGerenciadorUsuario)
         {
+            textInfo = new CultureInfo("en-US", false).TextInfo;
             _UrlHelper = new UrlHelper(request);
             _appGerenciadorUsuario = appGerenciadorUsuario;
         }
@@ -63,7 +62,7 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
             return new ComboFiltroVM
             {
                 Valor = segmento.IDSegmento + "-" + segmento.Descricao.Trim(),
-                Token = segmento.IDSegmento + "-" + segmento.Descricao,
+                Token = segmento.IDSegmento + "-" + textInfo.ToTitleCase(segmento.Descricao.Trim().ToLower()),
                 Descricao = segmento.Descricao.Trim()
             };
         }
@@ -88,17 +87,17 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
         }
         public ComboFiltroVM Criar(Atributos atributos)
         {
-
+            var dadosAdd = string.IsNullOrEmpty(atributos.ValorDefault) ? new List<string>() : new List<string>
+            {
+                atributos.ValorDefault
+            };
 
             return new ComboFiltroVM
             {
                 Valor = atributos.IDTipoAtributo.ToString(),
                 Token = atributos.IDTipoAtributo + ";" + atributos.Descricao.Trim(),
                 Descricao = atributos.Descricao.Trim(),
-                DadosAdicionais = new List<string>
-            {
-                atributos.ValorDefault
-            }
+                DadosAdicionais = dadosAdd
             };
         }
         public ComboFiltroVM Criar(Secao secao)
@@ -106,7 +105,7 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
             return new ComboFiltroVM
             {
                 Valor = secao.IDSecao + "-" + secao.Descricao.Trim(),
-                Token = secao.IDSegmento + "-" + secao.IDSecao + ";" + secao.Descricao.Trim(),
+                Token = secao.IDSegmento + "-" + secao.IDSecao + ";" + textInfo.ToTitleCase(secao.Descricao.Trim().ToLower()),
                 Descricao = secao.Descricao.Trim()
             };
         }
@@ -115,7 +114,7 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
             return new ComboFiltroVM
             {
                 Valor = especie.IDEspecie + "-" + especie.DescricaoEspecie.Trim(),
-                Token = especie.IDSecao + "-" + especie.DescricaoSecao.Trim() + ";" + especie.IDEspecie + "-"  + especie.DescricaoEspecie.Trim(),
+                Token = especie.IDSecao + "-" + textInfo.ToTitleCase(especie.DescricaoSecao.Trim().ToLower()) + ";" + especie.IDEspecie + "-" + textInfo.ToTitleCase(especie.DescricaoEspecie.Trim().ToLower()),
                 Descricao = especie.DescricaoEspecie.Trim()
             };
         }
@@ -199,8 +198,10 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
         {
             var dadosAdicionais = new List<string>
             {
-                grupo.ParticipacaoGrupo.ToString()
+                grupo.ParticipacaoGrupo.ToString(),
+                grupo.Ativo ? "Ativo":"Inativo"
             };
+
             if (grupo.IDGrupoFilial == 0)
             {
                 throw new Exception("Existe grupo retornado sem a coluna 'IDGrupoFilial' definida para ele.");
@@ -231,5 +232,24 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
                 Descricao = usuario.NomeUsuario.Trim()
             };
         }
+        public ComboFiltroVM Criar(Comprador comprador)
+        {
+            return new ComboFiltroVM
+            {
+                Valor = comprador.IDComprador,
+                Token = comprador.IDComprador + "," + comprador.Nome.Trim(),
+                Descricao = comprador.Nome.Trim()
+            };
+        }
+        public ComboFiltroVM Criar(UnidadeMedida medida)
+        {
+            return new ComboFiltroVM
+            {
+                Valor = medida.IDUnidadeMedida.ToString(),
+                Token = medida.Descricao + "," + medida.Abreviacao.Trim(),
+                Descricao = medida.Descricao.Trim()
+            };
+        }
+
     }
 }

@@ -7,7 +7,7 @@ namespace Nextt_Gestao_Compra.Dominio.Entidades
         public Int16 IDTipoAtributo { get; set; }
         public Int16 IDTipoAtributoKey { get; set; }
         public Byte CasaDecimal { get; set; }
-        public Byte Ordem { get; set; }
+        public Int16 Ordem { get; set; }
         public Byte Tipo { get; set; }
         public bool Ativo { get; set; }
         public bool MultiplaSelecao { get; set; }

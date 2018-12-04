@@ -63,7 +63,9 @@ function recalculaTotalLinhaMov(dados) {
     dados[6].total = qtFil ? dados[6].total / qtFil : 0;
     return dados;
 }
-function recalculaTotalColunas(tabelaApi) {
+function recalculaTotalColunas(tabelaApi, totalItensPack) {
+    var recalcPack = parseInt(totalItensPack)
+    console.log(totalItensPack)
     tabelaApi.columns(".numInt").every(function () {
         $(this.footer()).html(
             this
@@ -73,6 +75,37 @@ function recalculaTotalColunas(tabelaApi) {
                 })
         );
     });
+    tabelaApi.columns(".numInt.sumItem").every(function () {
+        var totalItm = this
+            .data()
+            .reduce(function (a, b) { return a + b; });
+        console.log(recalcPack );
+        console.log(totalItm);
+        console.log(recalcPack * totalItm);
+        totalItensPack = recalcPack * totalItm;
+    });
+    tabelaApi.columns(".totalPackItens").every(function () {
+        $(this.footer()).html("Itens no Pack: " + totalItensPack.toLocaleString('pt-BR'))
+    });
+}
+function recalculaDadosPedido() {
+    var totalItm = 0, recalcPack = 0
+    tabelaPackCadastrados.map(obj => {
+        var tbPlanejamento = $('#' + obj.idTabela).dataTable().api();
+        recalcPack += obj.qtdPack ? obj.qtdPack : obj.qtdPck
+        tbPlanejamento.columns(".numInt.sumItem").every(function () {
+            totalItm += this
+                .data()
+                .reduce(function (a, b) { return a + b; });
+        });
+        return obj;
+    })
+    var custoBruto = $('#txtCustoBrutoPed').maskMoney('unmasked')[0];
+    console.log(custoBruto)
+    recalcPack = recalcPack * totalItm * custoBruto;
+    $('#txtItensResumoPed').val(totalItm.toLocaleString('pt-BR'));
+    $('#txtValorResumoPed').val(recalcPack.toFixed(2).replace('.', ','));
+    $('.money').maskMoney('mask');
 }
 function trataDadosFilial(idPack, dados) {
     var totalItemPack = $("#tblPackCad" + idPack).dataTable().api().column(".sumItem")
@@ -589,6 +622,7 @@ function calculaAlteracaoCusto() {
     //IDs Valor
     if (tabelaPackCadastrados && tabelaPackCadastrados.length) {
         recalculaDistCustos();
+        recalculaDadosPedido();
     }
     var vendorMoney = 'txtVlrVendor', descontoMoney = 'txtDescontoPedVlr', pontualidadeMoney = 'txtVlrPontualidade', ipiMoney = 'txtIPIVlrPed',
         icmsMoney = 'txtIcmsVlrPed', pisMoney = 'txtPisVlrPed', cofinsMoney = 'txtCofinsVlrPed';
@@ -675,7 +709,8 @@ function criaObjPedido(status) {
         "idEspecie": parseInt($("#drpEsp").val()),
         "idClassificacaoFiscal": parseInt($("#drpClassificacao").val()),
         "descricao": $("#txtDescPed").val(),
-        "descricaoReduzida": $("#txtDescResPed").val()
+        "descricaoReduzida": $("#txtDescResPed").val(),
+        "idUnidadeMedida": $("#drpUnidadeMed").val() ? parseInt($("#drpUnidadeMed").val()):0 
     };
     $("#drpTamanhoCategoria option:selected").each(function () {
         pedidoRetorno.idGrupoTamanho = parseInt($(this).attr('data-tokens').split(',')[0]);
@@ -749,6 +784,20 @@ function criaObjCondFormaPgto() {
     }
     return arrayRetorno;
 }
+function criaObjComprador() {
+    var idsCompradores = $("#drpCompPed").val() ? $("#drpCompPed").val() : [], arrayRetorno = [], pedID = 0;
+    if ($("#txtIDProd").val()) {
+        pedID = parseInt($("#txtIDProd").val());
+    }
+    for (var i = 0; i < idsCompradores.length; i++) {
+        arrayRetorno.push({
+            "idComprador": idsCompradores[i],
+            'idProduto': pedID
+        });
+    }
+    return arrayRetorno;
+}
+
 function salvarPedidoOpcao() {
     $.confirm({
         icon: 'fa fa-gift',
@@ -858,6 +907,7 @@ function geraPedidoSalvar(status) {
     pedidoEnvio.pedidoPack = criaObjPedidoPack();
     pedidoEnvio.produtoAtributo = criaArrayAtributo($("#pnlAttrProd"));
     pedidoEnvio.pedidoAtributo = criaArrayAtributo($("#pnlAttrPed"));
+    pedidoEnvio.produtoComprador = criaObjComprador();
     salvarPedido(pedidoEnvio);
 }
 function retornaPackCadColunas(tamanhos) {
@@ -1082,10 +1132,11 @@ function geraCargaGradeTresColuna() {
     return dadosGrade;
 }
 function addColunaPack() {
+    var qtdAtualizar = 0;
     tabelaPackCadastrados.map(obj => {
         var dtDados = removeChavesObjeto(obj.dadosLinha, obj.qtdPck);
         carregaTabPackCadastrado(obj.idTabela.replace(/\D/g, ""))
-        var tbl = carregarPackGradeAtualizada(obj.idTabela, dtDados)
+        var tbl = carregarPackGradeAtualizada(obj.idTabela, dtDados,obj.qtdPck)
         obj.dadosLinha = tbl.rows().data();
     })
     recalculaDistCustos();

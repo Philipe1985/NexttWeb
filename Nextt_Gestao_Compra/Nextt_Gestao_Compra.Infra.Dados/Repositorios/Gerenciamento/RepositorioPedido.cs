@@ -21,12 +21,13 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
                                     .With<Fornecedor>()
                                     .With<Marca>()
                                     .With<Secao>()
+                                    .With<Atributos>()
                                     .With<UsuarioGerenciamento>()
                                     .Executar();
             }
             catch (Exception ex)
             {
-                throw new Exception("RepositorioPedido.CarregaFiltrosPesquisaPedido: \n" + ex.Message, ex.InnerException);
+                throw new Exception("RepositorioPedido.CarregaFiltrosPesquisaPedido: \n" + ex.Message, ex);
             }
         }
 
@@ -41,11 +42,12 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
                                     "', @DataEntregaPedidoFinal = '" + parametros.DtEntregaFinal +
                                     "', @IDFornecedor = '" + parametros.IDFornecedor +
                                     "', @CodigoProduto = '" + parametros.Codigo +//string ou int
-                                    "', @CodigoOriginal = '" + parametros.CodigoOriginal+//string ou int
+                                    "', @CodigoOriginal = '" + parametros.CodigoOriginal +//string ou int
                                     "', @ReferenciaFornecedor = '" + parametros.ReferenciaFornecedor +
                                     "', @IDPedido = '" + parametros.IDPedido + //string ou int
                                     "', @DescricaoProduto = '" + parametros.DescricaoProduto +
                                     "', @IDSecao = '" + parametros.Secoes +
+                                    "', @AtributoFornecedor = '" + parametros.AttrFornecedor +
                                     "', @IDEspecie = '" + parametros.Especies +
                                     "', @IDMarca = '" + parametros.Marcas +
                                     "', @IDUsuario = '" + parametros.IDUsuarios +
@@ -55,7 +57,7 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
             }
             catch (Exception ex)
             {
-                throw new Exception("RepositorioPedido.PesquisaPedidos: \n" + ex.Message, ex.InnerException);
+                throw new Exception("RepositorioPedido.PesquisaPedidos: \n" + ex.Message, ex);
             }
         }
 
@@ -75,7 +77,7 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
             }
             catch (Exception ex)
             {
-                throw new Exception("RepositorioPedido.RetornaPedidoSintetico: \n" + ex.Message, ex.InnerException);
+                throw new Exception("RepositorioPedido.RetornaPedidoSintetico: \n" + ex.Message, ex);
             }
         }
 
@@ -99,11 +101,16 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
                                     .With<GrupoFilial>()
                                     .With<Atributos>()
                                     .With<Atributos>()
+                                    .With<Comprador>()
+                                    .With<UnidadeMedida>()
+                                    .With<ResumoPedido>()
+                                    .With<HistoricoPedido>()
+                                    .With<Comprador>()
                                     .Executar();
             }
             catch (Exception ex)
             {
-                throw new Exception("RepositorioPedido.RetornaPedidoAnalitico: \n" + ex.Message, ex.InnerException);
+                throw new Exception("RepositorioPedido.RetornaPedidoAnalitico: \n" + ex.Message, ex);
             }
         }
 
@@ -115,7 +122,7 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
             }
             catch (Exception ex)
             {
-                throw new Exception("RepositorioPedido.AtualizaStatusPedido: \n" + ex.Message, ex.InnerException);
+                throw new Exception("RepositorioPedido.AtualizaStatusPedido: \n" + ex.Message, ex);
             }
         }
 
@@ -130,7 +137,7 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
             }
             catch (Exception ex)
             {
-                throw new Exception("RepositorioPedido.ClonarPedido: \n" + ex.Message, ex.InnerException);
+                throw new Exception("RepositorioPedido.ClonarPedido: \n" + ex.Message, ex);
             }
         }
     }

@@ -1,4 +1,4 @@
-﻿var $frmDados, $frmAttr, $frmCusto, $lgdDados, $lgdAttr, $lgdCusto;
+﻿var $frmDados, $frmAttr, $frmCusto, $lgdDados, $lgdAttr, $lgdCusto,isResumo = false;
 
 $(document).ready(function myfunction() {
     (function ($) {
@@ -11,27 +11,34 @@ $(document).ready(function myfunction() {
         if ($origemEl.length) {
             origem = $origemEl.attr('id').replace(/collapse-tab/g, '');
         }
-        if (origem === 'Dados' || origem === 'Foto' || origem === 'Atributos') {
-            if (!validaOperacaoPassoWizard(origem, destino)) {
-                e.preventDefault();
+        if (isMobile) {
+            if (origem === 'Dados' || origem === 'Foto' || origem === 'Atributos') {
+                if (!validaOperacaoPassoWizard(origem, destino)) {
+                    e.preventDefault();
+                } else {
+                    $('.panel-group.responsive').find('.collapse.in').collapse('hide');
+                }
             } else {
-                $('.panel-group.responsive').find('.collapse.in').collapse('hide');
-            }
-        } else {
-            if (!validaOperacaoMudancaAbaWizard(origem, destino)) {
-                e.preventDefault();
-            } else {
-                $('.panel-group.responsive').find('.collapse.in').collapse('hide');
+                if (!validaOperacaoMudancaAbaWizard(origem, destino)) {
+                    e.preventDefault();
+                } else {
+                    $('.panel-group.responsive').find('.collapse.in').collapse('hide');
+                }
             }
         }
+        
 
     });
 
     $('.panel-group.responsive').on("hide.bs.collapse", ".collapse", function (e) {
+       
         var currentId = $(e.target).context.id.replace(/collapse-tab/g, '');
-        if ((currentId === 'Dados' || currentId === 'Foto' || currentId === 'Atributos') && !validaOperacaoPassoWizard(currentId, currentId)) {
-            e.preventDefault();
+        if (isMobile) {
+            if ((currentId === 'Dados' || currentId === 'Foto' || currentId === 'Atributos') && !validaOperacaoPassoWizard(currentId, currentId)) {
+                e.preventDefault();
+            }
         }
+        
     });
 
     $('#wizard-cad-ped  a.deco-none').click(function (e) {
@@ -42,7 +49,7 @@ $(document).ready(function myfunction() {
         var destino = $destinoEl.hash.replace('#tab', '');
         e.preventDefault();
 
-        if ($($destinoEl).parent().index() < $($origemEl).parent().index()) {
+        if ($($destinoEl).parent().index() < $($origemEl).parent().index() || destino === 'Resumo') {
             $(this).tab('show');
         }
         else if (origem === 'Dados' || origem === 'Foto' || origem === 'Atributos') {
@@ -152,6 +159,7 @@ function mudaEtapa(elemShow, elemHide) {
 function validaOperacaoPassoWizard(parametroTab, evento) {
     console.log(parametroTab);
     console.log(evento);
+
     if (!compraId || sessionStorage.getItem("pedidoStatus") === 'A') {
         if (evento !== 'back' && evento !== 'nextt') {
             switch (parametroTab) {
@@ -162,6 +170,8 @@ function validaOperacaoPassoWizard(parametroTab, evento) {
                 case 'Atributos':
                     return validaAttrCadastrado();
                 case 'Grade':
+                    return true;//
+                case 'Resumo':
                     return true;//
                 case 'Pack':
                     return validaGrade(evento);
@@ -176,6 +186,8 @@ function validaOperacaoPassoWizard(parametroTab, evento) {
                     return validaAbaFotoCamposObrigatorios(parametroTab, evento);
                 case 'Atributos':
                     return validaAttrCadastrado();
+                case 'Resumo':
+                    return true;//
                 case 'Grade':
                     return true; //
                 case 'Pack':
@@ -217,7 +229,8 @@ function validaDadosCompra(evento) {
     return isValido;
 }
 function validaOperacaoMudancaAbaWizard(origemTab, destinoTab) {
-    var isValido = validaOperacaoPassoWizard(destinoTab, destinoTab);
+
+    var isValido = (origemTab == "Resumo" && destinoTab == 'Dados' || destinoTab == 'Resumo') ? true : validaOperacaoPassoWizard(destinoTab, destinoTab);
     if (origemTab === 'Foto' && !isValido) {
         erroCadCompra('Antes de avançar para o passo de ' + destinoTab + ', é necessário concluir os passos anteriores!', "alertEditaImg");
     }
@@ -226,7 +239,7 @@ function validaOperacaoMudancaAbaWizard(origemTab, destinoTab) {
 function criaTimeOut(isNotSelect, elemento) {
     if (isMobile) {
         setTimeout(function () {
-            if (elemento && !elemento.hasClass('imagemSalvar') ) {
+            if (elemento && !elemento.hasClass('imagemSalvar')) {
                 var $frmScroll = $(elemento).closest('fieldset');
                 $('html, body').animate({ scrollTop: $frmScroll.offset().top }, 500);
             } else {
@@ -352,7 +365,7 @@ function validacaoAvancarAbaDados() {
         retorno.elemento = $("#txtQldProdPed");
         retorno.isInput = true;
         retorno.textoMensagem = 'É necessário informar um porcentagem para quantidade de nota antes de prosseguir!';
-    } else if (!validaAttrCadastrado($("#pnlAttrPed")) ) {
+    } else if (!validaAttrCadastrado($("#pnlAttrPed"))) {
         retorno = {};
         //retorno.field = 2;
         //retorno.elemento = $("#txtQldProdPed");
@@ -362,19 +375,22 @@ function validacaoAvancarAbaDados() {
     return retorno;
 }
 function validaAbaDadosCamposObrigatorios(parametroTab, evento) {
+    console.log(parametroTab)
+    console.log(evento)
     var isValido = true, retornoValidado = null;
+    
     parametroTab === 'Dados' ?
         retornoValidado = validacaoOcultarAbaDados() :
         validaOperacaoPassoWizard(parametroTab, parametroTab) ?
             retornoValidado = validacaoAvancarAbaDados() :
             isValido = false;
-    if (evento !== 'Foto' && evento !== 'Dados') {
+    if (evento !== 'Foto' && evento !== 'Dados' && evento !== 'Resumo') {
         if (validaDadosProduto() || validaImagensPendentes()) {
             isValido = false;
         }
-    } 
+    }
 
-    if (isValido && retornoValidado) {
+    if (isValido && retornoValidado && $('#wizard-cad-ped li.active').index() > 0) {
         isValido = false;
         erroCadCompra(retornoValidado.textoMensagem, "alertDadosCompra");
         criaTimeOut(retornoValidado.isInput, retornoValidado.elemento);
@@ -384,11 +400,14 @@ function validaAbaDadosCamposObrigatorios(parametroTab, evento) {
     return isValido;
 }
 function validaAbaFotoCamposObrigatorios(parametroTab, evento) {
-    var isValido = true;
-    var retornoValidado = validaDadosProduto();
+    console.log(parametroTab);
+    console.log(evento);
 
-    if (!retornoValidado)
-        parametroTab === 'Foto' ?
+    var isValido = true;
+    var retornoValidado = $('#wizard-cad-ped li.active').index() == 0 ? validacaoAvancarAbaDados():validaDadosProduto();
+
+    if (!retornoValidado && parametroTab !== evento )
+        parametroTab === 'Foto'  ?
             retornoValidado = validaImagensPendentes() :
             validaOperacaoPassoWizard(parametroTab, parametroTab) ?
                 retornoValidado = validacaoAvancarAbaDados() :
@@ -403,6 +422,7 @@ function validaAbaFotoCamposObrigatorios(parametroTab, evento) {
     }
     return isValido;
 }
+
 function validaImagensPendentes() {
     var retorno = null, imagensPendentes = $('#imgUpload').fileinput('getFileStack').length === 0;
     if (!cadastroNovoSession) {
@@ -418,10 +438,11 @@ function validaImagensPendentes() {
 function validaDadosProduto() {
     //Aba Dados Produto
     var $codProdEl = $("#txtProdutoPed"), $refFornEl = $("#txtRefPed"), $custoEl = $("#txtCustoBrutoPed"), $descPedEl = $("#txtDescPed"), $desResPedEl = $("#txtDescResPed"),
-        $marcProdEl = $('#drpMarc'), $secProdEl = $('#drpSec'), $espProdEl = $('#drpEsp'), $classProdEl = $('#drpClassificacao');
+        $marcProdEl = $('#drpMarc'), $secProdEl = $('#drpSec'), $espProdEl = $('#drpEsp'), $classProdEl = $('#drpClassificacao'), $uniMedEl = $('#drpUnidadeMed');
     var codProd = $codProdEl.val(), custo = $custoEl.maskMoney('unmasked')[0], refForn = $refFornEl.val(), descPed = $descPedEl.val(), desResPed = $desResPedEl.val(),
-        marcProd = $marcProdEl.val(), secProd = $secProdEl.val(), espProd = $espProdEl.val(), classProd = $classProdEl.val();
-    var retorno = null;
+        marcProd = $marcProdEl.val(), secProd = $secProdEl.val(), espProd = $espProdEl.val(), classProd = $classProdEl.val(), uniMed = $uniMedEl.val();
+    var retorno = null, uniMedHasOpt = $uniMedEl.find('option').length > 1;
+
     if (!marcProd.length) {
         retorno = {};
         retorno.field = 1;
@@ -437,6 +458,11 @@ function validaDadosProduto() {
         retorno.field = 1;
         retorno.elemento = $espProdEl;
         retorno.textoMensagem = 'É necessário selecionar uma espécie para realizar esta operação!';
+    } else if (!uniMed.length && uniMedHasOpt) {
+        retorno = {};
+        retorno.field = 1;
+        retorno.elemento = $uniMedEl;
+        retorno.textoMensagem = 'É necessário selecionar uma unidade de medida para realizar esta operação!';
     } else if ($("#txtPrVendaPed").maskMoney('unmasked')[0] === 0) {
         retorno = {};
         retorno.field = 1;
@@ -486,7 +512,6 @@ function validaDadosProduto() {
 function retornaAttrProdInvalido(pnl) {
     var eleInvalido = null;
     var elsAtributo = pnl.find('.validarAttr').not('div');
-    console.log(elsAtributo);
     for (var i = 0; i < elsAtributo.length; i++) {
         if (!$(elsAtributo[i]).hasClass('attrTexto') &&
             !$(elsAtributo[i]).hasClass('attrData') &&
@@ -531,7 +556,7 @@ function validaElemento(elAttr, tipo) {
     var valido = true;
 
     for (var i = 0; i < elAttr.length; i++) {
-     
+
         if (tipo === 0 && !$(elAttr[i]).val().length) {
             valido = false;
         }
