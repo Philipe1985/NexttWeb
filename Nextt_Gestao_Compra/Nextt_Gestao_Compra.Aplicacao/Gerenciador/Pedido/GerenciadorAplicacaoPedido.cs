@@ -2,6 +2,7 @@
 using Nextt_Gestao_Compra.Aplicacao.Servicos.Interfaces.Gerenciamento;
 using Nextt_Gestao_Compra.Aplicacao.ViewModel;
 using Nextt_Gestao_Compra.Dominio.Entidades;
+using RDI_Gerenciador_Usuario.Aplicacao.Gerenciador;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,10 +21,10 @@ namespace Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido
 
             var listaMarcas = dados.ElementAt(1).Cast<Marca>().OrderBy(x => x.Nome).Select(x => fabrica.Criar(x)).ToList();
 
-            var listaSecoes = dados.ElementAt(2).Cast<Secao>().OrderBy(x => x.Descricao).Select(x => fabrica.Criar(x)).ToList();
+            var listaSegmetos = dados.ElementAt(2).Cast<Segmento>().OrderBy(x => x.Descricao).Select(x => fabrica.Criar(x)).ToList();
             var listaUsuarios = dados.ElementAt(4).Cast<UsuarioGerenciamento>().OrderBy(x => x.NomeUsuario).Select(x => fabrica.Criar(x)).ToList();
             var listaAttrForn = dados.ElementAt(3).Cast<Atributos>().OrderBy(x => x.Descricao).Select(x => fabrica.Criar(x)).ToList();
-            var retorno = new FiltrosPesquisa(listaFornecedores, listaSecoes, listaMarcas)
+            var retorno = new FiltrosPesquisa(listaFornecedores, listaSegmetos, listaMarcas)
             {
                 Usuarios = listaUsuarios,
                 AttrFornecedores = listaAttrForn
@@ -37,10 +38,11 @@ namespace Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido
             var listaRetorno = Mapper.Map<IEnumerable<PedidoConsulta>, IEnumerable<PedidosFiltradoVM>>(dados).ToList();
             return listaRetorno;
         }
-        public static void AtualizaPedido(IAppServicoPedido pedidoServico, ParametrosVM parametroVM)
+        public static string AtualizaPedido(IAppServicoPedido pedidoServico, ParametrosVM parametroVM)
         {
             var filtro = Mapper.Map<ParametrosVM, Parametros>(parametroVM);
-            pedidoServico.AtualizaStatusPedido(filtro);
+            return pedidoServico.AtualizaStatusPedido(filtro);
+
         }
         public static int ClonarPedido(IAppServicoPedido pedidoServico, ParametrosVM parametroVM)
         {
@@ -100,14 +102,17 @@ namespace Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido
             var resumoPedido = dados.ElementAt(16).Cast<ResumoPedido>().FirstOrDefault();
             var historicoPedido = dados.ElementAt(17).Cast<HistoricoPedido>().Select(x=>new HistoricoPedidoVM(x)).ToList();
             var compradoresSel = String.Join(", ", dados.ElementAt(18).Cast<Comprador>().Select(x => x.IDComprador).ToArray());
+            var configPadrao = dados.ElementAt(19).Cast<ConfigDefault>().FirstOrDefault();
+            var datasCargaInicial = new DadosConfigPadraoVM(configPadrao);
+            datasCargaInicial.DataEntregaInicio = dadosPedido.DataEntregaInicio;
+            datasCargaInicial.DataEntregaFinal = dadosPedido.DataEntregaFinal;
+            datasCargaInicial.DataToleranciaAtrasoInicio = dadosPedido.DataToleranciaAtrasoInicio;
+            datasCargaInicial.DataToleranciaAtrasoFinal = dadosPedido.DataToleranciaAtrasoFinal;
+                
             var filtrosPesquisa = new FiltrosPesquisa(dadosPedido, fabrica, dadosCores, pedidoServico)
             {
                 Compradores = listaComprador,
                 UniMedida = listaMedida,
-                DataEntregaInicio = dadosPedido.DataEntregaInicio,
-                DataEntregaFinal = dadosPedido.DataEntregaFinal,
-                DataToleranciaAtrasoInicio = dadosPedido.DataToleranciaAtrasoInicio,
-                DataToleranciaAtrasoFinal = dadosPedido.DataToleranciaAtrasoFinal,
                 OrdemPed = ordemPed,
                 OrdemProd = ordemProd,
                 AttrEleListaProd = listaElemProd.ToList(),
@@ -119,7 +124,8 @@ namespace Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido
                 FormaPgto = listaForma.Select(x => fabrica.Criar(x)).ToList(),
                 Classificacao = listaClassificacao,
                 CondicaoPgto = condicoesOrdenadas,
-                RelacionamentoGrupos = gruposRelacionadosDesativar
+                RelacionamentoGrupos = gruposRelacionadosDesativar,
+                DadosConfigPadrao = datasCargaInicial
             };
             var retorno = new RetornoPedidoAnalitico(dadosPedido, filtrosPesquisa, resumoPedido)
             {

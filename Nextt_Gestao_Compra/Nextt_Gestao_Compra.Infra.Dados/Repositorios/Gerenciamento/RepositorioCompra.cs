@@ -36,6 +36,7 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
                 return _Db.MultiplosResults("[dbo].[pr_consulta_produto_GESTAO_COMPRAS]" +
                                     " @IDSecao = '" + parametros.Secoes +
                                     "', @IDEspecie = '" + parametros.Especies +
+                                    //"', @IDSegmento = '" + parametros.Segmentos+
                                     "', @IDMarca = '" + parametros.Marcas +
                                     "', @ReferenciaForncedor = '" + parametros.ReferenciaFornecedor +
                                     "', @AtributoFornecedor = '" + parametros.AttrFornecedor +
@@ -77,7 +78,7 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
                     .MultiplosResults("[dbo].[pr_carrega_filtro_pesquisa_produto_Gestao_Compras]")
                                     .With<Fornecedor>()
                                     .With<Marca>()
-                                    .With<Secao>()
+                                    .With<Segmento>()
                                     .With<Atributos>()
                                     .Executar();
             }
@@ -97,7 +98,7 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
                                      ", @IDFornecedor = '" + parametros.IDFornecedor + "'")
                                     .With<Fornecedor>()
                                     .With<Marca>()
-                                    .With<Secao>()
+                                    .With<Segmento>()
                                     .With<Atributos>()
                                     .With<GrupoTamanho>()
                                     .With<Cor>()
@@ -111,6 +112,7 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
                                     .With<Atributos>()
                                     .With<Comprador>()
                                     .With<UnidadeMedida>()
+                                    .With<ConfigDefault>()
                                     .Executar();
             }
             catch (Exception ex)
@@ -141,6 +143,7 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
                                    .With<Fornecedor>()
                                    .With<Comprador>()
                                    .With<UnidadeMedida>()
+                                   .With<ConfigDefault>()
                                  .Executar();
             }
             catch (Exception ex)

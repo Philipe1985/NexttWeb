@@ -2,6 +2,7 @@
 using Nextt_Gestao_Compra.Aplicacao.Gerenciador.Compra;
 using Nextt_Gestao_Compra.Aplicacao.Servicos.Interfaces.Gerenciamento;
 using Nextt_Gestao_Compra.Aplicacao.ViewModel;
+using RDI_Gerenciador_Usuario.Infra.CrossCutting.Helpers;
 using System;
 using System.Linq;
 using System.Net.Http;
@@ -35,6 +36,7 @@ namespace Nextt_Gestao_Compra.Apresentacao.API.Controllers.Gerenciamento
                 return InternalServerError(ex);
             }
         }
+
         [Authorize]
         [HttpGet]
         [Route("BuscaDadosCadNovo")]
@@ -51,6 +53,7 @@ namespace Nextt_Gestao_Compra.Apresentacao.API.Controllers.Gerenciamento
                 return InternalServerError(ex);
             }
         }
+
         [Authorize]
         [HttpGet]
         [Route("BuscaGruposCadastrado")]
@@ -67,6 +70,7 @@ namespace Nextt_Gestao_Compra.Apresentacao.API.Controllers.Gerenciamento
                 return InternalServerError(ex);
             }
         }
+
         [Authorize]
         [HttpPost]
         [Route("GeraDadosProdutoFiltrado")]
@@ -83,6 +87,7 @@ namespace Nextt_Gestao_Compra.Apresentacao.API.Controllers.Gerenciamento
                 return InternalServerError(ex);
             }
         }
+
         [Authorize]
         [HttpPost]
         [Route("BuscaEspeciesFiltradas")]
@@ -99,6 +104,7 @@ namespace Nextt_Gestao_Compra.Apresentacao.API.Controllers.Gerenciamento
                 return InternalServerError(ex);
             }
         }
+
         [Authorize]
         [HttpPost]
         [Route("BuscaFiliaisGrupo")]
@@ -115,6 +121,7 @@ namespace Nextt_Gestao_Compra.Apresentacao.API.Controllers.Gerenciamento
                 return InternalServerError(ex);
             }
         }
+
         [Authorize]
         [HttpPost]
         [Route("AtualizaFiltrosCadProdCompra")]
@@ -148,6 +155,7 @@ namespace Nextt_Gestao_Compra.Apresentacao.API.Controllers.Gerenciamento
                 return InternalServerError(ex);
             }
         }
+
         [Authorize]
         [HttpPost]
         [Route("AtualizaDadosCompraFornecedor")]
@@ -164,6 +172,7 @@ namespace Nextt_Gestao_Compra.Apresentacao.API.Controllers.Gerenciamento
                 return InternalServerError(ex);
             }
         }
+
         [Authorize]
         [HttpPost]
         [Route("BuscaImagensProduto")]
@@ -180,6 +189,7 @@ namespace Nextt_Gestao_Compra.Apresentacao.API.Controllers.Gerenciamento
                 return InternalServerError(ex);
             }
         }
+
         [Authorize]
         [HttpPost]
         [Route("RecarregaDadosTamanho")]
@@ -196,15 +206,17 @@ namespace Nextt_Gestao_Compra.Apresentacao.API.Controllers.Gerenciamento
                 return InternalServerError(ex);
             }
         }
-        [Authorize]
+
+        [FiltroAutorizacaoCustom(PermissaoTipo = "Cadastrar Pedido", PermissaoValor = "1")]
         [HttpPost]
         [Route("salvarNovoPedido")]
         public IHttpActionResult SalvarNovoPedido(PedidoCompletoVM pedido)
         {
             try
             {
+                log.Debug("Cadastro Iniciado no Servidor");
                 pedido.Pedido.DataCadastro = DateTime.Parse(pedido.Pedido.DataCadastro).ToString("yyyy-MM-dd HH:mm:ss");
-                var retorno = GerenciadorAplicacaoCompra.GravarPedido(_compraServico, pedido);
+                var retorno = GerenciadorAplicacaoCompra.GravarPedido(_compraServico, pedido,log);
                 return Ok(retorno);
             }
             catch (Exception ex)

@@ -24,6 +24,7 @@
         public string Status { get; set; }
         public string IDUsuarios { get; set; }
         public string IDPedido { get; set; }
+        public string Observacao { get; set; }
         public string DescricaoProduto { get; set; }
     }
 }

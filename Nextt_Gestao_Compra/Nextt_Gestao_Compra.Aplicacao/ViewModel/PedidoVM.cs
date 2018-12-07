@@ -7,9 +7,10 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
         public int IDPedido { get; set; }
         public int IDUnidadeMedida { get; set; }
         public int IDProduto { get; set; }
-        public int Codigo { get; set; }
+        public int Codigo { get; set; } 
         public int IDFornecedor { get; set; }
         public string IDUsuarioCadastro { get; set; }
+        public string IDCompradorPedido { get; set; }
         public string Observacao { get; set; }
         public decimal PrecoCusto { get; set; }
         public decimal PrecoVenda { get; set; }
@@ -28,6 +29,7 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
         public string Status { get; set; }
         public string DataCadastro { get; set; }
         public int IDSecao { get; set; }
+        public int IDSegmento { get; set; }
         public int IDEspecie { get; set; }
         public int IDMarca { get; set; }
         public int IDGrupoTamanho { get; set; }

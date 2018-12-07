@@ -2,6 +2,7 @@
 using Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido;
 using Nextt_Gestao_Compra.Aplicacao.Servicos.Interfaces.Gerenciamento;
 using Nextt_Gestao_Compra.Aplicacao.ViewModel;
+using RDI_Gerenciador_Usuario.Aplicacao.Gerenciador;
 using System;
 using System.Linq;
 using System.Net.Http;
@@ -102,11 +103,14 @@ namespace Nextt_Gestao_Compra.Apresentacao.API.Controllers.Cadastro
         [Authorize]
         [HttpPost]
         [Route("AtualizaStatusPedido")]
-        public IHttpActionResult AtualizaStatusPedido(ParametrosVM parametros)
+        public async Task<IHttpActionResult> AtualizaStatusPedido(ParametrosVM parametros)
         {
             try
             {
-                GerenciadorAplicacaoPedido.AtualizaPedido(_pedidoServico, parametros);
+               
+                 var interessados = GerenciadorAplicacaoPedido.AtualizaPedido(_pedidoServico, parametros);
+                if (!string.IsNullOrEmpty(interessados))
+                    await GerenciamentoUsuario.EnviarEmailPedido(interessados, @"C:\Users\Alcione\Pictures\Camera Roll\pedido.pdf");
                 return Ok();
             }
             catch (Exception ex)

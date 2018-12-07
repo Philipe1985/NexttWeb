@@ -19,9 +19,9 @@ namespace Nextt_Gestao_Compra.Aplicacao.Gerenciador.Compra
 
             var listaMarcas = dados.ElementAt(1).Cast<Marca>().OrderBy(x => x.Nome).Select(x => fabrica.Criar(x)).ToList();
 
-            var listaSecoes = dados.ElementAt(2).Cast<Secao>().OrderBy(x => x.Descricao).Select(x => fabrica.Criar(x)).ToList();
+            var listaSegmentos = dados.ElementAt(2).Cast<Segmento>().OrderBy(x => x.Descricao).Select(x => fabrica.Criar(x)).ToList();
             var listaAttrForn = dados.ElementAt(3).Cast<Atributos>().OrderBy(x => x.Descricao).Select(x => fabrica.Criar(x)).ToList();
-            var retorno = new FiltrosPesquisa(listaFornecedores, listaSecoes, listaMarcas)
+            var retorno = new FiltrosPesquisa(listaFornecedores, listaSegmentos, listaMarcas)
             {
                 AttrFornecedores = listaAttrForn
             };
@@ -50,7 +50,7 @@ namespace Nextt_Gestao_Compra.Aplicacao.Gerenciador.Compra
 
             var listaMarcas = dados.ElementAt(1).Cast<Marca>().OrderBy(x => x.Nome).Select(x => fabrica.Criar(x)).ToList();
 
-            var listaSecoes = dados.ElementAt(2).Cast<Secao>().OrderBy(x => x.Descricao).Select(x => fabrica.Criar(x)).ToList();
+            var listaSegmentos = dados.ElementAt(2).Cast<Segmento>().OrderBy(x => x.Descricao).Select(x => fabrica.Criar(x)).ToList();
             var dadosCores = dados.ElementAt(5).Cast<Cor>().ToList();
             ChecaCoresSemRgb(dadosCores);
             var dadosTamanho = dados.ElementAt(4).Cast<GrupoTamanho>().ToList();
@@ -70,9 +70,11 @@ namespace Nextt_Gestao_Compra.Aplicacao.Gerenciador.Compra
             var comboAttrProd = compraServico.RetornaAtributosTipoLista(listaAttrProd).Select(x => new ComboAtributoVM(x, fabrica));
             var listaComprador = dados.ElementAt(14).Cast<Comprador>().OrderBy(x => x.Nome).Select(x => fabrica.Criar(x)).ToList();
             var listaMedida = dados.ElementAt(15).Cast<UnidadeMedida>().OrderBy(x => x.Descricao).Select(x => fabrica.Criar(x)).ToList();
+            var configPadrao = dados.ElementAt(16).Cast<ConfigDefault>().FirstOrDefault();
+            var datasCargaInicial = new DadosConfigPadraoVM(configPadrao);
 
             var listaCondicao = ComparaCondicaoPagamento(condicoesOrdenadas).Select(x => fabrica.Criar(x)).ToList();
-            var filtrosPesquisa = new FiltrosPesquisa(compraServico, fabrica, dadosCores, listaFornecedores, listaSecoes, listaMarcas, dadosTamanho)
+            var filtrosPesquisa = new FiltrosPesquisa(compraServico, fabrica, dadosCores, listaFornecedores, listaSegmentos, listaMarcas, dadosTamanho, datasCargaInicial)
             {
                 Compradores = listaComprador,
                 UniMedida = listaMedida,
@@ -141,11 +143,11 @@ namespace Nextt_Gestao_Compra.Aplicacao.Gerenciador.Compra
         {
             var filtro = Mapper.Map<ParametrosVM, Parametros>(parametroVM);
             var dados = compraServico.RetornaInformacaoFornecedorCompra(filtro);
-            var dadosConfig = dados.ElementAt(0).Cast<ConfigDefault>().FirstOrDefault();
+            //var dadosConfig = dados.ElementAt(0).Cast<ConfigDefault>().FirstOrDefault();
             var dadosFornecedorProd = dados.ElementAt(1).Cast<DadosCompraFornecedor>().FirstOrDefault();
             var dadosPagamento = dados.ElementAt(2).Cast<DadosUltimaCompra>().ToList();
-            var datasCargaInicial = new DadosConfigPadraoVM(dadosConfig);
-            return new FornecedorProdDadosVM(datasCargaInicial, dadosPagamento, dadosFornecedorProd);
+            //var datasCargaInicial = new DadosConfigPadraoVM(dadosConfig);
+            return new FornecedorProdDadosVM(dadosPagamento, dadosFornecedorProd);
         }
 
         public static RetornoPrePedidoVM RetornaDadosCadPrePedido(IAppServicoCompra compraServico, ParametrosVM parametroVM, FabricaViewModel fabrica)
@@ -174,6 +176,8 @@ namespace Nextt_Gestao_Compra.Aplicacao.Gerenciador.Compra
             var listaFornecedores = dadoPre.ElementAt(12).Cast<Fornecedor>().OrderBy(x => x.NomeFantasia).Select(x => fabrica.Criar(x)).ToList();
             var listaComprador = dadoPre.ElementAt(13).Cast<Comprador>().OrderBy(x => x.Nome).Select(x => fabrica.Criar(x)).ToList();
             var listaMedida = dadoPre.ElementAt(14).Cast<UnidadeMedida>().OrderBy(x => x.Descricao).Select(x => fabrica.Criar(x)).ToList();
+            var configPadrao = dadoPre.ElementAt(15).Cast<ConfigDefault>().FirstOrDefault();
+            var datasCargaInicial = new DadosConfigPadraoVM(configPadrao);
 
             var ordemPed = listaAttrPed.Where(x => x.IDTipoAtributo == x.IDTipoAtributoKey).Select(x => x.Lista).ToList();
             var ordemProd = listaAttrProd.Where(x => x.IDTipoAtributo == x.IDTipoAtributoKey).Select(x => x.Lista).ToList();
@@ -183,9 +187,9 @@ namespace Nextt_Gestao_Compra.Aplicacao.Gerenciador.Compra
             var comboAttrProd = compraServico.RetornaAtributosTipoLista(listaAttrProd).Select(x => new ComboAtributoVM(x, fabrica));
 
 
-            var filtrosPesquisa = new FiltrosPesquisa(dadosCadastro, compraServico, fabrica, dadosCores, dadosTamanho, dadosReferencia)
+            var filtrosPesquisa = new FiltrosPesquisa(dadosCadastro, compraServico, fabrica, dadosCores, dadosTamanho, dadosReferencia, datasCargaInicial)
             {
-                Compradores=listaComprador,
+                Compradores = listaComprador,
                 UniMedida = listaMedida,
                 Fornecedores = listaFornecedores,
                 OrdemPed = ordemPed,
@@ -222,10 +226,13 @@ namespace Nextt_Gestao_Compra.Aplicacao.Gerenciador.Compra
             var fotoJson = Mapper.Map<ImagensProdutoVM, FotoProduto>(imagemVM);
             return Mapper.Map<FotoProduto, ImagensProdutoVM>(compraServico.SalvarFotosProduto(fotoJson));
         }
-        public static int GravarPedido(IAppServicoCompra compraServico, PedidoCompletoVM pedidoCompleto)
+        public static int GravarPedido(IAppServicoCompra compraServico, PedidoCompletoVM pedidoCompleto, log4net.ILog log)
         {
             var pedidoJson = JsonConvert.SerializeObject(pedidoCompleto);
-            return compraServico.GravarPedido(pedidoJson);
+            log.Debug("Json Gerado - Enviando ao Banco");
+            var idPedido = compraServico.GravarPedido(pedidoJson);
+            log.Debug("Pedido Gerado: " + idPedido);
+            return idPedido;
             //compraServico.SalvarFotosProduto(fotoJson);
         }
 

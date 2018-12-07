@@ -3,6 +3,15 @@
 
         if ($(this).attr('id').toLowerCase().indexOf('movimentacaoproduto') > -1) {
             funcaoInativa();
+        } else if ($(this).attr('id').toLowerCase() === 'produto') {
+
+            $('.selectpicker').selectpicker('hide');
+            $(".navbar.navbar-default.navbar-fixed-top").addClass('ocultarElemento');
+            $(".bg_load").show();
+            $(".wrapper").show();
+            sessionStorage.setItem("cadastroProduto", '1');
+            window.location = "../cadastro/compra.cshtml";
+
         } else {
             $(".navbar.navbar-default.navbar-fixed-top").addClass('ocultarElemento');
             $(".bg_load").show();
@@ -20,6 +29,7 @@ function carregar() {
     sessionStorage.removeItem('fornSelecionado');
     sessionStorage.removeItem("produtosComprarSelecionados");
     sessionStorage.removeItem("pedidoStatus");
+    sessionStorage.removeItem('cadastroProduto');
     sessionStorage.removeItem("cadastroNovo");
     if (permissoesUsuarioLogado.indexOf('Gerenciar Grupos') === -1) {
         $("#grupofiliais").addClass("ocultarElemento");

@@ -15,6 +15,6 @@ namespace Nextt_Gestao_Compra.Dominio.Interfaces.Repositorio.Gerenciamento
         List<IEnumerable> ClonarPedido(Parametros parametros);
         List<IEnumerable> RetornaPedidoSintetico(Parametros parametros);
         List<IEnumerable> RetornaPedidoAnalitico(Parametros parametros);
-        void AtualizaStatusPedido(Parametros parametros);
+        string AtualizaStatusPedido(Parametros parametros);
     }
 }

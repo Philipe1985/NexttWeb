@@ -12,6 +12,26 @@ $(document).ready(function () {
     $('#drpOcultaColuna').on('change', function (e) {
         iniciarOcultacaoColuna(false);
     });
+    $('#drpSeg').on('change', function (e) {
+        $('#divEsp').addClass('ocultarElemento');
+        $("#drpEsp").html('');
+        $('#divSec').addClass('ocultarElemento');
+        $("#drpSec").html('');
+        
+        var objParam = {};
+        if ($('#drpSeg').val()) {
+            if ($('#divSec').hasClass('ocultarElemento')) {
+                $('#divSec').removeClass('ocultarElemento');
+            }
+            $('.selectpicker').selectpicker('hide');
+            $(".navbar.navbar-default.navbar-fixed-top").addClass('ocultarElemento');
+            $(".bg_load").show();
+            $(".wrapper").show();
+            objParam.segmentos = $('#drpSeg').val().join(',').replace(/[^\d,]/g, '');
+            console.log(objParam)
+            carregarSecoes(objParam);
+        }
+    });
     $('#drpSec').on('change', function (e) {
         var objParam = {};
         if ($('#drpSec').val()) {
@@ -95,6 +115,7 @@ $(document).ready(function () {
 function carregar() {
     sessionStorage.removeItem('compra');
     sessionStorage.removeItem('cadastroNovo');
+    sessionStorage.removeItem('cadastroProduto');
     sessionStorage.removeItem('fornSelecionado');
     sessionStorage.removeItem('produtosLista');
     sessionStorage.removeItem("produtosComprarSelecionados");
@@ -103,10 +124,12 @@ function carregar() {
     cargaInicialGerenciamentoCompra('produto');
 }
 function buscarProdutosFiltrado() {
-    var objEnvio = { 'marcas': '', 'secoes': '', 'especies': '', 'idFornecedor': '' }, marcas = $("#drpMarc").val(), secoes = $("#drpSec").val(),
+    var objEnvio = { 'marcas': '', 'secoes': '', 'especies': '', 'idFornecedor': '', 'segmentos': '' }, marcas = $("#drpMarc").val(), segmentos = $("#drpSeg").val(),
+        secoes = $("#drpSec").val(),
         especies = $("#drpEsp").val(), cnpj = $("#drpCNPJ").val(), fornAttr = $("#cbAttrForn").val();
-    if (!marcas && !secoes && !cnpj) {
-        erroCadCompra("Não é permitido filtrar produtos sem selecionar ao menos um parâmetro de pesquisa!", "alertProdCompra");
+    if (!marcas && !secoes && !cnpj && !fornAttr) {
+        !segmentos ? erroCadCompra("Não é permitido filtrar produtos sem selecionar ao menos um parâmetro de pesquisa!", "alertProdCompra") :
+            erroCadCompra("Não é permitido filtrar produtos apenas por segmentos!", "alertProdCompra");
     } else {
         objRefSelecionados = {};
         paginasMarcadas = [];
@@ -116,6 +139,7 @@ function buscarProdutosFiltrado() {
         if (fornAttr) objEnvio.attrFornecedor = fornAttr.join(",");
         if (secoes) objEnvio.secoes = secoes.join(",");
         if (especies) objEnvio.especies = especies.join(",");
+        if (segmentos) objEnvio.segmentos = segmentos.join(",");
         if (cnpj) {
             objEnvio.idFornecedor = cnpj.join(",");
             if (cnpj.length === 1) fornSelConsulta = cnpj[0];
@@ -124,7 +148,10 @@ function buscarProdutosFiltrado() {
         $('.selectpicker').selectpicker('hide');
         $(".bg_load").show();
         $(".wrapper").show();
-        console.log(fornSelConsulta)
+        console.log(objEnvio)
+        controleTempo("Iniciando consulta produtos: ")
+        console.log('============================')
+
         geraCargaProdutoFiltrado(objEnvio);
     }
 
@@ -283,17 +310,21 @@ function cadastrarNovasCompras() {
     if (fornSelConsulta) {
         sessionStorage.setItem("fornSelecionado", fornSelConsulta);
     }
-    
+
     sessionStorage.setItem("produtosComprarSelecionados", JSON.stringify(result));
     window.location = "../gerenciamento/compraprodutos.cshtml";
 }
 function cadastrarNovoProduto() {
-    $('.selectpicker').selectpicker('hide');
-    $(".navbar.navbar-default.navbar-fixed-top").addClass('ocultarElemento');
-    $(".bg_load").show();
-    $(".wrapper").show();
-    sessionStorage.setItem("cadastroNovo", '1');
-    window.location = "../cadastro/compra.cshtml";
+    if (permissoesUsuarioLogado.indexOf('Cadastrar Produto Novo') === -1) {
+        semAcesso()
+    } else {
+        $('.selectpicker').selectpicker('hide');
+        $(".navbar.navbar-default.navbar-fixed-top").addClass('ocultarElemento');
+        $(".bg_load").show();
+        $(".wrapper").show();
+        sessionStorage.setItem("cadastroNovo", '1');
+        window.location = "../cadastro/compra.cshtml";
+    }
 }
 function carregaFormCompraManager() {
     $("#drpMarc").selectpicker('val', '');

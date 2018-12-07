@@ -1,5 +1,5 @@
 ﻿var isMobile = false, resizeId; //initiate as false
-var permissoesUsuarioLogado = sessionStorage.getItem("permissoes");
+var permissoesUsuarioLogado = JSON.parse(sessionStorage.getItem("permissoes"));
 $(document).ready(function () {
     // device detection
     if (/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|ipad|iris|kindle|Android|Silk|lge |maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i.test(navigator.userAgent)
@@ -154,6 +154,7 @@ $(document).ready(function () {
 });
 
 function bloqueiaOpcoesPrincipais() {
+    console.log(permissoesUsuarioLogado)
     if (permissoesUsuarioLogado && permissoesUsuarioLogado.indexOf('Gerenciar Usuários') === -1) {
         $("#usuarioOpcao").css("display", "none");
     };
@@ -161,7 +162,7 @@ function bloqueiaOpcoesPrincipais() {
 
 function gerenciarUsuario() {
 
-    var retorno, btconfirma = 'Sim', btcancela = 'Não', texto = 'Tem certeza que deseja abandonar esta página e iniciar o gerenciamento de usuários?', titulo = 'Abandonar Relatórios';
+    var retorno, btconfirma = 'Sim', btcancela = 'Não', texto = 'Tem certeza que deseja abandonar esta página e iniciar o gerenciamento de usuários?', titulo = 'Gerenciamento de Usuário';
 
     $("#usuarioOpcao").css("display", "none");
     $("#planejamentoOpcao").css("display", "block");
@@ -190,11 +191,75 @@ function gerenciarUsuario() {
 }
 
 function navBrandClick() {
-    if (sessionStorage.getItem("cookies") === null) {
-        window.location = "../home.cshtml"
+    
+    if (sessionStorage.getItem("cookies") === null && window.location.href.toLowerCase().indexOf("home") === -1) {
+        if (window.location.href.toLowerCase().indexOf("cadastro/compra") > -1) {
+            modal({
+                type: "confirm",
+                headerText: '<i class="fa fa-exclamation-circle red"></i><strong> Atenção! Tem certeza que deseja prosseguir?</strong>',
+                messageText: 'Ao confirmar esta operação, todas as informações inseridas até aqui serão descartadas.',
+                alertType: 'warning',
+                modalSize: 'modal-lg',
+                titleClass: 'red'
+            }).done(function (e) {
+                if (e) {
+                    $('#tabelaUsuarios_paginate').css('display', 'none');
+                    $('#divPaineisCadastroCompra').addClass('ocultarElemento');
+                    $('.selectpicker').selectpicker('hide');
+                    $(".navbar.navbar-default.navbar-fixed-top").addClass('ocultarElemento');
+                    $(".bg_load").show();
+                    $(".wrapper").show();
+                    window.location = "../home.cshtml"
+                }
+            });
+        } else {
+            $('#tabelaUsuarios_paginate').css('display', 'none');
+            $('.selectpicker').selectpicker('hide');
+            $(".navbar.navbar-default.navbar-fixed-top").addClass('ocultarElemento');
+            $(".bg_load").show();
+            $(".wrapper").show();
+            window.location = "../home.cshtml"
+        }
+
     }
 }
+function alteraStatusPedido(status, idPedido) {
+    $.confirm({
+        type: 'blue',
+        title: 'Cancelar Pedido!',
+        content:
+            '<div class="form-group">' +
+            '<label>Informe o motivo do cancelamento!</label>' +
+            '<textarea id="txtAreaCancelPed" maxlength="1000" class="form-control" rows="5"></textarea>' +
+            '</div>',
+        buttons: {
+            confirmar: {
+                text: 'Confirmar',
+                btnClass: 'btn-blue',
+                action: function () {
+                    var motivo = this.$content.find('#txtAreaCancelPed').val().trim();
+                    if (!motivo || motivo.length < 5) {
+                        pedidoOperacaoInvalida('O motivo do cancelamento é obrigatório e deve conter no mínimo 5 caracteres! Informe o motivo ou cancele a operação.')
+                        return false;
+                    }
+                    objEnvio = {};
+                    objEnvio.codigo = idPedido;
+                    objEnvio.status = status;
+                    objEnvio.observacao = motivo;
+                    atualizarStatus(objEnvio);
+                }
+            },
+            cancel: {
+                text: 'Sair',
+                btnClass: 'btn-green',
+                action: function () {
+                    if (window.location.href.toLowerCase().indexOf("cadastro/compra") > -1) salvarPedidoOpcao();
+                },
+            }
+        }
+    });
 
+}
 function limparModalSenha() {
     $('#txtSenhaAtual').val('');
     $('#txtSenhaNova').val('');
@@ -270,15 +335,33 @@ function conferirAgenda() {
     window.location = "../gerenciamento/agenda.cshtml";
 }
 function voltarHome() {
-    sessionStorage.removeItem('compra');
-    sessionStorage.removeItem("pedidoId");
-    sessionStorage.removeItem("pedidoStatus");
-    sessionStorage.removeItem("cadastroNovo");
-    $(".navbar.navbar-default.navbar-fixed-top").addClass('ocultarElemento');
-    $('.selectpicker').selectpicker('hide');
-    $(".bg_load").show();
-    $(".wrapper").show();
-    window.location = "../home.cshtml";
+
+    if (window.location.href.toLowerCase().indexOf("cadastro/compra") > -1) {
+        modal({
+            type: "confirm",
+            headerText: '<i class="fa fa-exclamation-circle red"></i><strong> Atenção! Tem certeza que deseja prosseguir?</strong>',
+            messageText: 'Ao confirmar esta operação, todas as informações inseridas até aqui serão descartadas.',
+            alertType: 'warning',
+            modalSize: 'modal-lg',
+            titleClass: 'red'
+        }).done(function (e) {
+            if (e) {
+                $('#divPaineisCadastroCompra').addClass('ocultarElemento');
+                $('.selectpicker').selectpicker('hide');
+                $(".navbar.navbar-default.navbar-fixed-top").addClass('ocultarElemento');
+                $(".bg_load").show();
+                $(".wrapper").show();
+                window.location = "../home.cshtml"
+            }
+        });
+    } else {
+        $('#tabelaUsuarios_paginate').css('display', 'none');
+        $('.selectpicker').selectpicker('hide');
+        $(".navbar.navbar-default.navbar-fixed-top").addClass('ocultarElemento');
+        $(".bg_load").show();
+        $(".wrapper").show();
+        window.location = "../home.cshtml"
+    }
 }
 
 function desconectarSessao() {
@@ -350,17 +433,19 @@ function mudarSenhaModal() {
 }
 
 function checarPermissoesEdicao() {
-    if (!contains.call(permissoes, 'Editar Dados Basicos')) {
+    if (permissoesUsuarioLogado.indexOf('Editar Dados Basicos') === -1) {
         $("#txtNome").attr("disabled", true);
         $("#txtSobrenome").attr("disabled", true);
         $("#txtNomeExibicao").attr("disabled", true);
         $("#txtEmail").attr("disabled", true);
-        $('#ckbAdministrador').bootstrapSwitch('disabled', true);
-        $("#ckbAtivo").bootstrapSwitch('toggleDisabled', true, true);
         $("#txtCelular").attr("disabled", true);
     }
-    if (!contains.call(permissoes, 'Adicionar Perfil ao Usuário')) {
+    if (permissoesUsuarioLogado.indexOf('Adicionar Perfil ao Usuário') === -1) {
         $('#ckbAdministrador').bootstrapSwitch('disabled', true);
+        $('#ucComboAdminsEditar option').attr("disabled", true);
+    }
+    if (permissoesUsuarioLogado.indexOf('Bloquear/Desbloquear Usuário') === -1) {
+        $("#ckbAtivo").bootstrapSwitch('toggleDisabled', true, true);
     }
 }
 
@@ -381,7 +466,14 @@ function removeMascaraMoeda(valor) {
 function configuraMascaraMoeda(valor) {
     return (parseFloat(valor)).formatMoney(2, ',', '.');
 }
-
+function semAcesso() {
+    modal({
+        messageText: "Você não possui permissão para executar esta operação, entre em contato com o administrador do sistema para solicitar o acesso!",
+        type: "alert",
+        headerText: "Acesso negado!",
+        alertType: "warning"
+    });
+}
 function configuraMascaraCnpj(v) {
     v = v.replace(/\D/g, ""); //Remove tudo o que não é dígito
     v = v.replace(/^(\d{2})(\d)/, "$1.$2"); //Coloca ponto entre o segundo e o terceiro dígitos
@@ -505,9 +597,9 @@ function configuraCombosOpcoes(elemento) {
     });
 }
 function deleteCookie() {
-    if (document.cookie.indexOf("session-id=") >-1) {
+    if (document.cookie.indexOf("session-id=") > -1) {
         document.cookie = 'session-id=tempGuest; expires=expires=Thu, 01-Jan-1970 00:00:01 GMT; domain=localhost; path=/';
-    }       
+    }
 }
 function atualizaObjetoMudancaPagina(pg) {
     var paramRetorno = JSON.parse(sessionStorage.getItem('parametrosFiltro'));
@@ -517,6 +609,19 @@ function atualizaObjetoMudancaPagina(pg) {
     })[0].idReferencias;
     console.log(paramRetorno)
     return paramRetorno;
+}
+function limparCampos() {
+    $('.selectpicker:not([multiple])').selectpicker('val', '');
+    $('.selectpicker[multiple]').each(function () {
+        if (this.length) {
+            $(this).selectpicker('deselectAll')
+        }
+
+    });
+    $('.clear-filter').blur();
+    $("input[type=text]").val("");
+    $('.selectpicker').selectpicker('refresh');
+
 }
 (function () {
     var addRule;

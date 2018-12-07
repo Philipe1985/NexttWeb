@@ -45,6 +45,7 @@ function criaInputImagem(listImage, configPV, configRodape) {
         browseLabel: "Adicionar/Capturar",
         browseClass: "btn btn-success",
         browseIcon: "",
+        showBrowse: permissoesUsuarioLogado.indexOf('Adicionar Fotos') > -1,
         browseOnZoneClick: false,
         removeIcon: '',
         removeTitle: '',
@@ -67,8 +68,13 @@ function criaInputImagem(listImage, configPV, configRodape) {
             '{TAG_CSS_INIT}': 'kv-hidden'
         },
         initialPreviewThumbTags: configRodape,
+    }).on('filebeforedelete', function (){
+        var retorno = permissoesUsuarioLogado.indexOf('Excluir Fotos') === -1;
+        if (retorno) {
+            semAcesso();
+        }
+        return retorno;
     });
-    
 }
 function geraPreviewConfig(arrayOriginal, objConfig) {
     arrayOriginal.push({

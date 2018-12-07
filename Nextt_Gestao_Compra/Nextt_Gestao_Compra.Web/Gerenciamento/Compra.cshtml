@@ -1,6 +1,7 @@
 ﻿@{
     Layout = "~/_LayoutPrincipal.cshtml";
 }
+<script src="../Assets/js/calculosRelatorio.js"></script>
 <script src="../Assets/js/customProdutoManager.js"></script>
 <div class="col-md-12 col-sm-12 col-xs-12" id="principal">
 
@@ -23,9 +24,9 @@
         </div>
         <div id="divAttr" class="col-md-2 col-sm-4 col-xs-12 ocultarElemento">
             <div class="form-group">
-                <h5 class="form-label">Selecione as atributo:</h5>
+                <h5 class="form-label">Atributos de Fornecedor:</h5>
                 <div class="controls">
-                    <select name="cbAttrForn" id="cbAttrForn" data-container="body" data-actions-box="true" class="selectpicker show-tick form-control pull-right" data-live-search="true"
+                    <select name="cbAttrForn" id="cbAttrForn" data-container="body" data-actions-box="true" class="selectpicker show-tick form-control" data-live-search="true"
                             data-select-all-text="Marcar Todas" data-deselect-all-text="Desmarcar Todas" data-count-selected-text="Selecionado {0} de {1} opções"
                             data-width="100%" multiple data-select-header="true" data-size="auto" data-selected-text-format="count > 2" title="Selecione..."></select>
                 </div>
@@ -33,7 +34,7 @@
         </div>
         <div id="divMarca" class="col-md-2 col-sm-4 col-xs-12 ocultarElemento">
             <div class="form-group">
-                <h5 class="form-label">Selecione as marcas:</h5>
+                <h5 class="form-label">Marcas:</h5>
                 <div class="controls">
                     <select id="drpMarc" class="selectpicker show-tick form-control" data-actions-box="true" multiple data-live-search="true"
                             data-select-all-text="Marcar Todos" data-container="body" data-deselect-all-text="Desmarcar Todos" data-count-selected-text="Selecionado {0} de {1}" title="0 selecionados..."
@@ -41,9 +42,20 @@
                 </div>
             </div>
         </div>
+        <div id="divSeg" class="col-md-2 col-sm-4 col-xs-12 ocultarElemento">
+            <div class="form-group">
+                <h5 class="form-label">Segmentos:</h5>
+                <div class="controls">
+                    <select id="drpSeg" class="selectpicker show-tick form-control" data-show-subtext="true" multiple data-live-search="true"
+                            data-count-selected-text="Selecionado {0} de {1}" title="0 selecionados..."
+                            data-width="100%" data-select-header="true" data-size="7" data-selected-text-format="count > 2"></select>
+                </div>
+            </div>
+        </div>
+
         <div id="divSec" class="col-md-2 col-sm-4 col-xs-12 ocultarElemento">
             <div class="form-group">
-                <h5 class="form-label">Selecione as seções:</h5>
+                <h5 class="form-label">Seções:</h5>
                 <div class="controls">
                     <select id="drpSec" class="selectpicker show-tick form-control" data-show-subtext="true" data-actions-box="true" multiple data-live-search="true"
                             data-select-all-text="Marcar Todas" data-container="body" data-deselect-all-text="Desmarcar Todas" data-count-selected-text="Selecionado {0} de {1}" title="0 selecionados..."
@@ -53,7 +65,7 @@
         </div>
         <div id="divEsp" class="col-md-2 col-sm-4 col-xs-12 ocultarElemento">
             <div class="form-group">
-                <h5 class="form-label">Selecione as espécies:</h5>
+                <h5 class="form-label">Espécies:</h5>
                 <div class="controls">
                     <select id="drpEsp" class="selectpicker show-tick form-control" data-show-subtext="true" data-actions-box="true" multiple data-live-search="true"
                             data-select-all-text="Marcar" data-container="body" data-deselect-all-text="Desmarcar" data-count-selected-text="Selecionado {0} de {1}" title="0 selecionados..."
@@ -68,6 +80,10 @@
                     <button id="btnBuscarProduto" class="btn btn-primary " onclick="buscarProdutosFiltrado()">
                         <i class="fa fa-search" aria-hidden="true"> Iniciar Pesquisa</i>
                     </button>
+                    <a href="javascript:limparCampos();" data-toggle="tooltip" title="Limpar Filtros" class="btn text-center clear-filter">
+                        @*<i class="fa fa-filter fa-2x" aria-hidden="true"></i>*@
+                        <span class="glyphicon glyphicon-filter"></span>
+                    </a>
                 </div>
             </div>
         </div>
@@ -97,32 +113,33 @@
             </div>
 
         </div>
+     
         @*<div id="divOcultaColuna" class="col-md-3 col-sm-12 col-xs-12 ocultarElemento">
-                <div class="form-group">
-                    <h5 for="drpOcultaColuna" class="control-label">Marque as colunas/grupos para ocultar da tabela:</h5>
-                    <div class="controls">
-                        <select id="drpOcultaColuna" class="selectpicker show-tick form-control" multiple
-                                data-count-selected-text="Ocultando {0} de {1} colunas" data-select-header="true"
-                                title="Selecione as colunas..." data-width="100%" data-size="7" data-selected-text-format="count > 0">
-                            <optgroup label="Produto">
-                                <option value="2">Código Original</option>
-                                <option value="4">Descrição Reduzida</option>
-                            </optgroup>
-                            <optgroup label="Marca">
-                                <option value="5">Códgo</option>
-                                <option value="6">Descrição</option>
-                            </optgroup>
-                            <optgroup label="Fornecedor">
-                                <option value="7">Código</option>
-                                <option value="8">Razão Social</option>
-                                <option value="9">Nome Fantasia</option>
-                                <option value="10">Referência</option>
-                                <option value="11">CNPJ</option>
-                            </optgroup>
-                        </select>
-                    </div>
+            <div class="form-group">
+                <h5 for="drpOcultaColuna" class="control-label">Marque as colunas/grupos para ocultar da tabela:</h5>
+                <div class="controls">
+                    <select id="drpOcultaColuna" class="selectpicker show-tick form-control" multiple
+                            data-count-selected-text="Ocultando {0} de {1} colunas" data-select-header="true"
+                            title="Selecione as colunas..." data-width="100%" data-size="7" data-selected-text-format="count > 0">
+                        <optgroup label="Produto">
+                            <option value="2">Código Original</option>
+                            <option value="4">Descrição Reduzida</option>
+                        </optgroup>
+                        <optgroup label="Marca">
+                            <option value="5">Códgo</option>
+                            <option value="6">Descrição</option>
+                        </optgroup>
+                        <optgroup label="Fornecedor">
+                            <option value="7">Código</option>
+                            <option value="8">Razão Social</option>
+                            <option value="9">Nome Fantasia</option>
+                            <option value="10">Referência</option>
+                            <option value="11">CNPJ</option>
+                        </optgroup>
+                    </select>
                 </div>
-            </div>*@
+            </div>
+        </div>*@
 
     </div>
     <div class="row">

@@ -49,7 +49,7 @@ $(document).ready(function myfunction() {
         var destino = $destinoEl.hash.replace('#tab', '');
         e.preventDefault();
 
-        if ($($destinoEl).parent().index() < $($origemEl).parent().index() || destino === 'Resumo') {
+        if ($($destinoEl).parent().index() < $($origemEl).parent().index()) {
             $(this).tab('show');
         }
         else if (origem === 'Dados' || origem === 'Foto' || origem === 'Atributos') {
@@ -150,6 +150,9 @@ $(document).ready(function myfunction() {
             }
         }
     });
+    $(".cad-prod").click(function (e) {
+        funcaoInativa();
+    });
 });
 function mudaEtapa(elemShow, elemHide) {
     $(elemShow).collapse("show");
@@ -157,9 +160,6 @@ function mudaEtapa(elemShow, elemHide) {
     $('#wizard-cad-ped a[href="#' + elemShow.replace('#collapse-', '') + '"]').tab('show');
 }
 function validaOperacaoPassoWizard(parametroTab, evento) {
-    console.log(parametroTab);
-    console.log(evento);
-
     if (!compraId || sessionStorage.getItem("pedidoStatus") === 'A') {
         if (evento !== 'back' && evento !== 'nextt') {
             switch (parametroTab) {
@@ -308,6 +308,11 @@ function validacaoOcultarAbaDados() {
         retorno.field = 2;
         retorno.elemento = $("#drpCondPgtoPed");
         retorno.textoMensagem = 'É necessário selecionar uma condição de pagamento para recolher esta aba!';
+    } else if (!$("#drpCompPed").val()) {
+        retorno = {};
+        retorno.field = 2;
+        retorno.elemento = $("#drpCompPed");
+        retorno.textoMensagem = 'É necessário selecionar um comprador para recolher esta aba!';
     } else if ($("#txtQldNotaPed").maskMoney('unmasked')[0] === 0) {
         retorno = {};
         retorno.field = 2;
@@ -353,6 +358,11 @@ function validacaoAvancarAbaDados() {
         retorno.field = 2;
         retorno.elemento = $("#drpCondPgtoPed");
         retorno.textoMensagem = 'É necessário selecionar uma condição de pagamento antes de prosseguir!';
+    } else if (!$("#drpCompPed").val()) {
+        retorno = {};
+        retorno.field = 2;
+        retorno.elemento = $("#drpCompPed");
+        retorno.textoMensagem = 'É necessário selecionar um comprador antes de prosseguir!';
     } else if ($("#txtQldNotaPed").maskMoney('unmasked')[0] === 0) {
         retorno = {};
         retorno.field = 2;
@@ -375,8 +385,6 @@ function validacaoAvancarAbaDados() {
     return retorno;
 }
 function validaAbaDadosCamposObrigatorios(parametroTab, evento) {
-    console.log(parametroTab)
-    console.log(evento)
     var isValido = true, retornoValidado = null;
     
     parametroTab === 'Dados' ?
@@ -384,13 +392,13 @@ function validaAbaDadosCamposObrigatorios(parametroTab, evento) {
         validaOperacaoPassoWizard(parametroTab, parametroTab) ?
             retornoValidado = validacaoAvancarAbaDados() :
             isValido = false;
-    if (evento !== 'Foto' && evento !== 'Dados' && evento !== 'Resumo') {
+    if (evento !== 'Foto' && evento !== 'Dados') {
         if (validaDadosProduto() || validaImagensPendentes()) {
             isValido = false;
         }
     }
 
-    if (isValido && retornoValidado && $('#wizard-cad-ped li.active').index() > 0) {
+    if (isValido && retornoValidado) {
         isValido = false;
         erroCadCompra(retornoValidado.textoMensagem, "alertDadosCompra");
         criaTimeOut(retornoValidado.isInput, retornoValidado.elemento);
@@ -404,7 +412,7 @@ function validaAbaFotoCamposObrigatorios(parametroTab, evento) {
     console.log(evento);
 
     var isValido = true;
-    var retornoValidado = $('#wizard-cad-ped li.active').index() == 0 ? validacaoAvancarAbaDados():validaDadosProduto();
+    var retornoValidado = validaDadosProduto();
 
     if (!retornoValidado && parametroTab !== evento )
         parametroTab === 'Foto'  ?
@@ -438,9 +446,9 @@ function validaImagensPendentes() {
 function validaDadosProduto() {
     //Aba Dados Produto
     var $codProdEl = $("#txtProdutoPed"), $refFornEl = $("#txtRefPed"), $custoEl = $("#txtCustoBrutoPed"), $descPedEl = $("#txtDescPed"), $desResPedEl = $("#txtDescResPed"),
-        $marcProdEl = $('#drpMarc'), $secProdEl = $('#drpSec'), $espProdEl = $('#drpEsp'), $classProdEl = $('#drpClassificacao'), $uniMedEl = $('#drpUnidadeMed');
+        $marcProdEl = $('#drpMarc'), $secProdEl = $('#drpSec'), $segProdEl = $('#drpSeg'), $espProdEl = $('#drpEsp'), $classProdEl = $('#drpClassificacao'), $uniMedEl = $('#drpUnidadeMed');
     var codProd = $codProdEl.val(), custo = $custoEl.maskMoney('unmasked')[0], refForn = $refFornEl.val(), descPed = $descPedEl.val(), desResPed = $desResPedEl.val(),
-        marcProd = $marcProdEl.val(), secProd = $secProdEl.val(), espProd = $espProdEl.val(), classProd = $classProdEl.val(), uniMed = $uniMedEl.val();
+        marcProd = $marcProdEl.val(), secProd = $secProdEl.val(), segProd = $segProdEl.val(), espProd = $espProdEl.val(), classProd = $classProdEl.val(), uniMed = $uniMedEl.val();
     var retorno = null, uniMedHasOpt = $uniMedEl.find('option').length > 1;
 
     if (!marcProd.length) {
@@ -448,6 +456,11 @@ function validaDadosProduto() {
         retorno.field = 1;
         retorno.elemento = $marcProdEl;
         retorno.textoMensagem = 'É necessário selecionar uma marca para realizar esta operação!';
+    } else if (segTratado && !segProd.length) {
+        retorno = {};
+        retorno.field = 1;
+        retorno.elemento = $segProdEl;
+        retorno.textoMensagem = 'É necessário selecionar um segmento para realizar esta operação!';
     } else if (!secProd.length) {
         retorno = {};
         retorno.field = 1;
@@ -469,7 +482,12 @@ function validaDadosProduto() {
         retorno.elemento = $("#txtPrVendaPed");
         retorno.isInput = true;
         retorno.textoMensagem = 'É necessário informar um valor de venda para realizar esta operação!';
-    }
+    } else if (!classProd.length) {
+        retorno = {};
+        retorno.field = 1;
+        retorno.elemento = $classProdEl;
+        retorno.textoMensagem = 'É necessário informar a classificação fiscal para realizar esta operação!';
+    } 
     else if (!refForn.length) {
         retorno = {};
         retorno.field = 1;
@@ -487,17 +505,12 @@ function validaDadosProduto() {
         retorno.isInput = true;
         retorno.elemento = $desResPedEl;
         retorno.textoMensagem = 'É necessário informar a descrição resumida do produto para realizar esta operação!';
-    } else if (!custo) {
+    } else if (!custo && $("#frmCusto").length) {
         retorno = {};
         retorno.field = 2;
         retorno.isInput = true;
         retorno.elemento = $custoEl;
         retorno.textoMensagem = 'É necessário informar o custo do produto para realizar esta operação!';
-    } else if (!classProd.length) {
-        retorno = {};
-        retorno.field = 2;
-        retorno.elemento = $classProdEl;
-        retorno.textoMensagem = 'É necessário informar a classificação fiscal para realizar esta operação!';
     } else if (!validaAttrCadastrado($("#pnlAttrProd"))) {
         retorno = {};
         var attrEl = retornaAttrProdInvalido($("#pnlAttrProd"));

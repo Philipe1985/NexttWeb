@@ -20,7 +20,7 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
                     .MultiplosResults("[dbo].[pr_carrega_filtro_pre_pedido_GESTAO_COMPRAS]")
                                     .With<Fornecedor>()
                                     .With<Marca>()
-                                    .With<Secao>()
+                                    .With<Segmento>()
                                     .With<Atributos>()
                                     .With<UsuarioGerenciamento>()
                                     .Executar();
@@ -41,7 +41,7 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
                                     "', @DataEntregaPedidoInicial = '" + parametros.DtEntregaInicial +
                                     "', @DataEntregaPedidoFinal = '" + parametros.DtEntregaFinal +
                                     "', @IDFornecedor = '" + parametros.IDFornecedor +
-                                    "', @CodigoProduto = '" + parametros.Codigo +//string ou int
+                                    "', @CodigoProduto = '" + parametros.Codigo +
                                     "', @CodigoOriginal = '" + parametros.CodigoOriginal +//string ou int
                                     "', @ReferenciaFornecedor = '" + parametros.ReferenciaFornecedor +
                                     "', @IDPedido = '" + parametros.IDPedido + //string ou int
@@ -106,6 +106,7 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
                                     .With<ResumoPedido>()
                                     .With<HistoricoPedido>()
                                     .With<Comprador>()
+                                    .With<ConfigDefault>()
                                     .Executar();
             }
             catch (Exception ex)
@@ -114,11 +115,18 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
             }
         }
 
-        public void AtualizaStatusPedido(Parametros parametros)
+        public string AtualizaStatusPedido(Parametros parametros)
         {
             try
             {
-                _Db.MultiplosResults("[dbo].[pr_altera_status_pre_pedido_GESTAO_COMPRAS] @IDPedido = " + parametros.Codigo + ", @Status='" + parametros.Status + "'").Executar();
+                _Db.MultiplosResults("[dbo].[pr_altera_status_pre_pedido_GESTAO_COMPRAS] @IDPedido = " + parametros.Codigo +
+                    ", @Status='" + parametros.Status +
+                    /*"' , @Observacao='" + parametros.Observacao +*/ "'")
+                      // .With<InteressadosPedido>()
+                      .Executar();
+                    //.ElementAt(0)
+                    //.Cast<InteressadosPedido>().ElementAt(0).Emails;
+                return string.Empty;
             }
             catch (Exception ex)
             {

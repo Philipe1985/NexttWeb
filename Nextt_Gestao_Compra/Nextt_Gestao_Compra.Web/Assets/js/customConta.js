@@ -15,23 +15,32 @@
     $('#txtSenha').bind('keypress', function (e) {
         if (e.keyCode === 13 || e.keyCode === 9) {
             e.preventDefault();
-            $('#txtSenha').blur();
-        }
-    });
-    $('#txtSenha').blur(function () {
-        if ($('#txtLogin').val() === "" || $('#txtLogin').val() === null) {
-            $("#txtLogin").focus();
+            if (e.keyCode === 13 && $('#txtLogin').val() !== null && $('#txtLogin').val() !== '' && $('#txtSenha').val() !== null && $('#txtSenha').val() !== '') {
+                $('#btnLogin').click();
+            } else {
+                $('#txtSenha').blur();
+            }
+
         }
     });
     $('#txtLogin').bind('keypress', function (e) {
         if (e.keyCode === 13 || e.keyCode === 9) {
             e.preventDefault();
-            $('#txtLogin').blur();
+            if (e.keyCode === 13 && $('#txtLogin').val() !== null && $('#txtLogin').val() !== '' && $('#txtSenha').val() !== null && $('#txtSenha').val() !== '') {
+                $('#btnLogin').click();
+            } else {
+                $('#txtLogin').blur();
+            }
         }
     });
     $('#txtLogin').blur(function () {
         if ($('#txtSenha').val() === "" || $('#txtSenha').val() === null) {
             $("#txtSenha").focus();
+        }
+    });
+    $('#txtSenha').blur(function () {
+        if ($('#txtLogin').val() === "" || $('#txtLogin').val() === null) {
+            $("#txtLogin").focus();
         }
     });
     $('#btnLogin').click(function (e) {

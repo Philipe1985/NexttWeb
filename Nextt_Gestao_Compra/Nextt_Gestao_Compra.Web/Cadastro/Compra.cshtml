@@ -20,28 +20,20 @@
 
         <div id="divPaineisCadastroCompra" class="col-md-12 col-sm-12 col-xs-12">
             <ul class="nav nav-tabs responsive" id="wizard-cad-ped">
-                <li class="active"><a class="deco-none" href="#tabResumo"><span class="fa fa-folder-open"> Resumo</span></a></li>
-                <li><a class="deco-none" href="#tabDados"><span class="fa fa-cart-arrow-down"> Pedido </span></a></li>
-                <li><a class="deco-none" href="#tabFoto"><span class="fa fa-gift"> Produto </span></a></li>
-                <li><a class="deco-none" href="#tabGrade"><span class="fa fa-cubes"> Grade </span></a></li>
-                <li><a class="deco-none" href="#tabPack"><span class="fa fa-briefcase"> Pack </span></a></li>
+                <li class="active dadosTab"><a class="deco-none" href="#tabDados"><span class="fa fa-cart-arrow-down"> Pedido </span></a></li>
+                <li class="produtoTab"><a class="deco-none" href="#tabFoto"><span class="fa fa-gift"> Produto </span></a></li>
+                <li class="gradeTab"><a class="deco-none" href="#tabGrade"><span class="fa fa-cubes"> Grade </span></a></li>
+                <li class="packTab"><a class="deco-none" href="#tabPack"><span class="fa fa-briefcase"> Pack </span></a></li>
+                <li class="resumoTab ocultarElemento"><a class="deco-none" href="#tabResumo"><span class="fa fa-folder-open"> Resumo</span></a></li>
             </ul>
             <div class="tab-content responsive">
-                <div class="tab-pane active" id="tabResumo">
+                <div class="tab-pane" id="tabResumo">
 
                     <fieldset id="frmResumoPed" class="collapsible">
                         <legend class="blockClick" id="lgdResumoPed">Detalhes</legend>
                         <div id="pnlResumoPed" class="field-body container-fluid">
                             <div class="row">
-                                <div class="col-md-3 col-sm-12 col-xs-12">
-                                    <div class="form-group">
-                                        <label id="lblCompPed" class="form-label">Comprador</label>@*<span class="obrigatorio"> *</span>*@
-                                        <div class="controls ocultarElemento">
-                                            <select id="drpCompPed" class="selectpicker show-tick form-control" multiple data-live-search="true" data-selected-text-format="count > 1"
-                                                    data-width="100%" data-size="5" title="Selecione..." data-count-selected-text="Selecionado {0} de {1} formas"></select>
-                                        </div>
-                                    </div>
-                                </div>
+
                                 <div class="col-md-2 col-sm-12 col-xs-12">
                                     <div class="form-group">
                                         <label id="lblCadProd" class="form-label">Dt. Cadastro</label>
@@ -78,21 +70,21 @@
 
                     <div class="row">
                         <div class="pull-right">
+                            <button type="button" class="btn btn-info prev-step">Voltar</button>
                             <button type="button" class="btn btn-danger cancel-change">Cancelar</button>
-                            <button type="button" class="btn btn-primary next-step">Avançar</button>
                         </div>
                     </div>
                 </div>
 
-                <div class="tab-pane" id="tabDados">
+                <div class="tab-pane active" id="tabDados">
                     <div class="col-md-12 col-sm-12 col-xs-12" style="text-align:center">
                         <div id="alertDadosCompra" class="alertCustomizado alert-danger" style="display:none"></div>
                     </div>
                     <fieldset id="frmCompra" class="collapsible">
-                        <legend class="blockClick" id="lgdFrmCompra">Dados do Fornecedor</legend>
+                        <legend class="blockClick" id="lgdFrmCompra">Detalhe</legend>
                         <div class="field-body">
                             <div class="row">
-                                <div class="col-md-3 col-sm-12 col-xs-12">
+                                <div class="col-md-2 col-sm-12 col-xs-12">
                                     <div class="form-group">
                                         <label id="lblFornPed" class="form-label">Fornecedor</label><span class="obrigatorio"> *</span>
                                         <div class="controls ocultarElemento">
@@ -120,16 +112,16 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-3 col-sm-12 col-xs-12">
+                                <div class="col-md-2 col-sm-12 col-xs-12">
                                     <div class="form-group">
-                                        <label id="lblCadCondPgtoPed" class="form-label">Cadastrar Condição</label><span class="hidden-xs tips"> Ex: 0+30+60</span>
+                                        <label id="lblCadCondPgtoPed" class="form-label">Cadastrar Condição</label>
                                         <div class="controls">
                                             <input type="text" id="txtCadCondPgtoPed" onkeypress="return validaInputCondPgto(event);" ondrop="return false;" onpaste="return false;" placeholder="Digite uma nova condição..." maxlength="50" class="form-control" />
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-2 col-sm-12 col-xs-12">
-                                    <div id="frmBtnCond" class="form-group ocultarElemento">
+                                <div id="frmBtnCond" class="col-md-2 col-sm-12 col-xs-12 ocultarElemento">
+                                    <div class="form-group">
                                         <label id="lblCadCondConcluir" class="form-label">Inserir Condição</label>
                                         <div class="controls">
                                             <button type="button" class="btn btn-success addCond"><i class="fa fa-check" aria-hidden="true"></i></button>
@@ -137,7 +129,15 @@
                                         </div>
                                     </div>
                                 </div>
-
+                                <div class="col-md-2 col-sm-12 col-xs-12">
+                                    <div class="form-group">
+                                        <label id="lblCompPed" class="form-label">Comprador</label><span class="obrigatorio"> *</span>
+                                        <div class="controls ocultarElemento">
+                                            <select id="drpCompPed" class="selectpicker show-tick form-control" data-live-search="true" data-selected-text-format="count > 1"
+                                                    data-width="100%" data-size="5" title="Selecione..." data-count-selected-text="Selecionado {0} de {1} formas"></select>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-2 col-sm-12 col-xs-12">
@@ -194,7 +194,7 @@
                         </div>
                     </fieldset>
                     <fieldset id="frmAttrPed" class="collapsible">
-                        <legend class="blockClick" id="lgdFrmCompra">Atributos de Pedido</legend>
+                        <legend class="blockClick" id="lgdFrmCompra">Atributos</legend>
                         <div id="pnlAttrPed" class="field-body container-fluid">
                         </div>
                     </fieldset>
@@ -309,6 +309,7 @@
                         <div class="pull-right">
                             <button type="button" class="btn btn-info prev-step">Voltar</button>
                             <button type="button" class="btn btn-danger cancel-change">Cancelar</button>
+                            <button type="button" class="btn btn-primary cad-prod ocultarElemento">Cadastrar</button>
                             <button type="button" class="btn btn-primary next-step">Avançar</button>
                         </div>
                     </div>
@@ -375,6 +376,15 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="col-md-2 col-sm-4 col-xs-12">
+                                        <div class="form-group">
+                                            <label id="lblSeg" class="form-label">Segmento</label><span class="obrigatorio"> *</span>
+                                            <div class="controls ocultarElemento">
+                                                <select id="drpSeg" class="selectpicker show-tick form-control" data-show-subtext="true" data-live-search="true"
+                                                        title="Selecione um segmento..." data-width="100%" data-select-header="true" data-size="7"></select>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="col-md-2 col-sm-12 col-xs-12">
                                         <div class="form-group">
                                             <label id="lblSec" class="form-label">Seção</label><span class="obrigatorio"> *</span>
@@ -393,22 +403,15 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-2 col-sm-12 col-xs-12">
-                                        <div class="form-group">
-                                            <label id="lblMedida" class="form-label">Unidade Medida</label>@*<span class="obrigatorio"> *</span>*@
-                                            <div class="controls ocultarElemento">
-                                                <select id="drpUnidadeMed" class="selectpicker show-tick form-control" data-show-subtext="true" data-live-search="true"
-                                                        title="Selecione..." data-width="100%" data-select-header="true" data-size="auto"></select>
-                                            </div>
-                                        </div>
-                                    </div>
+
                                 </div>
                                 <div class="row">
                                     <div class="col-md-2 col-sm-12 col-xs-12">
                                         <div class="form-group">
-                                            <label id="lblPrVendaPed" class="form-label">Preço Venda</label><span class="obrigatorio"> *</span>
-                                            <div class="controls">
-                                                <input type="text" id="txtPrVendaPed" MaxLength="15" class="form-control money" />
+                                            <label id="lblMedida" class="form-label">Unidade Medida</label><span class="obrigatorio"> *</span>
+                                            <div class="controls ocultarElemento">
+                                                <select id="drpUnidadeMed" class="selectpicker show-tick form-control" data-show-subtext="true" data-live-search="true"
+                                                        title="Selecione..." data-width="100%" data-select-header="true" data-size="auto"></select>
                                             </div>
                                         </div>
                                     </div>
@@ -416,7 +419,7 @@
                                         <div class="form-group">
                                             <label id="lblCodOriPed" class="form-label">Cod. Original</label>
                                             <div class="controls">
-                                                <input type="text" id="txtCodOriPed" disabled style="font-weight:bold!important" maxlength="50" class="form-control" />
+                                                <input type="text" id="txtCodOriPed" maxlength="40" class="form-control" />
                                             </div>
                                         </div>
                                     </div>
@@ -448,18 +451,12 @@
 
 
                                 </div>
-                            </div>
-                        </fieldset>
-
-                        <fieldset id="frmCusto" class="collapsible">
-                            <legend id="lgdFrmCusto">Custo do Produto</legend>
-                            <div class="field-body">
                                 <div class="row">
-                                    <div class="col-md-offset-3 col-md-3 col-sm-12 col-xs-12">
-                                        <div class="form-group text-center">
-                                            <label id="lblCustoBrutoPed" class="form-label">Custo Bruto</label><span class="obrigatorio"> *</span>
+                                    <div class="col-md-2 col-sm-12 col-xs-12">
+                                        <div class="form-group">
+                                            <label id="lblPrVendaPed" class="form-label">Preço Venda</label><span class="obrigatorio"> *</span>
                                             <div class="controls">
-                                                <input type="text" id="txtCustoBrutoPed" onchange="calculaAlteracaoCusto()" maxlength="15" style="text-align:center!important" class="form-control money" />
+                                                <input type="text" id="txtPrVendaPed" MaxLength="15" class="form-control money" />
                                             </div>
                                         </div>
                                     </div>
@@ -469,6 +466,23 @@
                                             <div class="controls ocultarElemento">
                                                 <select id="drpClassificacao" class="selectpicker show-tick form-control" data-show-subtext="true" data-live-search="true"
                                                         title="Selecione uma classificacão..." data-width="100%" data-select-header="true" data-size="7"></select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <fieldset id="frmCusto" class="collapsible">
+                            <legend id="lgdFrmCusto">Custo do Produto</legend>
+                            <div class="field-body">
+                                <div class="row">
+                                    <div class="col-md-offset-4 col-md-3 col-sm-12 col-xs-12">
+                                        <div class="form-group text-center">
+                                            <label id="lblCustoBrutoPed" class="form-label">Custo Bruto</label><span class="obrigatorio"> *</span>
+                                            <div class="controls">
+                                                <input type="text" id="txtCustoBrutoPed" onchange="calculaAlteracaoCusto()" maxlength="15" style="text-align:center!important" class="form-control money" />
                                             </div>
                                         </div>
                                     </div>
@@ -592,12 +606,14 @@
                             <div id="pnlAttrProd" class="field-body container-fluid">
                             </div>
                         </fieldset>
-                        <hr>
-                        <h5 style="color:blue" class="text-center"><strong>Adicione/Atualize as imagens dos produtos </strong>(Opcional)</h5>
-                        <hr>
-                        <div class="col-md-12 col-sm-12 col-xs-12 text-center">
-                            <div class="file-loading">
-                                <input id="imgUpload" class="imagemSalvar" name="imgUpload[]" type="file" accept="image/*" multiple>
+                        <div id="fotoDivProd">
+                            <hr>
+                            <h5 style="color:blue" class="text-center"><strong>Adicione/Atualize as imagens dos produtos </strong>(Opcional)</h5>
+                            <hr>
+                            <div class="col-md-12 col-sm-12 col-xs-12 text-center">
+                                <div class="file-loading">
+                                    <input id="imgUpload" class="imagemSalvar" name="imgUpload[]" type="file" accept="image/*" multiple>
+                                </div>
                             </div>
                         </div>
                     </div>

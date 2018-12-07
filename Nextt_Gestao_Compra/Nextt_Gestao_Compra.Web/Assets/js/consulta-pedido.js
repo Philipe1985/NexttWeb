@@ -62,10 +62,11 @@ $(document).ready(function () {
         });
     });
     $(document).on('click', '.cancelarPedido', function (e) {
-        objEnvio = {};
-        objEnvio.codigo = $(this).closest('tr').children().eq(1).html();
-        objEnvio.status = 'C';
-        atualizarStatus(objEnvio);
+        alteraStatusPedido('C', $(this).closest('tr').children().eq(1).html())
+        //objEnvio = {};
+        //objEnvio.codigo = $(this).closest('tr').children().eq(1).html();
+        //objEnvio.status = 'C';
+        //atualizarStatus(objEnvio);
     });
     $(document).on('click', '.finalizarPedido', function (e) {
         objEnvio = {};
@@ -75,10 +76,11 @@ $(document).ready(function () {
     });
 
     $(document).on('click', '#btnCancelar', function (e) {
-        objEnvio = {};
-        objEnvio.codigo = $('#spnCodPed').html().replace(/\D/g, "");
-        objEnvio.status = 'C';
-        atualizarStatus(objEnvio);
+        alteraStatusPedido('C', $('#spnCodPed').html().replace(/\D/g, ""))
+        //objEnvio = {};
+        //objEnvio.codigo = $('#spnCodPed').html().replace(/\D/g, "");
+        //objEnvio.status = 'C';
+        //atualizarStatus(objEnvio);
     });
     $(document).on('click', '.aprovarPedido', function (e) {
         objEnvio = {};
@@ -123,6 +125,31 @@ $(document).ready(function () {
         $(".wrapper").show();
         window.location = "../cadastro/compra.cshtml";
     });
+    $(document).on('keypress', '#txtCodOri', function (event) {
+
+        var keyCode = event.keyCode || event.which
+        if (keyCode == 8 || (keyCode >= 35 && keyCode <= 40)) {
+            return;
+        }
+
+        var regex = new RegExp("^[a-zA-Z0-9]+$");
+        var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+
+        if (!regex.test(key)) {
+            event.preventDefault();
+            return false;
+        }
+    })
+    $(document).on('paste', '#txtCodOri', function (e) {
+        var paste = e.originalEvent.clipboardData.getData('Text');
+        var isValidoPaste = paste.replace(/[^a-z0-9]/gi, '') === paste;
+        if (isValidoPaste) {
+            return;
+        }
+
+        e.preventDefault();
+    })
+
     $(document).on('keydown', '.txtInteiro', function (e) {
         if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110]) !== -1 ||
             (e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) ||
@@ -217,6 +244,26 @@ $(document).ready(function () {
 
         }
     });
+    $('#drpSeg').on('change', function (e) {
+        $('#divEsp').addClass('ocultarElemento');
+        $("#drpEsp").html('');
+        $('#divSec').addClass('ocultarElemento');
+        $("#drpSec").html('');
+
+        var objParam = {};
+        if ($('#drpSeg').val()) {
+            if ($('#divSec').hasClass('ocultarElemento')) {
+                $('#divSec').removeClass('ocultarElemento');
+            }
+            $('.selectpicker').selectpicker('hide');
+            $(".navbar.navbar-default.navbar-fixed-top").addClass('ocultarElemento');
+            $(".bg_load").show();
+            $(".wrapper").show();
+            objParam.segmentos = $('#drpSeg').val().join(',').replace(/[^\d,]/g, '');
+            console.log(objParam)
+            carregarSecoes(objParam);
+        }
+    });
     $('#modalDetalhamentoPedido').on('hidden.bs.modal', function () {
         $("#printSection").remove();
     })
@@ -267,6 +314,7 @@ function carregar() {
     sessionStorage.removeItem('compra');
     sessionStorage.removeItem("pedidoId");
     sessionStorage.removeItem('produtosLista');
+    sessionStorage.removeItem('cadastroProduto');
     sessionStorage.removeItem("produtosComprarSelecionados");
     sessionStorage.removeItem("pedidoStatus");
     sessionStorage.removeItem("cadastroNovo");
@@ -350,9 +398,9 @@ function carregarPedidos() {
                 $(".wrapper").fadeOut();
                 $(".navbar.navbar-default.navbar-fixed-top").removeClass('ocultarElemento');
                 $("div.controls.ocultarElemento").removeClass('ocultarElemento');
-                $("#divForn").removeClass('ocultarElemento');
+                $("#divSeg").removeClass('ocultarElemento');
                 $("#divMarca").removeClass('ocultarElemento');
-                $("#divSec").removeClass('ocultarElemento');
+                //$("#divSec").removeClass('ocultarElemento');
                 $(".selectpicker").selectpicker('show');
                 $("#divOcultaColuna").removeClass('ocultarElemento');
 
@@ -368,7 +416,7 @@ function geraLinhaRetornoPedido(retorno) {
     //    btnClonar ='<a href="#" class="btn btn-primary" disabled data-toggle="tooltip" title="Copiar Pedido" style="margin:auto"><i class="fa fa-plus-square" aria-hidden="true"></i></a>'
     //}
     var btnOperacoes = '<a href="#" class="btn btn-primary validarPedido" data-toggle="tooltip" data-container="body" title="Detalhamento" style="margin:3px"><i class="fa fa-external-link-square" aria-hidden="true"></i></a>' +
-        '<a href="#" class="btn btn-primary acessarPedido" data-toggle="tooltip" data-container="body" title="Acessar" style="margin:3px"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>';
+        '<a href="#" class="btn btn-primary acessarPedido" data-toggle="tooltip" data-container="body" title="Abrir" style="margin:3px"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>';
     if (sessionStorage.getItem("perfilSistema") === 'undefined' && sessionStorage.getItem("perfilAdmin") === 'undefined') {
         if (statusAtual === 'A' || statusAtual === 'F' || statusAtual === 'C') {
             if (retorno.status === 'A') {
@@ -630,6 +678,7 @@ function criaObjConsulta() {
     $('#cbUsuario option:selected').each(function () {
         user.push($(this).val());
     });
+    $('#drpSeg').val() ? objConsulta.segmentos = $('#drpSeg').val().join(',') : objConsulta.segmentos= '';
     $('#drpSec').val() ? objConsulta.secoes = $('#drpSec').val().join(',') : objConsulta.secoes = '';
     $('#drpEsp').val() ? objConsulta.especies = $('#drpEsp').val().join(',') : objConsulta.especies = '';
     $('#cbAttrForn').val() ? objConsulta.attrFornecedor = $('#cbAttrForn').val().join(',') : objConsulta.attrFornecedor = '';

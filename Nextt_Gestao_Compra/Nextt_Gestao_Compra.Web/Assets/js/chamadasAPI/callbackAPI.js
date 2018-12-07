@@ -29,7 +29,7 @@
                         $('#tabSetupInicial li a[href="#usuarioAdmin"] i').removeClass("ocultarElemento");
                         $('#tabSetupInicial li a[href="#permissaoApp"]').tab('show');
                     } else {
-                        limparModalCadastro(retorno);
+                        location.reload();
                     }
 
                 });
@@ -47,6 +47,7 @@
         },
         error: function (error) {
             console.log(error)
+            waitingDialog.hide();
             modal({
                 messageText: "Ocorreu um erro durante a operação. Informe o administrador do sistema o erro abaixo: <br/>Erro " + error.status + ": " + tratamentoErro(error),
                 type: "alert",
@@ -151,6 +152,7 @@ function carregarSecoes(parametro) {
             $("#drpSec").selectpicker("refresh");
             $(".bg_load").fadeOut();
             $(".wrapper").fadeOut();
+            $('.selectpicker').selectpicker('show');
             var $menuTitulo = $(".navbar.navbar-default.navbar-fixed-top");
             $menuTitulo.removeClass('ocultarElemento');
 
@@ -466,8 +468,12 @@ function resetarSenha(id) {
     });
 }
 function alterarStatusUsuario(id, status, checkbox) {
-    var objEnvio = { 'id': id, 'status': status };
-    waitingDialog.show('Bloquando Usuario', { dialogSize: 'lg', progressType: 'warning' });
+    var objEnvio = { 'id': id, 'status': status },
+        msg = status ? 'Bloquando Usuario' : 'Bloquando Usuario',
+        msgResposta = status ? 'Usuario desbloqueado com sucesso!' : 'Usuario bloqueado com sucesso!';
+
+    
+    waitingDialog.show(msg, { dialogSize: 'lg', progressType: 'warning' });
     $.ajax({
         type: 'POST',
         cache: false,
@@ -475,11 +481,11 @@ function alterarStatusUsuario(id, status, checkbox) {
         url: urlApi + 'BloquearUsuario',
         statusCode: {
             200: function (retorno) {
-                var texto = 'O usuário foi bloqueado com sucesso!', titulo = 'Operação Concluída';
+                var  titulo = 'Operação Concluída';
                 waitingDialog.hide();
                 $('#modalAlteraSenha').modal('hide');
                 modal({
-                    messageText: texto,
+                    messageText: msgResposta,
                     type: "alert",
                     headerText: titulo,
                     alertType: "success"
@@ -517,9 +523,7 @@ function alterarStatusUsuario(id, status, checkbox) {
 function atualizarUsuario(usuarioAtualzado) {
     console.log(usuarioAtualzado);
     var textoLoad = 'Atualizando Usuário!';
-    if (sessionStorage.getItem("Ingles") === "true") {
-        textoLoad = 'Updating User!';
-    }
+    
     waitingDialog.show(textoLoad, { dialogSize: 'lg', progressType: 'warning' });
     $.ajax({
         type: 'POST',
@@ -528,11 +532,7 @@ function atualizarUsuario(usuarioAtualzado) {
         url: urlApi + 'AtualizarPermissaoUsuario',
         statusCode: {
             200: function (retorno) {
-                var texto = 'Usuário atualizado com sucesso. As alterações terão efeito a partis do proximo login', titulo = 'User Update';
-                if (sessionStorage.getItem("Ingles") === "true") {
-                    titulo = 'Profile Registration';
-                    texto = 'User updated successfully. The changes will take effect from the next login.';
-                }
+                var texto = 'Usuário atualizado com sucesso. As alterações terão efeito a partir do proximo login', titulo = 'Usuário Atualizado!';
                 waitingDialog.hide();
 
                 modal({
@@ -640,7 +640,7 @@ function cargaInicialGerenciamentoCompra(fluxo) {
         },
         success: function (result) {
             console.log(result)
-            var sourceSec = "", sourceCNPJ = "", sourceMarca = "", sourceAttr="";
+            var sourceSec = "", sourceCNPJ = "", sourceMarca = "", sourceAttr = "", sourceSeg = "";
             if (fluxo !== 'cadastro' && fluxo !== 'produto') {
 
                 sourceSec = '<option selected value="">Nenhuma</option>';
@@ -650,15 +650,24 @@ function cargaInicialGerenciamentoCompra(fluxo) {
                 var sourceEspecie = '<option selected value="">Nenhuma</option>';
                 $("#drpEsp").html(sourceEspecie);
             }
-            $.each(result.secoes, function (index, value) {
-                sourceSec += "<option data-tokens='" + value.token + "' value='" + value.valor + "'>" + value.descricao + "</option>";
-            });
+            if (result.secoes) {
+                $.each(result.secoes, function (index, value) {
+                    sourceSec += "<option data-tokens='" + value.token + "' value='" + value.valor + "'>" + value.descricao + "</option>";
+                });
+            }
+            
             $.each(result.fornecedores, function (index, value) {
                 sourceCNPJ += "<option data-tokens='" + value.token + "' value='" + value.valor + "'>" + value.descricao + "</option>";
             });
             if (result.attrFornecedores) {
                 $.each(result.attrFornecedores, function (index, value) {
                     sourceAttr += "<option data-tokens='" + value.token + "' value='" + value.valor + "'>" + value.descricao + "</option>";
+                });
+
+            }
+            if (result.segmentos) {
+                $.each(result.segmentos, function (index, value) {
+                    sourceSeg += "<option data-tokens='" + value.token + "' value='" + value.valor + "'>" + value.descricao + "</option>";
                 });
 
             }
@@ -670,6 +679,7 @@ function cargaInicialGerenciamentoCompra(fluxo) {
             $("#drpMarc").html(sourceMarca);
             $("#drpSec").html(sourceSec);
             $("#drpCNPJ").html(sourceCNPJ);
+            $("#drpSeg").html(sourceSeg);
             $("#cbAttrForn").html(sourceAttr);
             $(".selectpicker").selectpicker();
 
@@ -681,10 +691,11 @@ function cargaInicialGerenciamentoCompra(fluxo) {
             $(".wrapper").fadeOut();
             $(".navbar.navbar-default.navbar-fixed-top").removeClass('ocultarElemento');
             $("div.controls.ocultarElemento").removeClass('ocultarElemento');
-            $("#divForn").removeClass('ocultarElemento');
+            //$("#divForn").removeClass('ocultarElemento');
             $("#divMarca").removeClass('ocultarElemento');
-            $("#divSec").removeClass('ocultarElemento');
+            $("#divSeg").removeClass('ocultarElemento');
             $("#divAttr").removeClass('ocultarElemento');
+            //$("#divSeg").removeClass('ocultarElemento');
             $("#divOcultaColuna").removeClass('ocultarElemento');
 
         },
@@ -710,6 +721,8 @@ function geraCargaProdutoFiltrado(parametro) {
             req.setRequestHeader('Authorization', sessionStorage.getItem("token"));
         },
         success: function (result) {
+            controleTempo("Consulta produtos concluída: ")
+            console.log('============================')
             console.log(result)
             $('.pagination-holder').pagination('destroy');
             sessionStorage.setItem('paginacao', JSON.stringify(result.paginasReferencia));
@@ -842,15 +855,7 @@ function buscaDadosProdFornecedor(parametro) {
         },
         success: function (result) {
             console.log(result)
-            if (result.dadosConfigPadrao.addCores) {
-                if ($('#frmGradeCor2').hasClass("ocultarElemento"))
-                    $('#frmGradeCor2').removeClass("ocultarElemento");
-                if ($('#frmGradeCor3').hasClass("ocultarElemento"))
-                    $('#frmGradeCor3').removeClass("ocultarElemento");
-            }
-            configuraRangeCalendarioFornecedor('#txtDtEntregaPed', result.dadosConfigPadrao.dataEntregaInicio, result.dadosConfigPadrao.dataEntregaFinal)
-            atualizaDtEntregaLimite();
-            configuraRangeCalendarioFornecedor('#txtDtEntregaFinalPed', result.dadosConfigPadrao.dataToleranciaAtrasoInicio, result.dadosConfigPadrao.dataToleranciaAtrasoFinal)
+           
             $("#drpCondPgtoPed option[value='" + result.ultimaCondicao + "']").attr('selected', 'selected')
 
             $('#drpFrmPgtoPed').selectpicker('val', result.ultimaForma);
@@ -980,11 +985,17 @@ function geraCargaPrePedido(parametro) {
         success: function (result) {
             console.log(result)
             grupoRelacionar = result.filtrosPrePedido.relacionamentoGrupos;
-            var sourceSec = "", sourceCNPJ = "", souceClass = "", sourceMarca = "", sourceEspecie = "",
+            var sourceSec = "", sourceSeg = "", sourceCNPJ = "", souceClass = "", sourceMarca = "", sourceEspecie = "",
                 sourceForma = "", sourceCondicao = "", sourceCores = "", sourceTamanho = "",
-                sourceTamanhoGrupo = "", sourceReferencia = "", sourceMedida = "", sourceComprador = "";
+                sourceTamanhoGrupo = "", sourceReferencia = "", sourceMedida = "", sourceComprador = '<option selected value="">Nenhuma</option>';
             carregaAtributosPorOrdem(result.filtrosPrePedido.attrEleListaPed, result.filtrosPrePedido.attrListaPed, result.filtrosPrePedido.ordemPed, true);
             carregaAtributosPorOrdem(result.filtrosPrePedido.attrEleListaProd, result.filtrosPrePedido.attrListaProd, result.filtrosPrePedido.ordemProd, false)
+            if (result.filtrosPrePedido.segmentos) {
+                $.each(result.filtrosPrePedido.segmentos, function (index, value) {
+                    sourceSeg += "<option data-tokens='" + value.token + "' value='" + value.valor + "'>" + value.descricao + "</option>";
+                });
+
+            }
             $.each(result.filtrosPrePedido.secoes, function (index, value) {
                 sourceSec += "<option selected data-tokens='" + value.token + "' value='" + value.valor + "'>" + value.descricao + "</option>";
             });
@@ -1032,11 +1043,13 @@ function geraCargaPrePedido(parametro) {
             $("#drpEsp").html(sourceEspecie).attr('disabled', true);
             $("#drpMarc").html(sourceMarca).attr('disabled', true);
             $("#drpSec").html(sourceSec).attr('disabled', true);
+            $("#drpSeg").html(sourceSeg).attr('disabled', true);
             $("#drpCNPJ").html(sourceCNPJ);
             if (!fornSelCadCpr) $("#drpCNPJ").html(sourceCNPJ).selectpicker('val', '');
 
             $("#drpCoresGrade").html(sourceCores);
             $("#drpCompPed").html(sourceComprador);
+            validaPermissaoPedidoCadastro()
             $("#drpUnidadeMed").html(sourceMedida).selectpicker('val', '');
             $("#txDtCadProd").val(result.dtCadastroProduto).attr('disabled', true);
             $("#drpTamanhoGrade").html(sourceTamanho);
@@ -1055,10 +1068,15 @@ function geraCargaPrePedido(parametro) {
             if (result.filtrosPrePedido.tamanhoGrupo.length === 1) {
                 $("#drpTamanhoCategoria option[value='" + result.filtrosPrePedido.tamanhoGrupo[0].valor + "']").attr('selected', 'selected')
             }
-            configuraRangeCalendarioFornecedor('#txtDtEntregaPed', result.filtrosPrePedido.dataEntregaInicio, result.filtrosPrePedido.dataEntregaFinal)
+            configuraRangeCalendarioFornecedor('#txtDtEntregaPed', result.filtrosPrePedido.dadosConfigPadrao.dataEntregaInicio, result.filtrosPrePedido.dadosConfigPadrao.dataEntregaFinal)
             atualizaDtEntregaLimite();
-            configuraRangeCalendarioFornecedor('#txtDtEntregaFinalPed', result.filtrosPrePedido.dataToleranciaAtrasoInicio, result.filtrosPrePedido.dataToleranciaAtrasoFinal)
-
+            configuraRangeCalendarioFornecedor('#txtDtEntregaFinalPed', result.filtrosPrePedido.dadosConfigPadrao.dataToleranciaAtrasoInicio, result.filtrosPrePedido.dadosConfigPadrao.dataToleranciaAtrasoFinal)
+            if (result.filtrosPrePedido.dadosConfigPadrao.addCores) {
+                if ($('#frmGradeCor2').hasClass("ocultarElemento"))
+                    $('#frmGradeCor2').removeClass("ocultarElemento");
+                if ($('#frmGradeCor3').hasClass("ocultarElemento"))
+                    $('#frmGradeCor3').removeClass("ocultarElemento");
+            }
             $(".attrNum").maskMoney();
             $(".attrMon").maskMoney();
             $(".attrPerc").maskMoney();
@@ -1149,13 +1167,18 @@ function geraCargaCadNovo() {
         success: function (result) {
             console.log(result)
             grupoRelacionar = result.relacionamentoGrupos;
-            var sourceForma = "", sourceCondicao = "", souceClass = '', sourceSec = '<option selected value="">Nenhuma</option>', sourceTamanho = "", sourceCNPJ = '<option selected value="">Nenhum</option>',
-                sourceMarca = '<option selected value="">Nenhuma</option>', sourceCores = '', sourceEspecie = '<option selected value="">Nenhuma</option>';
+            var sourceForma = "", sourceCondicao = "", souceClass = '', sourceSeg = '<option selected value="">Nenhuma</option>', sourceSec = '<option selected value="">Nenhuma</option>', sourceTamanho = "", sourceCNPJ = '<option selected value="">Nenhum</option>',
+                sourceMarca = '<option selected value="">Nenhuma</option>', sourceCores = '', sourceEspecie = '<option selected value="">Nenhuma</option>', sourceMedida = "", sourceComprador = sourceComprador = '<option selected value="">Nenhuma</option>';
             carregaAtributosPorOrdem(result.attrEleListaPed, result.attrListaPed, result.ordemPed, true);
             carregaAtributosPorOrdem(result.attrEleListaProd, result.attrListaProd, result.ordemProd, false)
-
-            $.each(result.secoes, function (index, value) {
-                sourceSec += "<option data-tokens='" + value.token + "' value='" + value.valor + "'>" + value.descricao + "</option>";
+            $.each(result.compradores, function (index, value) {
+                sourceComprador += "<option data-tokens='" + value.token + "' value='" + value.valor + "'>" + value.descricao + "</option>";
+            });
+            $.each(result.uniMedida, function (index, value) {
+                sourceMedida += "<option data-tokens='" + value.token + "' value='" + value.valor + "'>" + value.descricao + "</option>";
+            });
+            $.each(result.segmentos, function (index, value) {
+                sourceSeg += "<option data-tokens='" + value.token + "' value='" + value.valor + "'>" + value.descricao + "</option>";
             });
             $.each(result.fornecedores, function (index, value) {
                 sourceCNPJ += "<option data-tokens='" + value.token + "' value='" + value.valor + "'>" + value.descricao + "</option>";
@@ -1180,17 +1203,27 @@ function geraCargaCadNovo() {
             });
             $("#drpEsp").html(sourceEspecie).attr('disabled', true);
             $("#drpMarc").html(sourceMarca).attr('disabled', false);
-            $("#drpSec").html(sourceSec).attr('disabled', false);
-            $("#drpCNPJ").html(sourceCNPJ).attr('disabled', false);
+            $("#drpSec").html(sourceSec).attr('disabled', true);
+            $("#drpSeg").html(sourceSeg).attr('disabled', false);
+           $("#drpCNPJ").html(sourceCNPJ).attr('disabled', false);
             $("#drpCondPgtoPed").html(sourceCondicao);
             $("#drpFrmPgtoPed").html(sourceForma);
             $("#drpTamanhoCategoria").html(sourceTamanho).selectpicker('val', '');
             $('#drpClassificacao').html(souceClass).selectpicker('val', '');
+            $("#drpCompPed").html(sourceComprador);
+            validaPermissaoPedidoCadastro()
+            $("#drpUnidadeMed").html(sourceMedida).selectpicker('val', '');
             $("#drpCoresGrade").html(sourceCores);
-
-            configuraRangeCalendarioFornecedor('#txtDtEntregaPed', result.dataEntregaInicio, result.dataEntregaFinal)
+            validaPermissaoPedidoCadastro()
+            configuraRangeCalendarioFornecedor('#txtDtEntregaPed', result.dadosConfigPadrao.dataEntregaInicio, result.dadosConfigPadrao.dataEntregaFinal)
             atualizaDtEntregaLimite();
-            configuraRangeCalendarioFornecedor('#txtDtEntregaFinalPed', result.dataToleranciaAtrasoInicio, result.dataToleranciaAtrasoFinal)
+            configuraRangeCalendarioFornecedor('#txtDtEntregaFinalPed', result.dadosConfigPadrao.dataToleranciaAtrasoInicio, result.dadosConfigPadrao.dataToleranciaAtrasoFinal)
+            if (result.dadosConfigPadrao.addCores) {
+                if ($('#frmGradeCor2').hasClass("ocultarElemento"))
+                    $('#frmGradeCor2').removeClass("ocultarElemento");
+                if ($('#frmGradeCor3').hasClass("ocultarElemento"))
+                    $('#frmGradeCor3').removeClass("ocultarElemento");
+            }
             $(".attrBool").bootstrapSwitch();
             $(".attrNum").maskMoney();
             $(".attrMon").maskMoney();
@@ -1216,6 +1249,7 @@ function geraCargaCadNovo() {
             if (sessionStorage.getItem('continuar')) {
                 continuarNovoProd()
             }
+
             var $menuTitulo = $(".navbar.navbar-default.navbar-fixed-top");
             $menuTitulo.find('.navbar-header .navbar-center').text('Cadastro de Pedido e Produto');
             $(".selectpicker").selectpicker('refresh');
@@ -1260,7 +1294,126 @@ function geraCargaCadNovo() {
         }
     });
 }
+function cadastrarProduto() {
+    $.ajax({
+        type: 'GET',
+        crossDomain: true,
+        async: true,
+        cache: false,
+        url: urlApi + 'gerenciamento/compra/BuscaDadosCadNovo',
+        //data: parametro,
+        beforeSend: function (req) {
+            req.setRequestHeader('Authorization', sessionStorage.getItem("token"));
+        },
+        success: function (result) {
+            console.log(result)
+            var sourceForma = "", sourceCondicao = "", souceClass = '', sourceSeg = '<option selected value="">Nenhuma</option>', sourceSec = '<option selected value="">Nenhuma</option>', sourceTamanho = "", sourceCNPJ = '<option selected value="">Nenhum</option>',
+                sourceMarca = '<option selected value="">Nenhuma</option>', sourceCores = '', sourceEspecie = '<option selected value="">Nenhuma</option>', sourceMedida = "", sourceComprador = sourceComprador = '<option selected value="">Nenhuma</option>';
+            carregaAtributosPorOrdem(result.attrEleListaProd, result.attrListaProd, result.ordemProd, false)
+            $.each(result.compradores, function (index, value) {
+                sourceComprador += "<option data-tokens='" + value.token + "' value='" + value.valor + "'>" + value.descricao + "</option>";
+            });
+            $.each(result.uniMedida, function (index, value) {
+                sourceMedida += "<option data-tokens='" + value.token + "' value='" + value.valor + "'>" + value.descricao + "</option>";
+            });
+            $.each(result.segmentos, function (index, value) {
+                sourceSeg += "<option data-tokens='" + value.token + "' value='" + value.valor + "'>" + value.descricao + "</option>";
+            });
+            $.each(result.marcas, function (index, value) {
+                sourceMarca += "<option data-tokens='" + value.token + "' value='" + value.valor + "'>" + value.descricao + "</option>";
+            });
+            $.each(result.classificacao, function (index, value) {
+                souceClass += criarClassificacao(value.valor, value.token, value.descricao);
+            });
+            $.each(result.cores, function (index, value) {
+                sourceCores += criarCor(value.valor, value.descricao, value.token, value.dadosAdicionais);
+            });
+            $.each(result.tamanhos.tamanhosGrupo, function (index, value) {
+                sourceTamanho += criarTamanho(value.valor, value.token, value.descricao);
+            });
+            $("#drpEsp").html(sourceEspecie).attr('disabled', true);
+            $("#drpMarc").html(sourceMarca).attr('disabled', false);
+            $("#drpSec").html(sourceSec).attr('disabled', true);
+            $("#drpSeg").html(sourceSeg).attr('disabled', false);
+            $("#drpTamanhoCategoria").html(sourceTamanho).selectpicker('val', '');
+            $('#drpClassificacao').html(souceClass).selectpicker('val', '');
+            $("#drpCompPed").html(sourceComprador);
+            $("#drpUnidadeMed").html(sourceMedida).selectpicker('val', '');
+            $("#drpCoresGrade").html(sourceCores);
+            if (result.dadosConfigPadrao.addCores) {
+                if ($('#frmGradeCor2').hasClass("ocultarElemento"))
+                    $('#frmGradeCor2').removeClass("ocultarElemento");
+                if ($('#frmGradeCor3').hasClass("ocultarElemento"))
+                    $('#frmGradeCor3').removeClass("ocultarElemento");
+            }
+            $(".attrBool").bootstrapSwitch();
+            $(".attrNum").maskMoney();
+            $(".attrMon").maskMoney();
+            $(".attrPerc").maskMoney();
+            $(".attrNum").maskMoney('mask');
+            $(".attrMon").maskMoney('mask');
+            $(".attrPerc").maskMoney('mask');
+            $(".attrBool").bootstrapSwitch();
+            geraComponenteCalendarioAttr()
 
+            $(".selectpicker").selectpicker();
+            nomesCoresCSS = repartirArray(result.dadosPaleta.valoresCSS);
+            nomesCoresPtCSS = repartirArray(result.dadosPaleta.descricoes);
+            criaPaletas();
+
+            var $menuTitulo = $(".navbar.navbar-default.navbar-fixed-top");
+            $menuTitulo.find('.navbar-header .navbar-center').text('Cadastro de Produto');
+            $(".selectpicker").selectpicker('refresh');
+            $(".dadosTab").addClass('ocultarElemento');
+            $(".packTab").addClass('ocultarElemento');
+            $("#frmCusto").remove();
+            $("#tabFoto.tab-pane").find('button.prev-step').remove();
+            $("#tabGrade.tab-pane").find('button.next-step').remove();
+            $("#tabGrade.tab-pane").find('button.cad-prod').removeClass('ocultarElemento');
+            $("#fotoDivProd").remove();
+            $(".produtoTab a").tab('show');
+            $(".bg_load").fadeOut();
+            $(".wrapper").fadeOut();
+            $(".navbar.navbar-default.navbar-fixed-top").removeClass('ocultarElemento');
+            $("div.controls.ocultarElemento").removeClass('ocultarElemento');
+            $("#divForn").removeClass('ocultarElemento');
+            $("#divMarca").removeClass('ocultarElemento');
+            $("#divSec").removeClass('ocultarElemento');
+
+        },
+        error: function (erro) {
+            $(".bg_load").fadeOut("slow");
+            $(".wrapper").fadeOut("slow", function () {
+                $('.selectpicker').selectpicker('show');
+            });
+
+            modal({
+                messageText: "Ocorreu um erro durante esta operação, tente novamente.<br/>Caso o erro persista informe o administrador do sistema o horário e data da ocorrencia",
+                type: "alert",
+                headerText: "Falha Interna",
+                alertType: "warning"
+            }).done(function (e) {
+                if (e) {
+
+                    $(".bg_load").show();
+                    $(".wrapper").show();
+                    sessionStorage.removeItem("compra");
+                    sessionStorage.removeItem("pedidoId");
+                    sessionStorage.removeItem("cadastroNovo");
+                    sessionStorage.removeItem("pedidoStatus");
+                    if (!sessionStorage.getItem("produtosLista")) {
+                        window.location = "../gerenciamento/compra.cshtml";
+                    } else {
+                        window.location = "../gerenciamento/compraprodutos.cshtml";
+                    }
+
+
+                }
+            });;
+        }
+    });
+
+}
 function retornaDadosGrpFilDist(parametro, qtdRef) {
     $.ajax({
         type: 'POST',
@@ -1748,11 +1901,13 @@ function cargaInicialPedido() {
         },
         success: function (result) {
             console.log(result)
-            var sourceSec = "", sourceCNPJ = "", sourceMarca = "", sourseUsuario = "",sourseForn = "";
-
-            $.each(result.secoes, function (index, value) {
-                sourceSec += "<option data-tokens='" + value.token + "' value='" + value.valor + "'>" + value.descricao + "</option>";
-            });
+            var sourceSec = "", sourceCNPJ = "", sourceMarca = "", sourseUsuario = "", sourseForn = "", sourceSeg = "";
+            if (result.secoes) {
+                $.each(result.secoes, function (index, value) {
+                    sourceSec += "<option data-tokens='" + value.token + "' value='" + value.valor + "'>" + value.descricao + "</option>";
+                });
+            }
+            
             $.each(result.fornecedores, function (index, value) {
                 sourceCNPJ += "<option data-tokens='" + value.token + "' value='" + value.valor + "'>" + value.descricao + "</option>";
             });
@@ -1772,9 +1927,15 @@ function cargaInicialPedido() {
                     sourseUsuario += "<option data-tokens='" + value.token + "' value='" + value.valor + "'>" + value.descricao + "</option>";
                 }
             });
+            if (result.segmentos) {
+                $.each(result.segmentos, function (index, value) {
+                    sourceSeg += "<option data-tokens='" + value.token + "' value='" + value.valor + "'>" + value.descricao + "</option>";
+                });
 
+            }
             $("#drpMarc").html(sourceMarca);
             $("#drpSec").html(sourceSec);
+            $("#drpSeg").html(sourceSeg);
             $("#cbAttrForn").html(sourseForn);
             $("#drpCNPJ").html(sourceCNPJ);
             $("#cbUsuario").html(sourseUsuario);
@@ -1855,6 +2016,7 @@ function carregaPedidoSintetico(parametro) {
                 $('#divPackCadastradosNF').append($(objContent));
                 var colPack = retornaPackCadColunas(result.packs[i].packItens[0].dadosTamanho);
                 var dadosPack = retornaPackCadDados(result.packs[i].packItens);
+                
                 var tbHtml = retornaTabela("tblPackCad" + result.packs[i].idPedidoPack);
                 var objHtml = $.parseHTML(tbHtml);
                 $("#frmPack" + result.packs[i].idPedidoPack + " div.table-responsive").append($(objHtml));
@@ -1905,9 +2067,9 @@ function geraCargaPedidoAnalitico(parametro) {
             grupoRelacionar = result.filtrosPrePedido.relacionamentoGrupos;
             console.log(grupoRelacionar);
             carregaImagemProduto(objEnvio);
-            var sourceSec = "", sourceCNPJ = "", souceClass = "", sourceMarca = "", sourceEspecie = "", sourceForma = "",
+            var sourceSec = "", sourceCNPJ = "", souceClass = "", sourceMarca = "", sourceEspecie = "", sourceSeg = "", sourceForma = "",
                 sourceCondicao = "", sourceCores = "", sourceTamanho = "", sourceTamanhoGrupo = "", sourceReferencia = "",
-                sourceMedida = "", sourceComprador = "";
+                sourceMedida = "", sourceComprador = sourceComprador = '<option value="">Nenhuma</option>';
             carregaAtributosPorOrdem(result.filtrosPrePedido.attrEleListaPed, result.filtrosPrePedido.attrListaPed, result.filtrosPrePedido.ordemPed, true);
             carregaAtributosPorOrdem(result.filtrosPrePedido.attrEleListaProd, result.filtrosPrePedido.attrListaProd, result.filtrosPrePedido.ordemProd, false)
             $.each(result.filtrosPrePedido.secoes, function (index, value) {
@@ -1922,6 +2084,12 @@ function geraCargaPedidoAnalitico(parametro) {
             $.each(result.filtrosPrePedido.especies, function (index, value) {
                 sourceEspecie += "<option selected data-tokens='" + value.token + "' value='" + value.valor + "'>" + value.descricao + "</option>";
             });
+            if (result.filtrosPrePedido.segmentos) {
+                $.each(result.filtrosPrePedido.segmentos, function (index, value) {
+                    sourceSeg += "<option data-tokens='" + value.token + "' value='" + value.valor + "'>" + value.descricao + "</option>";
+                });
+
+            }
             $.each(result.filtrosPrePedido.formaPgto, function (index, value) {
                 sourceForma += criarCondPgto(value.valor, value.descricao, 'money');
             });
@@ -1944,7 +2112,9 @@ function geraCargaPedidoAnalitico(parametro) {
                 sourceTamanho += criarTamanho(value.valor, value.token, value.descricao);
             });
             $.each(result.filtrosPrePedido.compradores, function (index, value) {
-                sourceComprador += "<option data-tokens='" + value.token + "' value='" + value.valor + "'>" + value.descricao + "</option>";
+                var selecionado = value.valor == result.compradoresSelecionados ? " selected " : "";
+
+                sourceComprador += "<option data-tokens='" + value.token + "' " + selecionado +"' value='" + value.valor + "'>" + value.descricao + "</option>";
             });
             $.each(result.filtrosPrePedido.uniMedida, function (index, value) {
                 var selecionado = value.valor == result.idUnidadeMedida ? " selected " : "";
@@ -1955,17 +2125,24 @@ function geraCargaPedidoAnalitico(parametro) {
             $(".attrPerc").maskMoney();
             $(".attrBool").bootstrapSwitch();
             geraComponenteCalendarioAttr()
-            $('#txtDtEntregaPed').data('daterangepicker').minDate = moment(new Date(result.filtrosPrePedido.dataEntregaInicio));
-            $('#txtDtEntregaPed').data('daterangepicker').setStartDate(new Date(result.filtrosPrePedido.dataEntregaInicio));
-            $('#txtDtEntregaPed').data('daterangepicker').setEndDate(new Date(result.filtrosPrePedido.dataEntregaFinal));
-            $('#txtDtEntregaFinalPed').data('daterangepicker').setStartDate(new Date(result.filtrosPrePedido.dataToleranciaAtrasoInicio));
-            $('#txtDtEntregaFinalPed').data('daterangepicker').setEndDate(new Date(result.filtrosPrePedido.dataToleranciaAtrasoFinal));
+            if (result.filtrosPrePedido.dadosConfigPadrao.addCores) {
+                if ($('#frmGradeCor2').hasClass("ocultarElemento"))
+                    $('#frmGradeCor2').removeClass("ocultarElemento");
+                if ($('#frmGradeCor3').hasClass("ocultarElemento"))
+                    $('#frmGradeCor3').removeClass("ocultarElemento");
+            }
+            $('#txtDtEntregaPed').data('daterangepicker').minDate = moment(new Date(result.filtrosPrePedido.dadosConfigPadrao.dataEntregaInicio));
+            $('#txtDtEntregaPed').data('daterangepicker').setStartDate(new Date(result.filtrosPrePedido.dadosConfigPadrao.dataEntregaInicio));
+            $('#txtDtEntregaPed').data('daterangepicker').setEndDate(new Date(result.filtrosPrePedido.dadosConfigPadrao.dataEntregaFinal));
+            $('#txtDtEntregaFinalPed').data('daterangepicker').setStartDate(new Date(result.filtrosPrePedido.dadosConfigPadrao.dataToleranciaAtrasoInicio));
+            $('#txtDtEntregaFinalPed').data('daterangepicker').setEndDate(new Date(result.filtrosPrePedido.dadosConfigPadrao.dataToleranciaAtrasoFinal));
             $("#drpCompPed").html(sourceComprador);
             $("#drpUnidadeMed").html(sourceMedida);
             $("#txDtCadProd").val(result.dtCadastroProduto).attr('disabled', true);
             $("#drpEsp").html(sourceEspecie).attr('disabled', true);
             $("#drpMarc").html(sourceMarca).attr('disabled', true);
             $("#drpSec").html(sourceSec).attr('disabled', true);
+            $("#drpSeg").html(sourceSeg).attr('disabled', true);
             $("#drpCNPJ").html(sourceCNPJ).attr('disabled', true);
             $("#drpCoresGrade").html(sourceCores);
             $("#drpTamanhoGrade").html(sourceTamanho);
@@ -1980,8 +2157,6 @@ function geraCargaPedidoAnalitico(parametro) {
                 });
                 var headTB = criaTabelaHistorico(colDesc);
                 $("#tabelaHitorico").html(headTB);
-                console.log(colHitorico);
-                console.log(colRef);
                 carregarHistoricoTB(colRef, result.historicos)
 
             }
@@ -1990,12 +2165,13 @@ function geraCargaPedidoAnalitico(parametro) {
             $('#drpClassificacao').html(souceClass).selectpicker('val', '');
             $("#drpCondPgtoPed").html(sourceCondicao);
             $("#drpFrmPgtoPed").html(sourceForma);
+
             ordenaOpcao();
             $(".selectpicker").selectpicker();
             $("#drpCompPed").selectpicker('val', result.compradoresSelecionados.split(','));
-            
-            $("#drpCoresGrade").selectpicker('val', result.coresSelecionadas.split(','));
+            validaPermissaoPedidoCadastro()
             $("#drpTamanhoGrade").selectpicker('val', result.tamanhosSelecionadas.split(','));
+            $("#drpCoresGrade").html(sourceCores).selectpicker('val', result.coresSelecionadas.split(','));
             $('#drpReferenciaGrade').selectpicker('val', result.referenciasSelecionadas.split(','));
             $("#drpCondPgtoPed option[value='" + result.condicaoSeleciona + "']").attr('selected', 'selected')
             $("#drpClassificacao option[value='" + result.classificacaoSelecionada + "']").attr('selected', 'selected')
@@ -2064,6 +2240,8 @@ function geraCargaPedidoAnalitico(parametro) {
             $("#divForn").removeClass('ocultarElemento');
             $("#divMarca").removeClass('ocultarElemento');
             $("#divSec").removeClass('ocultarElemento');
+            $(".resumoTab").removeClass('ocultarElemento');
+            $(".resumoTab a").tab('show');
             if (result.status !== 'A') {
                 desabilitaEdicao();
                 $(".selectpicker").selectpicker('refresh');

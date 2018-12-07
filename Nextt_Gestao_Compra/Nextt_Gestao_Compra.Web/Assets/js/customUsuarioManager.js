@@ -23,85 +23,95 @@ $(document).ready(function () {
     });
 
     $(document).on('click', '.editaUsuario', function (e) {
+        if (permissoesUsuarioLogado.indexOf('Editar Usuário') === -1) {
+            semAcesso()
+        } else {
+            var linha = $(this).parent().parent();
+            var tbUsuario = new $.fn.dataTable.Api("#tabelaUsuarios");
+            var idEditar = tbUsuario.row($(linha)).data()[0], titulo = 'Operação Inválida', texto = 'Não é permitido editar seu próprio usuário.';
 
-        var linha = $(this).parent().parent();
-        var tbUsuario = new $.fn.dataTable.Api("#tabelaUsuarios");
-        var idEditar = tbUsuario.row($(linha)).data()[0], titulo = 'Operação Inválida', texto = 'Não é permitido editar seu próprio usuário.';
+            if (sessionStorage.getItem("id_usuario") === idEditar) {
+                modal({
+                    type: "alert",
+                    messageText: texto,
+                    alertType: 'warning',
+                    headerText: titulo
+                });
+            }
+            else {
+                $('.events-filter').css('display', 'none');
+                $('#tabelaUsuarios_paginate').css('display', 'none');
+                $('#tabelaUsuarios').css('display', 'none');
+                $('.selectpicker').selectpicker('hide');
+                $(".navbar.navbar-default.navbar-fixed-top").addClass('ocultarElemento');
+                $(".bg_load").show();
+                $(".wrapper").show();
+                editarUsuario(idEditar);
+            }
 
-        if (sessionStorage.getItem("id_usuario") === idEditar) {
-            modal({
-                type: "alert",
-                messageText: texto,
-                alertType: 'warning',
-                headerText: titulo
-            });
-        }
-        else {
-            $('.events-filter').css('display', 'none');
-            $('#tabelaUsuarios_paginate').css('display', 'none');
-            $('#tabelaUsuarios').css('display', 'none');
-            $(".bg_load").show();
-            $(".wrapper").show();
-
-            editarUsuario(idEditar);
         }
 
     });
 
     $(document).on('switchChange.bootstrapSwitch', '.ckbGrid', function (event, state) {
-
-
-        var tbUsuario = new $.fn.dataTable.Api("#tabelaUsuarios"), linha = $(this).parent().parent().parent().parent(), btnSim = "Sim",
-            btnNao = "Não", checkbox = this, idEditar = tbUsuario.row($(linha)).data()[0], titulo = 'Operação Inválida', texto = 'Não é permitido bloquear seu próprio usuário.';
-
-        if (sessionStorage.getItem("id_usuario") === idEditar) {
+        var checkbox = this;
+        if (permissoesUsuarioLogado.indexOf('Bloquear/Desbloquear Usuário') === -1) {
             $(checkbox).bootstrapSwitch('state', !state, true);
-            modal({
-                type: "alert",
-                messageText: texto,
-                alertType: 'warning',
-                headerText: titulo
-            });
+            semAcesso()
         } else {
-            titulo = 'Gerenciamento de Usuários';
+            var tbUsuario = new $.fn.dataTable.Api("#tabelaUsuarios"), linha = $(this).parent().parent().parent().parent(), btnSim = "Sim",
+                btnNao = "Não", idEditar = tbUsuario.row($(linha)).data()[0], titulo = 'Operação Inválida', texto = 'Não é permitido bloquear seu próprio usuário.';
 
-            var nomeUsuarioBloqueio = tbUsuario.row($(linha)).data()[1];
-
-
-            if (!state) {
-                texto = 'Ao confirmar esta operação, o usuário ' + nomeUsuarioBloqueio + ' perderá acesso ao sistema. </br> Deseja Prosseguir?';
+            if (sessionStorage.getItem("id_usuario") === idEditar) {
+                $(checkbox).bootstrapSwitch('state', !state, true);
                 modal({
-                    type: "confirm",
+                    type: "alert",
                     messageText: texto,
-                    yesButtonText: btnSim,
-                    noButtonText: btnNao,
                     alertType: 'warning',
                     headerText: titulo
-                }).done(function (e) {
-                    if (!e) {
-                        $(checkbox).bootstrapSwitch('state', true, true);
-                    } else {
-                        alterarStatusUsuario(idEditar, state, checkbox);
-                    }
                 });
             } else {
-                texto = 'Ao confirmar esta operação, o usuário ' + nomeUsuarioBloqueio + ' voltará a ter acesso ao sistema. </br> Deseja Prosseguir?';
-                modal({
-                    type: "confirm",
-                    messageText: texto,
-                    yesButtonText: btnSim,
-                    noButtonText: btnNao,
-                    alertType: 'warning',
-                    headerText: titulo
-                }).done(function (e) {
-                    if (!e) {
-                        $(checkbox).bootstrapSwitch('state', false, true);
-                    } else {
-                        alterarStatusUsuario(idEditar, state, checkbox);
-                    }
-                });
+                titulo = 'Gerenciamento de Usuários';
+
+                var nomeUsuarioBloqueio = tbUsuario.row($(linha)).data()[1];
+
+
+                if (!state) {
+                    texto = 'Ao confirmar esta operação, o usuário ' + nomeUsuarioBloqueio + ' perderá acesso ao sistema. </br> Deseja Prosseguir?';
+                    modal({
+                        type: "confirm",
+                        messageText: texto,
+                        yesButtonText: btnSim,
+                        noButtonText: btnNao,
+                        alertType: 'warning',
+                        headerText: titulo
+                    }).done(function (e) {
+                        if (!e) {
+                            $(checkbox).bootstrapSwitch('state', true, true);
+                        } else {
+                            alterarStatusUsuario(idEditar, state, checkbox);
+                        }
+                    });
+                } else {
+                    texto = 'Ao confirmar esta operação, o usuário ' + nomeUsuarioBloqueio + ' voltará a ter acesso ao sistema. </br> Deseja Prosseguir?';
+                    modal({
+                        type: "confirm",
+                        messageText: texto,
+                        yesButtonText: btnSim,
+                        noButtonText: btnNao,
+                        alertType: 'warning',
+                        headerText: titulo
+                    }).done(function (e) {
+                        if (!e) {
+                            $(checkbox).bootstrapSwitch('state', false, true);
+                        } else {
+                            alterarStatusUsuario(idEditar, state, checkbox);
+                        }
+                    });
+                }
             }
         }
+
 
     });
 
@@ -261,18 +271,20 @@ function limparModalCadastro() {
     $("#txtNome").val('');
     $("#txtSobrenome").val('');
     $("#txtCelular").val('');
+    $("#txtNomePerfil").val('');
 
     $('#cbPerfil').selectpicker('val', '');
+    $('#cbPermissaoConceder').selectpicker('deselectAll');
 
-    $('.divSelectPicker').addClass('ocultarElemento');
-    $('#tabelaUsuarios_paginate').css('display', 'none');
-    $(".table-responsive").find('.selectpicker').selectpicker('hide');
-    $(".navbar.navbar-default.navbar-fixed-top").css("display", "none");
+    //$('.divSelectPicker').addClass('ocultarElemento');
+    //$('#tabelaUsuarios_paginate').css('display', 'none');
+    //$(".table-responsive").find('.selectpicker').selectpicker('hide');
+    //$(".navbar.navbar-default.navbar-fixed-top").css("display", "none");
 
-    var t = $('#tabelaUsuarios').DataTable();
-    t.ajax.reload();
-    $(".bg_load").show();
-    $(".wrapper").show();
+    //var t = $('#tabelaUsuarios').DataTable();
+    //t.ajax.reload();
+    //$(".bg_load").show();
+    //$(".wrapper").show();
 }
 function focoCadastroInvalido() {
     !$("#cbPerfil").val() ? $("#cbPerfil").data('selectpicker').$button.focus() :
@@ -309,14 +321,21 @@ function carregarGridUsuario(retorno) {
 }
 
 function abrirModalNovoUsuario() {
-    document.getElementById('novoUsuario').click();
+
+    if (permissoesUsuarioLogado.indexOf('Cadastrar Usuário') === -1) {
+        semAcesso();
+    } else {
+        limparModalCadastro()
+        document.getElementById('novoUsuario').click();
+    }
 }
 function abrirModalPerfil() {
-    //if (!contains.call(permissoes, 'Cadastrar Perfil')) {
-    //    acessoNegado();
-    //} else {
-    document.getElementById('novoPerfil').click();
-    //}
+    if (permissoesUsuarioLogado.indexOf('Cadastrar Perfil') === -1) {
+        semAcesso();
+    } else {
+        limparModalCadastro()
+        document.getElementById('novoPerfil').click();
+    }
 }
 function id(el) {
     return document.getElementById(el);

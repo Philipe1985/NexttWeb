@@ -52,6 +52,7 @@
     <Compile Include="Entidades\Grade.cs" />
     <Compile Include="Entidades\GrupoFilial.cs" />
     <Compile Include="Entidades\HistoricoPedido.cs" />
+    <Compile Include="Entidades\InteressadosPedido.cs" />
     <Compile Include="Entidades\Marca.cs" />
     <Compile Include="Entidades\Paginas.cs" />
     <Compile Include="Entidades\Parametros.cs" />

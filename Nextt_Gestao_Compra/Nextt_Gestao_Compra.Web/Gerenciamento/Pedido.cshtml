@@ -80,13 +80,13 @@
                     <div class="form-group">
                         <h5 class="form-label">Cod. Original</h5>
                         <div class="controls">
-                            <input type="text" id="txtCodOri" maxlength="50" class="form-control" />
+                            <input type="text" id="txtCodOri" maxlength="40" class="form-control" />
                         </div>
                     </div>
                 </div>
                 <div id="divForn" class="col-md-2 col-sm-12 col-xs-12 ocultarElemento">
                     <div class="form-group">
-                        <h5 class="form-label">Selecione os fornecedores:</h5>
+                        <h5 class="form-label">Fornecedores:</h5>
                         <div class="controls">
                             <select id="drpCNPJ" class="selectpicker show-tick form-control" data-show-subtext="true" data-actions-box="true" multiple data-live-search="true"
                                     data-select-all-text="Marcar Todos" data-deselect-all-text="Desmarcar Todos" data-count-selected-text="Selecionado {0} de {1} CNPJ's'" title="0 selecionados..."
@@ -94,9 +94,10 @@
                         </div>
                     </div>
                 </div>
+                
                 <div id="divMarca" class="col-md-2 col-sm-12 col-xs-12 ocultarElemento">
                     <div class="form-group">
-                        <h5 class="form-label">Selecione as marcas:</h5>
+                        <h5 class="form-label">Marcas:</h5>
                         <div class="controls">
                             <select id="drpMarc" class="selectpicker show-tick form-control" data-actions-box="true" multiple data-live-search="true"
                                     data-select-all-text="Marcar Todos" data-deselect-all-text="Desmarcar Todos" data-count-selected-text="Selecionado {0} de {1}" title="0 selecionados..."
@@ -104,9 +105,19 @@
                         </div>
                     </div>
                 </div>
+                <div id="divSeg" class="col-md-2 col-sm-4 col-xs-12 ocultarElemento">
+                    <div class="form-group">
+                        <h5 class="form-label">Segmentos:</h5>
+                        <div class="controls">
+                            <select id="drpSeg" class="selectpicker show-tick form-control" data-show-subtext="true" multiple data-live-search="true"
+                                    data-count-selected-text="Selecionado {0} de {1}" title="0 selecionados..."
+                                    data-width="100%" data-select-header="true" data-size="7" data-selected-text-format="count > 2"></select>
+                        </div>
+                    </div>
+                </div>
                 <div id="divSec" class="col-md-3 col-sm-12 col-xs-12 ocultarElemento">
                     <div class="form-group">
-                        <h5 class="form-label">Selecione as seções:</h5>
+                        <h5 class="form-label">Seções:</h5>
                         <div class="controls">
                             <select id="drpSec" class="selectpicker show-tick form-control" data-show-subtext="true" data-actions-box="true" multiple data-live-search="true"
                                     data-select-all-text="Marcar Todas" data-deselect-all-text="Desmarcar Todas" data-count-selected-text="Selecionado {0} de {1}" title="0 selecionados..."
@@ -116,7 +127,7 @@
                 </div>
                 <div id="divEsp" class="col-md-3 col-sm-12 col-xs-12 ocultarElemento">
                     <div class="form-group">
-                        <h5 class="form-label">Selecione as espécies:</h5>
+                        <h5 class="form-label">Espécies:</h5>
                         <div class="controls">
                             <select id="drpEsp" class="selectpicker show-tick form-control" data-show-subtext="true" data-actions-box="true" multiple data-live-search="true"
                                     data-select-all-text="Marcar Todas" data-deselect-all-text="Desmarcar Todas" data-count-selected-text="Selecionado {0} de {1}" title="0 selecionados..."
@@ -128,7 +139,7 @@
             <div class="row">
                 <div class="col-md-2 col-sm-12 col-xs-12">
                     <div class="form-group">
-                        <h5 class="form-label">Selecione os Compradores:</h5>
+                        <h5 class="form-label">Compradores:</h5>
                         <div class="controls ocultarElemento">
                             <select name="cbUsuario" id="cbUsuario" class="selectpicker show-tick form-control pull-right" 
                                     data-count-selected-text="Selecionado {0} de {1} opções"
@@ -140,7 +151,7 @@
                     <div class="form-group">
                         <h5 class="form-label">Atributo Fornecedor:</h5>
                         <div class="controls ocultarElemento">
-                            <select name="cbAttrForn" id="cbAttrForn" data-actions-box="true" class="selectpicker show-tick form-control pull-right" data-live-search="true"
+                            <select name="cbAttrForn" id="cbAttrForn" data-actions-box="true" class="selectpicker show-tick form-control" data-live-search="true"
                                     data-select-all-text="Marcar Todas" data-deselect-all-text="Desmarcar Todas" data-count-selected-text="Selecionado {0} de {1} opções"
                                     data-width="100%" multiple data-select-header="true" data-size="auto" data-selected-text-format="count > 2" title="Selecione..."></select>
                         </div>
@@ -170,9 +181,13 @@
                     <div class="form-group">
                         <h5 class="form-label">Pesquisar Pedidos:</h5>
                         <div class="controls">
-                            <button id="btnBuscarPedidoa" class="btn btn-primary btn-block" onclick="buscarPedidosFiltrado()">
+                            <button id="btnBuscarPedidoa" class="btn btn-primary" onclick="buscarPedidosFiltrado()">
                                 <i class="fa fa-search" aria-hidden="true"> Pesquisar</i>
                             </button>
+                            <a href="javascript:limparCampos();" data-toggle="tooltip" title="Limpar Filtros" class="btn text-center clear-filter">
+                                @*<i class="fa fa-filter fa-2x" aria-hidden="true"></i>*@
+                                <span class="glyphicon glyphicon-filter"></span>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -327,7 +342,7 @@
                 <br />
             </div>
             <div class="modal-footer btnFooters">
-                <button type="button" id="btnAcessar" class="btn btn-primary"><i class="fa fa-external-link-square" aria-hidden="true"></i> Acessar Pedido</button>
+                <button type="button" id="btnAcessar" class="btn btn-primary"><i class="fa fa-external-link-square" aria-hidden="true"></i> Abrir Pedido</button>
                 <button type="button" id="btnAprovar" class="btn btn-success"><i class="fa fa-check" aria-hidden="true"></i> Aprovar Pedido</button>
                 <button type="button" id="btnDevolver" class="btn btn-warning"><i class="fa fa-mail-reply" aria-hidden="true"></i> Reprovar Pedido</button>
                 <button type="button" id="btnCancelar" class="btn btn-danger"><i class="fa fa-close" aria-hidden="true"></i> Cancelar Pedido</button>

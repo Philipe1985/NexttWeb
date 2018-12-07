@@ -10,7 +10,7 @@ var coresGrade = [], coresNovasCadastradas = [], tamanhosGrade = [], tamanhoText
 
 var current = new Date().getMonth(),
     slides, currentIndex, grupoRelacionar, gradeAlterada = false;
-
+var segTratado = false;
 specialKeys.push(8); //Backspace
 specialKeys.push(43); // +
 specialKeys.push(13); // ENTER
@@ -20,6 +20,7 @@ $.fn.hasAttr = function (name) {
 var dadosCompraCadastro = sessionStorage.getItem("compra");
 var compraId = sessionStorage.getItem("pedidoId");
 var cadastroNovoSession = sessionStorage.getItem("cadastroNovo");
+var cadastroNovoProduto = sessionStorage.getItem("cadastroProduto");
 var fornSelCadCpr = sessionStorage.getItem("fornSelecionado");
 var statusPedido = null;
 sessionStorage.setItem("cores", "");
@@ -520,7 +521,30 @@ $(document).ready(function () {
         if (retorno) return;
         else evento.preventDefault();
     })
+    $(document).on('keypress', '#txtCodOriPed', function (event) {
 
+        var keyCode = event.keyCode || event.which
+        if (keyCode == 8 || (keyCode >= 35 && keyCode <= 40)) { 
+            return;
+        }
+
+        var regex = new RegExp("^[a-zA-Z0-9]+$");
+        var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+
+        if (!regex.test(key)) {
+            event.preventDefault();
+            return false;
+        }
+    })
+    $(document).on('paste', '#txtCodOriPed', function (e) {
+        var paste = e.originalEvent.clipboardData.getData('Text');
+        var isValidoPaste = paste.replace(/[^a-z0-9]/gi, '') === paste;
+        if (isValidoPaste) {
+            return;
+        }
+            
+        e.preventDefault();
+    })
     $(document).on('keyup touchend', '#txtNomeNovaCor', function (evento) {
         var code = (evento.keyCode ? evento.keyCode : evento.which), valorImputado = this.value;
         if (valorImputado.length > 0 && valorImputado.slice(-1) === '/') {
@@ -684,7 +708,7 @@ $(document).ready(function () {
         validaMudancaGrade();
     });
     $('#drpClassificacao').on('change', function (e) {
-        atualizaCbClassificacao();
+        //atualizaCbClassificacao();
     });
     $('#drpTamanhoCategoria').on('change', function (e) {
         var objEnvio = {};
@@ -702,6 +726,25 @@ $(document).ready(function () {
 
     });
 
+    $('#drpSeg').on('change', function (e) {
+        var objParam = {};
+        $("#drpSec").html('<option selected value="">Nenhuma</option>').prop('disabled', true);
+        $("#drpSec").selectpicker('refresh');
+        $("#drpEsp").html('<option selected value="">Nenhuma</option>').prop('disabled', true);
+        $("#drpEsp").selectpicker('refresh');
+        if ($('#drpSeg').val()) {
+            localStorage.setItem("combo", "secao");
+            $('.selectpicker').selectpicker('hide');
+            $(".navbar.navbar-default.navbar-fixed-top").addClass('ocultarElemento');
+            $(".bg_load").show();
+            $(".wrapper").show();
+            $("#drpSec").prop('disabled', false);
+            objParam.segmentos = $('#drpSeg').val().replace(/[^\d,]/g, '');
+            carregarSecoes(objParam);
+        }
+        atualizaCodigoProduto();
+
+    });
     $('#drpSec').on('change', function (e) {
         var objParam = {};
         $("#drpEsp").html('<option selected value="">Nenhuma</option>').prop('disabled', true);
@@ -726,7 +769,7 @@ $(document).ready(function () {
 })
 
 function carregar() {
-    if (!dadosCompraCadastro && !cadastroNovoSession && !compraId) {
+    if (!dadosCompraCadastro && !cadastroNovoSession && !compraId && !cadastroNovoProduto) {
         var carga = sessionStorage.getItem("produtosLista");
         localStorage.setItem("erro", "<strong>Acesso Não Autorizado!</strong> É necessário seguir o fluxo de cadastro para acessar os próximos passos.");
 
@@ -756,13 +799,15 @@ function carregar() {
         if (dadosCompraCadastro) {
             dadosCompraCadastro = JSON.parse(dadosCompraCadastro)[0];
             var objEnvio = {};
-            
+
             objEnvio.codigo = dadosCompraCadastro.idProduto;
-            
+
             carregaImagemProduto(objEnvio);
             geraCargaPrePedido(objEnvio);
         } else if (cadastroNovoSession) {
             geraCargaCadNovo()
+        } else if (cadastroNovoProduto) {
+            cadastrarProduto();
         } else {
             var objEnvio = {};
             console.log(compraId)
@@ -772,6 +817,19 @@ function carregar() {
         }
     }
     $(".attributo-cad").bootstrapSwitch();
+}
+function validaPermissaoPedidoCadastro() {
+    if (permissoesUsuarioLogado.indexOf('Cadastrar Novas Referências') === -1) {
+        $('#txtNomeNovaRef').attr("disabled", true);
+    }
+    if (permissoesUsuarioLogado.indexOf('Alterar Comprador') === -1) {
+        $('#drpCompPed option').attr("disabled", true);
+    }
+    if (permissoesUsuarioLogado.indexOf('Cadastrar Novas Condições de Pagamento') === -1) {
+        $('#txtCadCondPgtoPed').attr("disabled", true);
+    }
+    
+    
 }
 function atualizaDtEntregaLimite() {
     var dataRef = $('#txtDtEntregaPed').data('daterangepicker').endDate.toDate();
@@ -1001,7 +1059,7 @@ function carregarPackCad(id, qtd, qtdTabela) {
         "info": false,
         columns: geraColunaPackCadastrado()
     })
-    recalculaTotalColunas(tbCadPackNovo,qtd.texto);
+    recalculaTotalColunas(tbCadPackNovo, qtd.texto);
     tabelaPackCadastrados.push({
         'idTabela': id,
         'dadosLinha': tbCadPackNovo.rows().data(),
@@ -1049,7 +1107,7 @@ function carregarPackPedidoCadastrado(id, qtd, dados, colunas) {
     tbCadPackNovo.columns.adjust().draw();
 
 }
-function carregarPackGradeAtualizada(id, config,qtdPack) {
+function carregarPackGradeAtualizada(id, config, qtdPack) {
     var tbCadPackNovo = $('#' + id).DataTable({
         paging: false, /* define se a tabela deve usar paginação */
         searching: false, /* define se deve usar o campo Buscar dentro da tabela */
@@ -1071,7 +1129,7 @@ function carregarPackGradeAtualizada(id, config,qtdPack) {
         "info": false,
         columns: config.colunas
     })
-    recalculaTotalColunas(tbCadPackNovo,qtdPack);
+    recalculaTotalColunas(tbCadPackNovo, qtdPack);
     recalculaDistCustos();
     return tbCadPackNovo;
 
@@ -1295,7 +1353,7 @@ function geraColunaHistorico(dados) {
 function geraColunaPack() {
     var colunasPack = [{ "data": "referencia", 'className': 'separaDireita' }, { "data": "cores", 'className': 'separaDireita' }];
     for (var i = 0; i < tamanhosGrade.length; i++) {
-        colunasPack.push({ "data": "tamanho" + converterFormatoVariavel(tamanhosGrade[i]), 'className': 'qtdPack separaDireita' });
+        colunasPack.push({ "data": "tamanho" + converterFormatoVariavel(toTitleCase(tamanhosGrade[i])), 'className': 'qtdPack separaDireita' });
     };
     colunasPack.push({ "data": "totalCor", 'className': 'separaDireita' });
     return colunasPack;
@@ -1316,7 +1374,7 @@ function geraColunaGradeDinamica() {
 function geraColunaPackCadastrado() {
     var colunasPack = [{ "data": "referencia", 'className': 'separaDireita' }, { "data": "cores", 'className': 'separaDireita' }];
     for (var i = 0; i < tamanhosGrade.length; i++) {
-        colunasPack.push({ "data": "tamanho" + converterFormatoVariavel(tamanhosGrade[i]), 'className': 'qtdPack separaDireita' });
+        colunasPack.push({ "data": "tamanho" + converterFormatoVariavel(toTitleCase(tamanhosGrade[i])), 'className': 'qtdPack separaDireita' });
     };
     colunasPack.push({ "data": "totalCor", 'className': 'numInt separaDireita' }, { "data": "qtdPack", 'className': 'qtdPackCadastrado separaDireita' });
     return colunasPack;
@@ -1407,10 +1465,10 @@ function atualizaDadosPack() {
         if (param !== parseInt(valorInicialPed)) {
             tbPlanejamento.rows().every(function (rowIdx, tableLoop, rowLoop) {
                 var data = this.data();
-                data.hasOwnProperty('qtdPack') ? 
-                    data.qtdPack = param : data.qtdePack = param;                
+                data.hasOwnProperty('qtdPack') ?
+                    data.qtdPack = param : data.qtdePack = param;
             });
-            recalculaTotalColunas(tbPlanejamento,param)
+            recalculaTotalColunas(tbPlanejamento, param)
             tbPlanejamento.columns.adjust().draw();
             tbPlanejamento.rowsgroup.update();
             tabelaPackCadastrados.map(obj => {
@@ -1449,7 +1507,8 @@ function perdeFoco() {
     var tbPlanejamento = $('#' + gridNome).dataTable().api();
     var totalRows = tbPlanejamento.rows().count() - 1;
     var linhaIndice = tbPlanejamento.row(row).index();
-    var colunaAtualizada = "tamanho" + $(tbPlanejamento.column(col).header()).html();
+    var colunaAtualizada = "tamanho" + converterFormatoVariavel(toTitleCase($(tbPlanejamento.column(col).header()).html()));
+    console.log(colunaAtualizada)
     var txtref = $('#' + gridNome).find('.txtInteiro')
     var param = parseInt(txtref.val());
     if (isNaN(param)) {
@@ -1463,7 +1522,7 @@ function perdeFoco() {
         if (!qtdPackAtual) {
             qtdPackAtual = tbPlanejamento.row(row).data().qtdPack;
         }
-        
+
         tbPlanejamento.row(row).data()[colunaAtualizada] = param;
         recalculaTotalLinha(tbPlanejamento);
         recalculaTotalColunas(tbPlanejamento, qtdPackAtual);
@@ -1877,7 +1936,7 @@ function geraCargaPackNovo(qtd) {
             linhaPackNovo.referencia = referenciaGrade[i];
             linhaPackNovo.cores = coresGrade[j];
             for (var k = 0; k < tamanhosGrade.length; k++) {
-                linhaPackNovo["tamanho" + converterFormatoVariavel(tamanhosGrade[k])] = 0;
+                linhaPackNovo["tamanho" + converterFormatoVariavel(toTitleCase(tamanhosGrade[k]))] = 0;
             }
             linhaPackNovo.totalCor = 0;
             linhaPackNovo.qtdPack = qtd;
@@ -2502,9 +2561,9 @@ function validaValor(e) {
 }
 function criAttrLista(mult, val, opt, obr, id) {
     var classesCb = obr ? ' validarAttr' : '', multiple = mult ? ' multiple ' : '';
-    var searchBox = opt.length > 7 ? 'data-live-search="true" ':''
+    var searchBox = opt.length > 7 ? 'data-live-search="true" ' : ''
     var sourceAttr = '<select name="cbAttr' + id + '" id="cbAttr' + id + '" class="selectpicker show-tick form-control listAttr pull-right' +
-        classesCb + '" ' + multiple + searchBox +'data-width="100%" data-size="auto">';
+        classesCb + '" ' + multiple + searchBox + 'data-width="100%" data-size="auto">';
 
     if (!mult) sourceAttr += '<option value="">Nenhum</option>';
     for (var i = 0; i < opt.length; i++) {
@@ -2556,11 +2615,14 @@ function carregaAtributosPorOrdem(elementos, combos, ordemCarga, isPedido) {
             retornaContainerAttr(combos[0].descricao, combos[0].obrigatorio, combos[0].idTipoAtributo, elAttr, isPedido);
             combos.shift();
         } else {
-            var validar = elementos[0].obrigatorio ? ' validarAttr' : '';
-            var elAttr = retornaElementoAtributo(validar, elementos[0].tipo, elementos[0].valorDef, elementos[0].idTipoAtributo, elementos[0].precisao, elementos[0].maximo, elementos[0].minimo);
-            retornaContainerAttr(elementos[0].descricao, elementos[0].obrigatorio, elementos[0].idTipoAtributo, elAttr, isPedido);
-            elementos.shift();
-        }
+            if (elementos[0]) {
+                var validar = elementos[0].obrigatorio ? ' validarAttr' : '';
+                var elAttr = retornaElementoAtributo(validar, elementos[0].tipo, elementos[0].valorDef, elementos[0].idTipoAtributo, elementos[0].precisao, elementos[0].maximo, elementos[0].minimo);
+                retornaContainerAttr(elementos[0].descricao, elementos[0].obrigatorio, elementos[0].idTipoAtributo, elAttr, isPedido);
+                elementos.shift();
+
+            }
+                    }
     }
 }
 function retornaStatusTextoTit(status) {

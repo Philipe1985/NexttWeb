@@ -66,9 +66,9 @@ namespace Nextt_Gestao_Compra.Dominio.Servicos.Gerenciamento
             return _listaCores.OrderBy(x => x.Descricao).Where(x => x.CorRGB.Split('/').Count() < 2 && x.VisivelSelecao == true).Select(x => "rgb(" + x.CorRGB + ")").ToList();
         }
 
-        public void AtualizaStatusPedido(Parametros parametros)
+        public string AtualizaStatusPedido(Parametros parametros)
         {
-            _pedidoRepositorio.AtualizaStatusPedido(parametros);
+           return _pedidoRepositorio.AtualizaStatusPedido(parametros);
         }
 
         public List<IEnumerable> ClonarPedido(Parametros parametros)

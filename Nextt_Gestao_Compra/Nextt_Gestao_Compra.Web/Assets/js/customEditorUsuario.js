@@ -27,24 +27,30 @@
 
     $('#btnResetarSenha').click(function (e) {
         e.preventDefault();
-        var usuario = JSON.parse(sessionStorage.getItem("usuarioEditar"));
-        var id = usuario.id, textoLoading = "Redefinindo senha. Aguarde!", btconfirma = 'Sim', btcancela = 'Não';
-        var texto = 'Ao confirmar esta operação, o usuário receberá uma nova senha por E-mail. Certifique-se de que o usuário tenha acesso ao E-mail registrado antes de prosseguir. ' +
-            'Caso o E-mail esteja desatualizado, efetue as alterações necessárias e salve. <br/>Tem certeza de que deseja prosseguir?', titulo = 'Redefinir Senha';
-        modal({
-            type: "confirm",
-            messageText: texto,
-            alertType: 'info',
-            headerText: titulo,
-            yesButtonText: btconfirma,
-            noButtonText: btcancela
-        }).done(function (e) {
-            if (e) {
-                waitingDialog.show(textoLoading, { dialogSize: 'lg', progressType: 'warning' });
-                resetarSenha(id);
-            }
-        });
+        if (permissoesUsuarioLogado.indexOf('Bloquear/Desbloquear Usuário') === -1) {
+            semAcesso()
+        } else {
+            var usuario = JSON.parse(sessionStorage.getItem("usuarioEditar"));
+            var id = usuario.id, textoLoading = "Redefinindo senha. Aguarde!", btconfirma = 'Sim', btcancela = 'Não';
+            var texto = 'Ao confirmar esta operação, o usuário receberá uma nova senha por E-mail. Certifique-se de que o usuário tenha acesso ao E-mail registrado antes de prosseguir. ' +
+                'Caso o E-mail esteja desatualizado, efetue as alterações necessárias e salve. <br/>Tem certeza de que deseja prosseguir?', titulo = 'Redefinir Senha';
+            modal({
+                type: "confirm",
+                messageText: texto,
+                alertType: 'info',
+                headerText: titulo,
+                yesButtonText: btconfirma,
+                noButtonText: btcancela
+            }).done(function (e) {
+                if (e) {
+                    waitingDialog.show(textoLoading, { dialogSize: 'lg', progressType: 'warning' });
+                    resetarSenha(id);
+                }
+            });
 
+        }
+        
+        
 
     });
 
@@ -90,6 +96,14 @@
                     alertType: 'info',
                     headerText: titulo,
                 });
+            } else if (!perfilAlterado) {
+                var texto = 'Atribua ao menos um perfil para salvar as alterações.', titulo = 'Operação Inválida';
+                modal({
+                    type: "alert",
+                    messageText: texto,
+                    alertType: 'info',
+                    headerText: titulo,
+                });
             } else {
                 atualizarUsuario(usuarioObj);
             }
@@ -109,7 +123,7 @@
             $('#ucComboAdminsEditar').selectpicker('val', 'Administrador');
 
         } else {
-            $('#ucComboAdminsEditar').selectpicker('val', 'Usuario');
+            $('#ucComboAdminsEditar').selectpicker('val', '');
         }
 
     })
@@ -169,7 +183,7 @@ function carregaUsuarioEditar() {
             return this.text == texto;
         }).attr('selected', true);
     };
-
+    checarPermissoesEdicao()
     $('#ucComboAdminsEditar').selectpicker('refresh');
 
 

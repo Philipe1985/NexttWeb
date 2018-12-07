@@ -173,10 +173,16 @@ function tratamentoErro(erro) {
 
     if (erro.responseJSON.modelState !== null && erro.responseJSON.modelState) {
         mensagem = mensagem + '<br /><hr><ul class="fa-ul">';
-        for (var i = 0; i < erro.responseJSON.modelState['motivo'].length; i++) {
+        $.each(erro.responseJSON.modelState, function (i, objeto) {
+            for (var i = 0; i < objeto.length; i++) {
+                mensagem = mensagem + '<li><i class="fa-li fa fa-ban"></i>' + (i + 1) + 'º- <strong>' + objeto[i] + '</strong>;</li>';
+                //objeto[i]
+            }
+        })
+        //for (var i = 0; i < erro.responseJSON.modelState['motivo'].length; i++) {
 
-            mensagem = mensagem + '<li><i class="fa-li fa fa-ban"></i>' + (i + 1) + 'º- <strong>' + erro.responseJSON.modelState['motivo'][i] + '</strong>;</li>';
-        }
+        //    mensagem = mensagem + '<li><i class="fa-li fa fa-ban"></i>' + (i + 1) + 'º- <strong>' + erro.responseJSON.modelState['motivo'][i] + '</strong>;</li>';
+        //}
         mensagem = mensagem + '</ul>';
     }
     return mensagem;

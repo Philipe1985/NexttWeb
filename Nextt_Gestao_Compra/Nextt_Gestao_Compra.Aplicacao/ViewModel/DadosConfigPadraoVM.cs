@@ -13,11 +13,15 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
 
         public DadosConfigPadraoVM(ConfigDefault config)
         {
-            DataEntregaInicio = DateTime.Now.AddDays(config.DataEntregaInicio);
-            DataEntregaFinal = DateTime.Now.AddDays(config.DataEntregaFinal);
-            DataToleranciaAtrasoInicio = DateTime.Now.AddDays(config.DataToleranciaAtrasoInicio);
-            DataToleranciaAtrasoFinal = DateTime.Now.AddDays(config.DataToleranciaAtrasoFinal);
-            AddCores = config.AddCor;
+            if (config != null)
+            {
+                DataEntregaInicio = DateTime.Now.AddDays(config.DataEntregaInicio);
+                DataEntregaFinal = DateTime.Now.AddDays(config.DataEntregaFinal);
+                DataToleranciaAtrasoInicio = DateTime.Now.AddDays(config.DataToleranciaAtrasoInicio);
+                DataToleranciaAtrasoFinal = DateTime.Now.AddDays(config.DataToleranciaAtrasoFinal);
+                AddCores = config.AddCor;
+            }
+           
         }
     }
     

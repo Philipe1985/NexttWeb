@@ -33,31 +33,29 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
         public List<ComboAtributoVM> AttrListaProd { get; set; }
         public List<ComboAtributoVM> AttrListaPed { get; set; }
         public List<AtributoElementoVM> AttrEleListaProd { get; set; }
-        public DateTime DataEntregaInicio { get; set; }
-        public DateTime DataEntregaFinal { get; set; }
-        public DateTime DataToleranciaAtrasoInicio { get; set; }
-        public DateTime DataToleranciaAtrasoFinal { get; set; }
+        public DadosConfigPadraoVM DadosConfigPadrao { get; set; }
         public List<AtributoElementoVM> AttrEleListaPed { get; set; }
-        public FiltrosPesquisa(List<ComboFiltroVM> _fornecedores, List<ComboFiltroVM> _secoes, List<ComboFiltroVM> _marcas)
+        public FiltrosPesquisa(List<ComboFiltroVM> _fornecedores, List<ComboFiltroVM> _segmentos, List<ComboFiltroVM> _marcas)
         {
             Fornecedores = _fornecedores;
-            Secoes = _secoes;
+            Segmentos = _segmentos;
             Marcas = _marcas;
         }
 
         public FiltrosPesquisa(IAppServicoCompra compraServico, FabricaViewModel fabrica, List<Cor> cores, List<ComboFiltroVM> _fornecedores,
-            List<ComboFiltroVM> _secoes, List<ComboFiltroVM> _marcas, List<GrupoTamanho> tamanhos)
+            List<ComboFiltroVM> _segmentos, List<ComboFiltroVM> _marcas, List<GrupoTamanho> tamanhos, DadosConfigPadraoVM configDefault)
         {
             Fornecedores = _fornecedores;
-            Secoes = _secoes;
+            Segmentos = _segmentos;
             Marcas = _marcas;
             Tamanhos = new TamanhoGrupoVM(compraServico, fabrica, tamanhos);
             Cores = compraServico.RetornaCoresPrincipais(cores).Select(x => fabrica.Criar(x)).ToList();
             DadosPaleta = new PaletaDadosVM(compraServico.RetornaCSSCor(cores), compraServico.RetornaDescricaoCor(cores));
+            DadosConfigPadrao = configDefault;
         }
 
         public FiltrosPesquisa(DadosPrePedido dadosCadastro, IAppServicoCompra compraServico, FabricaViewModel fabrica, List<Cor> cores,
-            List<GrupoTamanho> tamanhos, List<ReferenciaProduto> referencias)
+            List<GrupoTamanho> tamanhos, List<ReferenciaProduto> referencias, DadosConfigPadraoVM configDefault)
         {
             Marcas = new List<ComboFiltroVM>() { fabrica.Criar(fabrica.CriarMarca(dadosCadastro)) };
             Secoes = new List<ComboFiltroVM>() { fabrica.Criar(fabrica.CriarSecao(dadosCadastro)) };
@@ -68,6 +66,7 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
                                    Ordem = 1
                                  }
                 )};
+            DadosConfigPadrao = configDefault;
             TamanhoOpcoes = compraServico.RetornaTamanhosAtivo(tamanhos).Select(x => fabrica.Criar(x)).ToList();
             Cores = compraServico.RetornaCoresPrincipais(cores).Select(x => fabrica.Criar(x)).ToList();
             Referencias = referencias.Select(x => fabrica.Criar(x)).ToList();
