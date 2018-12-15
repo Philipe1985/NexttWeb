@@ -49,8 +49,8 @@
             });
 
         }
-        
-        
+
+
 
     });
 
@@ -119,12 +119,10 @@
 
 
     $(document).on('switchChange.bootstrapSwitch', '#ckbAdministrador', function (event, state) {
-        if (state) {
-            $('#ucComboAdminsEditar').selectpicker('val', 'Administrador');
+        state ?
+            $('#ucComboAdminsEditar').selectpicker('val', 'Administrador') :
+            $('#ucComboAdminsEditar').selectpicker('val', $("#ucComboAdminsEditar option:not([value='Administrador'])").last()[0].value);
 
-        } else {
-            $('#ucComboAdminsEditar').selectpicker('val', '');
-        }
 
     })
 

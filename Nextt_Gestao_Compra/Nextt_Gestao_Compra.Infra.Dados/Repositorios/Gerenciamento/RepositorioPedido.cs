@@ -4,9 +4,6 @@ using Nextt_Gestao_Compra.Infra.Dados.Utils;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
 {
@@ -23,6 +20,7 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
                                     .With<Segmento>()
                                     .With<Atributos>()
                                     .With<UsuarioGerenciamento>()
+                                    .With<StatusPedido>()
                                     .Executar();
             }
             catch (Exception ex)
@@ -41,6 +39,7 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
                                     "', @DataEntregaPedidoInicial = '" + parametros.DtEntregaInicial +
                                     "', @DataEntregaPedidoFinal = '" + parametros.DtEntregaFinal +
                                     "', @IDFornecedor = '" + parametros.IDFornecedor +
+                                    "', @IDSegmento = '" + parametros.Segmentos+
                                     "', @CodigoProduto = '" + parametros.Codigo +
                                     "', @CodigoOriginal = '" + parametros.CodigoOriginal +//string ou int
                                     "', @ReferenciaFornecedor = '" + parametros.ReferenciaFornecedor +
@@ -105,8 +104,8 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
                                     .With<UnidadeMedida>()
                                     .With<ResumoPedido>()
                                     .With<HistoricoPedido>()
-                                    .With<Comprador>()
                                     .With<ConfigDefault>()
+                                    .With<PrecoGrupoEmpresa>()
                                     .Executar();
             }
             catch (Exception ex)
@@ -115,18 +114,16 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
             }
         }
 
-        public string AtualizaStatusPedido(Parametros parametros)
+        public void AtualizaStatusPedido(Parametros parametros)
         {
             try
             {
-                _Db.MultiplosResults("[dbo].[pr_altera_status_pre_pedido_GESTAO_COMPRAS] @IDPedido = " + parametros.Codigo +
+                _Db.MultiplosResults("[dbo].[pr_altera_status_pre_pedido_GESTAO_COMPRAS]" +
+                    " @IDPedido = " + parametros.Codigo +
                     ", @Status='" + parametros.Status +
-                    /*"' , @Observacao='" + parametros.Observacao +*/ "'")
-                      // .With<InteressadosPedido>()
+                    "', @Usuario='" + parametros.IDUsuarios +
+                    "' , @Observacao='" + parametros.Observacao + "'")
                       .Executar();
-                    //.ElementAt(0)
-                    //.Cast<InteressadosPedido>().ElementAt(0).Emails;
-                return string.Empty;
             }
             catch (Exception ex)
             {

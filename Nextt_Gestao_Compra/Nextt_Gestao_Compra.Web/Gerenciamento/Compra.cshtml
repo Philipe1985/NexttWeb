@@ -14,7 +14,7 @@
         </div>
         <div id="divForn" class="col-md-2 col-sm-4 col-xs-12 ocultarElemento">
             <div class="form-group">
-                <h5 class="form-label">Selecione os fornecedores:</h5>
+                <h5 class="form-label">Fornecedores:</h5>
                 <div class="controls">
                     <select id="drpCNPJ" class="selectpicker show-tick form-control" data-show-subtext="true" data-actions-box="true" multiple data-live-search="true"
                             data-select-all-text="Marcar Todos" data-deselect-all-text="Desmarcar Todos" data-count-selected-text="Selecionado {0} de {1} CNPJ's'" title="0 selecionados..."
@@ -46,8 +46,8 @@
             <div class="form-group">
                 <h5 class="form-label">Segmentos:</h5>
                 <div class="controls">
-                    <select id="drpSeg" class="selectpicker show-tick form-control" data-show-subtext="true" multiple data-live-search="true"
-                            data-count-selected-text="Selecionado {0} de {1}" title="0 selecionados..."
+                    <select id="drpSeg" class="selectpicker show-tick form-control" data-actions-box="true" data-show-subtext="true" multiple data-live-search="true"
+                            data-count-selected-text="Selecionado {0} de {1}" title="0 selecionados..." data-select-all-text="Marcar Todos" data-deselect-all-text="Desmarcar Todos"
                             data-width="100%" data-select-header="true" data-size="7" data-selected-text-format="count > 2"></select>
                 </div>
             </div>
@@ -82,13 +82,21 @@
                     </button>
                     <a href="javascript:limparCampos();" data-toggle="tooltip" title="Limpar Filtros" class="btn text-center clear-filter">
                         @*<i class="fa fa-filter fa-2x" aria-hidden="true"></i>*@
-                        <span class="glyphicon glyphicon-filter"></span>
+                        <span class="fa fa-filter-remove fa-2x"></span>
                     </a>
                 </div>
             </div>
         </div>
     </div>
     <div class="row">
+        <div class="col-md-2 col-sm-12 col-xs-12">
+            <div class="form-group">
+                <h5 id="lblCodProd" class="form-label">Cod. Prod. Matriz</h5>
+                <div class="controls">
+                    <input type="text" name="txtCodProd" id="txtCodProd" maxlength="9" class="form-control txtInteiro" />
+                </div>
+            </div>
+        </div>
         <div class="col-md-5 col-sm-12 col-xs-12">
             <div class="form-group">
                 <h5 class="form-label text-center">Clique na operação desejada para o produto:</h5>
@@ -113,34 +121,6 @@
             </div>
 
         </div>
-     
-        @*<div id="divOcultaColuna" class="col-md-3 col-sm-12 col-xs-12 ocultarElemento">
-            <div class="form-group">
-                <h5 for="drpOcultaColuna" class="control-label">Marque as colunas/grupos para ocultar da tabela:</h5>
-                <div class="controls">
-                    <select id="drpOcultaColuna" class="selectpicker show-tick form-control" multiple
-                            data-count-selected-text="Ocultando {0} de {1} colunas" data-select-header="true"
-                            title="Selecione as colunas..." data-width="100%" data-size="7" data-selected-text-format="count > 0">
-                        <optgroup label="Produto">
-                            <option value="2">Código Original</option>
-                            <option value="4">Descrição Reduzida</option>
-                        </optgroup>
-                        <optgroup label="Marca">
-                            <option value="5">Códgo</option>
-                            <option value="6">Descrição</option>
-                        </optgroup>
-                        <optgroup label="Fornecedor">
-                            <option value="7">Código</option>
-                            <option value="8">Razão Social</option>
-                            <option value="9">Nome Fantasia</option>
-                            <option value="10">Referência</option>
-                            <option value="11">CNPJ</option>
-                        </optgroup>
-                    </select>
-                </div>
-            </div>
-        </div>*@
-
     </div>
     <div class="row">
         <div class="col-md-12 col-sm-12 col-xs-12">
@@ -150,12 +130,13 @@
                 </div>
                 <div id="" class="panel-body">
                     <div class="pagination-holder clearfix pull-right"></div>
-                    <div class="col-md-12 col-sm-12 col-xs-12 table-responsive" style="max-height:60vh;overflow:auto">
+                    <div class="col-md-12 col-sm-12 col-xs-12 table-responsive">
                         <table id="tabelaProdutos" cellpadding="0" cellspacing="0" style="width:100%;" class="table-tools cell-border hover table cell nowrap stripe compact pretty">
                             <thead>
                                 <tr>
                                     <th rowspan="2" style="border:1px solid black;border-bottom:2px solid black">Comprar</th>
-                                    <th colspan="6" style="border:1px solid black;border-bottom:2px solid black">Produto</th>
+                                    <th colspan="5" style="border:1px solid black;border-bottom:2px solid black">Produto</th>
+                                    <th colspan="5" style="border:1px solid black;border-bottom:2px solid black">Fornecedor</th>
                                     <th colspan="2" style="border:1px solid black;border-bottom:2px solid black">Marca</th>
                                 </tr>
                                 <tr>
@@ -164,6 +145,10 @@
                                     <th style="border:1px solid black;border-bottom:2px solid black">Cód. Original</th>
                                     <th style="border:1px solid black;border-bottom:2px solid black">Descrição</th>
                                     <th style="border:1px solid black;border-bottom:2px solid black">Desc. Reduzida</th>
+                                    <th style="border:1px solid black;border-bottom:2px solid black">Código</th>
+                                    <th style="border:1px solid black;border-bottom:2px solid black">Razão Social</th>
+                                    <th style="border:1px solid black;border-bottom:2px solid black">Nome Fantasia</th>
+                                    <th style="border:1px solid black;border-bottom:2px solid black">CNPJ</th>
                                     <th style="border:1px solid black;border-bottom:2px solid black">Referência</th>
                                     <th style="border:1px solid black;border-bottom:2px solid black">Código</th>
                                     <th style="border:1px solid black;border-bottom:2px solid black">Descrição</th>

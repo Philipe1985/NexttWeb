@@ -36,13 +36,14 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
                 return _Db.MultiplosResults("[dbo].[pr_consulta_produto_GESTAO_COMPRAS]" +
                                     " @IDSecao = '" + parametros.Secoes +
                                     "', @IDEspecie = '" + parametros.Especies +
-                                    //"', @IDSegmento = '" + parametros.Segmentos+
+                                    "', @IDSegmento = '" + parametros.Segmentos +
                                     "', @IDMarca = '" + parametros.Marcas +
                                     "', @ReferenciaForncedor = '" + parametros.ReferenciaFornecedor +
                                     "', @AtributoFornecedor = '" + parametros.AttrFornecedor +
                                     "', @IDFornecedor = '" + parametros.IDFornecedor +
                                     "', @pagina = '" + parametros.Paginas +
-                                    "', @IDProduto = '" + parametros.Codigo + "'")
+                                    "', @CodigoProduto = '" + parametros.Codigo +
+                                    "', @IDProduto = ''")
                                     .With<DadosGerenciamentoProdutoCompra>()
                                     .With<Paginas>()
                                     .Executar();
@@ -61,6 +62,7 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
                                    " @Secao = '" + secoes +
                                    "', @Especie = ''")
                                    .With<Especie>()
+                                   .With<Atributos>()
                                    .Executar();
 
             }
@@ -113,6 +115,7 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
                                     .With<Comprador>()
                                     .With<UnidadeMedida>()
                                     .With<ConfigDefault>()
+                                    .With<PrecoGrupoEmpresa>()
                                     .Executar();
             }
             catch (Exception ex)
@@ -144,6 +147,7 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
                                    .With<Comprador>()
                                    .With<UnidadeMedida>()
                                    .With<ConfigDefault>()
+                                   .With<PrecoGrupoEmpresa>()
                                  .Executar();
             }
             catch (Exception ex)
@@ -298,9 +302,9 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
                 return _Db.MultiplosResults("[dbo].[pr_retorna_dados_ultima_compra_GESTAO_COMPRAS]" +
                                     " @IDProduto = '" + parametros.Codigo +
                                     "', @IDFornecedor = '" + parametros.IDFornecedor + "'")
-                                      .With<ConfigDefault>()
                                       .With<DadosCompraFornecedor>()
                                       .With<DadosUltimaCompra>()
+                                      .With<Atributos>()
                                       .Executar();
 
             }

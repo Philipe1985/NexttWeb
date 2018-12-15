@@ -24,8 +24,10 @@ namespace Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido
             var listaSegmetos = dados.ElementAt(2).Cast<Segmento>().OrderBy(x => x.Descricao).Select(x => fabrica.Criar(x)).ToList();
             var listaUsuarios = dados.ElementAt(4).Cast<UsuarioGerenciamento>().OrderBy(x => x.NomeUsuario).Select(x => fabrica.Criar(x)).ToList();
             var listaAttrForn = dados.ElementAt(3).Cast<Atributos>().OrderBy(x => x.Descricao).Select(x => fabrica.Criar(x)).ToList();
+            var listaStatus = dados.ElementAt(5).Cast<StatusPedido>().Select(x => fabrica.Criar(x)).ToList();
             var retorno = new FiltrosPesquisa(listaFornecedores, listaSegmetos, listaMarcas)
             {
+                StatusPedido = listaStatus,
                 Usuarios = listaUsuarios,
                 AttrFornecedores = listaAttrForn
             };
@@ -38,10 +40,10 @@ namespace Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido
             var listaRetorno = Mapper.Map<IEnumerable<PedidoConsulta>, IEnumerable<PedidosFiltradoVM>>(dados).ToList();
             return listaRetorno;
         }
-        public static string AtualizaPedido(IAppServicoPedido pedidoServico, ParametrosVM parametroVM)
+        public static void AtualizaPedido(IAppServicoPedido pedidoServico, ParametrosVM parametroVM)
         {
             var filtro = Mapper.Map<ParametrosVM, Parametros>(parametroVM);
-            return pedidoServico.AtualizaStatusPedido(filtro);
+            pedidoServico.AtualizaStatusPedido(filtro);
 
         }
         public static int ClonarPedido(IAppServicoPedido pedidoServico, ParametrosVM parametroVM)
@@ -100,17 +102,21 @@ namespace Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido
             var gruposAtivo = RetornaGruposAtivos(dados.ElementAt(10).Cast<GrupoFilial>().ToList()).Select(x => new GruposValidadosVM(x)).ToList();
             var gruposRelacionadosDesativar = RetornaGruposRelacionados(dados.ElementAt(11).Cast<GrupoFilial>().ToList(), gruposAtivo);
             var resumoPedido = dados.ElementAt(16).Cast<ResumoPedido>().FirstOrDefault();
-            var historicoPedido = dados.ElementAt(17).Cast<HistoricoPedido>().Select(x=>new HistoricoPedidoVM(x)).ToList();
-            var compradoresSel = String.Join(", ", dados.ElementAt(18).Cast<Comprador>().Select(x => x.IDComprador).ToArray());
-            var configPadrao = dados.ElementAt(19).Cast<ConfigDefault>().FirstOrDefault();
-            var datasCargaInicial = new DadosConfigPadraoVM(configPadrao);
-            datasCargaInicial.DataEntregaInicio = dadosPedido.DataEntregaInicio;
-            datasCargaInicial.DataEntregaFinal = dadosPedido.DataEntregaFinal;
-            datasCargaInicial.DataToleranciaAtrasoInicio = dadosPedido.DataToleranciaAtrasoInicio;
-            datasCargaInicial.DataToleranciaAtrasoFinal = dadosPedido.DataToleranciaAtrasoFinal;
-                
+            var historicoPedido = dados.ElementAt(17).Cast<HistoricoPedido>().Select(x => new HistoricoPedidoVM(x)).ToList();
+            var compradoresSel = dadosPedido.IDComprador;
+            var configPadrao = dados.ElementAt(18).Cast<ConfigDefault>().FirstOrDefault();
+            var listaTabelaPrecoEmpresa = dados.ElementAt(19).Cast<PrecoGrupoEmpresa>().GroupBy(x => x.IDGrupoEmpresa).Select(x => new GrupoEmpresaPrecosVM(x)).ToList();
+            var datasCargaInicial = new DadosConfigPadraoVM(configPadrao)
+            {
+                DataEntregaInicio = dadosPedido.DataEntregaInicio,
+                DataEntregaFinal = dadosPedido.DataEntregaFinal,
+                DataToleranciaAtrasoInicio = dadosPedido.DataToleranciaAtrasoInicio,
+                DataToleranciaAtrasoFinal = dadosPedido.DataToleranciaAtrasoFinal
+            };
+
             var filtrosPesquisa = new FiltrosPesquisa(dadosPedido, fabrica, dadosCores, pedidoServico)
             {
+                GrupoEmpresaPrecos = listaTabelaPrecoEmpresa,
                 Compradores = listaComprador,
                 UniMedida = listaMedida,
                 OrdemPed = ordemPed,

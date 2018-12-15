@@ -1,5 +1,18 @@
 ﻿var isMobile = false, resizeId; //initiate as false
+var observacaoStatus = [];
 var permissoesUsuarioLogado = JSON.parse(sessionStorage.getItem("permissoes"));
+var btnStatusTransicaoIcones = '<a href="#" class="btn btn-success aprovarPedido ocultarElemento statusL" data-toggle="tooltip" data-container="body" title="Aprovar" style="margin:3px"><i class="fa fa-check" aria-hidden="true"></i></a>' +
+    '<a href="#" class="btn btn-danger cancelarPedido ocultarElemento statusC" data-toggle="tooltip" data-container="body" title="Cancelar" style="margin:3px"><i class="fa fa-close" aria-hidden="true"></i></a>' +
+    '<a href="#" class="btn btn-success finalizarPedido ocultarElemento statusF" data-toggle="tooltip" data-container="body" title="Finalizar" style="margin:3px"><i class="fa fa-check" aria-hidden="true"></i></a>' +
+    '<a href="#" class="btn btn-warning devolverPedido ocultarElemento statusA" data-toggle="tooltip" data-container="body" title="Devolver" style="margin:3px"><i class="fa fa-mail-reply" aria-hidden="true"></i></a>' +
+    '<a href="#" class="btn btn-danger reprovarPedido ocultarElemento statusR" data-toggle="tooltip" data-container="body" title="Reprovar" style="margin:3px"><i class="fa fa-retweet" aria-hidden="true"></i></a>';
+
+var btnStatusTransicao = '<button type="button" id="btnReprovar" class="btn exibeBtn btn-danger ocultarElemento statusR"><i class="fa fa-retweet" aria-hidden="true"></i> Reprovar Pedido</button>' +
+    '<button type="button" id="btnAprovar" class="btn btn-success exibeBtn ocultarElemento statusL"><i class="fa fa-check" aria-hidden="true"></i> Aprovar Pedido</button>' +
+    '<button type="button" id="btnFinalizar" class="btn btn-success exibeBtn ocultarElemento statusF"><i class="fa fa-check" aria-hidden="true"></i> Finalizar Pedido</button>' +
+    '<button type="button" id="btnDevolver" class="btn btn-warning exibeBtn ocultarElemento statusA"><i class="fa fa-mail-reply" aria-hidden="true"></i> Devolver Pedido</button>' +
+    '<button type="button" id="btnCancelar" class="btn btn-danger exibeBtn ocultarElemento statusC"><i class="fa fa-close" aria-hidden="true"></i> Cancelar Pedido</button>'
+
 $(document).ready(function () {
     // device detection
     if (/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|ipad|iris|kindle|Android|Silk|lge |maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i.test(navigator.userAgent)
@@ -226,10 +239,10 @@ function navBrandClick() {
 function alteraStatusPedido(status, idPedido) {
     $.confirm({
         type: 'blue',
-        title: 'Cancelar Pedido!',
+        title: 'Atualizar Status do Pedido!',
         content:
             '<div class="form-group">' +
-            '<label>Informe o motivo do cancelamento!</label>' +
+            '<label>Informe o motivo da atualização!</label>' +
             '<textarea id="txtAreaCancelPed" maxlength="1000" class="form-control" rows="5"></textarea>' +
             '</div>',
         buttons: {
@@ -253,7 +266,10 @@ function alteraStatusPedido(status, idPedido) {
                 text: 'Sair',
                 btnClass: 'btn-green',
                 action: function () {
-                    if (window.location.href.toLowerCase().indexOf("cadastro/compra") > -1) salvarPedidoOpcao();
+                    if (window.location.href.toLowerCase().indexOf("cadastro/compra") > -1) { salvarPedidoOpcao(); } else if (origemModal) {
+                        origemModal = false
+                        $('#modalDetalhamentoPedido').modal('show');
+                    }
                 },
             }
         }
@@ -621,6 +637,7 @@ function limparCampos() {
     $('.clear-filter').blur();
     $("input[type=text]").val("");
     $('.selectpicker').selectpicker('refresh');
+    $('.dataTable').DataTable().clear().draw();
 
 }
 (function () {

@@ -231,6 +231,13 @@
                                             <input type="text" id="txtNomeNovaRef" style="width:100%" name="txtNomeNovaRef" placeholder="Nova Referência..." class="form-control" />
                                         </div>
                                     </fieldset>
+                                    <br />
+                                    <fieldset id="frmGradeReferencia3" class="collapsibleChild ocultarElemento">
+                                        <legend class="blockClick">Editar Referências</legend>
+                                        <div class="col-md-12 col-sm-12 col-xs-12">
+                                                <button type="button" class="btn btn-primary ediRef">Editar</button>
+                                        </div>
+                                    </fieldset>
                                 </fieldset>
                             </div>
                         </div>
@@ -278,7 +285,7 @@
                                 <fieldset class="collapsibleChild">
                                     <legend class="blockClick" style="color:blue;font-weight:bold">Tamanho:</legend>
                                     <fieldset id="frmGradeTam1" class="collapsibleChild">
-                                        <legend class="blockClick">Selecione a Categoria<span class="obrigatorio"> *</span></legend>
+                                        <legend class="blockClick">Selecione a Seção<span class="obrigatorio"> *</span></legend>
                                         <div>
                                             <select id="drpTamanhoCategoria" class="selectpicker show-tick form-control" data-live-search="true" data-width="100%"
                                                     data-size="5" title="0 selecionados..."></select>
@@ -394,7 +401,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-2 col-sm-12 col-xs-12">
+                                    <div id="divEsp" class="col-md-2 col-sm-12 col-xs-12">
                                         <div class="form-group">
                                             <label id="lblEsp" class="form-label">Espécie</label><span class="obrigatorio"> *</span>
                                             <div class="controls ocultarElemento">
@@ -461,7 +468,7 @@
                                         </div>
                                     </div>
                                     <div class="col-md-3 col-sm-12 col-xs-12">
-                                        <div class="form-group text-center">
+                                        <div class="form-group">
                                             <label id="lblClassificacao" class="form-label">Classificação Fiscal</label><span class="obrigatorio"> *</span>
                                             <div class="controls ocultarElemento">
                                                 <select id="drpClassificacao" class="selectpicker show-tick form-control" data-show-subtext="true" data-live-search="true"
@@ -469,7 +476,15 @@
                                             </div>
                                         </div>
                                     </div>
-
+                                    <div id="divCompProd" class="col-md-3 col-sm-12 col-xs-12 ocultarElemento">
+                                        <div class="form-group">
+                                            <label id="lblCompPed" class="form-label">Compradores</label>@*<span class="obrigatorio"> *</span>*@
+                                            <div class="controls ocultarElemento">
+                                                <select id="drpCompProd" class="selectpicker show-tick form-control" multiple data-live-search="true" data-selected-text-format="count > 1"
+                                                        data-width="100%" data-size="5" title="Selecione..." data-count-selected-text="Selecionado {0} de {1}"></select>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </fieldset>
@@ -537,33 +552,33 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-2 col-sm-12 col-xs-12">
+                                    <div class="col-md-3 col-sm-12 col-xs-12">
                                         <div class="form-group text-center">
                                             <label id="lblIPIPed" class="form-label">Alíquota IPI (+)</label>
                                             <div class="controls">
                                                 <div class="col-md-5" style="padding-left:3px!important;padding-right:3px!important">
                                                     <input type="text" id="txtIPIPercPed" style="text-align:center!important" maxlength="7" class="form-control calcular percent" />
                                                 </div>
-                                                <div class="col-md-7" style="padding-left:5px!important;padding-right:5px!important">
+                                                <div class="col-md-offset-1 col-md-5" style="padding-left:5px!important;padding-right:5px!important">
                                                     <input type="text" id="txtIPIVlrPed" style="text-align:center!important" maxlength="15" data-initail="0" class="form-control calcular money" />
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-2 col-sm-12 col-xs-12">
+                                    <div class="col-md-3 col-sm-12 col-xs-12">
                                         <div class="form-group text-center">
                                             <label id="lblIcmsPed" class="form-label">Alíquota ICMS (+)</label>
                                             <div class="controls">
                                                 <div class="col-md-5" style="padding-left:3px!important;padding-right:3px!important">
                                                     <input type="text" id="txtIcmsPercPed" style="text-align:center!important" maxlength="7" class="form-control calcular percent" />
                                                 </div>
-                                                <div class="col-md-7" style="padding-left:5px!important;padding-right:5px!important">
+                                                <div class="col-md-offset-1 col-md-5" style="padding-left:5px!important;padding-right:5px!important">
                                                     <input type="text" id="txtIcmsVlrPed" style="text-align:center!important" maxlength="15" data-initail="0" class="form-control calcular money" />
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-2 col-sm-12 col-xs-12">
+                                    <div class="col-md-1 col-sm-12 col-xs-12">
                                         <div class="form-group text-center ocultarElemento">
                                             <label id="lblPisPed" class="form-label">Alíquota PIS (+)</label>
                                             <div class="controls">
@@ -576,7 +591,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-2 col-sm-12 col-xs-12">
+                                    <div class="col-md-1 col-sm-12 col-xs-12">
                                         <div class="form-group text-center ocultarElemento">
                                             <label id="lblCofinsPed" class="form-label">Alíquota COFINS (+)</label>
                                             <div class="controls">
@@ -606,14 +621,17 @@
                             <div id="pnlAttrProd" class="field-body container-fluid">
                             </div>
                         </fieldset>
-                        <div id="fotoDivProd">
-                            <hr>
-                            <h5 style="color:blue" class="text-center"><strong>Adicione/Atualize as imagens dos produtos </strong>(Opcional)</h5>
-                            <hr>
-                            <div class="col-md-12 col-sm-12 col-xs-12 text-center">
-                                <div class="file-loading">
-                                    <input id="imgUpload" class="imagemSalvar" name="imgUpload[]" type="file" accept="image/*" multiple>
-                                </div>
+                        <fieldset id="frmGrupoPreco" class="collapsible frmPrecosVenda">
+                            <legend id="lgdGrupoPreco">Preços de Venda</legend>
+                            <div class="field-body container-fluid">
+                            </div>
+                        </fieldset>
+                        <hr>
+                        <h5 style="color:blue" class="text-center"><strong>Adicione/Atualize as imagens dos produtos </strong>(Opcional)</h5>
+                        <hr>
+                        <div class="col-md-12 col-sm-12 col-xs-12 text-center">
+                            <div class="file-loading">
+                                <input id="imgUpload" class="imagemSalvar" name="imgUpload[]" type="file" accept="image/*" multiple>
                             </div>
                         </div>
                     </div>

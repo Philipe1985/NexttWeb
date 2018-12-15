@@ -1,4 +1,5 @@
-﻿using Nextt_Gestao_Compra.Aplicacao.Gerenciador.Compra;
+﻿using Microsoft.AspNet.Identity;
+using Nextt_Gestao_Compra.Aplicacao.Gerenciador.Compra;
 using Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido;
 using Nextt_Gestao_Compra.Aplicacao.Servicos.Interfaces.Gerenciamento;
 using Nextt_Gestao_Compra.Aplicacao.ViewModel;
@@ -43,7 +44,7 @@ namespace Nextt_Gestao_Compra.Apresentacao.API.Controllers.Cadastro
         {
             try
             {
-              var retorno = GerenciadorAplicacaoPedido.RetornaPedidosFiltrado(_pedidoServico, parametros);
+                var retorno = GerenciadorAplicacaoPedido.RetornaPedidosFiltrado(_pedidoServico, parametros);
                 return Ok(retorno);
             }
             catch (Exception ex)
@@ -103,14 +104,13 @@ namespace Nextt_Gestao_Compra.Apresentacao.API.Controllers.Cadastro
         [Authorize]
         [HttpPost]
         [Route("AtualizaStatusPedido")]
-        public async Task<IHttpActionResult> AtualizaStatusPedido(ParametrosVM parametros)
+        public IHttpActionResult AtualizaStatusPedido(ParametrosVM parametros)
         {
             try
             {
-               
-                 var interessados = GerenciadorAplicacaoPedido.AtualizaPedido(_pedidoServico, parametros);
-                if (!string.IsNullOrEmpty(interessados))
-                    await GerenciamentoUsuario.EnviarEmailPedido(interessados, @"C:\Users\Alcione\Pictures\Camera Roll\pedido.pdf");
+                parametros.IDUsuarios = RequestContext.Principal.Identity.GetUserId();
+                GerenciadorAplicacaoPedido.AtualizaPedido(_pedidoServico, parametros);
+
                 return Ok();
             }
             catch (Exception ex)

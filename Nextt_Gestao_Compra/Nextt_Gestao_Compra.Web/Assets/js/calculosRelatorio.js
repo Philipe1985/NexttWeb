@@ -1,13 +1,28 @@
 ﻿var arrayPackDistribuicao = [], arrayQtdLimitePack = [], arrayPackFinalDistribuido = [], sobraTotal = 0, somaSobras = 0, packNovo = true;
 function recalculaTotalLinha(tabelaApi) {
+
     tabelaApi.rows().every(function () {
         var d = this.data();
+
         d.totalCor = 0;
         $.each(d, function (key, val) {
             if (key.indexOf("tamanho") > -1) {
                 d.totalCor += parseInt(val);
             }
         });
+    });
+    var qtdPackAtual = tabelaApi.row(0).data().qtdePack;
+    if (!qtdPackAtual) {
+        qtdPackAtual = tabelaApi.row(0).data().qtdPack;
+    }
+
+    var totalQtdItens = tabelaApi.rows().data().toArray().sum("totalCor") * qtdPackAtual;
+
+    tabelaApi.rows().every(function () {
+        var d = this.data();
+
+        d.totalItens = totalQtdItens;
+
     });
 }
 function recalculaTotalLinhaFiliais(dados) {
@@ -64,7 +79,7 @@ function recalculaTotalLinhaMov(dados) {
     return dados;
 }
 function recalculaTotalColunas(tabelaApi, totalItensPack) {
-    var recalcPack = parseInt(totalItensPack)
+
     tabelaApi.columns(".numInt").every(function () {
         $(this.footer()).html(
             this
@@ -74,22 +89,22 @@ function recalculaTotalColunas(tabelaApi, totalItensPack) {
                 })
         );
     });
-    tabelaApi.columns(".numInt.sumItem").every(function () {
-        var totalItm = this
-            .data()
-            .reduce(function (a, b) { return a + b; });
-        totalItensPack = recalcPack * totalItm;
-    });
-    tabelaApi.columns(".totalPackItens").every(function () {
-        $(this.footer()).html("Itens no Pack: " + totalItensPack.toLocaleString('pt-BR'))
-    });
+    //tabelaApi.columns(".numInt.sumItem").every(function () {
+    //    var totalItm = this
+    //        .data()
+    //        .reduce(function (a, b) { return a + b; });
+    //    totalItensPack = recalcPack * totalItm;
+    //});
+    //tabelaApi.columns(".totalPackItens").every(function () {
+    //    $(this.footer()).html("Itens no Pack: " + totalItensPack.toLocaleString('pt-BR'))
+    //});
 }
 function recalculaDadosPedido() {
     if (compraId) {
         var totalItm = 0;
         tabelaPackCadastrados.map(obj => {
             var tbPlanejamento = $('#' + obj.idTabela).dataTable().api();
-            var qtdRefCalc = obj.qtdPack ? obj.qtdPack : obj.qtdPck; 
+            var qtdRefCalc = obj.qtdPack ? obj.qtdPack : obj.qtdPck;
             tbPlanejamento.columns(".numInt.sumItem").every(function () {
                 totalItm += this
                     .data()
@@ -103,7 +118,7 @@ function recalculaDadosPedido() {
         $('#txtValorResumoPed').val(recalcPack.toFixed(2).replace('.', ','));
         $('.money').maskMoney('mask');
     }
-    
+
 }
 function trataDadosFilial(idPack, dados) {
     var totalItemPack = $("#tblPackCad" + idPack).dataTable().api().column(".sumItem")
@@ -677,6 +692,7 @@ function criaObjPedido(status) {
     var pedidoRetorno = {
         "codigo": parseInt($("#txtProdutoPed").val()),
         "idProduto": parseInt($("#txtIDProd").val()),
+        "codOriginal": $("#txtCodOriPed").val(),
         "idCompradorPedido": $("#drpCompPed").val(),
         "idFornecedor": parseInt($('#drpCNPJ').val()),
         "idUsuarioCadastro": sessionStorage.getItem("id_usuario"),
@@ -701,11 +717,13 @@ function criaObjPedido(status) {
         "idMarca": parseInt($("#drpMarc").val()),
         "idSecao": parseInt($("#drpSec").val()),
         "idEspecie": parseInt($("#drpEsp").val()),
-        "idSegmento": $("#drpSeg").val() ? parseInt($("#drpSeg").val().replace(/[^\d,]/g, '')):0,
+        "idSegmento": $("#drpSeg").val() ? parseInt($("#drpSeg").val().replace(/[^\d,]/g, '')) : 0,
         "idClassificacaoFiscal": parseInt($("#drpClassificacao").val()),
         "descricao": $("#txtDescPed").val(),
         "descricaoReduzida": $("#txtDescResPed").val(),
-        "idUnidadeMedida": $("#drpUnidadeMed").val() ? parseInt($("#drpUnidadeMed").val()) : 0
+        "idUnidadeMedida": $("#drpUnidadeMed").val() ? parseInt($("#drpUnidadeMed").val()) : 0,
+        'compradorProduto': criaObjComprador(),
+        'produtoTabelaPreco': criaArrayPrecoGrupo()
     };
     $("#drpTamanhoCategoria option:selected").each(function () {
         pedidoRetorno.idGrupoTamanho = parseInt($(this).attr('data-tokens').split(',')[0]);
@@ -714,6 +732,42 @@ function criaObjPedido(status) {
         pedidoRetorno.idPedido = parseInt(compraId);
     }
     return pedidoRetorno;
+}
+function criaArrayPrecoGrupo() {
+    var retorno = [];
+    $(".prVenda.money").each(function (index) {
+        var objJson = {};
+        objJson.idTabelaPreco = parseInt($(this).attr('id').replace('cbPrVenda', ''));
+        objJson.preco = $(this).maskMoney('unmasked')[0];
+        objJson.idProduto = parseInt($("#txtIDProd").val());
+        retorno.push(objJson);
+    });
+    return retorno;
+}
+function criaObjProduto() {
+    controleTempo("Criando objeto envio: ")
+    var produtoRetorno = {
+        "codigo": parseInt($("#txtProdutoPed").val()),
+        "idProduto": parseInt($("#txtIDProd").val()),
+        "codOriginal": $("#txtCodOriPed").val(),
+        //"idCompradorPedido": $("#drpCompPed").val(),
+        "idUsuarioCadastro": sessionStorage.getItem("id_usuario"),
+        "referenciaFornecedor": $('#txtRefPed').val(),
+        "precoVenda": $('#txtPrVendaPed').maskMoney('unmasked')[0],
+        "idMarca": parseInt($("#drpMarc").val()),
+        "idSecao": parseInt($("#drpSec").val()),
+        "idEspecie": parseInt($("#drpEsp").val()),
+        "idSegmento": $("#drpSeg").val() ? parseInt($("#drpSeg").val().replace(/[^\d,]/g, '')) : 0,
+        "idClassificacaoFiscal": parseInt($("#drpClassificacao").val()),
+        "descricao": $("#txtDescPed").val(),
+        "descricaoReduzida": $("#txtDescResPed").val(),
+        "idUnidadeMedida": $("#drpUnidadeMed").val() ? parseInt($("#drpUnidadeMed").val()) : 0
+    };
+
+    $("#drpTamanhoCategoria option:selected").each(function () {
+        produtoRetorno.idGrupoTamanho = parseInt($(this).attr('data-tokens').split(',')[0]);
+    });
+    return produtoRetorno;
 }
 function criaArrayDistribuicao(arrayGrupos) {
     var arrayRetorno = [];
@@ -766,6 +820,30 @@ function criaArrayProdutoitem(arrayPack) {
     }
     return arrayRetorno;
 }
+function criaArrayProdItem() {
+    var idItem = 1, idProduto = parseInt($("#txtIDProd").val()), arrayRetorno = [];
+    for (var i = 0; i < referenciaGrade.length; i++) {
+        for (var j = 0; j < coresGrade.length; j++) {
+            var corItem = coresNovasCadastradas.filter(function (el) {
+                var confirmado = el.descricao === coresGrade[j];
+                return confirmado;
+            })[0];
+            for (var k = 0; k < tamanhosGrade.length; k++) {
+                var objJson = {};
+                objJson.idProduto = idProduto;
+                objJson.referencia = referenciaGrade[i];
+                objJson.idTamanho = tamanhoTexto.filter(function (el) {
+                    return el.descricao === tamanhosGrade[k];
+                })[0].id;
+                objJson.item = idItem;
+                objJson.cor = corItem;
+                arrayRetorno.push(objJson);
+                idItem++;
+            }
+        }
+    }
+    return arrayRetorno;
+}
 function criaObjCondFormaPgto() {
     var idsFormas = $("#drpFrmPgtoPed").val().map(Number), arrayRetorno = [], pedID = 0;
     if (compraId) {
@@ -781,13 +859,16 @@ function criaObjCondFormaPgto() {
     return arrayRetorno;
 }
 function criaObjComprador() {
-    var idComprador = $("#drpCompPed").val() ? $("#drpCompPed").val() : null, arrayRetorno = [],
+    var idComprador = $("#drpCompProd").val() ? $("#drpCompProd").val() : null, arrayRetorno = [],
         prodID = $("#txtIDProd").val() ? parseInt($("#txtIDProd").val()) : 0;
     if (idComprador) {
-        arrayRetorno.push({
-            "idComprador": idComprador,
-            'idProduto': prodID
-        });
+        for (var i = 0; i < idComprador.length; i++) {
+            arrayRetorno.push({
+                "idComprador": idComprador[i],
+                'idProduto': prodID
+            });
+        }
+        
     }
 
     return arrayRetorno;
@@ -824,7 +905,7 @@ function salvarPedidoOpcao() {
         content: 'Confirme a operação desejada!',
         containerFluid: true,
         buttons: {
-            confirm: {
+            'F': {
                 text: 'Finalizar',
                 btnClass: 'btn-success',
                 isHidden: true,
@@ -832,15 +913,36 @@ function salvarPedidoOpcao() {
                     geraPedidoSalvar('F');
                 }
             },
-            finish: {
+            'R': {
+                text: 'Reprovar',
+                btnClass: 'btn-danger',
+                isHidden: true,
+                action: function () {
+                    if (observacaoStatus && observacaoStatus.indexOf('R') > -1) {
+                        alteraStatusPedido('R', compraId)
+                    } else {
+                        var objEnvio = {};
+                        objEnvio.status = 'R'
+                        objEnvio.codigo = compraId;
+                        atualizarStatus(objEnvio);
+                    }
+                    
+                }
+            },
+            'L': {
                 text: 'Aprovar',
                 btnClass: 'btn-success',
                 isHidden: true,
                 action: function () {
-                    var objEnvio = {};
-                    objEnvio.status = 'L'
-                    objEnvio.codigo = compraId;
-                    atualizarStatus(objEnvio);
+                    if (observacaoStatus && observacaoStatus.indexOf('F') > -1) {
+                        alteraStatusPedido('L', compraId)
+                    } else {
+                        var objEnvio = {};
+                        objEnvio.status = 'L'
+                        objEnvio.codigo = compraId;
+                        atualizarStatus(objEnvio);
+                    }
+                    
                 }
             },
             change: {
@@ -851,28 +953,42 @@ function salvarPedidoOpcao() {
                     geraPedidoSalvar('A');
                 }
             },
-            cancel: {
+            'C': {
                 isHidden: true,
                 text: 'Cancelar',
                 btnClass: 'btn-danger',
                 action: function () {
-                    alteraStatusPedido('C', compraId)
+                    if (observacaoStatus && observacaoStatus.indexOf('C') > -1) {
+                        alteraStatusPedido('C', compraId)
+                    }
+                    else {
+                        objEnvio = {};
+                        objEnvio.codigo = compraId;
+                        objEnvio.status = 'C';
+                        atualizarStatus(objEnvio);
+                    }
+
                     //var objEnvio = {};
                     //objEnvio.status = 'C'
                     //objEnvio.codigo = compraId;
                     //atualizarStatus(objEnvio);
                 }
             },
-            edit: {
+            'A': {
                 isHidden: true,
                 text: 'Editar',
                 btnClass: 'btn-primary',
                 action: function () {
-                    var objEnvio = {};
-                    objEnvio.status = 'A'
-                    sessionStorage.setItem('Editar', '1');
-                    objEnvio.codigo = compraId;
-                    atualizarStatus(objEnvio);
+                    if (observacaoStatus && observacaoStatus.indexOf('A') > -1) {
+                        alteraStatusPedido('A', compraId)
+                    }
+                    else {
+                        var objEnvio = {};
+                        objEnvio.status = 'A'
+                        sessionStorage.setItem('Editar', '1');
+                        objEnvio.codigo = compraId;
+                        atualizarStatus(objEnvio);
+                    }
                 }
             },
             back: {
@@ -884,22 +1000,16 @@ function salvarPedidoOpcao() {
             var self = this;
             var statusPedido = sessionStorage.getItem("pedidoStatus");
             if (statusPedido) {
-                if (statusPedido === 'A') {
-                    self.buttons.confirm.show();
-                    self.buttons.change.show();
-                    self.buttons.cancel.show();
-                } else if (statusPedido === 'F') {
-                    self.buttons.finish.show();
-                    self.buttons.edit.show();
-                    self.buttons.cancel.show();
-                } else if (statusPedido === 'L') {
-                    self.buttons.edit.show();
-                    self.buttons.cancel.show();
-                } else if (statusPedido === 'C') {
-                    self.buttons.edit.show();
+                for (var i = 0; i < statusTransicao.length; i++) {
+                    self.buttons[statusTransicao[i]].show();
                 }
+                if (statusPedido === 'A') {
+                    
+                    self.buttons.change.show();
+                    
+                } 
             } else {
-                self.buttons.confirm.show();
+                self.buttons.F.show();
                 self.buttons.change.show();
             }
 
@@ -938,35 +1048,47 @@ function geraPedidoSalvar(status) {
     console.log('============================')
     controleTempo("Criando objeto pedidoAtributo: ")
     pedidoEnvio.pedidoAtributo = criaArrayAtributo($("#pnlAttrPed"));
+    pedidoEnvio.produtoTabelaPreco = criaArrayPrecoGrupo();
+
     controleTempo("Criado objeto pedidoAtributo: ")
     console.log('============================')
-    controleTempo("Criando objeto produtoComprador: ")
-    pedidoEnvio.produtoComprador = criaObjComprador();
-    controleTempo("Criado objeto produtoComprador: ")
-    console.log('============================')
     controleTempo("Cadastrando: ")
+    console.log(pedidoEnvio);
+
     salvarPedido(pedidoEnvio);
+}
+function salvarProduto() {
+    //aqui produto
+    var produtoEnvio = {};
+    produtoEnvio.produto = criaObjProduto();
+    produtoEnvio.produtoAtributo = criaArrayAtributo($("#pnlAttrProd"));
+    produtoEnvio.produtoItem = criaArrayProdItem();
+    produtoEnvio.compradorProduto = criaObjComprador();
+    produtoEnvio.produtoTabelaPreco = criaArrayPrecoGrupo();
+    console.log(produtoEnvio);
+    salvarProdutoAtualizado(produtoEnvio)
 }
 function retornaPackCadColunas(tamanhos) {
     var colunasPack = [{ "data": "referenciaItem", 'className': 'separaDireita' }, { "data": "descricaoCor", 'className': 'separaDireita' }];
-    
+
     for (var i = 0; i < tamanhos.length; i++) {
         var tamanhoLoop = typeof tamanhosGrade !== 'undefined' ? tamanhosGrade[i] : tamanhos[i].descricaoTamanho;
         colunasPack.push({ "data": "tamanho" + converterFormatoVariavel(toTitleCase(tamanhoLoop)), 'className': 'numInt qtdPack separaDireita' });
     };
-    colunasPack.push({ "data": "totalCor", 'className': 'separaDireita' }, { "data": "qtdePack", 'className': 'qtdPackCadastrado separaDireita' });
+    colunasPack.push({ "data": "totalCor", 'className': 'separaDireita' }, { "data": "qtdePack", 'className': 'qtdPackCadastrado separaDireita' }, { "data": "totalItens", 'className': 'separaDireita' });
     return colunasPack;
 }
-function retornaPackCadColunasAtualizar(descCor, descRef, descQtd) {
+function retornaPackCadColunasAtualizar(descCor, descRef, descQtd, descIts) {
     var colunasPack = [{ "data": descRef, 'className': 'separaDireita' }, { "data": descCor, 'className': 'separaDireita' }];
     for (var i = 0; i < tamanhosGrade.length; i++) {
         colunasPack.push({ "data": "tamanho" + converterFormatoVariavel(toTitleCase(tamanhosGrade[i])), 'className': 'numInt qtdPack separaDireita' });
     };
-    colunasPack.push({ "data": "totalCor", 'className': 'separaDireita' }, { "data": descQtd, 'className': 'qtdPackCadastrado separaDireita' });
+    colunasPack.push({ "data": "totalCor", 'className': 'separaDireita' }, { "data": descQtd, 'className': 'qtdPackCadastrado separaDireita' }, { "data": descIts, 'className': 'separaDireita' });
     return colunasPack;
 }
 function retornaPackCadDados(packItens) {
     var retorno = [];
+    var totalItens = 0;
     for (var i = 0; i < packItens.length; i++) {
         var objPack = {};
         var totalCor = 0;
@@ -979,6 +1101,7 @@ function retornaPackCadDados(packItens) {
         }
         objPack.totalCor = totalCor;
         objPack.qtdePack = packItens[i].dadosTamanho[0].qtdePack;
+        objPack.totalItens = packItens[i].totalItens;
         retorno.push(objPack);
     }
     console.log(retorno)
@@ -1005,7 +1128,6 @@ function criaObjAttr(el, retornoArray) {
         var objRetorno = {};
         objRetorno.idPedido = compraId ? parseInt(compraId) : 0;
         objRetorno.idProduto = parseInt($("#txtIDProd").val());
-        console.log($(el[i]))
         objRetorno.idTipoAtributo = parseInt($(el[i]).attr('id').replace(/\D/g, ""));
         objRetorno.valor = trataAttrNumerico($(el[i]));
         retornoArray.push(objRetorno);
@@ -1042,12 +1164,15 @@ function criaObjAttrLista(el, retornoArray) {
     for (var i = 0; i < el.length; i++) {
         var $option = $(el[i]).find('option:not([data-hidden])');
         for (var j = 0; j < $option.length; j++) {
-            var objRetorno = {};
-            objRetorno.idPedido = compraId ? parseInt(compraId) : 0;
-            objRetorno.idProduto = parseInt($("#txtIDProd").val());
-            objRetorno.idTipoAtributo = parseInt($($option[j]).val());
-            objRetorno.valor = $($option[j]).is(':selected') ? '1' : '0';
-            retornoArray.push(objRetorno);
+            if ($($option[j]).val()) {
+                var objRetorno = {};
+                objRetorno.idPedido = compraId ? parseInt(compraId) : 0;
+                objRetorno.idProduto = parseInt($("#txtIDProd").val());
+                objRetorno.idTipoAtributo = parseInt($($option[j]).val());
+                objRetorno.valor = $($option[j]).is(':selected') ? '1' : '0';
+                retornoArray.push(objRetorno);
+            }
+
         }
     }
     return retornoArray;
@@ -1180,7 +1305,7 @@ function addColunaPack() {
     })
     recalculaDistCustos();
 }
-function addLinhaPack(descCor, descRef, qtd, total) {
+function addLinhaPack(descCor, descRef, qtd, total, itens) {
     var dadosGrade = [];
     for (var i = 0; i < referenciaGrade.length; i++) {
         for (var j = 0; j < coresGrade.length; j++) {
@@ -1192,6 +1317,7 @@ function addLinhaPack(descCor, descRef, qtd, total) {
             }
             linhaPackNovo[total] = 0;
             linhaPackNovo[qtd] = 0;
+            linhaPackNovo[itens] = 0;
             dadosGrade.push(linhaPackNovo);
         }
     }
@@ -1222,7 +1348,7 @@ function removeChavesObjeto(dadosPackGrade, qtdPck) {
     for (var k = 0; k < tamanhosGrade.length; k++) {
         listTamVariavel.push("tamanho" + converterFormatoVariavel(toTitleCase(tamanhosGrade[k])));
     }
-    var descCor = '', descRef = '', descQtd = '';
+    var descCor = '', descRef = '', descQtd = '', descIts = '';
     $.each(dadosPackGrade[0], function (key, val) {
         if (key.indexOf("tamanho") > -1 && listTamVariavel.indexOf(key) === -1) {
             listTamRemover.push(key);
@@ -1236,8 +1362,11 @@ function removeChavesObjeto(dadosPackGrade, qtdPck) {
         if (key.toLowerCase().indexOf("qtd") > -1) {
             descQtd = key;
         }
+        if (key.toLowerCase().indexOf("itens") > -1) {
+            descIts = key;
+        }
     });
-    var dadosPackAtualizado = addLinhaPack(descCor, descRef, descQtd, 'totalCor');
+    var dadosPackAtualizado = addLinhaPack(descCor, descRef, descQtd, 'totalCor', descIts);
 
     if (listTamRemover.length) {
         dadosRetornoTratado = removeTamanhoPack(dadosRetornoTratado, listTamRemover);
@@ -1248,12 +1377,12 @@ function removeChavesObjeto(dadosPackGrade, qtdPck) {
     if (listCorRemover.length) {
         dadosRetornoTratado = removeCorPack(dadosRetornoTratado, listCorRemover);
     }
-    retorno.colunas = retornaPackCadColunasAtualizar(descCor, descRef, descQtd);
+    retorno.colunas = retornaPackCadColunasAtualizar(descCor, descRef, descQtd, descIts);
 
-    retorno.dados = adicionaChavesObjeto(dadosRetornoTratado, dadosPackAtualizado, descCor, descRef, descQtd, qtdPck)
+    retorno.dados = adicionaChavesObjeto(dadosRetornoTratado, dadosPackAtualizado, descCor, descRef, descQtd, qtdPck, descIts)
     return retorno;
 }
-function adicionaChavesObjeto(dadosPackGrade, dadosAtualizarGrade, descCor, descRef, descQtd, qtdPack) {
+function adicionaChavesObjeto(dadosPackGrade, dadosAtualizarGrade, descCor, descRef, descQtd, qtdPack, descIts) {
     for (var i = 0; i < dadosPackGrade.length; i++) {
         for (var j = 0; j < dadosAtualizarGrade.length; j++) {
             var qtdLinhaCor = 0;
@@ -1269,9 +1398,16 @@ function adicionaChavesObjeto(dadosPackGrade, dadosAtualizarGrade, descCor, desc
             }
 
 
-
+            dadosAtualizarGrade[j][descIts] = qtdPack;
             dadosAtualizarGrade[j][descQtd] = qtdPack;
         }
+    }
+    //asdasd
+    var totalQtdItens = dadosAtualizarGrade.sum("totalCor") * qtdPack;
+
+    console.log(totalQtdItens)
+    for (var k = 0; k < dadosAtualizarGrade.length; k++) {
+        dadosAtualizarGrade[k][descIts] = totalQtdItens;
     }
     return dadosAtualizarGrade;
 }

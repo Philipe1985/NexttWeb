@@ -9,7 +9,9 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
     public class FiltrosPesquisa
     {
         public List<ComboFiltroVM> Fornecedores { get; set; }
+        public List<ComboFiltroVM> StatusPedido { get; set; }
         public List<ComboFiltroVM> AttrFornecedores { get; set; }
+        public List<RetornoEspecieFiltroVM> EspeciesRecarga { get; set; }
         public List<ComboFiltroVM> Compradores { get; set; }
         public List<ComboFiltroVM> UniMedida { get; set; }
         public List<ComboFiltroVM> Secoes { get; set; }
@@ -23,6 +25,7 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
         public List<ComboFiltroVM> Referencias { get; set; }
         public List<ComboFiltroVM> Classificacao { get; set; }
         public List<ComboFiltroVM> Usuarios { get; set; }
+        public List<GrupoEmpresaPrecosVM> GrupoEmpresaPrecos { get; set; }
         public List<ComboFiltroVM> TamanhoOpcoes { get; set; }
         public List<ComboFiltroVM> TamanhoGrupo { get; set; }
         public TamanhoGrupoVM Tamanhos { get; set; }
@@ -59,6 +62,7 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
         {
             Marcas = new List<ComboFiltroVM>() { fabrica.Criar(fabrica.CriarMarca(dadosCadastro)) };
             Secoes = new List<ComboFiltroVM>() { fabrica.Criar(fabrica.CriarSecao(dadosCadastro)) };
+            Segmentos = new List<ComboFiltroVM>() { fabrica.Criar(fabrica.CriarSegmento(dadosCadastro)) };
             Especies = new List<ComboFiltroVM>() { fabrica.Criar(fabrica.CriarEspecie(dadosCadastro)) };
             TamanhoGrupo = new List<ComboFiltroVM>() { fabrica.Criar(
                 new GrupoTamanho { IDTamanho = dadosCadastro.IDGrupoTamanho,
@@ -71,6 +75,24 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
             Cores = compraServico.RetornaCoresPrincipais(cores).Select(x => fabrica.Criar(x)).ToList();
             Referencias = referencias.Select(x => fabrica.Criar(x)).ToList();
             DadosPaleta = new PaletaDadosVM(compraServico.RetornaCSSCor(cores), compraServico.RetornaDescricaoCor(cores));
+        }
+        public FiltrosPesquisa(DadosPrePedido dadosCadastro, IAppServicoProduto produtoServico, FabricaViewModel fabrica, List<Cor> cores,
+            List<GrupoTamanho> tamanhos, List<ReferenciaProduto> referencias)
+        {
+            Marcas = new List<ComboFiltroVM>() { fabrica.Criar(fabrica.CriarMarca(dadosCadastro)) };
+            Secoes = new List<ComboFiltroVM>() { fabrica.Criar(fabrica.CriarSecao(dadosCadastro)) };
+            Segmentos = new List<ComboFiltroVM>() { fabrica.Criar(fabrica.CriarSegmento(dadosCadastro)) };
+            Especies = new List<ComboFiltroVM>() { fabrica.Criar(fabrica.CriarEspecie(dadosCadastro)) };
+            TamanhoGrupo = new List<ComboFiltroVM>() { fabrica.Criar(
+                new GrupoTamanho { IDTamanho = dadosCadastro.IDGrupoTamanho,
+                                   Descricao = dadosCadastro.DescricaoGrupoTamanho,
+                                   Ordem = 1
+                                 }
+                )};
+            TamanhoOpcoes = produtoServico.RetornaTamanhosAtivo(tamanhos).Select(x => fabrica.Criar(x)).ToList();
+            Cores = produtoServico.RetornaCoresPrincipais(cores).Select(x => fabrica.Criar(x)).ToList();
+            Referencias = referencias.Select(x => fabrica.Criar(x)).ToList();
+            DadosPaleta = new PaletaDadosVM(produtoServico.RetornaCSSCor(cores), produtoServico.RetornaDescricaoCor(cores));
         }
         public FiltrosPesquisa(PedidoCadastrado dadosCadastro, FabricaViewModel fabrica, List<Cor> cores, IAppServicoPedido pedidoServico)
         {
@@ -97,6 +119,11 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
                               DescricaoSecao = dadosCadastro.DescricaoSecao
                             }
                 )};
+            Segmentos = new List<ComboFiltroVM>() { fabrica.Criar(
+                new Segmento { IDSegmento = dadosCadastro.IDSegmento,
+                              Descricao = dadosCadastro.DescricaoSegmento,
+                            }
+                )};
             TamanhoGrupo = new List<ComboFiltroVM>() { fabrica.Criar(
                 new GrupoTamanho { IDTamanho = dadosCadastro.IDGrupoTamanho,
                                    Descricao = dadosCadastro.DescricaoGrupoTamanho
@@ -109,6 +136,9 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
         {
             Segmentos = segmentos.Select(x => fabrica.Criar(x)).ToList();
         }
-
+        public FiltrosPesquisa(List<RetornoEspecieFiltroVM> especieFiltroVMs)
+        {
+            EspeciesRecarga= especieFiltroVMs;
+        }
     }
 }

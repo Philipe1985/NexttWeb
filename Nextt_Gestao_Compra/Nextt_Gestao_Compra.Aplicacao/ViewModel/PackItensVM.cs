@@ -12,11 +12,13 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
         public string ReferenciaItem { get; set; }
         public string DescricaoCor { get; set; }
         public List<TamanhoItemVM> DadosTamanho { get; set; }
-        public PackItensVM(List<ProdutoItem> items)
+        public int TotalItens { get; set; }
+        public PackItensVM(List<ProdutoItem> items,int totalItens)
         {
             ReferenciaItem = items.ElementAt(0).ReferenciaItem;
             DescricaoCor = items.ElementAt(0).DescricaoCor;
             DadosTamanho = items.Select(x => new TamanhoItemVM(x)).ToList();
+            TotalItens = totalItens;
         }
     }
 }

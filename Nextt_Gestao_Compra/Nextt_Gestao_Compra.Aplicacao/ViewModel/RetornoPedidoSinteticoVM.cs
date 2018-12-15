@@ -25,11 +25,15 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
         public string DescSecEsp { get; set; }
         public decimal PrecoCusto { get; set; }
         public int Qtde { get; set; }
+        public string Status { get; set; }
+        public string IDStatusPedidoPara { get; set; }
         public decimal PrecoVenda { get; set; }
         public List<PackVM> Packs { get; set; }
         public ImagensProdutoVM FotoProduto { get; set; }
         public RetornoPedidoSinteticoVM(PedidoCadastrado dadosPedido, Fornecedor fornecedor, DadosPrePedido dadosPrePedido, ImagensProdutoVM imagem)
         {
+            Status = dadosPedido.Status;
+            IDStatusPedidoPara = dadosPedido.IDStatusPedidoPara;
             IDPedido = dadosPedido.IDPedido;
             IDProduto = dadosPrePedido.IDProduto;
             RazaoSocial = fornecedor.RazaoSocial;

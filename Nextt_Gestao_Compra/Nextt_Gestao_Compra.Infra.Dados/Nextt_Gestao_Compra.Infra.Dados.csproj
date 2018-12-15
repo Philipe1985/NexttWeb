@@ -53,6 +53,7 @@
     <Compile Include="Repositorios\Gerenciamento\RepositorioGrupo.cs" />
     <Compile Include="Repositorios\Gerenciamento\RepositorioMovimentacao.cs" />
     <Compile Include="Repositorios\Gerenciamento\RepositorioPedido.cs" />
+    <Compile Include="Repositorios\Gerenciamento\RepositorioProduto.cs" />
     <Compile Include="Repositorios\RepositorioPadrao.cs" />
     <Compile Include="Utils\RepositorioProcedures.cs" />
   </ItemGroup>

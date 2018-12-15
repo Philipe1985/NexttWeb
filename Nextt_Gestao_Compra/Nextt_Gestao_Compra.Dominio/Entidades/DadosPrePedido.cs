@@ -7,10 +7,12 @@ namespace Nextt_Gestao_Compra.Dominio.Entidades
         public int IDMarca { get; set; }
         public int IDProduto { get; set; }
         public Int16 IDSecao { get; set; }
+        public Int16 IDSegmento { get; set; }
         public Int16 IDGrupoTamanho { get; set; }
         public Int16 IDEspecie { get; set; }
         public string DescricaoGrupoTamanho { get; set; }
         public string DescricaoEspecie { get; set; }
+        public string DescricaoSegmento { get; set; }
         public string DescricaoSecao { get; set; }
         public string CodProduto { get; set; }
         public string CodigoOriginal { get; set; }

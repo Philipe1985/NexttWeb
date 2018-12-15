@@ -47,9 +47,9 @@ namespace Nextt_Gestao_Compra.Aplicacao.Servicos.Gerenciamento
             return _servicoPedido.RetornaCSSCor(_listaCores);
         }
 
-        public string AtualizaStatusPedido(Parametros parametros)
+        public void AtualizaStatusPedido(Parametros parametros)
         {
-           return _servicoPedido.AtualizaStatusPedido(parametros);
+           _servicoPedido.AtualizaStatusPedido(parametros);
         }
 
         public List<IEnumerable> ClonarPedido(Parametros parametros)

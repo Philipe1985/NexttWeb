@@ -72,10 +72,11 @@ namespace Nextt_Gestao_Compra.Aplicacao.Gerenciador.Compra
             var listaMedida = dados.ElementAt(15).Cast<UnidadeMedida>().OrderBy(x => x.Descricao).Select(x => fabrica.Criar(x)).ToList();
             var configPadrao = dados.ElementAt(16).Cast<ConfigDefault>().FirstOrDefault();
             var datasCargaInicial = new DadosConfigPadraoVM(configPadrao);
-
+            var listaTabelaPrecoEmpresa = dados.ElementAt(17).Cast<PrecoGrupoEmpresa>().GroupBy(x => x.IDGrupoEmpresa).Select(x => new GrupoEmpresaPrecosVM(x)).ToList();
             var listaCondicao = ComparaCondicaoPagamento(condicoesOrdenadas).Select(x => fabrica.Criar(x)).ToList();
             var filtrosPesquisa = new FiltrosPesquisa(compraServico, fabrica, dadosCores, listaFornecedores, listaSegmentos, listaMarcas, dadosTamanho, datasCargaInicial)
             {
+                GrupoEmpresaPrecos=listaTabelaPrecoEmpresa,
                 Compradores = listaComprador,
                 UniMedida = listaMedida,
                 OrdemPed = ordemPed,
@@ -110,17 +111,29 @@ namespace Nextt_Gestao_Compra.Aplicacao.Gerenciador.Compra
             return new RetornoProdutosVM(listaRetorno, paginasRetorno);
         }
 
-        public static IEnumerable<RetornoEspecieFiltroVM> RetornaEspeciesFiltradas(IAppServicoCompra compraServico, ParametrosVM parametroVM, FabricaViewModel fabrica)
+        public static FiltrosPesquisa RetornaEspeciesFiltradas(IAppServicoCompra compraServico, ParametrosVM parametroVM, FabricaViewModel fabrica)
         {
             var filtro = Mapper.Map<ParametrosVM, Parametros>(parametroVM);
-            var especiesGrupo = compraServico.RetornaCargaEspeciesFiltros(filtro.Secoes).ElementAt(0).Cast<Especie>()
+            var dados = compraServico.RetornaCargaEspeciesFiltros(filtro.Secoes);
+            var especiesGrupo = dados.ElementAt(0).Cast<Especie>()
                 .GroupBy(x => x.IDSecao).Select(grp => grp.ToList());
-            List<RetornoEspecieFiltroVM> retorno = new List<RetornoEspecieFiltroVM>();
+            var listaAttrProd = dados.ElementAt(1).Cast<Atributos>().OrderBy(x => x.Ordem).ToList();
+            var ordemProd = listaAttrProd.Where(x => x.IDTipoAtributo == x.IDTipoAtributoKey).Select(x => x.Lista).ToList();
+            var listaElemProd = compraServico.RetornaAtributosCampos(listaAttrProd).Select(x => new AtributoElementoVM(x));
+            var comboAttrProd = compraServico.RetornaAtributosTipoLista(listaAttrProd).Select(x => new ComboAtributoVM(x, fabrica));
+            List<RetornoEspecieFiltroVM> especieFiltroVMs = new List<RetornoEspecieFiltroVM>();
             foreach (List<Especie> especiesLista in especiesGrupo)
             {
-                retorno.Add(new RetornoEspecieFiltroVM(especiesLista, fabrica));
+                especieFiltroVMs.Add(new RetornoEspecieFiltroVM(especiesLista, fabrica));
             }
-            return retorno;
+            var filtrosPesquisa = new FiltrosPesquisa(especieFiltroVMs)
+            {
+                OrdemProd = ordemProd,
+                AttrEleListaProd = listaElemProd.ToList(),
+                AttrListaProd = comboAttrProd.ToList()
+            };
+
+            return filtrosPesquisa;
         }
 
         public static FiltrosPesquisa RetornaFiltrosCadProduto(IAppServicoCompra compraServico, ParametrosVM parametroVM, FabricaViewModel fabrica)
@@ -144,10 +157,11 @@ namespace Nextt_Gestao_Compra.Aplicacao.Gerenciador.Compra
             var filtro = Mapper.Map<ParametrosVM, Parametros>(parametroVM);
             var dados = compraServico.RetornaInformacaoFornecedorCompra(filtro);
             //var dadosConfig = dados.ElementAt(0).Cast<ConfigDefault>().FirstOrDefault();
-            var dadosFornecedorProd = dados.ElementAt(1).Cast<DadosCompraFornecedor>().FirstOrDefault();
-            var dadosPagamento = dados.ElementAt(2).Cast<DadosUltimaCompra>().ToList();
+            var dadosFornecedorProd = dados.ElementAt(0).Cast<DadosCompraFornecedor>().FirstOrDefault();
+            var dadosPagamento = dados.ElementAt(1).Cast<DadosUltimaCompra>().ToList();
+            var dadosAttrForn = dados.ElementAt(2).Cast<Atributos>().FirstOrDefault();
             //var datasCargaInicial = new DadosConfigPadraoVM(dadosConfig);
-            return new FornecedorProdDadosVM(dadosPagamento, dadosFornecedorProd);
+            return new FornecedorProdDadosVM(dadosPagamento, dadosFornecedorProd,dadosAttrForn);
         }
 
         public static RetornoPrePedidoVM RetornaDadosCadPrePedido(IAppServicoCompra compraServico, ParametrosVM parametroVM, FabricaViewModel fabrica)
@@ -178,7 +192,7 @@ namespace Nextt_Gestao_Compra.Aplicacao.Gerenciador.Compra
             var listaMedida = dadoPre.ElementAt(14).Cast<UnidadeMedida>().OrderBy(x => x.Descricao).Select(x => fabrica.Criar(x)).ToList();
             var configPadrao = dadoPre.ElementAt(15).Cast<ConfigDefault>().FirstOrDefault();
             var datasCargaInicial = new DadosConfigPadraoVM(configPadrao);
-
+            var listaTabelaPrecoEmpresa = dadoPre.ElementAt(16).Cast<PrecoGrupoEmpresa>().GroupBy(x => x.IDGrupoEmpresa).Select(x => new GrupoEmpresaPrecosVM(x)).ToList();
             var ordemPed = listaAttrPed.Where(x => x.IDTipoAtributo == x.IDTipoAtributoKey).Select(x => x.Lista).ToList();
             var ordemProd = listaAttrProd.Where(x => x.IDTipoAtributo == x.IDTipoAtributoKey).Select(x => x.Lista).ToList();
             var listaElemPed = compraServico.RetornaAtributosCampos(listaAttrPed).Select(x => new AtributoElementoVM(x));
@@ -189,6 +203,7 @@ namespace Nextt_Gestao_Compra.Aplicacao.Gerenciador.Compra
 
             var filtrosPesquisa = new FiltrosPesquisa(dadosCadastro, compraServico, fabrica, dadosCores, dadosTamanho, dadosReferencia, datasCargaInicial)
             {
+                GrupoEmpresaPrecos=listaTabelaPrecoEmpresa,
                 Compradores = listaComprador,
                 UniMedida = listaMedida,
                 Fornecedores = listaFornecedores,

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
 {
@@ -7,7 +8,8 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
         public int IDPedido { get; set; }
         public int IDUnidadeMedida { get; set; }
         public int IDProduto { get; set; }
-        public int Codigo { get; set; } 
+        public int Codigo { get; set; }
+        public string CodOriginal{ get; set; }
         public int IDFornecedor { get; set; }
         public string IDUsuarioCadastro { get; set; }
         public string IDCompradorPedido { get; set; }
@@ -36,6 +38,6 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
         public int IDClassificacaoFiscal { get; set; }
         public string Descricao { get; set; }
         public string DescricaoReduzida { get; set; }
-
+        public List<ProdutoCompradorVM> CompradorProduto { get; set; }
     }
 }

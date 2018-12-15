@@ -12,5 +12,9 @@ namespace Nextt_Gestao_Compra.Dominio.Entidades
         public string DescricaoMarca { get; set; }
         public string DescricaoReduzida { get; set; }
         public string Referencia { get; set; }
+        public string RazaoSocial { get; set; }
+        public string CNPJ { get; set; }
+        public string NomeFantasia { get; set; }
+        public Int16 IDFornecedor { get; set; }
     }
 }

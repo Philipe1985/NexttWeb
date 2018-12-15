@@ -8,6 +8,6 @@ namespace Nextt_Gestao_Compra.Dominio.Entidades
 {
    public class InteressadosPedido
     {
-        public string Emails { get; set; }
+        public string Email { get; set; }
     }
 }

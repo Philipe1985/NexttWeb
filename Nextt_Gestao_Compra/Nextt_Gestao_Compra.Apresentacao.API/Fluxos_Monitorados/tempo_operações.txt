@@ -1,48 +1,22 @@
 
-DEBUG 2018-12-05 05:59:44 - Cadastro Iniciado no Servidor
+DEBUG 2018-12-15 02:17:26 - Cadastro Iniciado no Servidor
 
-DEBUG 2018-12-05 05:59:44 - Json Gerado - Enviando ao Banco
+DEBUG 2018-12-15 02:17:32 - Json Gerado - Enviando ao Banco
 
-DEBUG 2018-12-05 05:59:52 - Pedido Gerado: 20
+DEBUG 2018-12-15 02:27:14 - Cadastro Iniciado no Servidor
 
-DEBUG 2018-12-05 06:04:09 - Cadastro Iniciado no Servidor
+DEBUG 2018-12-15 02:27:16 - Json Gerado - Enviando ao Banco
 
-DEBUG 2018-12-05 06:04:09 - Json Gerado - Enviando ao Banco
+DEBUG 2018-12-15 02:31:07 - Cadastro Iniciado no Servidor
 
-DEBUG 2018-12-05 06:04:16 - Pedido Gerado: 20
+DEBUG 2018-12-15 02:31:08 - Json Gerado - Enviando ao Banco
 
-DEBUG 2018-12-05 06:09:01 - Cadastro Iniciado no Servidor
+DEBUG 2018-12-15 02:39:25 - Cadastro Iniciado no Servidor
 
-DEBUG 2018-12-05 06:09:01 - Json Gerado - Enviando ao Banco
+DEBUG 2018-12-15 02:39:27 - Json Gerado - Enviando ao Banco
 
-DEBUG 2018-12-05 06:09:10 - Pedido Gerado: 20
+DEBUG 2018-12-15 05:28:21 - Cadastro Iniciado no Servidor
 
-DEBUG 2018-12-05 06:26:17 - Cadastro Iniciado no Servidor
+DEBUG 2018-12-15 05:28:26 - Json Gerado - Enviando ao Banco
 
-DEBUG 2018-12-05 06:26:17 - Json Gerado - Enviando ao Banco
-
-DEBUG 2018-12-05 06:26:25 - Pedido Gerado: 20
-
-DEBUG 2018-12-05 07:20:57 - Cadastro Iniciado no Servidor
-
-DEBUG 2018-12-05 07:20:57 - Json Gerado - Enviando ao Banco
-
-DEBUG 2018-12-05 07:21:03 - Pedido Gerado: 19
-
-DEBUG 2018-12-05 09:32:34 - Cadastro Iniciado no Servidor
-
-DEBUG 2018-12-05 09:32:34 - Json Gerado - Enviando ao Banco
-
-DEBUG 2018-12-05 09:32:41 - Pedido Gerado: 21
-
-DEBUG 2018-12-05 11:02:57 - Cadastro Iniciado no Servidor
-
-DEBUG 2018-12-05 11:02:57 - Json Gerado - Enviando ao Banco
-
-DEBUG 2018-12-05 11:03:04 - Pedido Gerado: 21
-
-DEBUG 2018-12-05 17:10:59 - Cadastro Iniciado no Servidor
-
-DEBUG 2018-12-05 17:10:59 - Json Gerado - Enviando ao Banco
-
-DEBUG 2018-12-05 17:11:02 - Pedido Gerado: 1
+DEBUG 2018-12-15 05:29:02 - Pedido Gerado: 24

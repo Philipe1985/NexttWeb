@@ -31,6 +31,8 @@ namespace Nextt_Gestao_Compra.Infre.CrossCutting.Configuracao
                 Aplicacao.Servicos.Gerenciamento.AppServicoPedido>();
             container.RegisterType<Aplicacao.Servicos.Interfaces.Gerenciamento.IAppServicoMovimentacao,
                 Aplicacao.Servicos.Gerenciamento.AppServicoMovimentacao>();
+            container.RegisterType<Aplicacao.Servicos.Interfaces.Gerenciamento.IAppServicoProduto,
+                Aplicacao.Servicos.Gerenciamento.AppServicoProduto>();
 
             container.RegisterType<Dominio.Interfaces.Servico.Gerenciamento.IServicoCompra,
                 Dominio.Servicos.Gerenciamento.ServicoCompra>();
@@ -40,6 +42,8 @@ namespace Nextt_Gestao_Compra.Infre.CrossCutting.Configuracao
                 Dominio.Servicos.Gerenciamento.ServicoPedido>();
             container.RegisterType<Dominio.Interfaces.Servico.Gerenciamento.IServicoMovimentacao,
                 Dominio.Servicos.Gerenciamento.ServicoMovimentacao>();
+            container.RegisterType<Dominio.Interfaces.Servico.Gerenciamento.IServicoProduto,
+                Dominio.Servicos.Gerenciamento.ServicoProduto>();
 
             container.RegisterType<Dominio.Interfaces.Repositorio.Gerenciamento.IRepositorioCompra, 
                 Infra.Dados.Repositorios.Gerenciamento.RepositorioCompra>();
@@ -49,6 +53,8 @@ namespace Nextt_Gestao_Compra.Infre.CrossCutting.Configuracao
                 Infra.Dados.Repositorios.Gerenciamento.RepositorioPedido>();
             container.RegisterType<Dominio.Interfaces.Repositorio.Gerenciamento.IRepositorioMovimentacao,
                 Infra.Dados.Repositorios.Gerenciamento.RepositorioMovimentacao>();
+            container.RegisterType<Dominio.Interfaces.Repositorio.Gerenciamento.IRepositorioProduto,
+                Infra.Dados.Repositorios.Gerenciamento.RepositorioProduto>();
 
             return new UnityResolver(container);
         }

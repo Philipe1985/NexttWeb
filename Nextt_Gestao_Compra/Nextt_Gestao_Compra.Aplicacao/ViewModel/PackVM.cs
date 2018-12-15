@@ -11,11 +11,12 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
         public List<GrupoDistribuicaoVM> GruposDistribuir { get; set; }
         public List<PackItensVM> PackItens { get; set; }
         public PackVM(List<ProdutoItem> produtoItems, List<GrupoFilial> grupoFilials)
-        {
+        { 
             IDPedidoPack = produtoItems.ElementAt(0).Pack;
+            var qtdItensPack = produtoItems.Sum(x => x.QtdeItens) * produtoItems.ElementAt(0).QtdePack; 
             PackItens = produtoItems
                          .GroupBy(x => new { x.ReferenciaItem, x.DescricaoCor }).OrderBy(x => x.Key.ReferenciaItem)
-                         .Select(x => new PackItensVM(x.Where(y => y.DescricaoCor == x.Key.DescricaoCor).ToList())).ToList();
+                         .Select(x => new PackItensVM(x.Where(y => y.DescricaoCor == x.Key.DescricaoCor).ToList(),qtdItensPack)).ToList();
             var totalPack = produtoItems.ElementAt(0).QtdePack;
             var totalParticipacaoGrupo = grupoFilials.GroupBy(x => x.IDGrupo).Sum(x => x.ElementAt(0).ParticipacaoGrupo);
             var participacaoDistribuir = (100 - totalParticipacaoGrupo) / grupoFilials

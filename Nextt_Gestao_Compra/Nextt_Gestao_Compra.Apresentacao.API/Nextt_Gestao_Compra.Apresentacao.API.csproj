@@ -189,6 +189,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\Cadastro\PedidoController.cs" />
     <Compile Include="Controllers\Cadastro\GrupoController.cs" />
+    <Compile Include="Controllers\Cadastro\ProdutoController.cs" />
     <Compile Include="Controllers\Gerenciamento\CompraController.cs" />
     <Compile Include="Controllers\Gerenciamento\MovimentacaoController.cs" />
     <Compile Include="Controllers\PadraoController.cs" />
@@ -209,7 +210,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Movimentacao\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="log4net.config">

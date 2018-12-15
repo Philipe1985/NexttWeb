@@ -12,7 +12,7 @@ namespace Nextt_Gestao_Compra.Apresentacao.API.Controllers
     {
         private GerenciadorUsuarioAplicacao _AppGerenciadorUsuario = null;
         private GerenciadorFuncoesAplicacao _AppGerenciadorPerfil = null;
-        private GerenciadorPermissaoAplicacao _AppGerenciadorPermissao = null;
+        private GerenciadorPermissaoAplicacao _AppGerenciadorPermissao = null; 
 
         public static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private GerenciadorLoginAplicacao _AppGerenciadorLogin = null;

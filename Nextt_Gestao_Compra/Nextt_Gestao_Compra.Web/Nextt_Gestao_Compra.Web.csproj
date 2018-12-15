@@ -1578,6 +1578,9 @@
     <Content Include="Assets\css\LoadingStyle.min.css" />
     <Content Include="Assets\css\plugins.min.css" />
     <Content Include="Assets\css\style.min.css" />
+    <Content Include="Assets\fonts\font-awesome-action\css\font-awesome.css" />
+    <Content Include="Assets\fonts\font-awesome-action\css\font-awesome.min.css" />
+    <Content Include="Assets\fonts\font-awesome-action\fonts\fontawesome-webfont.svg" />
     <Content Include="Assets\fonts\font-awesome\css\font-awesome.css" />
     <Content Include="Assets\fonts\font-awesome\css\font-awesome.min.css" />
     <Content Include="Assets\fonts\font-awesome\fonts\fontawesome-webfont.svg" />
@@ -2441,7 +2444,7 @@
     <Content Include="Conta\EditorUsuario.cshtml" />
     <Content Include="Conta\GerenciadorUsuario.cshtml" />
     <Content Include="Conta\Login.cshtml" />
-    <Content Include="Cadastro\Produto.cshtml" />
+    <Content Include="Gerenciamento\Produto.cshtml" />
     <Content Include="Gerenciamento\Agenda.cshtml" />
     <Content Include="Assets\js\plugins\jquery-ui-1.12.1.custom\package.json" />
     <Content Include="Assets\js\plugins\bootstrap-clockpicker\assets\css\bootstrap-theme.css.map" />
@@ -2460,6 +2463,11 @@
     <Content Include="Gerenciamento\MovimentacaoProduto.cshtml" />
     <Content Include="Assets\js\plugins\simple-pagination\bower.json" />
     <Content Include="Assets\js\plugins\simple-pagination\README.md" />
+    <Content Include="Assets\fonts\font-awesome-action\fonts\fontawesome-webfont.eot" />
+    <Content Include="Assets\fonts\font-awesome-action\fonts\fontawesome-webfont.ttf" />
+    <Content Include="Assets\fonts\font-awesome-action\fonts\fontawesome-webfont.woff" />
+    <Content Include="Assets\fonts\font-awesome-action\fonts\fontawesome-webfont.woff2" />
+    <Content Include="Assets\fonts\font-awesome-action\fonts\FontAwesome.otf" />
     <None Include="packages.config" />
     <Content Include="Gerenciamento\Pedido.cshtml" />
     <Content Include="Cadastro\Compra.cshtml" />

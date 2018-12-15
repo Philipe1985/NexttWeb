@@ -40,6 +40,7 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Utils
             public List<IEnumerable> Executar()
             {
                 var results = new List<IEnumerable>();
+               
                 using (var connection = _db.Database.Connection)
                 {
                     connection.Open();

@@ -45,7 +45,7 @@
                     <div class="form-group">
                         <h5 id="lblCodProd" class="form-label">Cod. Prod. Matriz</h5>
                         <div class="controls">
-                            <input type="text" name="txtCodProd" id="txtCodProd" class="form-control txtInteiro" />
+                            <input type="text" name="txtCodProd" maxlength="9" id="txtCodProd" class="form-control txtInteiro" />
                         </div>
                     </div>
                 </div>
@@ -109,13 +109,13 @@
                     <div class="form-group">
                         <h5 class="form-label">Segmentos:</h5>
                         <div class="controls">
-                            <select id="drpSeg" class="selectpicker show-tick form-control" data-show-subtext="true" multiple data-live-search="true"
-                                    data-count-selected-text="Selecionado {0} de {1}" title="0 selecionados..."
+                            <select id="drpSeg" class="selectpicker show-tick form-control" data-actions-box="true" data-show-subtext="true" multiple data-live-search="true"
+                                    data-count-selected-text="Selecionado {0} de {1}" data-select-all-text="Marcar Todos" data-deselect-all-text="Desmarcar Todos" title="0 selecionados..."
                                     data-width="100%" data-select-header="true" data-size="7" data-selected-text-format="count > 2"></select>
                         </div>
                     </div>
                 </div>
-                <div id="divSec" class="col-md-3 col-sm-12 col-xs-12 ocultarElemento">
+                <div id="divSec" class="col-md-2 col-sm-12 col-xs-12 ocultarElemento">
                     <div class="form-group">
                         <h5 class="form-label">Seções:</h5>
                         <div class="controls">
@@ -125,7 +125,7 @@
                         </div>
                     </div>
                 </div>
-                <div id="divEsp" class="col-md-3 col-sm-12 col-xs-12 ocultarElemento">
+                <div id="divEsp" class="col-md-2 col-sm-12 col-xs-12 ocultarElemento">
                     <div class="form-group">
                         <h5 class="form-label">Espécies:</h5>
                         <div class="controls">
@@ -147,10 +147,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-2 col-sm-12 col-xs-12">
+                <div id="divAttrForn" class="col-md-2 col-sm-12 col-xs-12 ocultarElemento">
                     <div class="form-group">
                         <h5 class="form-label">Atributo Fornecedor:</h5>
-                        <div class="controls ocultarElemento">
+                        <div class="controls">
                             <select name="cbAttrForn" id="cbAttrForn" data-actions-box="true" class="selectpicker show-tick form-control" data-live-search="true"
                                     data-select-all-text="Marcar Todas" data-deselect-all-text="Desmarcar Todas" data-count-selected-text="Selecionado {0} de {1} opções"
                                     data-width="100%" multiple data-select-header="true" data-size="auto" data-selected-text-format="count > 2" title="Selecione..."></select>
@@ -186,7 +186,7 @@
                             </button>
                             <a href="javascript:limparCampos();" data-toggle="tooltip" title="Limpar Filtros" class="btn text-center clear-filter">
                                 @*<i class="fa fa-filter fa-2x" aria-hidden="true"></i>*@
-                                <span class="glyphicon glyphicon-filter"></span>
+                                <span class="fa fa-filter-remove fa-2x"></span>
                             </a>
                         </div>
                     </div>
@@ -209,6 +209,7 @@
                                 <thead>
                                     <tr>
                                         <th style="border:1px solid black;border-bottom:2px solid black">Detalhamento</th>
+                                        <th style="border:1px solid black;border-bottom:2px solid black">Status</th>
                                         <th style="border:1px solid black;border-bottom:2px solid black">Cód. Pedido</th>
                                         <th style="border:1px solid black;border-bottom:2px solid black">ID. Produto</th>
                                         <th style="border:1px solid black;border-bottom:2px solid black">Cód. Produto</th>
@@ -221,7 +222,6 @@
                                         <th style="border:1px solid black;border-bottom:2px solid black">Data de Entrega</th>
                                         <th style="border:1px solid black;border-bottom:2px solid black">Qtd. Total</th>
                                         <th style="border:1px solid black;border-bottom:2px solid black">Custo Total</th>
-                                        <th style="border:1px solid black;border-bottom:2px solid black">Status</th>
                                         <th style="border:1px solid black;border-bottom:2px solid black">Comprador</th>
                                         <th style="border:1px solid black;border-bottom:2px solid black">Copiar Pedido</th>
                                     </tr>
@@ -343,9 +343,6 @@
             </div>
             <div class="modal-footer btnFooters">
                 <button type="button" id="btnAcessar" class="btn btn-primary"><i class="fa fa-external-link-square" aria-hidden="true"></i> Abrir Pedido</button>
-                <button type="button" id="btnAprovar" class="btn btn-success"><i class="fa fa-check" aria-hidden="true"></i> Aprovar Pedido</button>
-                <button type="button" id="btnDevolver" class="btn btn-warning"><i class="fa fa-mail-reply" aria-hidden="true"></i> Reprovar Pedido</button>
-                <button type="button" id="btnCancelar" class="btn btn-danger"><i class="fa fa-close" aria-hidden="true"></i> Cancelar Pedido</button>
                 <button type="button" id="btnPrint" class="btn btn-primary"><i class="fa fa-print" aria-hidden="true"></i> Imprimir Ficha</button>
                 <button id="btnSair" type="button" class="btn btn-info" data-dismiss="modal"><i class="fa fa-ban" aria-hidden="true"></i> Sair</button>
             </div>

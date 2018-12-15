@@ -1,0 +1,187 @@
+﻿@{
+    Layout = "~/_LayoutPrincipal.cshtml";
+}
+<script src="../Assets/js/calculosRelatorio.js"></script>
+<script src="../Assets/js/customProdutoManager.js"></script>
+<div class="col-md-12 col-sm-12 col-xs-12" id="principal">
+
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12" style="text-align:center">
+            <h5 class="form-label"><strong>Selecione os Filtros Abaixo para Pesquisar Produtos Cadastrados</strong></h5>
+        </div>
+        <div class="col-md-12 col-sm-12 col-xs-12" style="text-align:center">
+            <div id="alertProdCompra" class="alertCustomizado alert-danger" style="display:none"></div>
+        </div>
+        <div id="divForn" class="col-md-2 col-sm-4 col-xs-12 ocultarElemento">
+            <div class="form-group">
+                <h5 class="form-label">Fornecedores:</h5>
+                <div class="controls">
+                    <select id="drpCNPJ" class="selectpicker show-tick form-control" data-show-subtext="true" data-actions-box="true" multiple data-live-search="true"
+                            data-select-all-text="Marcar Todos" data-deselect-all-text="Desmarcar Todos" data-count-selected-text="Selecionado {0} de {1} CNPJ's'" title="0 selecionados..."
+                            data-width="100%" data-select-header="true" data-size="7" data-selected-text-format="count > 2"></select>
+                </div>
+            </div>
+        </div>
+        <div id="divAttr" class="col-md-2 col-sm-4 col-xs-12 ocultarElemento">
+            <div class="form-group">
+                <h5 class="form-label">Atributos de Fornecedor:</h5>
+                <div class="controls">
+                    <select name="cbAttrForn" id="cbAttrForn" data-container="body" data-actions-box="true" class="selectpicker show-tick form-control" data-live-search="true"
+                            data-select-all-text="Marcar Todas" data-deselect-all-text="Desmarcar Todas" data-count-selected-text="Selecionado {0} de {1} opções"
+                            data-width="100%" multiple data-select-header="true" data-size="auto" data-selected-text-format="count > 2" title="Selecione..."></select>
+                </div>
+            </div>
+        </div>
+        <div id="divMarca" class="col-md-2 col-sm-4 col-xs-12 ocultarElemento">
+            <div class="form-group">
+                <h5 class="form-label">Marcas:</h5>
+                <div class="controls">
+                    <select id="drpMarc" class="selectpicker show-tick form-control" data-actions-box="true" multiple data-live-search="true"
+                            data-select-all-text="Marcar Todos" data-container="body" data-deselect-all-text="Desmarcar Todos" data-count-selected-text="Selecionado {0} de {1}" title="0 selecionados..."
+                            data-width="100%" data-size="7" data-selected-text-format="count > 2"></select>
+                </div>
+            </div>
+        </div>
+        <div id="divSeg" class="col-md-2 col-sm-4 col-xs-12 ocultarElemento">
+            <div class="form-group">
+                <h5 class="form-label">Segmentos:</h5>
+                <div class="controls">
+                    <select id="drpSeg" class="selectpicker show-tick form-control" data-actions-box="true" data-show-subtext="true" multiple data-live-search="true"
+                            data-count-selected-text="Selecionado {0} de {1}" title="0 selecionados..." data-select-all-text="Marcar Todos" data-deselect-all-text="Desmarcar Todos"
+                            data-width="100%" data-select-header="true" data-size="7" data-selected-text-format="count > 2"></select>
+                </div>
+            </div>
+        </div>
+
+        <div id="divSec" class="col-md-2 col-sm-4 col-xs-12 ocultarElemento">
+            <div class="form-group">
+                <h5 class="form-label">Seções:</h5>
+                <div class="controls">
+                    <select id="drpSec" class="selectpicker show-tick form-control" data-show-subtext="true" data-actions-box="true" multiple data-live-search="true"
+                            data-select-all-text="Marcar Todas" data-container="body" data-deselect-all-text="Desmarcar Todas" data-count-selected-text="Selecionado {0} de {1}" title="0 selecionados..."
+                            data-width="100%" data-select-header="true" data-size="7" data-selected-text-format="count > 2"></select>
+                </div>
+            </div>
+        </div>
+        <div id="divEsp" class="col-md-2 col-sm-4 col-xs-12 ocultarElemento">
+            <div class="form-group">
+                <h5 class="form-label">Espécies:</h5>
+                <div class="controls">
+                    <select id="drpEsp" class="selectpicker show-tick form-control" data-show-subtext="true" data-actions-box="true" multiple data-live-search="true"
+                            data-select-all-text="Marcar" data-container="body" data-deselect-all-text="Desmarcar" data-count-selected-text="Selecionado {0} de {1}" title="0 selecionados..."
+                            data-width="100%" data-select-header="true" data-size="5" data-selected-text-format="count > 2"></select>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2 col-sm-4 col-xs-12">
+            <div class="form-group">
+                <h5 class="form-label">Pesquisar Produto:</h5>
+                <div class="controls">
+                    <button id="btnBuscarProduto" class="btn btn-primary " onclick="buscarProdutosFiltrado()">
+                        <i class="fa fa-search" aria-hidden="true"> Iniciar Pesquisa</i>
+                    </button>
+                    <a href="javascript:limparCampos();" data-toggle="tooltip" title="Limpar Filtros" class="btn text-center clear-filter">
+                        @*<i class="fa fa-filter fa-2x" aria-hidden="true"></i>*@
+                        <span class="fa fa-filter-remove fa-2x"></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2 col-sm-12 col-xs-12">
+            <div class="form-group">
+                <h5 id="lblCodProd" class="form-label">Cod. Prod. Matriz</h5>
+                <div class="controls">
+                    <input type="text" name="txtCodProd" id="txtCodProd" maxlength="9" class="form-control txtInteiro" />
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2 col-sm-12 col-xs-12">
+            <div class="form-group">
+                <h5 class="form-label">Cadastrar Novo Produto:</h5>
+                <div class="controls">
+                    <button id="btnCadastrarProduto" class="btn btn-info " onclick="cadastrarNovoProdGerenciamento()">
+                        <i class="fa fa-shopping-bag" aria-hidden="true"> Cadastrar</i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-12 col-xs-12">
+            <div class="form-group">
+                <h5 class="form-label">Pesquise na tabela de produtos:</h5>
+                <div class="controls">
+                    <input type="text" id="txtFiltroProdutoCompra" maxlength="50" placeholder="Pesquise o produto por qualquer informção dele..." class="form-control" />
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Selecione os Produtos para Cadastrar Novos Pedidos</h3>
+                </div>
+                <div id="" class="panel-body">
+                    <div class="pagination-holder clearfix pull-right"></div>
+                    <div class="col-md-12 col-sm-12 col-xs-12 table-responsive">
+                        <table id="tabelaProdutos" cellpadding="0" cellspacing="0" style="width:100%;" class="table-tools cell-border hover table cell nowrap stripe compact pretty">
+                            <thead>
+                                <tr>
+                                    <th rowspan="2" style="border:1px solid black;border-bottom:2px solid black">Editar</th>
+                                    <th colspan="5" style="border:1px solid black;border-bottom:2px solid black">Produto</th>
+                                    <th colspan="5" style="border:1px solid black;border-bottom:2px solid black">Fornecedor</th>
+                                    <th colspan="2" style="border:1px solid black;border-bottom:2px solid black">Marca</th>
+                                </tr>
+                                <tr>
+                                    <th style="border:1px solid black;border-bottom:2px solid black">ID Produto</th>
+                                    <th style="border:1px solid black;border-bottom:2px solid black">Código</th>
+                                    <th style="border:1px solid black;border-bottom:2px solid black">Cód. Original</th>
+                                    <th style="border:1px solid black;border-bottom:2px solid black">Descrição</th>
+                                    <th style="border:1px solid black;border-bottom:2px solid black">Desc. Reduzida</th>
+                                    <th style="border:1px solid black;border-bottom:2px solid black">Código</th>
+                                    <th style="border:1px solid black;border-bottom:2px solid black">Razão Social</th>
+                                    <th style="border:1px solid black;border-bottom:2px solid black">Nome Fantasia</th>
+                                    <th style="border:1px solid black;border-bottom:2px solid black">CNPJ</th>
+                                    <th style="border:1px solid black;border-bottom:2px solid black">Referência</th>
+                                    <th style="border:1px solid black;border-bottom:2px solid black">Código</th>
+                                    <th style="border:1px solid black;border-bottom:2px solid black">Descrição</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="bg_load"></div>
+    <div class="wrapper">
+        <div class="inner">
+            <span class="wait">
+                <span>A</span>
+                <span>g</span>
+                <span>u</span>
+                <span>a</span>
+                <span>r</span>
+                <span>d</span>
+                <span>e</span>
+            </span>
+            <span class="resized ocultarElemento">
+                <span>A</span>
+                <span>j</span>
+                <span>u</span>
+                <span>s</span>
+                <span>t</span>
+                <span>a</span>
+                <span>n</span>
+                <span>d</span>
+                <span>o</span>
+            </span>
+        </div>
+    </div>
+
+</div>
+
+
+

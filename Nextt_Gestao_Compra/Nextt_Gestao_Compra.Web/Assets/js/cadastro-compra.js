@@ -1,4 +1,4 @@
-﻿var $frmDados, $frmAttr, $frmCusto, $lgdDados, $lgdAttr, $lgdCusto,isResumo = false;
+﻿var $frmDados, $frmAttr, $frmCusto, $lgdDados, $lgdAttr, $lgdCusto, isResumo = false, statusTransicao = null, observacaoStatus = null;
 
 $(document).ready(function myfunction() {
     (function ($) {
@@ -151,7 +151,10 @@ $(document).ready(function myfunction() {
         }
     });
     $(".cad-prod").click(function (e) {
-        funcaoInativa();
+        if (referenciaGrade && coresGrade && tamanhosGrade) {
+            salvarProduto();
+        }
+        
     });
 });
 function mudaEtapa(elemShow, elemHide) {

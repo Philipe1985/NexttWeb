@@ -48,6 +48,14 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
                 Descricao = dadosCadastro.DescricaoSecao
             };
         }
+        public Secao CriarSegmento(DadosPrePedido dadosCadastro)
+        {
+            return new Secao()
+            {
+                IDSecao = dadosCadastro.IDSegmento,
+                Descricao = dadosCadastro.DescricaoSegmento
+            };
+        }
         public Especie CriarEspecie(DadosPrePedido dadosCadastro)
         {
             return new Especie()
@@ -72,7 +80,7 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
             return new ComboFiltroVM
             {
                 Valor = fornecedor.IDFornecedor.ToString(),
-                Token = fornecedor.IDFornecedor + " " + fornecedor.CNPJ + " " + fornecedor.NomeFantasia + " " + fornecedor.RazaoSocial,
+                Token = fornecedor.IDFornecedor + ";" + fornecedor.CNPJ + ";" + fornecedor.NomeFantasia + ";" + fornecedor.RazaoSocial,
                 Descricao = fornecedor.NomeFantasia
             };
         }
@@ -97,6 +105,21 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
                 Valor = atributos.IDTipoAtributo.ToString(),
                 Token = atributos.IDTipoAtributo + ";" + atributos.Descricao.Trim(),
                 Descricao = atributos.Descricao.Trim(),
+                DadosAdicionais = dadosAdd
+            };
+        }
+        public ComboFiltroVM Criar(StatusPedido status)
+        {
+            var dadosAdd = !status.SolicitaObservacao ? new List<string>() : new List<string>
+            {
+             "Observacao"
+            };
+
+            return new ComboFiltroVM
+            {
+                Valor = status.IDStatusPedido,
+                Token = status.Descricao.Trim(),
+                Descricao = status.Descricao.Trim(),
                 DadosAdicionais = dadosAdd
             };
         }

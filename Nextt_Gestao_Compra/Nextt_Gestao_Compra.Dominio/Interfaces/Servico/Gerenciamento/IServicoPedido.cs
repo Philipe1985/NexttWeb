@@ -18,7 +18,7 @@ namespace Nextt_Gestao_Compra.Dominio.Interfaces.Servico.Gerenciamento
         List<string> RetornaDescricaoCor(List<Cor> _listaCores);
         List<Cor> RetornaCoresPrincipais(List<Cor> _listaCores);
         List<string> RetornaCSSCor(List<Cor> _listaCores);
-        string AtualizaStatusPedido(Parametros parametros);
+        void AtualizaStatusPedido(Parametros parametros);
         List<GrupoTamanho> RetornaTamanhosAtivo(List<GrupoTamanho> _listaTamanho);
         List<TipoLista> RetornaAtributosTipoLista(List<Atributos> _listaAttr);
         List<Atributos> RetornaAtributosCampos(List<Atributos> _listaAttr);

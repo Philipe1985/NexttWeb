@@ -58,12 +58,14 @@
     <Compile Include="Entidades\Parametros.cs" />
     <Compile Include="Entidades\PedidoCadastrado.cs" />
     <Compile Include="Entidades\PedidoConsulta.cs" />
+    <Compile Include="Entidades\PrecoGrupoEmpresa.cs" />
     <Compile Include="Entidades\ProdutoItem.cs" />
     <Compile Include="Entidades\ReferenciaProduto.cs" />
     <Compile Include="Entidades\ResumoPedido.cs" />
     <Compile Include="Entidades\Secao.cs" />
     <Compile Include="Entidades\GrupoTamanho.cs" />
     <Compile Include="Entidades\Segmento.cs" />
+    <Compile Include="Entidades\StatusPedido.cs" />
     <Compile Include="Entidades\TipoLista.cs" />
     <Compile Include="Entidades\UnidadeMedida.cs" />
     <Compile Include="Entidades\UsuarioGerenciamento.cs" />
@@ -71,17 +73,20 @@
     <Compile Include="Interfaces\Repositorio\Gerenciamento\IRepositorioGrupo.cs" />
     <Compile Include="Interfaces\Repositorio\Gerenciamento\IRepositorioMovimentacao.cs" />
     <Compile Include="Interfaces\Repositorio\Gerenciamento\IRepositorioPedido.cs" />
+    <Compile Include="Interfaces\Repositorio\Gerenciamento\IRepositorioProduto.cs" />
     <Compile Include="Interfaces\Repositorio\IRepositorioPadrao.cs" />
     <Compile Include="Interfaces\Servico\Gerenciamento\IServicoCompra.cs" />
     <Compile Include="Interfaces\Servico\Gerenciamento\IServicoGrupo.cs" />
     <Compile Include="Interfaces\Servico\Gerenciamento\IServicoMovimentacao.cs" />
     <Compile Include="Interfaces\Servico\Gerenciamento\IServicoPedido.cs" />
+    <Compile Include="Interfaces\Servico\Gerenciamento\IServicoProduto.cs" />
     <Compile Include="Interfaces\Servico\IServicoPadrao.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Servicos\Gerenciamento\ServicoCompra.cs" />
     <Compile Include="Servicos\Gerenciamento\ServicoGrupo.cs" />
     <Compile Include="Servicos\Gerenciamento\ServicoMovimentacao.cs" />
     <Compile Include="Servicos\Gerenciamento\ServicoPedido.cs" />
+    <Compile Include="Servicos\Gerenciamento\ServicoProduto.cs" />
     <Compile Include="Servicos\ServicoPadrao.cs" />
   </ItemGroup>
   <ItemGroup />

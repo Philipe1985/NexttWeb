@@ -10,6 +10,6 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
         public List<ProdutoItemVM> PedidoPack { get; set; }
         public List<PedidoAtributoVM> PedidoAtributo { get; set; }
         public List<ProdutoAtributoVM> ProdutoAtributo { get; set; }
-        public List<ProdutoCompradorVM> ProdutoComprador { get; set; }
+        public List<TabelaPrecoVM> ProdutoTabelaPreco { get; set; }
     }
 }

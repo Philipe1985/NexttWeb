@@ -3,12 +3,13 @@ var specialKeys = new Array();
 specialKeys.push(8); //Backspace
 specialKeys.push(46); //Delete
 specialKeys.push(96); //numpad 0
-
+var origemModal = false;
 $(document).ready(function () {
     $(window).on("load", carregar);
+    $('.btnFooters').prepend($.parseHTML(btnStatusTransicao));
     $(document).on('click', '.clonarPedido', function (e) {
         objEnvio = {};
-        objEnvio.codigo = $(this).closest('tr').children().eq(1).html();
+        objEnvio.codigo = $(this).closest('tr').children().eq(2).html();
         objEnvio.idUsuarios = sessionStorage.getItem("id_usuario");
 
         $('.selectpicker').selectpicker('hide');
@@ -20,36 +21,9 @@ $(document).ready(function () {
 
     $(document).on('click', '.validarPedido', function (e) {
         objEnvio = {};
-        objEnvio.codigo = $(this).closest('tr').children().eq(1).html();
+        objEnvio.codigo = $(this).closest('tr').children().eq(2).html();
         var statusAtual = retornaStatusValor($(this).closest('tr').children().eq(12).html());
-        $('.btnFooters .btn').removeClass('ocultarElemento');
-        if (sessionStorage.getItem("perfilSistema") === 'undefined' && sessionStorage.getItem("perfilAdmin") === 'undefined') {
-            $('#btnAprovar').addClass('ocultarElemento');
-            $('#btnDevolver').addClass('ocultarElemento');
-            if (statusAtual === 'A' || statusAtual === 'F' || statusAtual === 'C') {
-                $('#btnPrint').addClass('ocultarElemento');
-                if (statusAtual === 'F' || statusAtual === 'C') {
-                    $('#btnCancelar').addClass('ocultarElemento');
-                }
-            }
-        } else {
-            if (statusAtual === 'A' || statusAtual === 'F' || statusAtual === 'C') {
-                $('#btnPrint').addClass('ocultarElemento');
-                if (statusAtual === 'A') {
-                    $('#btnDevolver').addClass('ocultarElemento');
-                } else if (statusAtual === 'C') {
-                    $('#btnAprovar').addClass('ocultarElemento');
-                    $('#btnCancelar').addClass('ocultarElemento');
-                    $('#btnAcessar').addClass('ocultarElemento');
-                }
-            } else {
-                $('#btnAprovar').addClass('ocultarElemento');
-                $('#btnDevolver').addClass('ocultarElemento');
-                $('#btnCancelar').addClass('ocultarElemento');
-                $('#btnAcessar').addClass('ocultarElemento');
-            }
-
-        }
+        $('.btnFooters .exibeBtn').addClass('ocultarElemento');
         carregaPedidoSintetico(objEnvio)
 
         $('#modalBodyDetalhePedido').addClass('ocultarElemento');
@@ -62,54 +36,130 @@ $(document).ready(function () {
         });
     });
     $(document).on('click', '.cancelarPedido', function (e) {
-        alteraStatusPedido('C', $(this).closest('tr').children().eq(1).html())
-        //objEnvio = {};
-        //objEnvio.codigo = $(this).closest('tr').children().eq(1).html();
-        //objEnvio.status = 'C';
-        //atualizarStatus(objEnvio);
-    });
-    $(document).on('click', '.finalizarPedido', function (e) {
-        objEnvio = {};
-        objEnvio.codigo = $(this).closest('tr').children().eq(1).html();
-        objEnvio.status = 'F';
-        atualizarStatus(objEnvio);
+        if (observacaoStatus.indexOf('C') > -1) {
+            alteraStatusPedido('C', $(this).closest('tr').children().eq(2).html())
+        }
+        else {
+            objEnvio = {};
+            objEnvio.codigo = $(this).closest('tr').children().eq(2).html();
+            objEnvio.status = 'C';
+            atualizarStatus(objEnvio);
+        }
     });
 
+    $(document).on('click', '.reprovarPedido', function (e) {
+        if (observacaoStatus.indexOf('R') > -1) {
+            alteraStatusPedido('R', $(this).closest('tr').children().eq(2).html())
+        }
+        else {
+            objEnvio = {};
+            objEnvio.codigo = $(this).closest('tr').children().eq(2).html();
+            objEnvio.status = 'R';
+            atualizarStatus(objEnvio);
+        }
+    });
+    $(document).on('click', '.finalizarPedido', function (e) {
+        $('#modalDetalhamentoPedido').modal('hide');
+        if (observacaoStatus.indexOf('F') > -1) {
+            alteraStatusPedido('F', $(this).closest('tr').children().eq(2).html())
+        }
+        else {
+            objEnvio = {};
+            objEnvio.codigo = $(this).closest('tr').children().eq(2).html();
+            objEnvio.status = 'F';
+            atualizarStatus(objEnvio);
+        }
+    });
+    $(document).on('click', '#btnFinalizar', function (e) {
+        origemModal = true;
+        $('#modalDetalhamentoPedido').modal('hide');
+        if (observacaoStatus.indexOf('F') > -1) {
+            alteraStatusPedido('F', $('#spnCodPed').html().replace(/\D/g, ""))
+        }
+        else {
+            objEnvio = {};
+            objEnvio.codigo = $('#spnCodPed').html().replace(/\D/g, "");
+            objEnvio.status = 'F';
+            atualizarStatus(objEnvio);
+        }
+
+    });
     $(document).on('click', '#btnCancelar', function (e) {
-        alteraStatusPedido('C', $('#spnCodPed').html().replace(/\D/g, ""))
-        //objEnvio = {};
-        //objEnvio.codigo = $('#spnCodPed').html().replace(/\D/g, "");
-        //objEnvio.status = 'C';
-        //atualizarStatus(objEnvio);
+        origemModal = true;
+        $('#modalDetalhamentoPedido').modal('hide');
+        if (observacaoStatus.indexOf('C') > -1) {
+            alteraStatusPedido('C', $('#spnCodPed').html().replace(/\D/g, ""))
+        }
+        else {
+            objEnvio = {};
+            objEnvio.codigo = $('#spnCodPed').html().replace(/\D/g, "");
+            objEnvio.status = 'C';
+            atualizarStatus(objEnvio);
+        }
+
+    });
+    $(document).on('click', '#btnReprovar', function (e) {
+        origemModal = true;
+        if (observacaoStatus.indexOf('R') > -1) {
+            alteraStatusPedido('R', $('#spnCodPed').html().replace(/\D/g, ""))
+        }
+        else {
+            objEnvio = {};
+            objEnvio.codigo = $('#spnCodPed').html().replace(/\D/g, "");
+            objEnvio.status = 'R';
+            atualizarStatus(objEnvio);
+        }
     });
     $(document).on('click', '.aprovarPedido', function (e) {
-        objEnvio = {};
-        objEnvio.codigo = $(this).closest('tr').children().eq(1).html();
-        objEnvio.status = 'L';
-        atualizarStatus(objEnvio);
+        if (observacaoStatus.indexOf('L') > -1) {
+            alteraStatusPedido('L', $(this).closest('tr').children().eq(2).html())
+        }
+        else {
+            objEnvio = {};
+            objEnvio.codigo = $(this).closest('tr').children().eq(2).html();
+            objEnvio.status = 'L';
+            atualizarStatus(objEnvio);
+        }
     });
     $(document).on('click', '#btnAprovar', function (e) {
-        objEnvio = {};
-        objEnvio.codigo = $('#spnCodPed').html().replace(/\D/g, "");
-        objEnvio.status = 'L';
-        atualizarStatus(objEnvio);
+        origemModal = true;
+        if (observacaoStatus.indexOf('L') > -1) {
+            alteraStatusPedido('L', $('#spnCodPed').html().replace(/\D/g, ""))
+        }
+        else {
+            objEnvio = {};
+            objEnvio.codigo = $('#spnCodPed').html().replace(/\D/g, "");
+            objEnvio.status = 'L';
+            atualizarStatus(objEnvio);
+        }
 
     });
     $(document).on('click', '.devolverPedido', function (e) {
-        objEnvio = {};
-        objEnvio.codigo = $(this).closest('tr').children().eq(1).html();
-        objEnvio.status = 'A';
-        atualizarStatus(objEnvio);
+        if (observacaoStatus.indexOf('A') > -1) {
+            alteraStatusPedido('A', $(this).closest('tr').children().eq(2).html())
+        }
+        else {
+            objEnvio = {};
+            objEnvio.codigo = $(this).closest('tr').children().eq(2).html();
+            objEnvio.status = 'A';
+            atualizarStatus(objEnvio);
+        }
     });
     $(document).on('click', '#btnDevolver', function (e) {
-        objEnvio = {};
-        objEnvio.codigo = $('#spnCodPed').html().replace(/\D/g, "");
-        objEnvio.status = 'A';
-        atualizarStatus(objEnvio);
+        origemModal = true;
+        if (observacaoStatus.indexOf('A') > -1) {
+            alteraStatusPedido('A', $('#spnCodPed').html().replace(/\D/g, ""))
+        }
+        else {
+            objEnvio = {};
+            objEnvio.codigo = $('#spnCodPed').html().replace(/\D/g, "");
+            objEnvio.status = 'A';
+            atualizarStatus(objEnvio);
+        };
 
     });
     $(document).on('click', '.acessarPedido', function (e) {
-        sessionStorage.setItem("pedidoId", $(this).closest('tr').children().eq(1).html());
+        sessionStorage.setItem("pedidoId", $(this).closest('tr').children().eq(2).html());
         $('.selectpicker').selectpicker('hide');
         $(".navbar.navbar-default.navbar-fixed-top").addClass('ocultarElemento');
         $(".bg_load").show();
@@ -163,10 +213,7 @@ $(document).ready(function () {
     })
     $(document).on('paste', '.txtInteiro', function (e) {
         var paste = e.originalEvent.clipboardData.getData('Text');
-        console.log(paste);
-        console.log(isNumber(paste));
-        console.log(Math.floor(paste));
-        console.log(parseInt(paste));
+
         if (isNumber(paste) && Math.floor(paste) == parseInt(paste)) {
             return;
         }
@@ -231,6 +278,7 @@ $(document).ready(function () {
     });
     $('#drpSec').on('change', function (e) {
         var objParam = {};
+        $('#divEsp').addClass('ocultarElemento');
         if ($('#drpSec').val()) {
             $('.selectpicker').selectpicker('hide');
             $(".navbar.navbar-default.navbar-fixed-top").addClass('ocultarElemento');
@@ -239,7 +287,7 @@ $(document).ready(function () {
             objParam.secoes = $('#drpSec').val().join(',');
             carregarEspecie(objParam);
         } else {
-            $('#divEsp').addClass('ocultarElemento');
+
             $("#drpEsp").html('');
 
         }
@@ -286,11 +334,13 @@ function printElement(elem) {
 }
 
 function carregarPackNF(id, dados, colunas, tbIndice) {
+    console.log(dados);
+    console.log(colunas);
     var tbCadPackNF = $('#' + id).DataTable({
         paging: false, /* define se a tabela deve usar paginação */
         searching: false, /* define se deve usar o campo Buscar dentro da tabela */
         lengthChange: false,
-        rowsGroup: [-1, 0],
+        rowsGroup: [-2, -1, 0],
         destroy: true,
         ordering: false,
         scrollCollapse: true,
@@ -303,7 +353,17 @@ function carregarPackNF(id, dados, colunas, tbIndice) {
                 "orderable": false,
                 'className': 'dt-body-center groupHeaderTableRigth'
             },
+            {
+                "targets": "_all",
+                "render": function (data, type, row, meta) {
+                    if (type === 'display' && meta.col > 1) {
 
+                        return data.toLocaleString('pt-BR')
+
+                    }
+                    else return data;
+                }
+            }
         ],
         "info": false,
         columns: colunas
@@ -327,7 +387,7 @@ function carregarPedidos() {
         searching: true, /* define se deve usar o campo Buscar dentro da tabela */
         lengthChange: false,
         deferRender: true,
-        "order": [[1, "desc"]],
+        "order": [[2, "desc"]],
         responsive: true,
         scrollCollapse: true,
         destroy: true,
@@ -340,12 +400,12 @@ function carregarPedidos() {
                 'className': 'dt-body-center'
             },
             {
-                "targets": [12],
+                "targets": [13],
                 "orderable": true,
                 'type': 'currency'
             },
             {
-                "targets": [2],
+                "targets": [3],
                 visible: false
             },
             {
@@ -354,12 +414,12 @@ function carregarPedidos() {
                 'type': 'date-eu'
             },
             {
-                "targets": [9, 10],
+                "targets": [10, 11],
                 "orderable": true,
                 'type': 'date-eu'
             },
             {
-                "targets": [11],
+                "targets": [12],
                 "orderable": true,
                 'type': 'formatted-num'
             },
@@ -399,6 +459,7 @@ function carregarPedidos() {
                 $(".navbar.navbar-default.navbar-fixed-top").removeClass('ocultarElemento');
                 $("div.controls.ocultarElemento").removeClass('ocultarElemento');
                 $("#divSeg").removeClass('ocultarElemento');
+                $("#divForn").removeClass('ocultarElemento');
                 $("#divMarca").removeClass('ocultarElemento');
                 //$("#divSec").removeClass('ocultarElemento');
                 $(".selectpicker").selectpicker('show');
@@ -409,40 +470,30 @@ function carregarPedidos() {
         }
     });
 }
+function retornaBotõesAlteraStatus(opcoes) {
+    var btnOperacoes = '';
+    for (var i = 0; i < opcoes; i++) {
+
+    }
+}
 function geraLinhaRetornoPedido(retorno) {
-    var statusAtual = retorno.status;
+    var statusTransicao = retorno.idStatusPedidoPara.split(',');
+
     var btnClonar = '<a href="#" class="btn btn-primary clonarPedido" data-toggle="tooltip" data-container="body" title="Copiar Pedido" style="margin:auto"><i class="fa fa-plus-square" aria-hidden="true"></i></a>'
-    //if (statusAtual !== 'A' ) {
-    //    btnClonar ='<a href="#" class="btn btn-primary" disabled data-toggle="tooltip" title="Copiar Pedido" style="margin:auto"><i class="fa fa-plus-square" aria-hidden="true"></i></a>'
-    //}
+    var btnHTML = $.parseHTML(btnStatusTransicaoIcones);
+    for (var i = 0; i < statusTransicao.length; i++) {
+
+        $(btnHTML).filter('.status' + statusTransicao[i]).removeClass('ocultarElemento')
+    }
+
     var btnOperacoes = '<a href="#" class="btn btn-primary validarPedido" data-toggle="tooltip" data-container="body" title="Detalhamento" style="margin:3px"><i class="fa fa-external-link-square" aria-hidden="true"></i></a>' +
         '<a href="#" class="btn btn-primary acessarPedido" data-toggle="tooltip" data-container="body" title="Abrir" style="margin:3px"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>';
-    if (sessionStorage.getItem("perfilSistema") === 'undefined' && sessionStorage.getItem("perfilAdmin") === 'undefined') {
-        if (statusAtual === 'A' || statusAtual === 'F' || statusAtual === 'C') {
-            if (retorno.status === 'A') {
-                btnOperacoes += '<a href="#" class="btn btn-danger cancelarPedido" data-toggle="tooltip" data-container="body" title="Cancelar" style="margin:3px"><i class="fa fa-close" aria-hidden="true"></i></a>';
-            }
-
-        }
-    } else {
-        if (retorno.status === 'A' || retorno.status === 'F') {
-            if (retorno.status === 'F') {
-                btnOperacoes += '<a href="#" class="btn btn-success aprovarPedido" data-toggle="tooltip" data-container="body" title="Aprovar" style="margin:3px"><i class="fa fa-check" aria-hidden="true"></i></a>' +
-                    '<a href="#" class="btn btn-warning devolverPedido" data-toggle="tooltip" data-container="body" title="Reprovar" style="margin:3px"><i class="fa fa-mail-reply" aria-hidden="true"></i></a>' +
-                    '<a href="#" class="btn btn-danger cancelarPedido" data-toggle="tooltip" data-container="body" title="Cancelar" style="margin:3px"><i class="fa fa-close" aria-hidden="true"></i></a>';
-            } else {
-                btnOperacoes += '<a href="#" class="btn btn-success finalizarPedido" data-toggle="tooltip" data-container="body" title="Enviar Para Aprovação" style="margin:3px"><i class="fa fa-mail-forward" aria-hidden="true"></i></a>' +
-                    '<a href="#" class="btn btn-danger cancelarPedido" data-toggle="tooltip" data-container="body" title="Cancelar" style="margin:3px"><i class="fa fa-close" aria-hidden="true"></i></a>';
-            }
-        } else if (retorno.status === 'C' || retorno.status === 'L') {
-            btnOperacoes += '<a href="#" class="btn btn-warning finalizarPedido" data-toggle="tooltip" data-container="body" title="Alterar Para Pendente" style="margin:3px"><i class="fa fa-retweet" aria-hidden="true"></i></a>';
-            if (retorno.status === 'L') {
-                btnOperacoes += '<a href="#" class="btn btn-danger cancelarPedido" data-toggle="tooltip" data-container="body" title="Cancelar" style="margin:3px"><i class="fa fa-close" aria-hidden="true"></i></a>';
-            }
-        }
+    for (var i = 0; i < btnHTML.length; i++) {
+        btnOperacoes += btnHTML[i].outerHTML;
     }
     var linhaRetorno = [
         btnOperacoes,
+        retorno.status,
         retorno.idPedido,
         retorno.idProduto,
         retorno.codProduto,
@@ -455,7 +506,6 @@ function geraLinhaRetornoPedido(retorno) {
         moment(retorno.dataEntregaInicio).format("DD/MM/YYYY"),
         retorno.qtdeItens.toLocaleString('pt-BR'),
         (retorno.precoCusto * retorno.qtdeItens).toLocaleString('pt-BR', { style: "currency", currency: "BRL" }),
-        retornaStatusTexto(retorno.status),
         retorno.usuario,
         btnClonar
     ];
@@ -678,7 +728,7 @@ function criaObjConsulta() {
     $('#cbUsuario option:selected').each(function () {
         user.push($(this).val());
     });
-    $('#drpSeg').val() ? objConsulta.segmentos = $('#drpSeg').val().join(',') : objConsulta.segmentos= '';
+    $('#drpSeg').val() ? objConsulta.segmentos = $('#drpSeg').val().join(',').replace(/[^\d,]/g, '') : objConsulta.segmentos = '';
     $('#drpSec').val() ? objConsulta.secoes = $('#drpSec').val().join(',') : objConsulta.secoes = '';
     $('#drpEsp').val() ? objConsulta.especies = $('#drpEsp').val().join(',') : objConsulta.especies = '';
     $('#cbAttrForn').val() ? objConsulta.attrFornecedor = $('#cbAttrForn').val().join(',') : objConsulta.attrFornecedor = '';
@@ -742,7 +792,8 @@ function criaColunasTabelaNF(tamanhos) {
         '<th class="groupHeaderTable" rowspan="2">Cores</th>' +
         '<th class="groupHeaderTable" colspan="' + (tamanhos.length) + '">Tamanho</th>' +
         '<th class="groupHeaderTable numInt sumItem" rowspan="2" >Total</th>' +
-        '<th class="groupHeaderTable" rowspan="2" >Qtd. Pack Cadastrada</th>' +
+        '<th class="groupHeaderTable" rowspan="2" >Qtd. Packs</th>' +
+        '<th class="groupHeaderTable" rowspan="2" >Total Itens</th>' +
         '</tr><tr>';
     for (var i = 0; i < tamanhos.length; i++) {
         tabelaHtml += '<th class="groupHeaderTableRigth separaDireita numInt">' + tamanhos[i].descricaoTamanho.toUpperCase() + '</th>'
@@ -757,7 +808,7 @@ function retornoRodapeTabelaNF(tamanhos) {
     for (var i = 0; i < tamanhos.length; i++) {
         tabelaHtml += '<th class="groupHeaderTableRigth">0</th>'
     }
-    tabelaHtml += '<th class="groupHeaderTable" style="border-right:none !important">0</th><th class="groupHeaderTable" style="border-left:none !important"></th></tr></tfoot>';
+    tabelaHtml += '<th class="groupHeaderTable" style="border-right:none !important">0</th><th class="groupHeaderTable" style="border-left:none !important;border-right:none !important"></th><th class="groupHeaderTable" style="border-left:none !important"></th></tr></tfoot>';
     return tabelaHtml;
 }
 

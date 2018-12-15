@@ -13,5 +13,9 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
         public string DescricaoMarca { get; set; }
         public string DescricaoReduzida { get; set; }
         public string Referencia { get; set; }
+        public string RazaoSocial { get; set; }
+        public string CNPJ { get; set; }
+        public string NomeFantasia { get; set; }
+        public string IDFornecedor { get; set; }
     }
 }

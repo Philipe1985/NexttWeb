@@ -64,6 +64,14 @@ $(document).ready(function () {
             $(this).blur();
         }
     })
+    $(document).on('paste', '.txtInteiro', function (e) {
+        var paste = e.originalEvent.clipboardData.getData('Text');
+
+        if (isNumber(paste) && Math.floor(paste) == parseInt(paste)) {
+            return;
+        }
+        e.preventDefault();
+    })
     $(document).on('keyup touchend', '#txtCustoBrutoPed', function (evento) {
 
         var code = (evento.keyCode ? evento.keyCode : evento.which);
@@ -366,6 +374,10 @@ $(document).ready(function () {
         $("#txtHexNovaCor3").spectrum('disable');
         $("#txtNomeNovaCor").val("");
     });
+    $(document).on('click', '.ediRef', function (e) {
+        sessionStorage.setItem('referenciaCadastradas', $('#drpReferenciaGrade').html());
+        editarReferencia();
+    });
 
     $(document).on('click', '.qtdPackCadastrado', function (e) {
         var existInput = $('.pretty.dataTable').find('input').length;
@@ -497,10 +509,10 @@ $(document).ready(function () {
 
 
     $("#txtNomeNovaCor").blur(function () {
-        var corNome = $("#txtNomeNovaCor").val().toLowerCase().split('/'), corClasses = [], corDesc = [];
+        var corNome = $("#txtNomeNovaCor").val().split('/'), corClasses = [], corDesc = [];
         for (var i = 0; i < corNome.length; i++) {
             if (corNome[i].length) {
-                corDesc.push(toTitleCase($.trim(corNome[i])));
+                corDesc.push($.trim(corNome[i]));
             }
         }
         $("#txtNomeNovaCor").val(corDesc.join('/'));
@@ -514,17 +526,17 @@ $(document).ready(function () {
         else evento.preventDefault();
     })
     $(document).on('keydown', '#txtAreaObsPed', function (evento) {
-        var inputValue = evento.keyCode ? evento.keyCode : evento.which;
-        var retorno = ((inputValue >= 65 && inputValue <= 90) || (inputValue === 111 || inputValue === 186)) ||
-            ((inputValue >= 8 && inputValue <= 13) || (inputValue >= 27 && inputValue <= 43))
+        //var inputValue = evento.keyCode ? evento.keyCode : evento.which;
+        //var retorno = ((inputValue >= 65 && inputValue <= 90) || (inputValue === 111 || inputValue === 186)) ||
+        //    ((inputValue >= 8 && inputValue <= 13) || (inputValue >= 27 && inputValue <= 43))
 
-        if (retorno) return;
-        else evento.preventDefault();
+        //if (retorno) return;
+        //else evento.preventDefault();
     })
     $(document).on('keypress', '#txtCodOriPed', function (event) {
 
         var keyCode = event.keyCode || event.which
-        if (keyCode == 8 || (keyCode >= 35 && keyCode <= 40)) { 
+        if (keyCode == 8 || (keyCode >= 35 && keyCode <= 40)) {
             return;
         }
 
@@ -542,7 +554,7 @@ $(document).ready(function () {
         if (isValidoPaste) {
             return;
         }
-            
+
         e.preventDefault();
     })
     $(document).on('keyup touchend', '#txtNomeNovaCor', function (evento) {
@@ -602,11 +614,9 @@ $(document).ready(function () {
     })
     $("#txtNomeNovaRef").blur(function () {
         var refNova = $(this).val() ? $(this).val().trim() : null;
-        if (refNova.length && !validaReferenciaCadastrada(refNova)) {
-            var referenciaNova = refNova.toLowerCase().replace(/\b[a-z]/g, function (letter) {
-                return letter.toUpperCase();
-            });
-            $('#drpReferenciaGrade').append(cadastraReferencia(referenciaNova));
+        if (refNova && !validaReferenciaCadastrada(refNova)) {
+
+            $('#drpReferenciaGrade').append(cadastraReferencia(refNova));
             $('#drpReferenciaGrade').selectpicker('refresh');
             if ($('#drpReferenciaGrade').val()) {
                 referenciaGrade = $('#drpReferenciaGrade').val();
@@ -618,8 +628,9 @@ $(document).ready(function () {
             } else {
                 referenciaGrade = [];
             }
-            $(this).val('');
+
         }
+        $(this).val('');
     });
 
     $(document).on('keyup touchend', '#txtCadCondPgtoPed', function (evento) {
@@ -717,11 +728,11 @@ $(document).ready(function () {
     });
     $('#drpCNPJ').on('change', function (e) {
         var objEnvio = {};
-        if (parseInt($('#txtIDProd').val()) > 0) {
-            objEnvio.idFornecedor = $('#drpCNPJ').val();
-            objEnvio.codigo = $('#txtIDProd').val();
-            buscaDadosProdFornecedor(objEnvio);
-        }
+        //if (parseInt($('#txtIDProd').val()) > 0) {
+        objEnvio.idFornecedor = $('#drpCNPJ').val();
+        objEnvio.codigo = $('#txtIDProd').val();
+        buscaDadosProdFornecedor(objEnvio);
+        //}
 
 
     });
@@ -735,6 +746,7 @@ $(document).ready(function () {
         if ($('#drpSeg').val()) {
             localStorage.setItem("combo", "secao");
             $('.selectpicker').selectpicker('hide');
+            $("#divEsp").addClass('ocultarElemento');
             $(".navbar.navbar-default.navbar-fixed-top").addClass('ocultarElemento');
             $(".bg_load").show();
             $(".wrapper").show();
@@ -750,13 +762,17 @@ $(document).ready(function () {
         $("#drpEsp").html('<option selected value="">Nenhuma</option>').prop('disabled', true);
         $("#drpEsp").selectpicker('refresh');
         if ($('#drpSec').val()) {
+            $('#drpTamanhoCategoria ').val($('#drpSec').val().split('-')[1]);
+            
             localStorage.setItem("combo", "secao");
+            $("#divEsp").addClass('ocultarElemento');
             $('.selectpicker').selectpicker('hide');
             $(".navbar.navbar-default.navbar-fixed-top").addClass('ocultarElemento');
             $(".bg_load").show();
             $(".wrapper").show();
             $("#drpEsp").prop('disabled', false)
             objParam.secoes = $('#drpSec').val();
+
             carregarEspecie(objParam);
         }
         atualizaCodigoProduto();
@@ -807,7 +823,13 @@ function carregar() {
         } else if (cadastroNovoSession) {
             geraCargaCadNovo()
         } else if (cadastroNovoProduto) {
-            cadastrarProduto();
+            if (cadastroNovoProduto === '0') {
+                cadastrarProduto();
+            } else {
+                var objEnvio = {};
+                objEnvio.codigo = cadastroNovoProduto;
+                editarProduto(objEnvio);
+            }
         } else {
             var objEnvio = {};
             console.log(compraId)
@@ -828,8 +850,10 @@ function validaPermissaoPedidoCadastro() {
     if (permissoesUsuarioLogado.indexOf('Cadastrar Novas Condições de Pagamento') === -1) {
         $('#txtCadCondPgtoPed').attr("disabled", true);
     }
-    
-    
+    if (permissoesUsuarioLogado.indexOf('Cadastrar Novas Cores') > -1) {
+        $('.frmCores').removeClass("ocultarElemento");
+    }
+
 }
 function atualizaDtEntregaLimite() {
     var dataRef = $('#txtDtEntregaPed').data('daterangepicker').endDate.toDate();
@@ -1028,6 +1052,7 @@ function carregarHistoricoTB(colunmsHist, dadosHist) {
                 "targets": "_all",
                 "orderable": false,
                 'className': 'dt-body-center',
+
             },
 
         ],
@@ -1042,7 +1067,7 @@ function carregarPackCad(id, qtd, qtdTabela) {
         paging: false, /* define se a tabela deve usar paginação */
         searching: false, /* define se deve usar o campo Buscar dentro da tabela */
         lengthChange: false,
-        rowsGroup: [-1, 0],
+        rowsGroup: [-2, -1, 0],
         destroy: true,
         ordering: false,
         scrollCollapse: true,
@@ -1055,6 +1080,17 @@ function carregarPackCad(id, qtd, qtdTabela) {
                 "orderable": false,
                 'className': 'dt-body-center groupHeaderTableRigth'
             },
+            {
+                "targets": "_all",
+                "render": function (data, type, row, meta) {
+                    if (type === 'display' && meta.col > 1) {
+
+                        return data.toLocaleString('pt-BR')
+
+                    }
+                    else return data;
+                }
+            }
         ],
         "info": false,
         columns: geraColunaPackCadastrado()
@@ -1077,7 +1113,7 @@ function carregarPackPedidoCadastrado(id, qtd, dados, colunas) {
         paging: false, /* define se a tabela deve usar paginação */
         searching: false, /* define se deve usar o campo Buscar dentro da tabela */
         lengthChange: false,
-        rowsGroup: [-1, 0],
+        rowsGroup: [-2, -1, 0],
         destroy: true,
         ordering: false,
         scrollCollapse: true,
@@ -1090,6 +1126,17 @@ function carregarPackPedidoCadastrado(id, qtd, dados, colunas) {
                 "orderable": false,
                 'className': 'dt-body-center groupHeaderTableRigth'
             },
+            {
+                "targets": "_all",
+                "render": function (data, type, row, meta) {
+                    if (type === 'display' && meta.col > 1) {
+
+                        return data.toLocaleString('pt-BR')
+
+                    }
+                    else return data;
+                }
+            }
         ],
         "info": false,
         columns: colunas
@@ -1112,7 +1159,7 @@ function carregarPackGradeAtualizada(id, config, qtdPack) {
         paging: false, /* define se a tabela deve usar paginação */
         searching: false, /* define se deve usar o campo Buscar dentro da tabela */
         lengthChange: false,
-        rowsGroup: [-1, 0],
+        rowsGroup: [-2, -1, 0],
         destroy: true,
         ordering: false,
         scrollCollapse: true,
@@ -1125,6 +1172,17 @@ function carregarPackGradeAtualizada(id, config, qtdPack) {
                 "orderable": false,
                 'className': 'dt-body-center groupHeaderTableRigth'
             },
+            {
+                "targets": "_all",
+                "render": function (data, type, row, meta) {
+                    if (type === 'display' && meta.col > 1) {
+
+                        return data.toLocaleString('pt-BR')
+
+                    }
+                    else return data;
+                }
+            }
         ],
         "info": false,
         columns: config.colunas
@@ -1169,7 +1227,7 @@ function addGrupo(novoPack) {
             }).done(function (response) {
                 var sourceGrupo = "";
                 $.each(response, function (index, value) {
-                    sourceGrupo += "<option data-tokens='" + value.token + "' value='" + value.valor + "'>" + toTitleCase(value.descricao) + "</option>";
+                    sourceGrupo += "<option data-tokens='" + value.token + "' value='" + value.valor + "'>" + value.descricao + "</option>";
                 });
                 var contentOpt = '<div class="form-group">' +
                     '<label class="control-label">Selecione os Grupo para Distribuição:</label>' +
@@ -1376,7 +1434,7 @@ function geraColunaPackCadastrado() {
     for (var i = 0; i < tamanhosGrade.length; i++) {
         colunasPack.push({ "data": "tamanho" + converterFormatoVariavel(toTitleCase(tamanhosGrade[i])), 'className': 'qtdPack separaDireita' });
     };
-    colunasPack.push({ "data": "totalCor", 'className': 'numInt separaDireita' }, { "data": "qtdPack", 'className': 'qtdPackCadastrado separaDireita' });
+    colunasPack.push({ "data": "totalCor", 'className': 'numInt separaDireita' }, { "data": "qtdPack", 'className': 'qtdPackCadastrado separaDireita' }, { "data": "totalItens", 'className': 'separaDireita' });
     return colunasPack;
 }
 function atualizaDadosTxtBox() {
@@ -1463,12 +1521,19 @@ function atualizaDadosPack() {
     } else {
         (($('#' + gridNome).find('.txtInteiro').val() === valorInicialPed) ? $(cell).html(valorInicialPed) : $(cell).html($('#' + gridNome).find('.txtInteiro').val()));
         if (param !== parseInt(valorInicialPed)) {
+            var totalQtdItens = tbPlanejamento.rows().data().toArray().sum("totalCor") * param;
             tbPlanejamento.rows().every(function (rowIdx, tableLoop, rowLoop) {
                 var data = this.data();
+                data.totalItens = totalQtdItens;
                 data.hasOwnProperty('qtdPack') ?
                     data.qtdPack = param : data.qtdePack = param;
             });
+
+
+            ///adsaddd
+
             recalculaTotalColunas(tbPlanejamento, param)
+            tbPlanejamento.rows().invalidate().draw();
             tbPlanejamento.columns.adjust().draw();
             tbPlanejamento.rowsgroup.update();
             tabelaPackCadastrados.map(obj => {
@@ -1624,7 +1689,7 @@ function checaCorCadastrada(corCadastrar) {
         if ($('#drpCoresGrade').val()) {
             source = $('#drpCoresGrade').val();
         }
-        source.push(toTitleCase(listaValores[listaValores.indexOf(corCadastrar.toLowerCase())]));
+        source.push(listaValores[listaValores.indexOf(corCadastrar.toLowerCase())]);
         console.log(source)
         $('#drpCoresGrade').selectpicker('val', source);
         erroCadCompra("A cor que está tentando cadastrar já existe nas opções e não é possivel adiciona-la. O sistema selecionou automaticamente a opção.", "alertCadGrade");
@@ -1651,7 +1716,7 @@ function atualizaInputCor(indice, descricao, valorInicial) {
         arrValorInicial[indice - 1] = '';
     }
     if (arrValorInicial[indice - 1].length === 0) {
-        arrValorInicial[indice - 1] = toTitleCase(descricao);
+        arrValorInicial[indice - 1] = descricao;
     }
     if (indice < 3) $("#txtHexNovaCor" + (indice + 1)).spectrum('enable');
 
@@ -1787,7 +1852,7 @@ function retornoRodapeCadPack() {
     for (var i = 0; i < tamanhosGrade.length; i++) {
         tabelaHtml += '<th class="groupHeaderTableRigth">0</th>'
     }
-    tabelaHtml += '<th class="groupHeaderTable" style="border-right:none !important">0</th><th class="groupHeaderTable" style="border-left:none !important"></th></tr></tfoot>';
+    tabelaHtml += '<th class="groupHeaderTable" style="border-right:none !important">0</th><th class="groupHeaderTable" style="border-left:none !important;border-right:none !important;"></th><th class="groupHeaderTable" style="border-left:none!important"></th></tr></tfoot>';
     return tabelaHtml;
 }
 function retornaTabela(id) {
@@ -1848,7 +1913,8 @@ function criarTabelaPackCadastrada() {
         '<th class="groupHeaderTable" rowspan="2">Cores</th>' +
         '<th class="groupHeaderTable" colspan="' + (tamanhosGrade.length) + '">Tamanho</th>' +
         '<th class="groupHeaderTable numInt sumItem" rowspan="2" >Total</th>' +
-        '<th class="groupHeaderTable totalPackItens" rowspan="2" >Qtd. Pack Cadastrada</th>' +
+        '<th class="groupHeaderTable totalPackItens" rowspan="2" >Qtde. Pack</th>' +
+        '<th class="groupHeaderTable totalPackItens" rowspan="2" >Total Itens</th>' +
         '</tr><tr>';
     for (var i = 0; i < tamanhosGrade.length; i++) {
         tabelaHtml += '<th class="groupHeaderTableRigth separaDireita numInt">' + tamanhosGrade[i].toUpperCase() + '</th>'
@@ -1940,11 +2006,51 @@ function geraCargaPackNovo(qtd) {
             }
             linhaPackNovo.totalCor = 0;
             linhaPackNovo.qtdPack = qtd;
+            linhaPackNovo.totalItens = 0
             datasourcenovo.push(linhaPackNovo)
         }
     }
     return datasourcenovo;
 }
+function criaPainelPrecoVenda(grupo) {
+    var painelVenda = '<fieldset id="frm' + converterFormatoVariavel(grupo.descricaoGrupo) + '" class="collapsible frmPrecosVenda"><legend>' + grupo.descricaoGrupo +
+        '&nbsp; &nbsp;</legend><div class="field-body container-fluid"></div></fieldset>'
+    $("#frmGrupoPreco .field-body:first").append($.parseHTML(painelVenda));
+    criaObjetoPrecoGrupo(grupo.precos, ('frm' + converterFormatoVariavel(grupo.descricaoGrupo)));
+}
+function criaObjetoPrecoGrupo(precos, pnlId) {
+    
+    for (var i = 0; i < precos.length; i++) {
+        var val = precos[i].valor.toFixed(2).replace('.', ',')
+        var elemento = '<input name="cbPrVenda' + precos[i].idTabelaPreco + '" id="cbPrVenda' + precos[i].idTabelaPreco +
+            '" type="text" data-prefix="R$ " data-select-all-on-focus="true" data-affixes-stay="true" data-allow-zero="true" data-thousands="." data-decimal="," class="form-control prVenda money" value="' + val + '" />';
+        retornaContainerVenda(precos[i].descricao, elemento, pnlId);
+    }
+}
+function retornaContainerVenda(desc, elementoCont, idPnl) {
+    var classeObrigatorio = /*obr ? '<span class="obrigatorio"> *</span>' : */'';
+    var novoAttr = '<div class="col-md-2 col-sm-2 col-xs-12">' +
+        '<div class="form-group">' +
+        '<label class="form-label">' + desc + '</label>' + classeObrigatorio +
+        '<div class="controls">' +
+        elementoCont +
+        '</div></div></div>';
+
+    var painelAppend = $("#" + idPnl).find('.field-body');
+    if (painelAppend.find('.row').length) {
+        var ultimaLinha = painelAppend.find('.row:last')
+        if (ultimaLinha.find('div.col-md-2.col-sm-2.col-xs-12').length !== 6) {
+            ultimaLinha.append(novoAttr)
+        } else {
+            novoAttr = '<div class="row">' + novoAttr + '</div>'
+            painelAppend.append(novoAttr);
+        }
+    } else {
+        novoAttr = '<div class="row">' + novoAttr + '</div>'
+        painelAppend.append(novoAttr);
+    }
+}
+
 function criaPainelRelatorio(id, titulo) {
     return '<div class="row"><fieldset id="' + id + '" class="collapsible cadPackForm"><legend>' + titulo +
         '&nbsp; &nbsp;</legend><div class="field-body"><div class="col-md-12 col-sm-12 col-xs-12 table-responsive"></div></div></fieldset></div>'
@@ -2100,7 +2206,7 @@ function criarTabGrupoFilial(grupos, indexPack) {
         }
         var filtrosGrupo = retornaLinhaOpcoesGrupo(grupos[i].idGrupo + '_' + indexPack, qtdGrupoPart);
         ulHtml += '<li><a style="border: 1px solid blue !important;" href="#grupo' + grupos[i].idGrupo + '_'
-            + indexPack + '" data-toggle="tab"><i class="fa fa-pie-chart" aria-hidden="true"></i> ' + toTitleCase(grupos[i].descricao) +
+            + indexPack + '" data-toggle="tab"><i class="fa fa-pie-chart" aria-hidden="true"></i> ' + grupos[i].descricao +
             '<button style="margin-left: 7px;color:red!important;opacity: 0.5;" data-toggle="tooltip" class="close" type="button" title="Excluir Grupo">×</button> </a></li>';
         var tbHtml = $.parseHTML(retornaTabela("tblGrpPack" + grupos[i].idGrupo + '_' + indexPack)), headerTb = criaTabelaDistribuicao(grupos[i].filiais);
 
@@ -2166,8 +2272,8 @@ function carregaFormCadastroCompra() {
     $("#txtProdutoPed").val(dadosCompraCadastro.codProduto);
     $("#txtCodOriPed").val(dadosCompraCadastro.codOriginal);
     $("#txtRefPed").val(dadosCompraCadastro.referencia);
-    $("#txtDescPed").val(toTitleCase(dadosCompraCadastro.descricaoProduto));
-    $("#txtDescResPed").val(toTitleCase(dadosCompraCadastro.descricaoReduzida));
+    $("#txtDescPed").val(dadosCompraCadastro.descricaoProduto);
+    $("#txtDescResPed").val(dadosCompraCadastro.descricaoReduzida);
     var $menuTitulo = $(".navbar.navbar-default.navbar-fixed-top");
     $menuTitulo.find('.navbar-header .navbar-center').text('Cadastro de Pré-Pedido');
 }
@@ -2390,7 +2496,7 @@ function desabiliaFotos() {
     $("#imgUpload").fileinput('disable');
 }
 function carregaPedidoGrade() {
-    referenciaGrade = $('#drpReferenciaGrade').val();
+    referenciaGrade = $('#drpReferenciaGrade').val() ? $('#drpReferenciaGrade').val() : [];
     coresGrade = retornaCoresSelecionadas();
     retornaTamanhosSelecionados();
     tamanhosGrade = $('#drpTamanhoGrade').val();
@@ -2441,7 +2547,7 @@ function addAtributo() {
     var validar = $("#ckbObrigatorio").bootstrapSwitch('state') ? ' validarAttr' : '';
     var novoAttr = '<div class="col-md-6 col-sm-6 col-xs-12">' +
         '<div class="form-group">' +
-        '<label class="form-label">' + toTitleCase(desc) + '</label>' + classeObrigatorio +
+        '<label class="form-label">' + desc + '</label>' + classeObrigatorio +
         '<div class="controls">' +
         retornaElementoAtributo(validar) +
         '</div></div></div>';
@@ -2487,7 +2593,7 @@ function retornaElementoAtributo(validar, tipo, val, id, precisao, max, min) {
             break;
         case 'Monetario':
             if (!val.length) val = "0"; else val = val.replace('.', ',');
-            elemento = '<input onkeyup="validaValor(this)" data-initial-val="' + val + '" data-allow-negative="' + isNegativo + '" data-prefix="R$ " data-max-val="' + max + '" data-min-val="' + min + '" data-select-all-on-focus="true" data-affixes-stay="true" data-allow-zero="true" data-thousands="." data-decimal="," data-precision="' + precisao + '" name="cbAttr' + id + '" id="cbAttr' + id + '" type="text" class="form-control attrMon money' + validar + '" value="' + val + '" />';
+            elemento = '<input onkeyup="validaValor(this)" data-initial-val="' + val + '" data-allow-negative="' + isNegativo + '" data-prefix="R$ " data-max-val="' + max + '" data-min-val="' + min + '"  data-select-all-on-focus="true" data-affixes-stay="true" data-allow-zero="true" data-thousands="." data-decimal="," data-precision="' + precisao + '" name="cbAttr' + id + '" id="cbAttr' + id + '" type="text" class="form-control attrMon money' + validar + '" value="' + val + '" />';
             break;
         case 'Percentual':
             if (!val.length) val = "0"; else val = val.replace('.', ',');
@@ -2583,7 +2689,7 @@ function retornaContainerAttr(desc, obr, id, elementoCont, tipo) {
     var classeObrigatorio = obr ? '<span class="obrigatorio"> *</span>' : '';
     var novoAttr = '<div class="col-md-3 col-sm-6 col-xs-12">' +
         '<div class="form-group">' +
-        '<label class="form-label">' + toTitleCase(desc) + '</label>' + classeObrigatorio +
+        '<label class="form-label">' + desc + '</label>' + classeObrigatorio +
         '<div class="controls">' +
         elementoCont +
         '</div></div></div>';
@@ -2591,7 +2697,7 @@ function retornaContainerAttr(desc, obr, id, elementoCont, tipo) {
     //var painelAppend = $("#pnlAttrProd") ;
     if (painelAppend.find('.row').length) {
         var ultimaLinha = painelAppend.find('.row:last')
-        if (ultimaLinha.find('div.col-md-3.col-sm-3.col-xs-12').length !== 4) {
+        if (ultimaLinha.find('div.col-md-3.col-sm-6.col-xs-12').length !== 4) {
             ultimaLinha.append(novoAttr)
         } else {
             novoAttr = '<div class="row">' + novoAttr + '</div>'
@@ -2622,7 +2728,7 @@ function carregaAtributosPorOrdem(elementos, combos, ordemCarga, isPedido) {
                 elementos.shift();
 
             }
-                    }
+        }
     }
 }
 function retornaStatusTextoTit(status) {
@@ -2646,4 +2752,186 @@ function retornaStatusTextoTit(status) {
 function retornaDescColunaTabelaHitorico(obj) {
     return Object.keys(obj)
 
+}
+function pesquisarProdutoEditar() {
+    $.confirm({
+        icon: 'fa fa-search',
+        type: 'blue',
+        title: 'Pesquisar',
+        containerFluid: true,
+        content: '<div class="col-md-6 form-group">' +
+            '<label class="control-label">Código Matriz</label>' +
+            '<input type="text" id="txtCodProdEdit" maxlength="9" placeholder="Digite aqui..." class="form-control txtInteiro">' +
+            '</div>' +
+            '<div class="col-md-6 form-group">' +
+            '<label class="control-label">ID Produto</label>' +
+            '<input type="text" id="txtIDProdEdit" maxlength="10" placeholder="Digite aqui..." class="form-control txtInteiro">' +
+            '</div>',
+        buttons: {
+            confirm: {
+                text: 'Buscar',
+                btnClass: 'btn-green',
+                isDisabled: true,
+                action: function () {
+                    var codigo = this.$content.find('#txtCodProdEdit').val();
+                    var id = this.$content.find('#txtIDProdEdit').val();
+                }
+            },
+            cancel: {
+                text: 'Cancelar',
+                btnClass: 'btn-red',
+            }
+        },
+        onContentReady: function () {
+            var self = this;
+
+            self.$content.find('#txtCodProdEdit').keyup(function (evento) {
+                $(this).val().length ?
+                    self.$content.find('#txtIDProdEdit').attr('disabled', true) :
+                    self.$content.find('#txtIDProdEdit').attr('disabled', false);
+                var code = (evento.keyCode ? evento.keyCode : evento.which);
+                if (code === 9 || code === 13) {
+                    $(this).blur();
+                }
+                $(this).val().length < 7 ?
+                    self.buttons.confirm.disable() :
+                    self.buttons.confirm.enable();
+            });
+            self.$content.find('#txtIDProdEdit').keyup(function (evento) {
+                $(this).val().length ?
+                    self.$content.find('#txtCodProdEdit').attr('disabled', true) :
+                    self.$content.find('#txtCodProdEdit').attr('disabled', false);
+                var code = (evento.keyCode ? evento.keyCode : evento.which);
+                if (code === 9 || code === 13) {
+                    $(this).blur();
+                }
+                $(this).val().length ?
+                    self.buttons.confirm.enable() :
+                    self.buttons.confirm.disable();
+            });
+
+        },
+    });
+}
+function editarReferencia() {
+    $.confirm({
+        icon: 'fa fa-pencil-square-o',
+        type: 'blue',
+        title: 'Editar',
+        backgroundDismissAnimation: 'glow',
+        containerFluid: true,
+        content: '<div class="col-md-6 form-group">' +
+            '<label class="control-label">Selecione a Referencia</label>' +
+            '<select id="drpReferenciaGradeEditar" data-container=".jconfirm-box-container" class="selectpicker show-tick form-control" data-live-search="true"' +
+            'data-count-selected-text="Selecionado {0} de {1} Referências" title="0 selecionadas..."' +
+            'data-width="100%" data-size="5" data-selected-text-format="count > 4">' + sessionStorage.getItem('referenciaCadastradas') + '</select>' +
+            '</div>' +
+            '<div class="col-md-6 form-group">' +
+            '<label class="control-label">Descrição</label>' +
+            '<input type="text" id="txtDescRef" disabled placeholder="Digite aqui..."  class="form-control">' +
+            '</div>',
+        buttons: {
+            confirm: {
+                text: 'Salvar',
+                btnClass: 'btn-green',
+                action: function () {
+                    var refCad = [];
+                    $('#drpReferenciaGrade option').each(function () {
+                        refCad.push($(this).val());
+                    });
+                    var refAlt = [];
+                    $(this.$content.find('#drpReferenciaGradeEditar option:not(:first)')).each(function () {
+                        refAlt.push($(this).val());
+                    });
+                    var atualizou = refCad.join(',') !== refAlt.join(',');
+                    if (atualizou) {
+                        var cargaUpdated = $.parseHTML(sessionStorage.getItem('referenciaAtualizadas'));
+                        cargaUpdated.shift();
+                        $('#drpReferenciaGrade').html(cargaUpdated);
+                        $('#drpReferenciaGrade').selectpicker('refresh');
+                        sessionStorage.removeItem('referenciaCadastradas');
+                        sessionStorage.removeItem('referenciaAtualizadas');
+
+                        carregaPedidoGrade();
+                    } else {
+                        $.confirm({
+                            icon: 'fa fa-warning',
+                            theme: 'modern',
+                            animation: 'scale',
+                            typeAnimated: true,
+                            type: 'red',
+                            title: 'Operação Invalida!',
+                            containerFluid: true,
+                            content: 'Nenhuma alteração foi realizada. Cancele a operação ou atualize uma referencia para prosseguir!',
+                            buttons: {
+                                ok: {
+                                    btnClass: 'btn-red',
+                                    text: 'Ok'
+                                },
+                            },
+                        });
+                        return false;
+                    }
+                }
+            },
+            cancel: {
+                text: 'Cancelar',
+                btnClass: 'btn-red',
+                action: function () {
+                    sessionStorage.removeItem('referenciaCadastradas');
+                    sessionStorage.removeItem('referenciaAtualizadas');
+                }
+            }
+        },
+        onContentReady: function () {
+            var self = this, cbRefEdi = self.$content.find('#drpReferenciaGradeEditar'), txtRefDescEdi = self.$content.find('#txtDescRef');
+
+            self.$content.find('#drpReferenciaGradeEditar').on('change', function (e) {
+                $(txtRefDescEdi).val($(cbRefEdi).val());
+                $(txtRefDescEdi).attr("data-initial", $(cbRefEdi).val()).attr('disabled', false).select().focus();
+            });
+            self.$content.find('#txtDescRef').on('blur', function (e) {
+                if (!$(txtRefDescEdi).val()) {
+                    $(txtRefDescEdi).val($(txtRefDescEdi).attr("data-initial"));
+                } else {
+                    var isAlterado = $(txtRefDescEdi).val().toLowerCase().trim() !== $(txtRefDescEdi).attr("data-initial").toLowerCase();
+                    if (isAlterado) {
+                        var opcoes = sessionStorage.getItem('referenciaAtualizadas');
+
+                        var htmlOpt = $.parseHTML(opcoes);
+                        console.log($(txtRefDescEdi).attr("data-initial"));
+                        console.log(htmlOpt);
+                        htmlOpt.map(obj => {
+                            if ($(obj).attr("value") === $(txtRefDescEdi).attr("data-initial")) {
+                                $(obj).attr("data-tokens", $(obj).attr("data-tokens")
+                                    .replace($(txtRefDescEdi).attr("data-initial"), $(txtRefDescEdi).val().trim()));
+                                $(obj).attr("value", $(txtRefDescEdi).val().trim());
+                                $(obj).text($(txtRefDescEdi).val().trim());
+                                var regex = new RegExp($(txtRefDescEdi).attr("data-initial"), "igm");
+                                $(obj).attr("data-content", $(obj).attr("data-content")
+                                    .replace(regex, $(txtRefDescEdi).val().trim()));
+
+                            }
+                            return obj;
+                        });
+                        $(self.$content.find('#drpReferenciaGradeEditar')).html(htmlOpt);
+                        $(self.$content.find('#drpReferenciaGradeEditar')).selectpicker('refresh');
+                        sessionStorage.setItem('referenciaAtualizadas', $(self.$content.find('#drpReferenciaGradeEditar')).html());
+                        $(txtRefDescEdi).attr("data-initial", "").val('').attr('disabled', true);
+                    }
+
+                }
+            });
+        },
+        onOpenBefore: function () {
+            var self = this;
+            sessionStorage.setItem('referenciaAtualizadas', sessionStorage.getItem('referenciaCadastradas'));
+            $("#drpReferenciaGradeEditar").selectpicker();
+            $("#drpReferenciaGradeEditar").selectpicker('deselectAll');
+        },
+        onDestroy: function () {
+            //localStorage.removeItem("idGrpEditar");
+            //localStorage.removeItem("filiaisGrupo");
+        },
+    });
 }

@@ -18,5 +18,6 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
         public decimal PrecoCusto { get; set; }
         public string Usuario { get; set; }
         public string Status { get; set; }
+        public string IDStatusPedidoPara { get; set; }
     }
 }

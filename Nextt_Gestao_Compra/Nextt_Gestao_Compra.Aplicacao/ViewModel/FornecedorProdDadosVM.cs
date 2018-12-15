@@ -13,11 +13,13 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
         public decimal PrecoVenda { get; set; }
         public decimal Desconto { get; set; }
         public decimal IPI { get; set; }
+        public string AtributoFornecedor { get; set; }
+        public string AtributoValor { get; set; }
         public decimal ICMS { get; set; }
         public string Observacao { get; set; }
         public List<string> UltimaForma { get; set; }
         public string UltimaCondicao { get; set; }
-        public FornecedorProdDadosVM(List<DadosUltimaCompra> ultimaCompras, DadosCompraFornecedor fornecedor)
+        public FornecedorProdDadosVM(List<DadosUltimaCompra> ultimaCompras, DadosCompraFornecedor fornecedor, Atributos atributos)
         {
             if (fornecedor != null)
             {
@@ -37,7 +39,11 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
                 UltimaCondicao = ultimaCompras.ElementAt(0).IDCondicaoPagamento.ToString();
                 UltimaForma = ultimaCompras.Select(x => x.IDFormaPagamento.ToString()).ToList();
             }
-           
+            if (atributos != null)
+            {
+                AtributoFornecedor = atributos.IDTipoAtributoKey.ToString();
+                AtributoValor = atributos.IDTipoAtributo.ToString();
+            }
 
         }
     }

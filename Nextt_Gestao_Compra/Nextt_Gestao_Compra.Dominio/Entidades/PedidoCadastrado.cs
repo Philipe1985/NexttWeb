@@ -7,25 +7,28 @@ using System.Threading.Tasks;
 namespace Nextt_Gestao_Compra.Dominio.Entidades
 {
    public class PedidoCadastrado
-    {
+    { 
         public int IDMarca { get; set; }
         public int IDPedido { get; set; }
         public int IDClassificacaoFiscal { get; set; }
         public int IDProduto { get; set; }
         public DateTime DataCadastroProduto { get; set; }
         public Int16 IDSecao { get; set; }
-        public Int16? IDUnidadeMedida { get; set; }
+        public Int16 IDSegmento { get; set; }
+        public Int16 IDUnidadeMedida { get; set; }
         public Int16 IDCondicaoPagamento { get; set; }
         public Int16 IDGrupoTamanho { get; set; }
         public Int16 IDEspecie { get; set; }
         public Int16 IDFornecedor { get; set; }
         public string RazaoSocial { get; set; }
+        public string IDComprador { get; set; }
         public string DescricaoGrupoTamanho { get; set; }
         public string NomeFantasia { get; set; }
         public string ReferenciaFornecedor { get; set; }
         public string Observacao { get; set; }
         public string DescricaoEspecie { get; set; }
         public string DescricaoSecao { get; set; }
+        public string DescricaoSegmento { get; set; }
         public string CodProduto { get; set; }
         public string CodigoOriginal { get; set; }
         public string DescricaoProduto { get; set; }
@@ -50,6 +53,6 @@ namespace Nextt_Gestao_Compra.Dominio.Entidades
         public DateTime DataToleranciaAtrasoInicio { get; set; }
         public DateTime DataToleranciaAtrasoFinal { get; set; }
         public string Status { get; set; }
-
+        public string IDStatusPedidoPara { get; set; }
     }
 }
