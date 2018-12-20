@@ -73,6 +73,8 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
                                    .With<Comprador>()
                                    .With<UnidadeMedida>()
                                    .With<PrecoGrupoEmpresa>()
+                                   .With<Marca>()
+                                   .With<Comprador>()
                                  .Executar();
             }
             catch (Exception ex)

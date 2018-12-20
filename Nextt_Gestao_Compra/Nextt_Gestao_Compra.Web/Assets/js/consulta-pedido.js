@@ -18,6 +18,17 @@ $(document).ready(function () {
         $(".wrapper").show();
         criarClonePedido(objEnvio);
     });
+    $(document).on('click', '.devolverPedido', function (e) {
+        if (observacaoStatus.indexOf('A') > -1) {
+            alteraStatusPedido('A', $(this).closest('tr').children().eq(2).html())
+        }
+        else {
+            objEnvio = {};
+            objEnvio.codigo = $(this).closest('tr').children().eq(2).html();
+            objEnvio.status = 'A';
+            atualizarStatus(objEnvio);
+        }
+    });
 
     $(document).on('click', '.validarPedido', function (e) {
         objEnvio = {};
@@ -46,7 +57,17 @@ $(document).ready(function () {
             atualizarStatus(objEnvio);
         }
     });
-
+    $(document).on('click', '.aprovarPedido', function (e) {
+        if (observacaoStatus.indexOf('L') > -1) {
+            alteraStatusPedido('L', $(this).closest('tr').children().eq(2).html())
+        }
+        else {
+            objEnvio = {};
+            objEnvio.codigo = $(this).closest('tr').children().eq(2).html();
+            objEnvio.status = 'L';
+            atualizarStatus(objEnvio);
+        }
+    });
     $(document).on('click', '.reprovarPedido', function (e) {
         if (observacaoStatus.indexOf('R') > -1) {
             alteraStatusPedido('R', $(this).closest('tr').children().eq(2).html())
@@ -100,6 +121,7 @@ $(document).ready(function () {
     });
     $(document).on('click', '#btnReprovar', function (e) {
         origemModal = true;
+        $('#modalDetalhamentoPedido').modal('hide');
         if (observacaoStatus.indexOf('R') > -1) {
             alteraStatusPedido('R', $('#spnCodPed').html().replace(/\D/g, ""))
         }
@@ -110,19 +132,9 @@ $(document).ready(function () {
             atualizarStatus(objEnvio);
         }
     });
-    $(document).on('click', '.aprovarPedido', function (e) {
-        if (observacaoStatus.indexOf('L') > -1) {
-            alteraStatusPedido('L', $(this).closest('tr').children().eq(2).html())
-        }
-        else {
-            objEnvio = {};
-            objEnvio.codigo = $(this).closest('tr').children().eq(2).html();
-            objEnvio.status = 'L';
-            atualizarStatus(objEnvio);
-        }
-    });
     $(document).on('click', '#btnAprovar', function (e) {
         origemModal = true;
+        $('#modalDetalhamentoPedido').modal('hide');
         if (observacaoStatus.indexOf('L') > -1) {
             alteraStatusPedido('L', $('#spnCodPed').html().replace(/\D/g, ""))
         }
@@ -134,19 +146,9 @@ $(document).ready(function () {
         }
 
     });
-    $(document).on('click', '.devolverPedido', function (e) {
-        if (observacaoStatus.indexOf('A') > -1) {
-            alteraStatusPedido('A', $(this).closest('tr').children().eq(2).html())
-        }
-        else {
-            objEnvio = {};
-            objEnvio.codigo = $(this).closest('tr').children().eq(2).html();
-            objEnvio.status = 'A';
-            atualizarStatus(objEnvio);
-        }
-    });
     $(document).on('click', '#btnDevolver', function (e) {
         origemModal = true;
+        $('#modalDetalhamentoPedido').modal('hide');
         if (observacaoStatus.indexOf('A') > -1) {
             alteraStatusPedido('A', $('#spnCodPed').html().replace(/\D/g, ""))
         }
@@ -719,6 +721,7 @@ function buscarPedidosFiltrado() {
 }
 function criaObjConsulta() {
     var objConsulta = {};
+
     var user = [];
     objConsulta.codigo = $('#txtCodProd').val();
     objConsulta.codigoOriginal = $('#txtCodOri').val();
@@ -740,8 +743,10 @@ function criaObjConsulta() {
     objConsulta.dtEntregaFinal = formataStringData($('#txtDtEntregaPed').val().split(' - ')[1]);
     if (localStorage.getItem('primeiroAcesso')) {
         localStorage.removeItem('primeiroAcesso');
-        objConsulta.dtCadInicial = formatarDataEnvio(moment(new Date()));
-        objConsulta.dtCadFinal = formatarDataEnvio(moment(new Date()));
+        var now = new Date();
+        now.setDate(now.getDate() + 30);
+        objConsulta.dtCadInicial = formatarDataEnvio(moment(now));
+        objConsulta.dtCadFinal = formatarDataEnvio(moment(now));
 
     } else {
         objConsulta.dtCadInicial = formataStringData($('#txtDtCadPed').val().split(' - ')[0]);
@@ -759,8 +764,8 @@ function criaSinteticoTitulo(dados) {
     $('#spnCodPed').html(dados.idPedido);
 }
 function criaSinteticoFornecedor(dados) {
-    $('#spnRazSoc').html(toTitleCase(dados.razaoSocial));
-    $('#spnNomFan').html(toTitleCase(dados.nomeFantasia));
+    $('#spnRazSoc').html(dados.razaoSocial);
+    $('#spnNomFan').html(dados.nomeFantasia);
     $('#spnCnpj').html(configuraMascaraCnpj(dados.cnpj));
     $('#spnRefForn').html(dados.referenciaFornecedor);
 
@@ -769,13 +774,13 @@ function criaSinteticoPedido(dados) {
     $('#spnDtEmi').html(dados.dataCadastro);
     $('#spnDtEnt').html(dados.dataEntregaPrazo);
     $('#spnCstTot').html(dados.precoCustoTotal.toLocaleString('pt-BR', { style: "currency", currency: "BRL" }));
-    $('#spnComp').html(toTitleCase(dados.nomeUsuario));
+    $('#spnComp').html(dados.nomeUsuario);
 }
 function criaSinteticoProduto(dados) {
     $('#spnCodProd').html(dados.codProduto);
-    $('#spnDescSecEsp').html(toTitleCase(dados.descSecEsp));
-    $('#spnDesc').html(toTitleCase(dados.descricaoProduto));
-    $('#spnDescRes').html(toTitleCase(dados.descricaoReduzidaProduto));
+    $('#spnDescSecEsp').html(dados.descSecEsp);
+    $('#spnDesc').html(dados.descricaoProduto);
+    $('#spnDescRes').html(dados.descricaoReduzidaProduto);
     $('#spnCustoBruto').html(dados.precoCusto.toLocaleString('pt-BR', { style: "currency", currency: "BRL" }));
     $('#spnPrVenda').html(dados.precoVenda.toLocaleString('pt-BR', { style: "currency", currency: "BRL" }));
     $('#spnQtdTot').html(dados.qtde.toLocaleString('pt-BR'));

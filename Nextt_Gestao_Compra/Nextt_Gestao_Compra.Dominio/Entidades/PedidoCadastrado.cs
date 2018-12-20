@@ -54,5 +54,7 @@ namespace Nextt_Gestao_Compra.Dominio.Entidades
         public DateTime DataToleranciaAtrasoFinal { get; set; }
         public string Status { get; set; }
         public string IDStatusPedidoPara { get; set; }
+        public bool Ativo { get; set; }
     }
 }
+ 

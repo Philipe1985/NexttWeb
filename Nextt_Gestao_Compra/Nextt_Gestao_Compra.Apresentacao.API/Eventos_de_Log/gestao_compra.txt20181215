@@ -1,0 +1,78 @@
+
+ERROR 2018-12-15 02:29:00 - Erro ao Salvar o Pedido
+System.Exception: RepositorioCompra.GravarPedido: 
+Cannot insert the value NULL into column 'Codigo', table 'Nextt.ComprasPolo.dbo.Produto'; column does not allow nulls. INSERT fails. ---> System.Data.SqlClient.SqlException: Cannot insert the value NULL into column 'Codigo', table 'Nextt.ComprasPolo.dbo.Produto'; column does not allow nulls. INSERT fails.
+   em System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   em System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   em System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   em System.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   em System.Data.SqlClient.SqlDataReader.TryConsumeMetaData()
+   em System.Data.SqlClient.SqlDataReader.get_MetaData()
+   em System.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString, Boolean isInternal, Boolean forDescribeParameterEncryption, Boolean shouldCacheForAlwaysEncrypted)
+   em System.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean async, Int32 timeout, Task& task, Boolean asyncWrite, Boolean inRetry, SqlDataReader ds, Boolean describeParameterEncryptionRequest)
+   em System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry)
+   em System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method)
+   em System.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior, String method)
+   em System.Data.SqlClient.SqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   em System.Data.Common.DbCommand.ExecuteReader()
+   em Nextt_Gestao_Compra.Infra.Dados.Utils.RepositorioProcedures.MultiplosResultSetEncapsulador.Executar() na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Utils\RepositorioProcedures.cs:linha 56
+   em Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento.RepositorioProduto.GravarProduto(String produtoJson) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Repositorios\Gerenciamento\RepositorioProduto.cs:linha 19
+   --- Fim do rastreamento de pilha de exceções internas ---
+   em Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento.RepositorioProduto.GravarProduto(String produtoJson) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Repositorios\Gerenciamento\RepositorioProduto.cs:linha 29
+   em Nextt_Gestao_Compra.Dominio.Servicos.Gerenciamento.ServicoProduto.GravarProduto(String produtoJson) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Dominio\Servicos\Gerenciamento\ServicoProduto.cs:linha 67
+   em Nextt_Gestao_Compra.Aplicacao.Servicos.Gerenciamento.AppServicoProduto.GravarProduto(String produtoJson) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Servicos\Gerenciamento\AppServicoProduto.cs:linha 19
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Produto.GerenciadorAplicacaoProduto.GravarProduto(IAppServicoProduto produtoServico, ProdutoCadastroVM produtoCompleto, ILog log) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Produto\GerenciadorAplicacaoProduto.cs:linha 59
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Cadastro.ProdutoController.SalvarProduto(ProdutoCadastroVM produto) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Cadastro\ProdutoController.cs:linha 45
+
+ERROR 2018-12-15 02:31:47 - Erro ao Salvar o Pedido
+System.Exception: RepositorioCompra.GravarPedido: 
+Valor não pode ser nulo.
+Nome do parâmetro: source ---> System.ArgumentNullException: Valor não pode ser nulo.
+Nome do parâmetro: source
+   em System.Linq.Enumerable.ElementAt[TSource](IEnumerable`1 source, Int32 index)
+   em Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento.RepositorioProduto.GravarProduto(String produtoJson) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Repositorios\Gerenciamento\RepositorioProduto.cs:linha 19
+   --- Fim do rastreamento de pilha de exceções internas ---
+   em Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento.RepositorioProduto.GravarProduto(String produtoJson) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Repositorios\Gerenciamento\RepositorioProduto.cs:linha 29
+   em Nextt_Gestao_Compra.Dominio.Servicos.Gerenciamento.ServicoProduto.GravarProduto(String produtoJson) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Dominio\Servicos\Gerenciamento\ServicoProduto.cs:linha 67
+   em Nextt_Gestao_Compra.Aplicacao.Servicos.Gerenciamento.AppServicoProduto.GravarProduto(String produtoJson) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Servicos\Gerenciamento\AppServicoProduto.cs:linha 19
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Produto.GerenciadorAplicacaoProduto.GravarProduto(IAppServicoProduto produtoServico, ProdutoCadastroVM produtoCompleto, ILog log) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Produto\GerenciadorAplicacaoProduto.cs:linha 59
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Cadastro.ProdutoController.SalvarProduto(ProdutoCadastroVM produto) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Cadastro\ProdutoController.cs:linha 45
+
+ERROR 2018-12-15 02:39:35 - Erro ao Salvar o Pedido
+System.Exception: RepositorioCompra.GravarPedido: 
+Valor não pode ser nulo.
+Nome do parâmetro: source ---> System.ArgumentNullException: Valor não pode ser nulo.
+Nome do parâmetro: source
+   em System.Linq.Enumerable.ElementAt[TSource](IEnumerable`1 source, Int32 index)
+   em Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento.RepositorioProduto.GravarProduto(String produtoJson) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Repositorios\Gerenciamento\RepositorioProduto.cs:linha 19
+   --- Fim do rastreamento de pilha de exceções internas ---
+   em Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento.RepositorioProduto.GravarProduto(String produtoJson) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Repositorios\Gerenciamento\RepositorioProduto.cs:linha 29
+   em Nextt_Gestao_Compra.Dominio.Servicos.Gerenciamento.ServicoProduto.GravarProduto(String produtoJson) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Dominio\Servicos\Gerenciamento\ServicoProduto.cs:linha 67
+   em Nextt_Gestao_Compra.Aplicacao.Servicos.Gerenciamento.AppServicoProduto.GravarProduto(String produtoJson) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Servicos\Gerenciamento\AppServicoProduto.cs:linha 19
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Produto.GerenciadorAplicacaoProduto.GravarProduto(IAppServicoProduto produtoServico, ProdutoCadastroVM produtoCompleto, ILog log) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Produto\GerenciadorAplicacaoProduto.cs:linha 59
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Cadastro.ProdutoController.SalvarProduto(ProdutoCadastroVM produto) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Cadastro\ProdutoController.cs:linha 45
+
+ERROR 2018-12-15 10:58:16 - Erro ao Salvar o Pedido
+System.Exception: RepositorioCompra.GravarPedido: 
+Cannot insert the value NULL into column 'CodigoBarra', table 'Nextt.ComprasPolo.dbo.ProdutoItem'; column does not allow nulls. INSERT fails. ---> System.Data.SqlClient.SqlException: Cannot insert the value NULL into column 'CodigoBarra', table 'Nextt.ComprasPolo.dbo.ProdutoItem'; column does not allow nulls. INSERT fails.
+   em System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   em System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   em System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   em System.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   em System.Data.SqlClient.SqlDataReader.TryConsumeMetaData()
+   em System.Data.SqlClient.SqlDataReader.get_MetaData()
+   em System.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString, Boolean isInternal, Boolean forDescribeParameterEncryption, Boolean shouldCacheForAlwaysEncrypted)
+   em System.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean async, Int32 timeout, Task& task, Boolean asyncWrite, Boolean inRetry, SqlDataReader ds, Boolean describeParameterEncryptionRequest)
+   em System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry)
+   em System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method)
+   em System.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior, String method)
+   em System.Data.SqlClient.SqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   em System.Data.Common.DbCommand.ExecuteReader()
+   em Nextt_Gestao_Compra.Infra.Dados.Utils.RepositorioProcedures.MultiplosResultSetEncapsulador.Executar() na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Utils\RepositorioProcedures.cs:linha 56
+   em Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento.RepositorioProduto.GravarProduto(String produtoJson) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Repositorios\Gerenciamento\RepositorioProduto.cs:linha 19
+   --- Fim do rastreamento de pilha de exceções internas ---
+   em Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento.RepositorioProduto.GravarProduto(String produtoJson) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Repositorios\Gerenciamento\RepositorioProduto.cs:linha 29
+   em Nextt_Gestao_Compra.Dominio.Servicos.Gerenciamento.ServicoProduto.GravarProduto(String produtoJson) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Dominio\Servicos\Gerenciamento\ServicoProduto.cs:linha 67
+   em Nextt_Gestao_Compra.Aplicacao.Servicos.Gerenciamento.AppServicoProduto.GravarProduto(String produtoJson) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Servicos\Gerenciamento\AppServicoProduto.cs:linha 19
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Produto.GerenciadorAplicacaoProduto.GravarProduto(IAppServicoProduto produtoServico, ProdutoCadastroVM produtoCompleto, ILog log) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Produto\GerenciadorAplicacaoProduto.cs:linha 59
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Cadastro.ProdutoController.SalvarProduto(ProdutoCadastroVM produto) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Cadastro\ProdutoController.cs:linha 45

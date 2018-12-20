@@ -9,7 +9,7 @@ namespace Nextt_Gestao_Compra.Aplicacao.Servicos.Interfaces.Gerenciamento
         List<IEnumerable> RetornaInformacaoFornecedorCompra(Parametros parametros);
         List<IEnumerable> BuscaProdutosFiltrados(Parametros parametros);
         List<IEnumerable> RetornaCargaInicialFiltros();
-        List<IEnumerable> RetornaCargaEspeciesFiltros(string secoes);
+        List<IEnumerable> RetornaCargaEspeciesFiltros(Parametros parametros);
         List<IEnumerable> AtualizaFiltrosCadastroProduto(Parametros parametros);
         List<IEnumerable> RetornaDadosPrePedido(Parametros parametros);
         List<IEnumerable> RetornaCargaInicialCadNovo(Parametros parametros);

@@ -61,7 +61,7 @@
                             </div>
                             <div class="row">
                                 <h5><strong>Histórico de Edição</strong></h5>
-                                <div class="col-md-12 col-sm-12 col-xs-12 table-responsive" style="max-height:50vh;overflow:auto">
+                                <div class="col-md-12 col-sm-12 col-xs-12 table-responsive" style="max-height:70vh;overflow-y:auto">
                                     <table id="tabelaHitorico" cellpadding="0" cellspacing="0" class="cell-border hover table cell nowrap stripe compact pretty"></table>
                                 </div>
                             </div>
@@ -69,9 +69,10 @@
                     </fieldset>
 
                     <div class="row">
-                        <div class="pull-right">
+                        <div class="pull-right btnConclusao">
                             <button type="button" class="btn btn-info prev-step">Voltar</button>
-                            <button type="button" class="btn btn-danger cancel-change">Cancelar</button>
+                            <button type="button" class="btn btn-danger cancel-change">Sair</button>
+                            <button type="button" class="btn btn-primary finish-change">Salvar</button>
                         </div>
                     </div>
                 </div>
@@ -105,7 +106,7 @@
                                 </div>
                                 <div class="col-md-2 col-sm-12 col-xs-12">
                                     <div class="form-group">
-                                        <label id="lblCondPgtoPed" class="form-label">Condição de Pagamento</label><span class="obrigatorio"> *</span>
+                                        <label id="lblCondPgtoPed" class="form-label">Cond. Pagamento</label><span class="obrigatorio"> *</span>
                                         <div class="controls ocultarElemento">
                                             <select id="drpCondPgtoPed" class="selectpicker show-tick form-control" data-live-search="true"
                                                     data-width="100%" data-size="5" title="Escolha uma condição..."></select>
@@ -201,7 +202,7 @@
 
                     <div class="row">
                         <div class="pull-right">
-                            <button type="button" class="btn btn-danger cancel-change">Cancelar</button>
+                            <button type="button" class="btn btn-danger cancel-change">Sair</button>
                             <button type="button" class="btn btn-primary next-step">Avançar</button>
                         </div>
                     </div>
@@ -315,7 +316,7 @@
                     <div class="row">
                         <div class="pull-right">
                             <button type="button" class="btn btn-info prev-step">Voltar</button>
-                            <button type="button" class="btn btn-danger cancel-change">Cancelar</button>
+                            <button type="button" class="btn btn-danger cancel-change">Sair</button>
                             <button type="button" class="btn btn-primary cad-prod ocultarElemento">Cadastrar</button>
                             <button type="button" class="btn btn-primary next-step">Avançar</button>
                         </div>
@@ -340,10 +341,10 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="pull-right">
+                        <div class="pull-right btnConclusao">
                             <button type="button" class="btn btn-info prev-step">Voltar</button>
-                            <button type="button" class="btn btn-danger cancel-change">Cancelar</button>
-                            <button type="button" class="btn btn-success finish-change">Salvar</button>
+                            <button type="button" class="btn btn-danger cancel-change">Sair</button>
+                            <button type="button" class="btn btn-primary finish-change">Salvar</button>
                         </div>
                     </div>
                 </div>
@@ -476,12 +477,28 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div id="divCompProd" class="col-md-3 col-sm-12 col-xs-12 ocultarElemento">
+                                    <div id="divCompProd" class="col-md-3 col-sm-12 col-xs-12">
                                         <div class="form-group">
                                             <label id="lblCompPed" class="form-label">Compradores</label>@*<span class="obrigatorio"> *</span>*@
                                             <div class="controls ocultarElemento">
                                                 <select id="drpCompProd" class="selectpicker show-tick form-control" multiple data-live-search="true" data-selected-text-format="count > 1"
                                                         data-width="100%" data-size="5" title="Selecione..." data-count-selected-text="Selecionado {0} de {1}"></select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 col-sm-12 col-xs-12">
+                                        <div class="form-group">
+                                            <label id="lblDtCadProd" class="form-label">Dt. Cadastro</label>@*<span class="obrigatorio"> *</span>*@
+                                            <div class="controls">
+                                                <input type="text" id="txtDtCadProd" disabled style="font-weight:bold!important" maxlength="80" class="form-control" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 col-sm-12 col-xs-12">
+                                        <div class="form-group">
+                                            <label id="lblStatusProduto" class="form-label">Status</label>@*<span class="obrigatorio"> *</span>*@
+                                            <div class="controls">
+                                                <input type="text" id="txtStatusProd" disabled style="font-weight:bold!important" maxlength="80" class="form-control" />
                                             </div>
                                         </div>
                                     </div>
@@ -638,7 +655,7 @@
                     <div class="row">
                         <div class="pull-right">
                             <button type="button" class="btn btn-info prev-step">Voltar</button>
-                            <button type="button" class="btn btn-danger cancel-change">Cancelar</button>
+                            <button type="button" class="btn btn-danger cancel-change">Sair</button>
                             <button type="button" class="btn btn-primary next-step">Avançar</button>
                         </div>
                     </div>

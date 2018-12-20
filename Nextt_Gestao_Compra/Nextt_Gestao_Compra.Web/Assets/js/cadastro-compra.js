@@ -26,19 +26,19 @@ $(document).ready(function myfunction() {
                 }
             }
         }
-        
+
 
     });
 
     $('.panel-group.responsive').on("hide.bs.collapse", ".collapse", function (e) {
-       
+
         var currentId = $(e.target).context.id.replace(/collapse-tab/g, '');
         if (isMobile) {
             if ((currentId === 'Dados' || currentId === 'Foto' || currentId === 'Atributos') && !validaOperacaoPassoWizard(currentId, currentId)) {
                 e.preventDefault();
             }
         }
-        
+
     });
 
     $('#wizard-cad-ped  a.deco-none').click(function (e) {
@@ -154,7 +154,69 @@ $(document).ready(function myfunction() {
         if (referenciaGrade && coresGrade && tamanhosGrade) {
             salvarProduto();
         }
-        
+
+    });
+    $(document).on('click', '#btnFinalizar', function (e) {
+        if (validaSalvarPedido()) {
+            atualizarPedidoOpcao('Finalizar Pedido!', 'Este pedido será finalizado e encaminhado para aprovação.', 'F')
+            //geraPedidoSalvar('F');
+        } else if (!isMobile) {
+            $("html, body").animate({ scrollTop: 0 }, 'slow');
+        }
+
+
+    });
+    $(document).on('click', '#btnCancelar', function (e) {
+        atualizarPedidoOpcao('Cancelar Pedido!', 'Este pedido será cancelado ao confirmar essa operação.', 'C')
+        //if (observacaoStatus.indexOf('C') > -1) {
+        //    alteraStatusPedido('C', sessionStorage.getItem("pedidoId"))
+        //}
+        //else {
+        //    objEnvio = {};
+        //    objEnvio.codigo = sessionStorage.getItem("pedidoId");
+        //    objEnvio.status = 'C';
+        //    atualizarStatus(objEnvio);
+        //}
+
+    });
+    $(document).on('click', '#btnReprovar', function (e) {
+        atualizarPedidoOpcao('Reprovar Pedido!', 'Este pedido será reprovado ao confirmar essa operação.', 'R')
+        //if (observacaoStatus.indexOf('R') > -1) {
+        //    alteraStatusPedido('R', sessionStorage.getItem("pedidoId"))
+        //}
+        //else {
+        //    objEnvio = {};
+        //    objEnvio.codigo = sessionStorage.getItem("pedidoId");
+        //    objEnvio.status = 'R';
+        //    atualizarStatus(objEnvio);
+        //}
+    });
+    $(document).on('click', '#btnAprovar', function (e) {
+        atualizarPedidoOpcao('Aprovar Pedido!', 'Este pedido será aprovado ao confirmar essa operação.', 'L')
+        //if (observacaoStatus.indexOf('L') > -1) {
+        //    alteraStatusPedido('L', sessionStorage.getItem("pedidoId"))
+        //}
+        //else {
+        //    objEnvio = {};
+        //    objEnvio.codigo = sessionStorage.getItem("pedidoId");
+        //    objEnvio.status = 'L';
+        //    atualizarStatus(objEnvio);
+        //}
+
+    });
+    $(document).on('click', '#btnDevolver', function (e) {
+        atualizarPedidoOpcao('Devolver Pedido!', 'Este pedido retornará para o status aberto, possibilitando alterações.', 'A')
+        //origemModal = true;
+        //if (observacaoStatus.indexOf('A') > -1) {
+        //    alteraStatusPedido('A', sessionStorage.getItem("pedidoId"))
+        //}
+        //else {
+        //    objEnvio = {};
+        //    objEnvio.codigo = sessionStorage.getItem("pedidoId");
+        //    objEnvio.status = 'A';
+        //    atualizarStatus(objEnvio);
+        //};
+
     });
 });
 function mudaEtapa(elemShow, elemHide) {
@@ -169,7 +231,24 @@ function validaOperacaoPassoWizard(parametroTab, evento) {
                 case 'Dados':
                     return validaAbaDadosCamposObrigatorios(parametroTab, evento);
                 case 'Foto':
-                    return validaAbaFotoCamposObrigatorios(parametroTab, evento);
+                    var retorno = validaAbaFotoCamposObrigatorios(parametroTab, evento);
+                    if (cadastroNovoSession || (cadastroNovoProduto && cadastroNovoProduto === '0')) {
+                        var $refEl = $('#drpReferenciaGrade')
+                        if ($refEl.find('option').length == 0) {
+                            var refNova = $('#txtRefPed').val().trim();
+                            $('#drpReferenciaGrade').append(cadastraReferencia(refNova));
+                            $('#drpReferenciaGrade').selectpicker('refresh');
+                            if ($('#drpReferenciaGrade').val()) {
+                                referenciaGrade = $('#drpReferenciaGrade').val();
+                                reiniciaTbGrade()
+                                if (tamanhosGrade.length || referenciaGrade.length || coresGrade.length) {
+                                    var dados = cargaReferencia(coresGrade.length, tamanhosGrade.length)
+                                    criarCargaGradePackPadrao(dados)
+                                }
+                            }
+                        }
+                    }
+                    return retorno
                 case 'Atributos':
                     return validaAttrCadastrado();
                 case 'Grade':
@@ -186,7 +265,8 @@ function validaOperacaoPassoWizard(parametroTab, evento) {
                 case 'Dados':
                     return validaAbaDadosCamposObrigatorios(parametroTab, evento);
                 case 'Foto':
-                    return validaAbaFotoCamposObrigatorios(parametroTab, evento);
+                    var retorno = validaAbaFotoCamposObrigatorios(parametroTab, evento);
+                    return retorno
                 case 'Atributos':
                     return validaAttrCadastrado();
                 case 'Resumo':
@@ -389,7 +469,7 @@ function validacaoAvancarAbaDados() {
 }
 function validaAbaDadosCamposObrigatorios(parametroTab, evento) {
     var isValido = true, retornoValidado = null;
-    
+
     parametroTab === 'Dados' ?
         retornoValidado = validacaoOcultarAbaDados() :
         validaOperacaoPassoWizard(parametroTab, parametroTab) ?
@@ -417,8 +497,8 @@ function validaAbaFotoCamposObrigatorios(parametroTab, evento) {
     var isValido = true;
     var retornoValidado = validaDadosProduto();
 
-    if (!retornoValidado && parametroTab !== evento )
-        parametroTab === 'Foto'  ?
+    if (!retornoValidado && parametroTab !== evento)
+        parametroTab === 'Foto' ?
             retornoValidado = validaImagensPendentes() :
             validaOperacaoPassoWizard(parametroTab, parametroTab) ?
                 retornoValidado = validacaoAvancarAbaDados() :
@@ -490,7 +570,7 @@ function validaDadosProduto() {
         retorno.field = 1;
         retorno.elemento = $classProdEl;
         retorno.textoMensagem = 'É necessário informar a classificação fiscal para realizar esta operação!';
-    } 
+    }
     else if (!refForn.length) {
         retorno = {};
         retorno.field = 1;

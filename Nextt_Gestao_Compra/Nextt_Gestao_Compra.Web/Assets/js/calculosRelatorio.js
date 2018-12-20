@@ -821,6 +821,7 @@ function criaArrayProdutoitem(arrayPack) {
     return arrayRetorno;
 }
 function criaArrayProdItem() {
+    console.log(tamanhoTexto)
     var idItem = 1, idProduto = parseInt($("#txtIDProd").val()), arrayRetorno = [];
     for (var i = 0; i < referenciaGrade.length; i++) {
         for (var j = 0; j < coresGrade.length; j++) {
@@ -868,7 +869,7 @@ function criaObjComprador() {
                 'idProduto': prodID
             });
         }
-        
+
     }
 
     return arrayRetorno;
@@ -897,121 +898,155 @@ function pedidoOperacaoInvalida(msg) {
         },
     });
 }
+function atualizarPedidoOpcao(tit, txt, status) {
+    $.confirm({
+        icon: 'fa fa-gift',
+        type: 'blue',
+        title: tit,
+        content: txt + ' Tem certeza que deseja prosseguir?',
+        containerFluid: true,
+        buttons: {
+            'Confirmar': {
+                text: 'Sim',
+                btnClass: 'btn-primary',
+                action: function () {
+                    if (status === 'F') {
+                        geraPedidoSalvar('F');
+                    } else {
+                        if (observacaoStatus.indexOf(status) > -1) {
+                            alteraStatusPedido(status, sessionStorage.getItem("pedidoId"))
+                        }
+                        else {
+                            objEnvio = {};
+                            objEnvio.codigo = sessionStorage.getItem("pedidoId");
+                            objEnvio.status = status;
+                            atualizarStatus(objEnvio);
+                        }
+                    }
+                }
+            },
+            'Cancelar': {
+                text: 'Não',
+                btnClass: 'btn-danger',
+            }
+        }
+    });
+}
+
 function salvarPedidoOpcao() {
     $.confirm({
         icon: 'fa fa-gift',
         type: 'blue',
         title: 'Salvar Pedido!',
-        content: 'Confirme a operação desejada!',
+        content: 'O pedido será salvo, mas não será enviado para aprovação. Tem certeza que deseja prosseguir?',
         containerFluid: true,
         buttons: {
-            'F': {
-                text: 'Finalizar',
-                btnClass: 'btn-success',
-                isHidden: true,
-                action: function () {
-                    geraPedidoSalvar('F');
-                }
-            },
-            'R': {
-                text: 'Reprovar',
-                btnClass: 'btn-danger',
-                isHidden: true,
-                action: function () {
-                    if (observacaoStatus && observacaoStatus.indexOf('R') > -1) {
-                        alteraStatusPedido('R', compraId)
-                    } else {
-                        var objEnvio = {};
-                        objEnvio.status = 'R'
-                        objEnvio.codigo = compraId;
-                        atualizarStatus(objEnvio);
-                    }
-                    
-                }
-            },
-            'L': {
-                text: 'Aprovar',
-                btnClass: 'btn-success',
-                isHidden: true,
-                action: function () {
-                    if (observacaoStatus && observacaoStatus.indexOf('F') > -1) {
-                        alteraStatusPedido('L', compraId)
-                    } else {
-                        var objEnvio = {};
-                        objEnvio.status = 'L'
-                        objEnvio.codigo = compraId;
-                        atualizarStatus(objEnvio);
-                    }
-                    
-                }
-            },
-            change: {
-                isHidden: true,
-                text: 'Salvar',
+            //'F': {
+            //    text: 'Finalizar',
+            //    btnClass: 'btn-success',
+            //    isHidden: true,
+            //    action: function () {
+            //        geraPedidoSalvar('F');
+            //    }
+            //},
+            //'R': {
+            //    text: 'Reprovar',
+            //    btnClass: 'btn-danger',
+            //    isHidden: true,
+            //    action: function () {
+            //        if (observacaoStatus && observacaoStatus.indexOf('R') > -1) {
+            //            alteraStatusPedido('R', compraId)
+            //        } else {
+            //            var objEnvio = {};
+            //            objEnvio.status = 'R'
+            //            objEnvio.codigo = compraId;
+            //            atualizarStatus(objEnvio);
+            //        }
+
+            //    }
+            //},
+            //'L': {
+            //    text: 'Aprovar',
+            //    btnClass: 'btn-success',
+            //    isHidden: true,
+            //    action: function () {
+            //        if (observacaoStatus && observacaoStatus.indexOf('F') > -1) {
+            //            alteraStatusPedido('L', compraId)
+            //        } else {
+            //            var objEnvio = {};
+            //            objEnvio.status = 'L'
+            //            objEnvio.codigo = compraId;
+            //            atualizarStatus(objEnvio);
+            //        }
+
+            //    }
+            //},
+            'Confirmar': {
+                text: 'Sim',
                 btnClass: 'btn-primary',
                 action: function () {
                     geraPedidoSalvar('A');
                 }
             },
-            'C': {
-                isHidden: true,
-                text: 'Cancelar',
+            'Cancelar': {
+                text: 'Não',
                 btnClass: 'btn-danger',
                 action: function () {
-                    if (observacaoStatus && observacaoStatus.indexOf('C') > -1) {
-                        alteraStatusPedido('C', compraId)
-                    }
-                    else {
-                        objEnvio = {};
-                        objEnvio.codigo = compraId;
-                        objEnvio.status = 'C';
-                        atualizarStatus(objEnvio);
-                    }
+                    //    if (observacaoStatus && observacaoStatus.indexOf('C') > -1) {
+                    //        alteraStatusPedido('C', compraId)
+                    //    }
+                    //    else {
+                    //        objEnvio = {};
+                    //        objEnvio.codigo = compraId;
+                    //        objEnvio.status = 'C';
+                    //        atualizarStatus(objEnvio);
+                    //    }
 
-                    //var objEnvio = {};
-                    //objEnvio.status = 'C'
-                    //objEnvio.codigo = compraId;
-                    //atualizarStatus(objEnvio);
-                }
-            },
-            'A': {
-                isHidden: true,
-                text: 'Editar',
-                btnClass: 'btn-primary',
-                action: function () {
-                    if (observacaoStatus && observacaoStatus.indexOf('A') > -1) {
-                        alteraStatusPedido('A', compraId)
-                    }
-                    else {
-                        var objEnvio = {};
-                        objEnvio.status = 'A'
-                        sessionStorage.setItem('Editar', '1');
-                        objEnvio.codigo = compraId;
-                        atualizarStatus(objEnvio);
-                    }
-                }
-            },
-            back: {
-                text: 'Voltar',
-                btnClass: 'btn-info'
-            },
+                    //    //var objEnvio = {};
+                    //    //objEnvio.status = 'C'
+                    //    //objEnvio.codigo = compraId;
+                    //    //atualizarStatus(objEnvio);
+                    //}
+                },
+            }
+            //'A': {
+            //    isHidden: true,
+            //    text: 'Editar',
+            //    btnClass: 'btn-primary',
+            //    action: function () {
+            //        if (observacaoStatus && observacaoStatus.indexOf('A') > -1) {
+            //            alteraStatusPedido('A', compraId)
+            //        }
+            //        else {
+            //            var objEnvio = {};
+            //            objEnvio.status = 'A'
+            //            sessionStorage.setItem('Editar', '1');
+            //            objEnvio.codigo = compraId;
+            //            atualizarStatus(objEnvio);
+            //        }
+            //    }
+            //},
+            //back: {
+            //    text: 'Voltar',
+            //    btnClass: 'btn-info'
+            //},
         },
         onContentReady: function () {
-            var self = this;
-            var statusPedido = sessionStorage.getItem("pedidoStatus");
-            if (statusPedido) {
-                for (var i = 0; i < statusTransicao.length; i++) {
-                    self.buttons[statusTransicao[i]].show();
-                }
-                if (statusPedido === 'A') {
-                    
-                    self.buttons.change.show();
-                    
-                } 
-            } else {
-                self.buttons.F.show();
-                self.buttons.change.show();
-            }
+            //var self = this;
+            //var statusPedido = sessionStorage.getItem("pedidoStatus");
+            //if (statusPedido) {
+            //    for (var i = 0; i < statusTransicao.length; i++) {
+            //        self.buttons[statusTransicao[i]].show();
+            //    }
+            //    if (statusPedido === 'A') {
+
+            //        self.buttons.change.show();
+
+            //    } 
+            //} else {
+            //    self.buttons.F.show();
+            //    self.buttons.change.show();
+            //}
 
         }
     });

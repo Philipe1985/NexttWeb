@@ -11,5 +11,6 @@ namespace Nextt_Gestao_Compra.Dominio.Entidades
         public string IDStatusPedido { get; set; }
         public string Descricao { get; set; }
         public bool SolicitaObservacao { get; set; }
+        public string IDStatusPedidoPara { get; set; }
     }
 }

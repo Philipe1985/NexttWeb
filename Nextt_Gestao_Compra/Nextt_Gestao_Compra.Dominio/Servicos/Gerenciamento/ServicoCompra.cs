@@ -30,9 +30,9 @@ namespace Nextt_Gestao_Compra.Dominio.Servicos.Gerenciamento
             return _compraRepositorio.BuscaProdutosFiltrados(parametros);
         }
 
-        public List<IEnumerable> RetornaCargaEspeciesFiltros(string secoes)
+        public List<IEnumerable> RetornaCargaEspeciesFiltros(Parametros parametros)
         {
-            return _compraRepositorio.RetornaCargaEspeciesFiltros(secoes);
+            return _compraRepositorio.RetornaCargaEspeciesFiltros(parametros);
         }
 
         public List<IEnumerable> RetornaCargaInicialCadNovo(Parametros parametros)

@@ -14,6 +14,7 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
         public string CodOriginal { get; set; }
         public string Referencia { get; set; }
         public string Descricao { get; set; }
+        public string UnidadeSelecionada { get; set; }
         public string DescricaoReduzida { get; set; }
         public decimal PrecoCusto { get; set; }
         public decimal PrecoVenda { get; set; }
@@ -31,6 +32,7 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
         public string UltimaClassificacao { get; set; }
         public List<string> CoresGrade { get; set; }
         public List<string> TamanhosGrade { get; set; }
+        public bool ProdutoInativo { get; set; }
 
         public RetornoPrePedidoVM(FiltrosPesquisa filtrosPrePedido, DadosPrePedido dados, List<Grade> grades)
         {
@@ -41,10 +43,12 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
             {
                 UltimaClassificacao = dados.IDClassificacaoFiscal.ToString();
             }
+            ProdutoInativo = !dados.Ativo;
             DtCadastroProduto = dados.DataCadastroProduto.ToString("dd/MM/yyyy");
             CodOriginal = dados.CodigoOriginal;
             CodProduto = dados.CodProduto;
-            //Referencia = dados.ReferenciaFornecedor;
+            UnidadeSelecionada = dados.IDUnidadeMedida != null ? dados.IDUnidadeMedida.ToString():string.Empty;
+            Referencia = dados.ReferenciaFornecedor;
             Descricao = dados.DescricaoProduto;
             DescricaoReduzida = dados.DescricaoReduzidaProduto;
             //PrecoCusto = dados.PrecoCusto_UltPedido;

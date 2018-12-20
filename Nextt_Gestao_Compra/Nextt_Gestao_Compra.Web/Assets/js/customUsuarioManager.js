@@ -122,7 +122,21 @@ $(document).ready(function () {
     $('#ucComboAdmins').change(function () {
         recarregarTabelaUsuarios();
     });
-
+    $('#cbPerfil').change(function () {
+        recarregarTabelaUsuarios();
+    });
+    $('#cbPerfilAtualizar').change(function () {
+        if ($('#cbPerfilAtualizar').val()) {
+            var objEnvio = { id: $('#cbPerfilAtualizar').val() }
+            $('#txtNomePerfilAtualizar').val($('#cbPerfilAtualizar option:selected').text()).attr('disabled', false);
+            console.log(objEnvio);
+            selecionaPermissaoPorPerfil(objEnvio);
+        } else {
+            $('#cbPermissaoAtualizar').val('')
+            $('#txtNomePerfilAtualizar').val('')
+        }
+        
+    });
     $('#fTxtBusca').keyup(function () {
         tabela.fnFilter($(this).val());
         $(".ckbGrid").bootstrapSwitch();
@@ -275,6 +289,8 @@ function limparModalCadastro() {
 
     $('#cbPerfil').selectpicker('val', '');
     $('#cbPermissaoConceder').selectpicker('deselectAll');
+    $('#cbPerfilAtualizar').selectpicker('val', '');
+    $('#cbPermissaoAtualizar').selectpicker('deselectAll');
 
     //$('.divSelectPicker').addClass('ocultarElemento');
     //$('#tabelaUsuarios_paginate').css('display', 'none');
@@ -337,6 +353,21 @@ function abrirModalPerfil() {
         document.getElementById('novoPerfil').click();
     }
 }
+function abrirModalPerfilManager() {
+    if (permissoesUsuarioLogado.indexOf('Cadastrar Perfil') === -1) {
+        semAcesso();
+    } else if ($('#cbPerfilAtualizar option').length < 1) {
+        modal({
+            messageText: "Não existe perfis cadastrados que possam ser atualizados! Cadastre um perfil novo ou cancele a operação!",
+            type: "alert",
+            headerText: "Operação Inválida!",
+            alertType: "warning"
+        });
+    } else {
+        limparModalCadastro()
+        document.getElementById('managerPerfil').click();
+    }
+}
 function id(el) {
     return document.getElementById(el);
 }
@@ -390,6 +421,29 @@ function obterAdmins() {
     }
     return perfilIdRetorno;
 }
+function atualizarPerfilEditado() {
+
+    if (!$("#txtNomePerfilAtualizar").val() || !$("#cbPermissaoAtualizar").val()) {
+        modal({
+            type: "alert",
+            messageText: "Para atualizar um perfil é necessário informar uma descrição e selecionar as permissões!",
+            alertType: 'warning',
+            headerText: "Atenção!"
+        });
+    } else {
+
+        var idPerfilEditado = $("#cbPerfilAtualizar").val();
+        var nomePerfilEditado = $("#txtNomePerfilAtualizar").val().trim();
+        var permissoesConcedidas = [];
+        $("#cbPermissaoAtualizar option:selected").each(function () {
+            permissoesConcedidas.push({ id: $(this).val(), descricao: $(this).text() });
+        });
+        var objEnvio = { idPerfil: idPerfilEditado, descricaoPerfil: nomePerfilEditado, permissoes: permissoesConcedidas }
+        console.log(objEnvio);
+        atualizarPerfilEnviar(objEnvio)
+    }
+}
+
 
 function cadastrarNovoPerfil() {
 
@@ -401,7 +455,7 @@ function cadastrarNovoPerfil() {
             headerText: "Atenção!"
         });
     } else {
-        var nomePerfilNovo = toTitleCase($("#txtNomePerfil").val().trim());
+        var nomePerfilNovo = $("#txtNomePerfil").val().trim();
         var permissoesConcedidas = [];
         $("#cbPermissaoConceder option:selected").each(function () {
             permissoesConcedidas.push({ id: $(this).val(), descricao: $(this).text() });

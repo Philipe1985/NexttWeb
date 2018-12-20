@@ -36,10 +36,14 @@ namespace Nextt_Gestao_Compra.Aplicacao.Gerenciador.Produto
             var listaElemProd = produtoServico.RetornaAtributosCampos(listaAttrProd).Select(x => new AtributoElementoVM(x));
             var comboAttrProd = produtoServico.RetornaAtributosTipoLista(listaAttrProd).Select(x => new ComboAtributoVM(x, fabrica));
             var listaTabelaPrecoEmpresa = dadoProd.ElementAt(9).Cast<PrecoGrupoEmpresa>().GroupBy(x => x.IDGrupoEmpresa).Select(x => new GrupoEmpresaPrecosVM(x)).ToList();
+            var listaCompradorProduto = dadoProd.ElementAt(11).Cast<Comprador>().ToList();
+            var listaMarcas = dadoProd.ElementAt(10).Cast<Marca>().ToList();
 
+            
             var filtrosPesquisa = new FiltrosPesquisa(dadosCadastro, produtoServico, fabrica, dadosCores, dadosTamanho, dadosReferencia)
             {
-                GrupoEmpresaPrecos=listaTabelaPrecoEmpresa,
+                CompradoresProduto = listaCompradorProduto.Count > 0 ? listaCompradorProduto.OrderBy(x => x.Nome).Select(x => fabrica.Criar(x)).ToList() : null,
+                GrupoEmpresaPrecos = listaTabelaPrecoEmpresa,
                 Compradores = listaComprador,
                 UniMedida = listaMedida,
                 OrdemProd = ordemProd,
@@ -48,10 +52,13 @@ namespace Nextt_Gestao_Compra.Aplicacao.Gerenciador.Produto
                 Classificacao = listaClassificacao,
             };
 
-
+            if (!dadosCadastro.Ativo)
+            {
+               filtrosPesquisa.Marcas = listaMarcas.OrderBy(x => x.Nome).Select(x => fabrica.Criar(x)).ToList();
+            }
             return new RetornoPrePedidoVM(filtrosPesquisa, dadosCadastro, gradePadrao);
         }
-        
+
         public static int GravarProduto(IAppServicoProduto produtoServico, ProdutoCadastroVM produtoCompleto, log4net.ILog log)
         {
             var produtoJson = JsonConvert.SerializeObject(produtoCompleto);

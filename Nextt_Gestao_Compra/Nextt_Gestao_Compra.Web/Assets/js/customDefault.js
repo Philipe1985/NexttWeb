@@ -7,11 +7,11 @@ var btnStatusTransicaoIcones = '<a href="#" class="btn btn-success aprovarPedido
     '<a href="#" class="btn btn-warning devolverPedido ocultarElemento statusA" data-toggle="tooltip" data-container="body" title="Devolver" style="margin:3px"><i class="fa fa-mail-reply" aria-hidden="true"></i></a>' +
     '<a href="#" class="btn btn-danger reprovarPedido ocultarElemento statusR" data-toggle="tooltip" data-container="body" title="Reprovar" style="margin:3px"><i class="fa fa-retweet" aria-hidden="true"></i></a>';
 
-var btnStatusTransicao = '<button type="button" id="btnReprovar" class="btn exibeBtn btn-danger ocultarElemento statusR"><i class="fa fa-retweet" aria-hidden="true"></i> Reprovar Pedido</button>' +
-    '<button type="button" id="btnAprovar" class="btn btn-success exibeBtn ocultarElemento statusL"><i class="fa fa-check" aria-hidden="true"></i> Aprovar Pedido</button>' +
-    '<button type="button" id="btnFinalizar" class="btn btn-success exibeBtn ocultarElemento statusF"><i class="fa fa-check" aria-hidden="true"></i> Finalizar Pedido</button>' +
-    '<button type="button" id="btnDevolver" class="btn btn-warning exibeBtn ocultarElemento statusA"><i class="fa fa-mail-reply" aria-hidden="true"></i> Devolver Pedido</button>' +
-    '<button type="button" id="btnCancelar" class="btn btn-danger exibeBtn ocultarElemento statusC"><i class="fa fa-close" aria-hidden="true"></i> Cancelar Pedido</button>'
+var btnStatusTransicao = '<button type="button" id="btnReprovar" class="btn exibeBtn btn-danger ocultarElemento statusR"><i class="fa fa-retweet" aria-hidden="true"></i> Reprovar</button>' +
+    '<button type="button" id="btnAprovar" class="btn btn-success exibeBtn ocultarElemento statusL"><i class="fa fa-check" aria-hidden="true"></i> Aprovar</button>' +
+    '<button type="button" id="btnFinalizar" class="btn btn-success exibeBtn ocultarElemento statusF"><i class="fa fa-check" aria-hidden="true"></i> Finalizar</button>' +
+    '<button type="button" id="btnDevolver" class="btn btn-warning exibeBtn ocultarElemento statusA"><i class="fa fa-mail-reply" aria-hidden="true"></i> Devolver</button>' +
+    '<button type="button" id="btnCancelar" class="btn btn-danger exibeBtn ocultarElemento statusC"><i class="fa fa-close" aria-hidden="true"></i> Cancelar</button>'
 
 $(document).ready(function () {
     // device detection
@@ -515,6 +515,15 @@ function retornaComboTokem(id) {
 
     });
     return retorno;
+}
+function dataAtualFormatada() {
+    var data = new Date(),
+        dia = data.getDate().toString(),
+        diaF = (dia.length == 1) ? '0' + dia : dia,
+        mes = (data.getMonth() + 1).toString(), //+1 pois no getMonth Janeiro começa com zero.
+        mesF = (mes.length == 1) ? '0' + mes : mes,
+        anoF = data.getFullYear();
+    return diaF + "/" + mesF + "/" + anoF;
 }
 function trataParametroEnvio(arrayParametroEnvio) {
     var retorno = [];

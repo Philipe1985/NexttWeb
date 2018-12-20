@@ -8,11 +8,15 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
 {
     public class FiltrosPesquisa
     {
+        public string AtributoFornecedor { get; set; }
+        public string AtributoValor { get; set; }
+        public string MarcaSelecionada { get; set; }
         public List<ComboFiltroVM> Fornecedores { get; set; }
         public List<ComboFiltroVM> StatusPedido { get; set; }
         public List<ComboFiltroVM> AttrFornecedores { get; set; }
         public List<RetornoEspecieFiltroVM> EspeciesRecarga { get; set; }
         public List<ComboFiltroVM> Compradores { get; set; }
+        public List<ComboFiltroVM> CompradoresProduto { get; set; }
         public List<ComboFiltroVM> UniMedida { get; set; }
         public List<ComboFiltroVM> Secoes { get; set; }
         public List<ComboFiltroVM> Segmentos { get; set; }
@@ -60,7 +64,16 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
         public FiltrosPesquisa(DadosPrePedido dadosCadastro, IAppServicoCompra compraServico, FabricaViewModel fabrica, List<Cor> cores,
             List<GrupoTamanho> tamanhos, List<ReferenciaProduto> referencias, DadosConfigPadraoVM configDefault)
         {
-            Marcas = new List<ComboFiltroVM>() { fabrica.Criar(fabrica.CriarMarca(dadosCadastro)) };
+            if (dadosCadastro.Ativo)
+                Marcas = new List<ComboFiltroVM>() { fabrica.Criar(
+                new Marca { IDMarca = dadosCadastro.IDMarca,
+                            Nome = dadosCadastro.DescricaoMarca
+                          }
+                )};
+            else
+            {
+                MarcaSelecionada = dadosCadastro.IDMarca.ToString();
+            }
             Secoes = new List<ComboFiltroVM>() { fabrica.Criar(fabrica.CriarSecao(dadosCadastro)) };
             Segmentos = new List<ComboFiltroVM>() { fabrica.Criar(fabrica.CriarSegmento(dadosCadastro)) };
             Especies = new List<ComboFiltroVM>() { fabrica.Criar(fabrica.CriarEspecie(dadosCadastro)) };
@@ -79,7 +92,16 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
         public FiltrosPesquisa(DadosPrePedido dadosCadastro, IAppServicoProduto produtoServico, FabricaViewModel fabrica, List<Cor> cores,
             List<GrupoTamanho> tamanhos, List<ReferenciaProduto> referencias)
         {
-            Marcas = new List<ComboFiltroVM>() { fabrica.Criar(fabrica.CriarMarca(dadosCadastro)) };
+            if (dadosCadastro.Ativo)
+                Marcas = new List<ComboFiltroVM>() { fabrica.Criar(
+                new Marca { IDMarca = dadosCadastro.IDMarca,
+                            Nome = dadosCadastro.DescricaoMarca
+                          }
+                )};
+            else
+            {
+                MarcaSelecionada = dadosCadastro.IDMarca.ToString();
+            }
             Secoes = new List<ComboFiltroVM>() { fabrica.Criar(fabrica.CriarSecao(dadosCadastro)) };
             Segmentos = new List<ComboFiltroVM>() { fabrica.Criar(fabrica.CriarSegmento(dadosCadastro)) };
             Especies = new List<ComboFiltroVM>() { fabrica.Criar(fabrica.CriarEspecie(dadosCadastro)) };
@@ -103,11 +125,16 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
                                  CNPJ = String.Empty
                                }
                 )};
-            Marcas = new List<ComboFiltroVM>() { fabrica.Criar(
+            if (dadosCadastro.Ativo)
+                Marcas = new List<ComboFiltroVM>() { fabrica.Criar(
                 new Marca { IDMarca = dadosCadastro.IDMarca,
                             Nome = dadosCadastro.DescricaoMarca
                           }
                 )};
+            else
+            {
+                MarcaSelecionada = dadosCadastro.IDMarca.ToString();
+            }
             Secoes = new List<ComboFiltroVM>() { fabrica.Criar(
                 new Secao { IDSecao = dadosCadastro.IDSecao,
                             Descricao = dadosCadastro.DescricaoSecao
@@ -138,7 +165,7 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
         }
         public FiltrosPesquisa(List<RetornoEspecieFiltroVM> especieFiltroVMs)
         {
-            EspeciesRecarga= especieFiltroVMs;
+            EspeciesRecarga = especieFiltroVMs;
         }
     }
 }

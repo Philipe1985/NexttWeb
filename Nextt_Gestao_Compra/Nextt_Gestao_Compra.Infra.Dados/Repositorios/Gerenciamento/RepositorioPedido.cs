@@ -106,6 +106,8 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
                                     .With<HistoricoPedido>()
                                     .With<ConfigDefault>()
                                     .With<PrecoGrupoEmpresa>()
+                                    .With<Comprador>()
+                                    .With<Marca>()
                                     .Executar();
             }
             catch (Exception ex)

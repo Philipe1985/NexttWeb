@@ -19,7 +19,7 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
         public string Observacao { get; set; }
         public List<string> UltimaForma { get; set; }
         public string UltimaCondicao { get; set; }
-        public FornecedorProdDadosVM(List<DadosUltimaCompra> ultimaCompras, DadosCompraFornecedor fornecedor, Atributos atributos)
+        public FornecedorProdDadosVM(List<DadosUltimaCompra> ultimaCompras, DadosCompraFornecedor fornecedor, List<Atributos> atributos)
         {
             if (fornecedor != null)
             {
@@ -39,10 +39,10 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
                 UltimaCondicao = ultimaCompras.ElementAt(0).IDCondicaoPagamento.ToString();
                 UltimaForma = ultimaCompras.Select(x => x.IDFormaPagamento.ToString()).ToList();
             }
-            if (atributos != null)
+            if (atributos.Count > 0)
             {
-                AtributoFornecedor = atributos.IDTipoAtributoKey.ToString();
-                AtributoValor = atributos.IDTipoAtributo.ToString();
+                AtributoFornecedor = atributos.Count > 0 ? atributos.Select(x => x.IDTipoAtributoKey).FirstOrDefault().ToString() : null;
+                AtributoValor = atributos.Count > 0 ? string.Join(",", atributos.Select(x => x.IDTipoAtributo).ToArray()) : null;
             }
 
         }

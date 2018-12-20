@@ -1959,3 +1959,14 @@ tr.groupOtb td {
     color: #999 !important;
     cursor: not-allowed !important;
 }
+.text-wrap {
+    white-space: normal;
+    text-align:left!important;
+}
+
+.width-200 {
+    max-width: 100% !important;
+}
+.btnOperacoesPedido {
+    margin-right:4px!important;
+}

@@ -772,7 +772,8 @@ $(document).ready(function () {
             $(".wrapper").show();
             $("#drpEsp").prop('disabled', false)
             objParam.secoes = $('#drpSec').val();
-
+            objParam.idFornecedor = $('#drpCNPJ').val();
+            console.log(objParam)
             carregarEspecie(objParam);
         }
         atualizaCodigoProduto();
@@ -796,6 +797,10 @@ function carregar() {
         }
     } else {
         console.log(compraId)
+        $('.btnConclusao').append($.parseHTML(btnStatusTransicao));
+        $('.exibeBtn i').remove();
+        $('.exibeBtn').addClass('btnOperacoesPedido');
+
         if (!compraId) {
             $("#frmDados.collapsible").collapsible({
                 animation: true,
@@ -1054,6 +1059,13 @@ function carregarHistoricoTB(colunmsHist, dadosHist) {
                 'className': 'dt-body-center',
 
             },
+            {
+                render: function (data, type, full, meta) {
+                    return "<div class='text-wrap width-200'>" + data + "</div>";
+                },
+                targets: 2
+            },
+            //{ 'max-width': '50%', 'targets': 2 }
 
         ],
         info: false,
@@ -2666,7 +2678,7 @@ function validaValor(e) {
     //$("#cbTipoDado").selectpicker('val', '');
 }
 function criAttrLista(mult, val, opt, obr, id) {
-    var classesCb = obr ? ' validarAttr' : '', multiple = mult ? ' multiple ' : '';
+    var classesCb = obr ? ' validarAttr' : '', multiple = mult ? ' multiple data-count-selected-text="Selecionado {0} de {1}" data-selected-text-format="count > 1" ' : '';
     var searchBox = opt.length > 7 ? 'data-live-search="true" ' : ''
     var sourceAttr = '<select name="cbAttr' + id + '" id="cbAttr' + id + '" class="selectpicker show-tick form-control listAttr pull-right' +
         classesCb + '" ' + multiple + searchBox + 'data-width="100%" data-size="auto">';

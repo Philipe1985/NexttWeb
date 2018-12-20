@@ -137,6 +137,22 @@ namespace Nextt_Gestao_Compra.Apresentacao.API.Controllers
             }
         }
 
+        [FiltroAutorizacaoCustom(PermissaoTipo = "Gerenciar Usuários", PermissaoValor = "1")]
+        [Route("RecuperarPermissaoPorPerfil")]
+        public IHttpActionResult RecuperarPermissaoPorPerfil(PapelRetornoModel papelRetorno)
+        {
+            try
+            {
+                var retorno = GerenciadorLogin.RetonaPermissoesPorPerfil(papelRetorno,AppGerenciadorPapel);
+                return Ok(retorno);
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
+
         [HttpPost]
         [Authorize]
         [Route("AlterarSenha")]
@@ -237,6 +253,30 @@ namespace Nextt_Gestao_Compra.Apresentacao.API.Controllers
                 if (!ModelState.IsValid)
                     return BadRequest(ModelState);
                 var retorno = await GerenciadorLogin.CadastrarNovoPerfil(usuarioAtualizarVM, AppGerenciadorPapel);
+                if (retorno.Succeeded)
+                {
+                    var permissaoNova = GerenciadorLogin.RecuperaPerfilExistente(AppGerenciadorPapel);
+                    return Ok(permissaoNova);
+                }
+
+                return RetornaErro(retorno);
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+        [HttpPost]
+        [FiltroAutorizacaoCustom(PermissaoTipo = "Cadastrar Perfil", PermissaoValor = "1")]
+        [Route("AtualizarPerfil")]
+        public async Task<IHttpActionResult> AtualizarPerfil(NovoPerfilVM perfilAtualizarVM)
+        {
+            try
+            {
+
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState);
+                var retorno = await GerenciadorLogin.AtualizarPerfilCadastrado(perfilAtualizarVM, AppGerenciadorPapel);
                 if (retorno.Succeeded)
                 {
                     var permissaoNova = GerenciadorLogin.RecuperaPerfilExistente(AppGerenciadorPapel);

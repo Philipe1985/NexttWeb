@@ -44,9 +44,9 @@ namespace Nextt_Gestao_Compra.Aplicacao.Servicos.Gerenciamento
             return _servicoCompra.RetornaAtributosTipoLista(_listaAttr);
         }
 
-        public List<IEnumerable> RetornaCargaEspeciesFiltros(string secoes)
+        public List<IEnumerable> RetornaCargaEspeciesFiltros(Parametros parametros)
         {
-            return _servicoCompra.RetornaCargaEspeciesFiltros(secoes);
+            return _servicoCompra.RetornaCargaEspeciesFiltros(parametros);
         }
 
         public List<IEnumerable> RetornaCargaInicialCadNovo(Parametros parametros)

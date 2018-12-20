@@ -133,6 +133,9 @@ namespace Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido
                 RelacionamentoGrupos = gruposRelacionadosDesativar,
                 DadosConfigPadrao = datasCargaInicial
             };
+            if (!dadosPedido.Ativo)
+                filtrosPesquisa.Marcas = dados.ElementAt(21).Cast<Marca>().OrderBy(x => x.Nome).Select(x => fabrica.Criar(x)).ToList();
+            
             var retorno = new RetornoPedidoAnalitico(dadosPedido, filtrosPesquisa, resumoPedido)
             {
                 Historicos = historicoPedido,

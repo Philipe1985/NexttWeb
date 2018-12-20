@@ -54,14 +54,16 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
             }
         }
 
-        public List<IEnumerable> RetornaCargaEspeciesFiltros(string secoes)
+        public List<IEnumerable> RetornaCargaEspeciesFiltros(Parametros parametros)
         {
             try
             {
                 return _Db.MultiplosResults("[dbo].[pr_carrega_filtro_secao_especie_GESTAO_COMPRAS]" +
-                                   " @Secao = '" + secoes +
+                                   " @Secao = '" + parametros.Secoes +
+                                   "', @IDFornecedor = '" + parametros.IDFornecedor +
                                    "', @Especie = ''")
                                    .With<Especie>()
+                                   .With<Atributos>()
                                    .With<Atributos>()
                                    .Executar();
 
@@ -116,6 +118,7 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
                                     .With<UnidadeMedida>()
                                     .With<ConfigDefault>()
                                     .With<PrecoGrupoEmpresa>()
+                                    .With<Comprador>()
                                     .Executar();
             }
             catch (Exception ex)
@@ -148,6 +151,8 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
                                    .With<UnidadeMedida>()
                                    .With<ConfigDefault>()
                                    .With<PrecoGrupoEmpresa>()
+                                   .With<Comprador>()
+                                   .With<Marca>()
                                  .Executar();
             }
             catch (Exception ex)

@@ -1,0 +1,10 @@
+
+ERROR 2018-12-18 14:45:03 - Erro ao Recuperar Espécies Filtradas
+System.NullReferenceException: Referência de objeto não definida para uma instância de um objeto.
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Compra.GerenciadorAplicacaoCompra.RetornaEspeciesFiltradas(IAppServicoCompra compraServico, ParametrosVM parametroVM, FabricaViewModel fabrica) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Compra\GerenciadorAplicacaoCompra.cs:linha 130
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Gerenciamento.CompraController.BuscaEspeciesFiltradas(ParametrosVM parametro) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Gerenciamento\CompraController.cs:linha 98
+
+ERROR 2018-12-18 14:45:52 - Erro ao Recuperar Espécies Filtradas
+System.NullReferenceException: Referência de objeto não definida para uma instância de um objeto.
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Compra.GerenciadorAplicacaoCompra.RetornaEspeciesFiltradas(IAppServicoCompra compraServico, ParametrosVM parametroVM, FabricaViewModel fabrica) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Compra\GerenciadorAplicacaoCompra.cs:linha 130
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Gerenciamento.CompraController.BuscaEspeciesFiltradas(ParametrosVM parametro) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Gerenciamento\CompraController.cs:linha 98

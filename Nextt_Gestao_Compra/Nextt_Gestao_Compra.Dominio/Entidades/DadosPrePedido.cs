@@ -12,6 +12,7 @@ namespace Nextt_Gestao_Compra.Dominio.Entidades
         public Int16 IDEspecie { get; set; }
         public string DescricaoGrupoTamanho { get; set; }
         public string DescricaoEspecie { get; set; }
+        public string ReferenciaFornecedor { get; set; }
         public string DescricaoSegmento { get; set; }
         public string DescricaoSecao { get; set; }
         public string CodProduto { get; set; }
@@ -21,7 +22,9 @@ namespace Nextt_Gestao_Compra.Dominio.Entidades
         public string DescricaoReduzidaProduto { get; set; }
         public string DescricaoReduzida { get; set; }
         public DateTime DataCadastroProduto { get; set; }
+        public Int16? IDUnidadeMedida { get; set; }
         public int IDClassificacaoFiscal { get; set; }
-      
+        public bool Ativo { get; set; }
+
     }
 }

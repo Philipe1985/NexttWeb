@@ -12,7 +12,7 @@ namespace Nextt_Gestao_Compra.Dominio.Interfaces.Repositorio.Gerenciamento
         List<IEnumerable> RetornaCargaInicialFiltros();
         List<IEnumerable> RetornaGruposCadastrados();
         List<IEnumerable> RetornaFiliaisDistribuicao(Parametros parametros);
-        List<IEnumerable> RetornaCargaEspeciesFiltros(string secoes);
+        List<IEnumerable> RetornaCargaEspeciesFiltros(Parametros parametros);
         List<IEnumerable> RetornaCargaInicialCadNovo(Parametros parametros);
         List<IEnumerable> RetornaInformacaoFornecedorCompra(Parametros parametros);
         List<GrupoTamanho> AtualizaCargaTamanho(Parametros parametros);

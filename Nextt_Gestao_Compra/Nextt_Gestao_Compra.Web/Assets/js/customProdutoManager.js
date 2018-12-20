@@ -8,6 +8,25 @@ specialKeys.push(8); //Backspace
 specialKeys.push(46); //Delete
 specialKeys.push(96); //numpad 0
 $(document).ready(function () {
+    $(document).on('keydown', '.txtInteiro', function (e) {
+        if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110]) !== -1 ||
+            (e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) ||
+            (e.keyCode === 86 && (e.ctrlKey === true || e.metaKey === true)) ||
+            (e.keyCode >= 35 && e.keyCode <= 40)) {
+            return;
+        }
+        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+            e.preventDefault();
+        }
+    })
+    $(document).on('paste', '.txtInteiro', function (e) {
+        var paste = e.originalEvent.clipboardData.getData('Text');
+
+        if (isNumber(paste) && Math.floor(paste) == parseInt(paste)) {
+            return;
+        }
+        e.preventDefault();
+    })
     $(window).on("load", carregar);
     $('#drpOcultaColuna').on('change', function (e) {
         iniciarOcultacaoColuna(false);
@@ -174,11 +193,11 @@ function inicializarTbProduto() {
         deferRender: true,
         ordering: true,
         responsive: true,
-        scrollX: true,
         searching: true,
         paging: false,
         "order": [[1, 'desc']],
-        scrollY: false,
+        scrollX: true,
+        scrollY: '50vh',
         "columnDefs": [
             {
                 "targets": [2, 3, 4, 5, 7, 8],
@@ -224,17 +243,19 @@ function inicializarTbProduto() {
             { "data": "codOriginal" },
             {
                 "data": "descricaoProduto",
+
                 "render": function (data, type, row, meta) {
                     return type === 'display' ? toTitleCase(data) : data;
                 }
             },
             {
                 "data": "descricaoReduzida",
+                visible: false,
                 "render": function (data, type, row, meta) {
                     return type === 'display' ? toTitleCase(data) : data;
                 }
             },
-            { "data": "idFornecedor" },
+            { "data": "idFornecedor", visible: false },
             { "data": "razaoSocial" },
             { "data": "nomeFantasia" },
             {
@@ -244,7 +265,7 @@ function inicializarTbProduto() {
                 }
             },
             { "data": "referencia" },
-            { "data": "idMarca" },
+            { "data": "idMarca", visible: false },
             {
                 "data": "descricaoMarca",
                 "render": function (data, type, row, meta) {
