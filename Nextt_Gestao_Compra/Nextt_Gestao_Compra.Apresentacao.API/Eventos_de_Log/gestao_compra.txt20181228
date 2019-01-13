@@ -1,0 +1,12 @@
+
+ERROR 2018-12-28 08:04:47 - Erro ao Recuperar Dados do Pedido Sintético
+System.ArgumentException: Base style name 'H2-10Blue' is undefined.
+   em MigraDoc.DocumentObjectModel.Styles.Add(DocumentObject value)
+   em MigraDoc.DocumentObjectModel.Styles.AddStyle(String name, String baseStyleName)
+   em Invoicer.Services.Impl.PdfInvoice.DefineStyles() na C:\Users\Alcione\Desktop\Invoicer-master\Invoicer\Services\Impl\PdfInvoice.cs:linha 149
+   em Invoicer.Services.Impl.PdfInvoice.CreateDocument() na C:\Users\Alcione\Desktop\Invoicer-master\Invoicer\Services\Impl\PdfInvoice.cs:linha 88
+   em Invoicer.Services.Impl.PdfInvoice.Save(String filename, String password) na C:\Users\Alcione\Desktop\Invoicer-master\Invoicer\Services\Impl\PdfInvoice.cs:linha 71
+   em Invoicer.Services.InvoicerApi.Save(String filename, String password) na C:\Users\Alcione\Desktop\Invoicer-master\Invoicer\Services\InvoicerApi.cs:linha 132
+   em Nextt_Gestao_Compra.Aplicacao.Servicos.Utils.CriarArquivo.GerarPDFPedido(RetornoPedidoSinteticoVM Pedido) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Utils\CriarArquivo.cs:linha 35
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido.GerenciadorAplicacaoPedido.RetornaPedidoSintetico(IAppServicoPedido pedidoServico, ParametrosVM parametroVM) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Pedido\GerenciadorAplicacaoPedido.cs:linha 72
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Cadastro.PedidoController.RetornaPedidoSintetico(ParametrosVM parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Cadastro\PedidoController.cs:linha 74

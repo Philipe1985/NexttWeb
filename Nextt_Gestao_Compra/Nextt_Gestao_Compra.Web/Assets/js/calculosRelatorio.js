@@ -834,7 +834,7 @@ function criaArrayProdItem() {
                 objJson.idProduto = idProduto;
                 objJson.referencia = referenciaGrade[i];
                 objJson.idTamanho = tamanhoTexto.filter(function (el) {
-                    return el.descricao === tamanhosGrade[k];
+                    return el.descricao.toLowerCase() === tamanhosGrade[k].toLowerCase();
                 })[0].id;
                 objJson.item = idItem;
                 objJson.cor = corItem;
@@ -913,15 +913,15 @@ function atualizarPedidoOpcao(tit, txt, status) {
                     if (status === 'F') {
                         geraPedidoSalvar('F');
                     } else {
-                        if (observacaoStatus.indexOf(status) > -1) {
-                            alteraStatusPedido(status, sessionStorage.getItem("pedidoId"))
-                        }
-                        else {
-                            objEnvio = {};
-                            objEnvio.codigo = sessionStorage.getItem("pedidoId");
-                            objEnvio.status = status;
-                            atualizarStatus(objEnvio);
-                        }
+                        //if (observacaoStatus.indexOf(status) > -1) {
+                        //    alteraStatusPedido(status, sessionStorage.getItem("pedidoId"))
+                        //}
+                        //else {
+                        objEnvio = {};
+                        objEnvio.codigo = sessionStorage.getItem("pedidoId");
+                        objEnvio.status = status;
+                        atualizarStatus(objEnvio);
+                        //}
                     }
                 }
             },
@@ -1091,6 +1091,22 @@ function geraPedidoSalvar(status) {
     console.log(pedidoEnvio);
 
     salvarPedido(pedidoEnvio);
+}
+function criaObjetoSalvarGrupoEmpresas() {
+    var grpEmpEnvio = [];
+    var grupoEmpresas = {};
+    grupoEmpresas.idGrupoEmpresa = $('#txtCodGrupo').val();
+    grupoEmpresas.nome = $('#txtNomeGrupoEmpresa').val();
+    var marcasVinc = [];
+    if ($('#drpMarc').val()) {
+        for (var i = 0; i < $('#drpMarc').val().length; i++) {
+            marcasVinc.push({ idMarca: $('#drpMarc').val()[i] });
+        }
+    }
+    grupoEmpresas.marcasVinculada = marcasVinc;
+    grpEmpEnvio.push(grupoEmpresas);
+    console.log({ grupoEmpresa: grpEmpEnvio });
+    salvarAtualizarGrupoEmpresas({ grupoEmpresa: grpEmpEnvio });
 }
 function salvarProduto() {
     //aqui produto

@@ -1,12 +1,9 @@
 ﻿using Nextt_Gestao_Compra.Dominio.Entidades;
 using Nextt_Gestao_Compra.Dominio.Interfaces.Repositorio.Gerenciamento;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Collections;
 using Nextt_Gestao_Compra.Infra.Dados.Utils;
+using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
 {
@@ -46,10 +43,10 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
 
         public void ExcluirGrupo(Parametros parametros)
         {
-            try
+            try 
             {
                 _Db.MultiplosResults("[dbo].[pr_excluir_grupo_filial_GESTAO_COMPRAS]" +
-                                   " @IDGrupoFilial = " + int.Parse(parametros.IDGrupo))
+                                   " @IDGrupoFilial = " + parametros.IDGrupo)
                                    .Executar();
             }
             catch (Exception ex)

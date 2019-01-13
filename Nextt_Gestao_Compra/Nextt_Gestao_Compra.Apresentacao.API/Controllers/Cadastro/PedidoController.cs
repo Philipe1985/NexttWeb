@@ -1,13 +1,8 @@
 ﻿using Microsoft.AspNet.Identity;
-using Nextt_Gestao_Compra.Aplicacao.Gerenciador.Compra;
 using Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido;
 using Nextt_Gestao_Compra.Aplicacao.Servicos.Interfaces.Gerenciamento;
 using Nextt_Gestao_Compra.Aplicacao.ViewModel;
-using RDI_Gerenciador_Usuario.Aplicacao.Gerenciador;
 using System;
-using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace Nextt_Gestao_Compra.Apresentacao.API.Controllers.Cadastro

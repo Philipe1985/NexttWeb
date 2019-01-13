@@ -201,7 +201,7 @@ function inicializarTbProdutoCadastrar(dadosCarga) {
                     if (type === 'display') {
                         if (data > 0) {
                             return '<button class="btn btn-primary inicioPedido">' +
-                                '<i class="fa fa-edit" aria-hidden="true"> Editar</i>' +
+                                '<i class="fa fa-edit" aria-hidden="true"> Abrir</i>' +
                                 '</button>';
                         } else {
                             return '<button class="btn btn-primary inicioPedido">' +

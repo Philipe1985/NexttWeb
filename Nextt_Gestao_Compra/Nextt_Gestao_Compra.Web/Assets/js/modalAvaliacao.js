@@ -113,10 +113,10 @@ function salvarDadosCompra(comFeedback) {
         continuarCompraProdNovo()
     } else {
         $(".bg_load").show();
-        $(".wrapper").show();
+        $(".wrapper").show(); 
         if (dadosOrigemCompra) {
             for (var i = 0; i < dadosOrigemCompra.length; i++) {
-                if (dadosOrigemCompra[i].codProduto === codProd) {
+                if (dadosOrigemCompra[i].codProduto === codProd && dadosOrigemCompra[i].idFornecedor === codForn ) {
                     dadosOrigemCompra[i].status = true;
                     dadosOrigemCompra[i].idPedido = compraId;
                 }

@@ -42,6 +42,7 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
         public int QtdeItens { get; set; }
         public decimal ValorTotal { get; set; }
         public string Status { get; set; }
+        public string DescricaoStatus { get; set; }
         public bool ProdutoInativo { get; set; }
         public string IDStatusPedidoPara { get; set; }
         public List<PackVM> Packs { get; set; }
@@ -80,8 +81,8 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
             QualidadeValor = pedidoCadastrado.QualidadeValor;
             QualidadeQtde = pedidoCadastrado.QualidadeQtde;
             IDUnidadeMedida = pedidoCadastrado.IDUnidadeMedida.ToString();
-            Status = pedidoCadastrado.Status; 
-            
+            Status = pedidoCadastrado.Status;
+            DescricaoStatus = pedidoCadastrado.DescricaoStatus;
         }
     }
 }

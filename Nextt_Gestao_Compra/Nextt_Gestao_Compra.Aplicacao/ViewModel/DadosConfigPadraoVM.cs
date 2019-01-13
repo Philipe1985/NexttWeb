@@ -9,7 +9,7 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
         public DateTime DataEntregaFinal { get; set; }
         public DateTime DataToleranciaAtrasoInicio { get; set; }
         public DateTime DataToleranciaAtrasoFinal { get; set; }
-        public bool AddCores { get; set; }
+        public bool ProdutoEditavel { get; set; }
 
         public DadosConfigPadraoVM(ConfigDefault config)
         {
@@ -19,7 +19,7 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
                 DataEntregaFinal = DateTime.Now.AddDays(config.DataEntregaFinal);
                 DataToleranciaAtrasoInicio = DateTime.Now.AddDays(config.DataToleranciaAtrasoInicio);
                 DataToleranciaAtrasoFinal = DateTime.Now.AddDays(config.DataToleranciaAtrasoFinal);
-                AddCores = config.AddCor;
+                ProdutoEditavel = config.ProdutoEditavel;
             }
            
         }

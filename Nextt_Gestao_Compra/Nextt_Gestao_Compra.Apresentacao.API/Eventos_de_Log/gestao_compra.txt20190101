@@ -1,0 +1,41 @@
+
+ERROR 2019-01-01 18:43:49 - Erro ao Recuperar Dados do Pedido Sintético
+System.Runtime.InteropServices.ExternalException (0x80004005): Erro genérico de GDI+.
+   em System.Drawing.Image.Save(String filename, ImageCodecInfo encoder, EncoderParameters encoderParams)
+   em System.Drawing.Image.Save(String filename, ImageFormat format)
+   em Nextt_Gestao_Compra.Aplicacao.Servicos.Utils.CriarArquivo.GerarPDFPedido(RetornoPedidoSinteticoVM Pedido) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Utils\CriarArquivo.cs:linha 30
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido.GerenciadorAplicacaoPedido.RetornaPedidoSintetico(IAppServicoPedido pedidoServico, ParametrosVM parametroVM) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Pedido\GerenciadorAplicacaoPedido.cs:linha 72
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Cadastro.PedidoController.RetornaPedidoSintetico(ParametrosVM parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Cadastro\PedidoController.cs:linha 74
+
+ERROR 2019-01-01 18:44:47 - Erro ao Recuperar Dados do Pedido Sintético
+System.Runtime.InteropServices.ExternalException (0x80004005): Erro genérico de GDI+.
+   em System.Drawing.Image.Save(String filename, ImageCodecInfo encoder, EncoderParameters encoderParams)
+   em System.Drawing.Image.Save(String filename, ImageFormat format)
+   em Nextt_Gestao_Compra.Aplicacao.Servicos.Utils.CriarArquivo.GerarPDFPedido(RetornoPedidoSinteticoVM Pedido) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Utils\CriarArquivo.cs:linha 30
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido.GerenciadorAplicacaoPedido.RetornaPedidoSintetico(IAppServicoPedido pedidoServico, ParametrosVM parametroVM) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Pedido\GerenciadorAplicacaoPedido.cs:linha 72
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Cadastro.PedidoController.RetornaPedidoSintetico(ParametrosVM parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Cadastro\PedidoController.cs:linha 74
+
+ERROR 2019-01-01 22:30:58 - Erro ao Recuperar Dados do Pedido Sintético
+System.ArgumentOutOfRangeException: Argumento especificado estava fora do intervalo de valores válidos.
+Nome do parâmetro: index
+   em MigraDoc.DocumentObjectModel.Tables.Cells.get_Item(Int32 index)
+   em Invoicer.Services.Impl.PdfInvoice.ImagensProdutoSection() na C:\Users\Alcione\Desktop\Invoicer-master\Invoicer\Services\Impl\PdfInvoice.Sections.cs:linha 204
+   em Invoicer.Services.Impl.PdfInvoice.CreateDocument() na C:\Users\Alcione\Desktop\Invoicer-master\Invoicer\Services\Impl\PdfInvoice.cs:linha 99
+   em Invoicer.Services.Impl.PdfInvoice.Save(String filename, String password) na C:\Users\Alcione\Desktop\Invoicer-master\Invoicer\Services\Impl\PdfInvoice.cs:linha 71
+   em Invoicer.Services.InvoicerApi.Save(String filename, String password) na C:\Users\Alcione\Desktop\Invoicer-master\Invoicer\Services\InvoicerApi.cs:linha 129
+   em Nextt_Gestao_Compra.Aplicacao.Servicos.Utils.CriarArquivo.GerarPDFPedido(RetornoPedidoSinteticoVM Pedido) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Utils\CriarArquivo.cs:linha 43
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido.GerenciadorAplicacaoPedido.RetornaPedidoSintetico(IAppServicoPedido pedidoServico, ParametrosVM parametroVM) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Pedido\GerenciadorAplicacaoPedido.cs:linha 72
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Cadastro.PedidoController.RetornaPedidoSintetico(ParametrosVM parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Cadastro\PedidoController.cs:linha 74
+
+ERROR 2019-01-01 23:18:28 - Erro ao Recuperar Dados do Pedido Sintético
+System.ArgumentException: Value of type 'MigraDoc.DocumentObjectModel.Shapes.TextFrame' must be cloned before set into 'MigraDoc.DocumentObjectModel.DocumentElements'.
+   em MigraDoc.DocumentObjectModel.DocumentObject.SetParent(DocumentObject val)
+   em MigraDoc.DocumentObjectModel.DocumentObjectCollection.Add(DocumentObject value)
+   em MigraDoc.DocumentObjectModel.Section.Add(TextFrame textFrame)
+   em Invoicer.Services.Impl.PdfInvoice.ImagensProdutoSection() na C:\Users\Alcione\Desktop\Invoicer-master\Invoicer\Services\Impl\PdfInvoice.Sections.cs:linha 189
+   em Invoicer.Services.Impl.PdfInvoice.CreateDocument() na C:\Users\Alcione\Desktop\Invoicer-master\Invoicer\Services\Impl\PdfInvoice.cs:linha 99
+   em Invoicer.Services.Impl.PdfInvoice.Save(String filename, String password) na C:\Users\Alcione\Desktop\Invoicer-master\Invoicer\Services\Impl\PdfInvoice.cs:linha 71
+   em Invoicer.Services.InvoicerApi.Save(String filename, String password) na C:\Users\Alcione\Desktop\Invoicer-master\Invoicer\Services\InvoicerApi.cs:linha 129
+   em Nextt_Gestao_Compra.Aplicacao.Servicos.Utils.CriarArquivo.GerarPDFPedido(RetornoPedidoSinteticoVM Pedido) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Utils\CriarArquivo.cs:linha 43
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido.GerenciadorAplicacaoPedido.RetornaPedidoSintetico(IAppServicoPedido pedidoServico, ParametrosVM parametroVM) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Pedido\GerenciadorAplicacaoPedido.cs:linha 72
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Cadastro.PedidoController.RetornaPedidoSintetico(ParametrosVM parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Cadastro\PedidoController.cs:linha 74

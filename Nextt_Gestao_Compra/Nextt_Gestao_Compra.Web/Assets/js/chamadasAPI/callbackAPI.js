@@ -1,5 +1,5 @@
-﻿function cadastrarUsuario(email, usuario, nome, sobrenome, perfis, emailConfirmado) {
-    var obj = { 'email': email, "nomeUsuario": usuario, "primeiroNome": nome, "ultimoNome": sobrenome, "perfis": perfis };
+﻿function cadastrarUsuario(email, usuario, nome, sobrenome, perfis, emailConfirmado, idNextt) {
+    var obj = { 'email': email, "nomeUsuario": usuario, "primeiroNome": nome, "ultimoNome": sobrenome, "perfis": perfis, 'idUsuarioNextt': idNextt };
     if (emailConfirmado) {
         obj.emailConfirmado = emailConfirmado;
     }
@@ -49,7 +49,7 @@
             console.log(error)
             waitingDialog.hide();
             modal({
-                messageText: "Ocorreu um erro durante a operação. Informe o administrador do sistema o erro abaixo: <br/>Erro " + error.status + ": " + tratamentoErro(error),
+                messageText: "Ocorreu um erro durante esta operação, tente novamente.<br/>Caso o erro persista informe o administrador do sistema o horário e data da ocorrencia",
                 type: "alert",
                 headerText: "Falha Interna",
                 alertType: "warning"
@@ -99,6 +99,7 @@ function carregarEspecie(parametro) {
 
                 if ($('#drpTamanhoCategoria').length) {
                     $('#drpTamanhoCategoria').trigger('change');
+                    $('#drpTamanhoCategoria ').prop('disabled', true);
                 }
 
 
@@ -260,6 +261,7 @@ function Logar(un, pw) {
             console.log(permissoes);
             sessionStorage.setItem("token", result.token_type + ' ' + result.access_token);
             sessionStorage.setItem("id_usuarioLogado", result.nome);
+            sessionStorage.setItem("token_expirado", new Date().addHours(8))
             sessionStorage.setItem("id_usuario", result.userID);
             sessionStorage.setItem("perfilSistema", result.perfil);
             sessionStorage.setItem("perfilAdmin", result.gerenciarUsuario);
@@ -268,14 +270,14 @@ function Logar(un, pw) {
             localStorage.removeItem("erro");
             window.location = "../home.cshtml";
         },
-        error: function (error) {
-            console.log(error)
-            if (error.status === 401) {
+        error: function (erro) {
+            console.log(erro.getAllResponseHeaders())
+            if (erro.status === 401) {
                 localStorage.setItem("erro", "Acesso negado! Verifique usuario e senha. Caso o erro persista, entre em contato com o administrador do sistema para confirmar se está autorizado a logar");
                 location.reload();
             }
             else {
-                localStorage.setItem("erro", "Acesso negado! " + tratamentoErro(error));
+                localStorage.setItem("erro", "Acesso negado! " + tratamentoErro(erro));
                 location.reload();
             }
         }
@@ -295,6 +297,7 @@ function carregaComboPerfil() {
             $.each(result, function (index, value) {
                 $("#ucComboAdmins").append("<option value='" + value.id + "'>" + value.name + "</option>");
                 $("#cbPerfil").append("<option value='" + value.id + "'>" + value.name + "</option>");
+                $("#cbPerfilUsuario").append("<option value='" + value.id + "'>" + value.name + "</option>");
                 if (value.name !== 'Administrador') {
                     $("#cbPerfilAtualizar").append("<option value='" + value.id + "'>" + value.name + "</option>");
                 }
@@ -305,6 +308,7 @@ function carregaComboPerfil() {
             });
             $('#ucComboAdmins').selectpicker('refresh');
             $('#cbPerfil').selectpicker('refresh');
+            $('#cbPerfilUsuario').selectpicker('refresh');
             $('#ucComboAtivos').selectpicker('refresh');
             $('#cbPerfilNovo').selectpicker('refresh');
             $('#cbPerfilAtualizar').selectpicker('refresh');
@@ -312,13 +316,251 @@ function carregaComboPerfil() {
         },
         error: function (erro) {
             modal({
-                messageText: "Ocorreu um erro durante a operação. Informe o administrador do sistema o erro abaixo: <br/>Erro " + erro.status + ": " + tratamentoErro(erro),
+                messageText: "Ocorreu um erro durante esta operação, tente novamente.<br/>Caso o erro persista informe o administrador do sistema o horário e data da ocorrencia",
                 type: "alert",
                 headerText: "Falha Interna",
                 alertType: "warning"
             });
         }
     });
+}
+
+function cargaInicialGrupoEmpresa() {
+    $.ajax({
+        type: 'GET',
+        crossDomain: true,
+        async: true,
+        cache: false,
+        url: urlApi + 'gerenciamento/grupoempresa/RecuperaDadosInicial',
+        beforeSend: function (req) {
+            req.setRequestHeader('Authorization', sessionStorage.getItem("token"));
+        },
+        success: function (result) {
+            console.log(result)
+            var sourceMarcas = "";
+            var sourceGrupo = [];
+            $.each(result.marcas, function (index, value) {
+                sourceMarcas += "<option data-tokens='" + value.token + "' value='" + value.valor + "'>" + value.descricao + "</option>";
+            });
+
+            //if (window.location.href.toLowerCase().indexOf("grupoempresa2") === -1) {
+            $.each(result.grupoEmpresas, function (index, value) {
+                geraCardGrupoEmpresa(value);
+                var retorno = {};
+                retorno.idGrupoEmpresa = parseInt(value.idGrupoEmpresa);
+                retorno.nome = value.nome;
+                var statusGrp = value.status ? 'Ativo' : 'Inativo';
+                //retorno.status = statusGrp;
+                retorno.operacao = retornaOperacaoGrupoEmpresaGrid(statusGrp)
+                sourceGrupo.push(retorno);
+            });
+            //}
+            carregarGridGrupoEmpresa(sourceGrupo);
+            $("#drpMarc").html(sourceMarcas);
+            $('.selectpicker').selectpicker('refresh');
+
+            var $menuTitulo = $(".navbar.navbar-default.navbar-fixed-top");
+            var textoTitulo = 'Gerenciamento de Grupos de Empresas';
+            $menuTitulo.find('.navbar-header .navbar-center').text(textoTitulo);
+            $(".bg_load").fadeOut();
+            $(".wrapper").fadeOut();
+            $menuTitulo.removeClass('ocultarElemento');
+        },
+        error: function (erro) {
+            $(".bg_load").fadeOut();
+            $(".wrapper").fadeOut();
+            $('.selectpicker').selectpicker('show');
+            $(".navbar.navbar-default.navbar-fixed-top").removeClass('ocultarElemento');
+            modal({
+                messageText: "Ocorreu um erro durante esta operação, tente novamente.<br/>Caso o erro persista informe o administrador do sistema o horário e data da ocorrencia",
+                type: "alert",
+                modalSize: 'modal-lg',
+                headerText: "Falha Interna",
+                alertType: "warning"
+            });
+        }
+    });
+}
+function editarGrupoEmpresa(parametro) {
+    $.ajax({
+        type: 'POST',
+        crossDomain: true,
+        async: true,
+        data: parametro,
+        cache: false,
+        url: urlApi + 'gerenciamento/grupoempresa/RecuperaDadosGrupoEditar',
+        beforeSend: function (req) {
+            req.setRequestHeader('Authorization', sessionStorage.getItem("token"));
+        },
+        success: function (result) {
+            console.log(result)
+            if (result.grupo.idGrupoEmpresa) {
+                $('#txtCodGrupo').val(result.grupo.idGrupoEmpresa);
+                $('#txtNomeGrupoEmpresa').val(result.grupo.nome);
+            }
+            $('#drpMarc').selectpicker('val', result.marcasVinculadas);
+            $('#modalGrupoEmpresa').modal({
+                backdrop: 'static',
+                keyboard: false
+            });
+            $('.selectpicker').selectpicker('refresh');
+
+            $('#btnFinalizarOperacao').html('<i class="fa fa-check" aria-hidden="true"></i> Atualizar');
+            $('#btnExlcuirOperacao').removeClass('ocultarElemento');
+
+            var $menuTitulo = $(".navbar.navbar-default.navbar-fixed-top");
+            $('#tituloGrupoEmpresa').html('<i class="fa fa-pencil-square-o"></i>&nbsp;Atualizar <strong>Grupo de Empresas</strong>')
+
+            $(".bg_load").fadeOut();
+            $(".wrapper").fadeOut();
+            $menuTitulo.removeClass('ocultarElemento');
+        },
+        error: function (erro) {
+            $(".bg_load").fadeOut();
+            $(".wrapper").fadeOut();
+            $('.selectpicker').selectpicker('show');
+            $(".navbar.navbar-default.navbar-fixed-top").removeClass('ocultarElemento');
+            modal({
+                messageText: "Ocorreu um erro durante esta operação, tente novamente.<br/>Caso o erro persista informe o administrador do sistema o horário e data da ocorrencia",
+                type: "alert",
+                modalSize: 'modal-lg',
+                headerText: "Falha Interna",
+                alertType: "warning"
+            });
+        }
+    });
+}
+function salvarAtualizarGrupoEmpresas(parametro) {
+    $.ajax({
+        type: 'POST',
+        crossDomain: true,
+        async: true,
+        data: parametro,
+        cache: false,
+        url: urlApi + 'gerenciamento/grupoempresa/InsereAtualizaGrupo',
+        beforeSend: function (req) {
+            req.setRequestHeader('Authorization', sessionStorage.getItem("token"));
+        },
+        success: function (result) {
+            console.log(result)
+
+            var $menuTitulo = $(".navbar.navbar-default.navbar-fixed-top");
+            $menuTitulo.removeClass('ocultarElemento');
+            var msg = $('#txtCodGrupo').val() === "0" ?
+                'O grupo foi cadastrado e já está disponível para utilização.' :
+                'O grupo foi atualizado e já está disponível para utilização.';
+            var titMsg = $('#txtCodGrupo').val() === "0" ?
+                'Grupo Cadastrado Com Sucesso!' :
+                'Grupo ' + $('#txtCodGrupo').val() + ' - ' + $('#txtNomeGrupoEmpresa').val() + ' Atualizado Com Sucesso!';
+            $(".bg_load").fadeOut("slow");
+            $(".wrapper").fadeOut("slow", function () {
+                var jc2 = $.confirm({
+                    title: titMsg,
+                    content: msg,
+                    icon: 'fa fa-check',
+                    theme: 'modern',
+                    closeIcon: false,
+                    type: 'green',
+                    animation: 'scale',
+                    buttons: {
+                        okButton: {
+                            text: 'ok'
+                        }
+                    },
+                    onContentReady: function () {
+                        setTimeout(function () {
+                            jc2.close()
+                        }, 2000);
+                    },
+                    onOpenBefore: function () {
+                        this.buttons.okButton.hide();
+                    },
+                    onDestroy: function () {
+                        $menuTitulo.addClass('ocultarElemento');
+                        $(".bg_load").show();
+                        $(".wrapper").show();
+                        location.reload();
+                    }
+                });
+            });
+        },
+        error: function (erro) {
+            $(".bg_load").fadeOut();
+            $(".wrapper").fadeOut();
+            $('.selectpicker').selectpicker('show');
+            $(".navbar.navbar-default.navbar-fixed-top").removeClass('ocultarElemento');
+            modal({
+                messageText: "Ocorreu um erro durante esta operação, tente novamente.<br/>Caso o erro persista informe o administrador do sistema o horário e data da ocorrencia",
+                type: "alert",
+                modalSize: 'modal-lg',
+                headerText: "Falha Interna",
+                alertType: "warning"
+            });
+        }
+    });
+
+}
+function excluirGrpEmpresas(parametro) {
+    $.ajax({
+        type: 'POST',
+        crossDomain: true,
+        async: true,
+        cache: false,
+        url: urlApi + 'gerenciamento/grupoempresa/ExcluirGrupoEmpresas',
+        data: parametro,
+        beforeSend: function (req) {
+            req.setRequestHeader('Authorization', sessionStorage.getItem("token"));
+        },
+        success: function (result) {
+            $(".navbar.navbar-default.navbar-fixed-top").removeClass('ocultarElemento');
+            $(".bg_load").fadeOut("slow");
+            $(".wrapper").fadeOut("slow", function () {
+                var jc2 = $.confirm({
+                    title: 'Grupo De Empresas Excluído Com Sucesso!',
+                    content: 'O grupo foi removido e não está disponível para utilização.',
+                    icon: 'fa fa-check',
+                    theme: 'modern',
+                    closeIcon: false,
+                    type: 'green',
+                    animation: 'scale',
+                    buttons: {
+                        okButton: {
+                            text: 'ok'
+                        }
+                    },
+                    onContentReady: function () {
+                        setTimeout(function () {
+                            jc2.close()
+                        }, 2000);
+                    },
+                    onOpenBefore: function () {
+                        this.buttons.okButton.hide();
+                    },
+                    onDestroy: function () {
+                        $(".bg_load").show();
+                        $(".wrapper").show();
+                        $(".navbar.navbar-default.navbar-fixed-top").addClass('ocultarElemento');
+                        location.reload();
+                    }
+                });
+            });
+            //Criar abas dos grupos
+        },
+        error: function (erro) {
+            $(".bg_load").fadeOut("slow");
+            $(".wrapper").fadeOut("slow", function () {
+                $('.selectpicker').selectpicker('show');
+            });
+
+            modal({
+                messageText: "Ocorreu um erro durante esta operação, tente novamente.<br/>Caso o erro persista informe o administrador do sistema o horário e data da ocorrencia",
+                type: "alert",
+                headerText: "Falha Interna",
+                alertType: "warning"
+            });
+        }
+    });
+
 }
 
 function selecionaPermissaoPorPerfil(parametro) {
@@ -338,7 +580,7 @@ function selecionaPermissaoPorPerfil(parametro) {
         },
         error: function (erro) {
             modal({
-                messageText: "Ocorreu um erro durante a operação. Informe o administrador do sistema o erro abaixo: <br/>Erro " + erro.status + ": " + tratamentoErro(erro),
+                messageText: "Ocorreu um erro durante esta operação, tente novamente.<br/>Caso o erro persista informe o administrador do sistema o horário e data da ocorrencia",
                 type: "alert",
                 headerText: "Falha Interna",
                 alertType: "warning"
@@ -371,7 +613,7 @@ function carregaComboPermissao() {
         },
         error: function (erro) {
             modal({
-                messageText: "Ocorreu um erro durante a operação. Informe o administrador do sistema o erro abaixo: <br/>Erro " + erro.status + ": " + tratamentoErro(erro),
+                messageText: "Ocorreu um erro durante esta operação, tente novamente.<br/>Caso o erro persista informe o administrador do sistema o horário e data da ocorrencia",
                 type: "alert",
                 headerText: "Falha Interna",
                 alertType: "warning"
@@ -405,7 +647,7 @@ function carregaComboPerfilEditar() {
         },
         error: function (erro) {
             modal({
-                messageText: "Ocorreu um erro durante a operação. Informe o administrador do sistema o erro abaixo: <br/>Erro " + erro.status + ": " + tratamentoErro(erro),
+                messageText: "Ocorreu um erro durante esta operação, tente novamente.<br/>Caso o erro persista informe o administrador do sistema o horário e data da ocorrencia",
                 type: "alert",
                 headerText: "Falha Interna",
                 alertType: "warning"
@@ -438,9 +680,10 @@ function alterarSenha(senhaAt, senhaNov, senhaConf) {
             req.setRequestHeader('Authorization', sessionStorage.getItem("token"));
         },
         error: function (error) {
+            waitingDialog.hide();
             if (error.status === 500) {
                 modal({
-                    messageText: "Ocorreu um erro durante a operação. Informe o administrador do sistema o erro abaixo: <br/>" + tratamentoErro(error),
+                    messageText: "Ocorreu um erro durante esta operação, tente novamente.<br/>Caso o erro persista informe o administrador do sistema o horário e data da ocorrencia",
                     type: "alert",
                     headerText: "Falha Interna",
                     alertType: "warning"
@@ -478,7 +721,7 @@ function editarUsuario(id) {
         },
         error: function (error) {
             modal({
-                messageText: "Ocorreu um erro durante a operação. Informe o administrador do sistema o erro abaixo: <br/>Erro " + error.status + ": " + tratamentoErro(error),
+                messageText: "Ocorreu um erro durante esta operação, tente novamente.<br/>Caso o erro persista informe o administrador do sistema o horário e data da ocorrencia",
                 type: "alert",
                 headerText: "Falha Interna",
                 alertType: "warning"
@@ -516,7 +759,7 @@ function resetarSenha(id) {
         },
         error: function (error) {
             modal({
-                messageText: "Ocorreu um erro durante a operação. Informe o administrador do sistema o erro abaixo: <br/>Erro " + error.status + ": " + tratamentoErro(error),
+                messageText: "Ocorreu um erro durante esta operação, tente novamente.<br/>Caso o erro persista informe o administrador do sistema o horário e data da ocorrencia",
                 type: "alert",
                 headerText: "Falha Interna",
                 alertType: "warning"
@@ -568,7 +811,7 @@ function alterarStatusUsuario(id, status, checkbox) {
                 });
             } else {
                 modal({
-                    messageText: "Ocorreu um erro durante a operação. Informe o administrador do sistema o erro abaixo: <br/>Erro " + error.status + ": " + tratamentoErro(error),
+                    messageText: "Ocorreu um erro durante esta operação, tente novamente.<br/>Caso o erro persista informe o administrador do sistema o horário e data da ocorrencia",
                     type: "alert",
                     headerText: "Falha Interna",
                     alertType: "warning"
@@ -608,7 +851,7 @@ function atualizarUsuario(usuarioAtualzado) {
         error: function (error) {
             waitingDialog.hide();
             modal({
-                messageText: "Ocorreu um erro durante a operação. Informe o administrador do sistema o erro abaixo: <br/>Erro " + error.status + ": " + tratamentoErro(error),
+                messageText: "Ocorreu um erro durante esta operação, tente novamente.<br/>Caso o erro persista informe o administrador do sistema o horário e data da ocorrencia",
                 type: "alert",
                 headerText: "Falha Interna",
                 alertType: "warning"
@@ -676,8 +919,9 @@ function criarPerfilNovo(parametro) {
             }
         },
         error: function (error) {
+            waitingDialog.hide();
             modal({
-                messageText: "Ocorreu um erro durante a operação. Informe o administrador do sistema o erro abaixo: <br/>Erro " + error.status + ": " + tratamentoErro(error),
+                messageText: "Ocorreu um erro durante esta operação, tente novamente.<br/>Caso o erro persista informe o administrador do sistema o horário e data da ocorrencia",
                 type: "alert",
                 headerText: "Falha Interna",
                 alertType: "warning"
@@ -748,7 +992,7 @@ function atualizarPerfilEnviar(parametro) {
         error: function (error) {
             waitingDialog.hide();
             modal({
-                messageText: "Ocorreu um erro durante a operação. Informe o administrador do sistema o erro abaixo: <br/>Erro " + error.status + ": " + tratamentoErro(error),
+                messageText: "Ocorreu um erro durante esta operação, tente novamente.<br/>Caso o erro persista informe o administrador do sistema o horário e data da ocorrencia",
                 type: "alert",
                 headerText: "Falha Interna",
                 alertType: "warning"
@@ -990,7 +1234,7 @@ function buscaDadosProdFornecedor(parametro) {
 
             $("#drpCondPgtoPed option[value='" + result.ultimaCondicao + "']").attr('selected', 'selected')
             var $cbfrn = $('#cbAttr' + result.atributoFornecedor);
-            if ($cbfrn) {
+            if ($cbfrn && result.atributoValor) {
                 $cbfrn.selectpicker('val', result.atributoValor.split(','));
             }
             if (result.ultimaForma) {
@@ -1003,6 +1247,8 @@ function buscaDadosProdFornecedor(parametro) {
 
             var refCarga = result.referencia ? result.referencia : !cadastroNovoSession ? 'Sem Referência' : '';
             $("#txtRefPed").val(refCarga);
+            if (permissoesUsuarioLogado.indexOf('Editar Referência Produto') > -1 && !result.referencia)
+                $("#txtRefPed").attr('disabled', false);
             var valQualiNota = result.qualidadeQtde;
             var valQuantNota = result.qualidadeValor;
             if (valQualiNota === 0) {
@@ -1014,7 +1260,7 @@ function buscaDadosProdFornecedor(parametro) {
             $("#txtQldProdPed").val(valQualiNota.toFixed(2).replace('.', ','));
             $("#txtQldNotaPed").val(valQuantNota.toFixed(2).replace('.', ','));
             $("#txtCustoBrutoPed").val(result.precoCusto.toFixed(2).replace('.', ','));
-            $("#txtPrVendaPed").val(result.precoVenda.toFixed(2).replace('.', ','));
+            //$("#txtPrVendaPed").val(result.precoVenda.toFixed(2).replace('.', ','));
             $("#txtDescontoPedPerc").val(result.desconto.toFixed(2).replace('.', ','));
             $("#txtIPIPercPed").val(result.ipi.toFixed(2).replace('.', ','));
             $("#txtIcmsPercPed").val(result.icms.toFixed(2).replace('.', ','));
@@ -1146,7 +1392,9 @@ function geraCargaPrePedido(parametro) {
             }
             if (result.filtrosPrePedido.compradoresProduto) {
                 $.each(result.filtrosPrePedido.compradoresProduto, function (index, value) {
-                    sourceCompradorProduto += "<option data-tokens='" + value.token + "' value='" + value.valor + "'>" + value.descricao + "</option>";
+                    var selecionado = /*value.dadosAdicionais.length > 0 ? */"selected";/* : ""*/
+
+                    sourceCompradorProduto += "<option data-tokens='" + value.token + "' " + selecionado + " value='" + value.valor + "'>" + value.descricao + "</option>";
                 });
 
             }
@@ -1242,6 +1490,7 @@ function geraCargaPrePedido(parametro) {
             $(".prVenda").maskMoney();
             geraComponenteCalendarioAttr();
             ordenaOpcao();
+            $("#drpCompProd option").attr('disabled', true);
             $(".selectpicker").selectpicker();
 
             $("#drpCoresGrade").selectpicker('val', result.coresGrade);
@@ -1251,12 +1500,26 @@ function geraCargaPrePedido(parametro) {
             $("#txtProdutoPed").val(result.codProduto);
             if (result.produtoInativo) {
                 $("#txtStatusProd").val('Inativo');
-                $("#drpMarc").attr('disabled', false);
                 $("#drpMarc option[value='" + result.filtrosPrePedido.marcaSelecionada + "']").attr('selected', 'selected');
-                $("#txtCodOriPed").val(result.codOriginal).attr('disabled', false);
-                $("#txtRefPed").val(result.referencia).attr('disabled', false);
-                $("#txtDescPed").val(result.descricao).attr('disabled', false);
-                $("#txtDescResPed").val(result.descricaoReduzida).attr('disabled', false);
+                permissoesUsuarioLogado.indexOf('Editar Marca') === -1 ?
+                    $("#drpMarc").attr('disabled', true) :
+                    $("#drpMarc").attr('disabled', false);
+                $("#txtCodOriPed").val(result.codOriginal);
+                permissoesUsuarioLogado.indexOf('Editar Código Original') === -1 ?
+                    $("#txtCodOriPed").attr('disabled', true) :
+                    $("#txtCodOriPed").attr('disabled', false);
+                $("#txtRefPed").val(result.referencia);
+                permissoesUsuarioLogado.indexOf('Editar Referência Produto') === -1 ?
+                    $("#txtRefPed").attr('disabled', true) :
+                    $("#txtRefPed").attr('disabled', false);
+                $("#txtDescPed").val(result.descricao)
+                permissoesUsuarioLogado.indexOf('Editar Descrição') === -1 ?
+                    $("#txtDescPed").attr('disabled', true) :
+                    $("#txtDescPed").attr('disabled', false);
+                $("#txtDescResPed").val(result.descricaoReduzida)
+                permissoesUsuarioLogado.indexOf('Editar Descrição Reduzida') === -1 ?
+                    $("#txtDescResPed").attr('disabled', true) :
+                    $("#txtDescResPed").attr('disabled', false);
             } else {
                 $("#txtStatusProd").val('Ativo');
                 $("#txtCodOriPed").val(result.codOriginal).attr('disabled', true);
@@ -1402,7 +1665,7 @@ function geraCargaCadNovo() {
             $("#drpCompPed").html(sourceComprador);
             $("#drpCompProd").html(sourceCompradorProduto);
             $("#txtStatusProd").val('Inativo');
-            $("#drpCompProd option:first").remove();
+            //$("#drpCompProd option:first").remove();
             validaPermissaoPedidoCadastro()
             $("#drpUnidadeMed").html(sourceMedida).selectpicker('val', '');
             $("#drpCoresGrade").html(sourceCores);
@@ -1545,7 +1808,7 @@ function cadastrarProduto() {
             $("#txtStatusProd").val('Inativo');
             criaInputImagem([], [], [])
             $("#drpCompProd").html(sourceCompradorProduto);
-            $("#drpCompProd option:first").remove();
+            //$("#drpCompProd option:first").remove();
             $("#drpUnidadeMed").html(sourceMedida).selectpicker('val', '');
             $("#drpCoresGrade").html(sourceCores);
             $(".prVenda").maskMoney();
@@ -1659,7 +1922,8 @@ function editarProduto(parametro) {
 
             if (result.filtrosPrePedido.compradoresProduto) {
                 $.each(result.filtrosPrePedido.compradoresProduto, function (index, value) {
-                    sourceCompradorProduto += "<option data-tokens='" + value.token + "' value='" + value.valor + "'>" + value.descricao + "</option>";
+                    var selecionado = value.dadosAdicionais.length > 0 ? "selected" : ""
+                    sourceCompradorProduto += "<option data-tokens='" + value.token + "' " + selecionado + " value='" + value.valor + "'>" + value.descricao + "</option>";
                 });
 
             }
@@ -1707,16 +1971,29 @@ function editarProduto(parametro) {
             $("#drpCoresGrade").html(sourceCores);
             $("#drpCompPed").html(sourceComprador);
             $("#drpCompProd").html(sourceCompradorProduto);
-            validaPermissaoPedidoCadastro()
+
             if (result.produtoInativo) {
                 $("#txtStatusProd").val('Inativo');
-                $("#drpMarc").attr('disabled', false);
                 $("#drpMarc option[value='" + result.filtrosPrePedido.marcaSelecionada + "']").attr('selected', 'selected');
-                $("#txtCodOriPed").val(result.codOriginal).attr('disabled', false);
-                $("#txtRefPed").val(result.referencia).attr('disabled', false);
-                $("#txtDescPed").val(result.descricao).attr('disabled', false);
-                $("#txtDescResPed").val(result.descricaoReduzida).attr('disabled', false);
-
+                permissoesUsuarioLogado.indexOf('Editar Marca') === -1 ?
+                    $("#drpMarc").attr('disabled', true) :
+                    $("#drpMarc").attr('disabled', false);
+                $("#txtCodOriPed").val(result.codOriginal);
+                permissoesUsuarioLogado.indexOf('Editar Código Original') === -1 ?
+                    $("#txtCodOriPed").attr('disabled', true) :
+                    $("#txtCodOriPed").attr('disabled', false);
+                $("#txtRefPed").val(result.referencia);
+                permissoesUsuarioLogado.indexOf('Editar Referência Produto') === -1 ?
+                    $("#txtRefPed").attr('disabled', true) :
+                    $("#txtRefPed").attr('disabled', false);
+                $("#txtDescPed").val(result.descricao)
+                permissoesUsuarioLogado.indexOf('Editar Descrição') === -1 ?
+                    $("#txtDescPed").attr('disabled', true) :
+                    $("#txtDescPed").attr('disabled', false);
+                $("#txtDescResPed").val(result.descricaoReduzida)
+                permissoesUsuarioLogado.indexOf('Editar Descrição Reduzida') === -1 ?
+                    $("#txtDescResPed").attr('disabled', true) :
+                    $("#txtDescResPed").attr('disabled', false);
             } else {
                 $("#txtStatusProd").val('Ativo');
                 $("#txtCodOriPed").val(result.codOriginal).attr('disabled', true);
@@ -1749,11 +2026,16 @@ function editarProduto(parametro) {
             $(".attrPerc").maskMoney();
             geraComponenteCalendarioAttr();
             ordenaOpcao();
+            validaPermissaoPedidoCadastro();
             $(".selectpicker").selectpicker();
-
             $("#drpCoresGrade").selectpicker('val', result.coresGrade);
             $("#drpTamanhoGrade").selectpicker('val', result.tamanhosGrade);
             $('#drpReferenciaGrade').selectpicker('val', result.referenciasGrade);
+            if (permissoesUsuarioLogado.indexOf('Editar Grade') === -1) {
+                $("#drpCoresGrade").attr('disabled', true);;
+                $("#drpTamanhoGrade").attr('disabled', true);;
+                $('#drpReferenciaGrade').attr('disabled', true);;
+            }
             $("#txtIDProd").val(result.idProduto).attr('disabled', true);
             $("#txtProdutoPed").val(result.codProduto);
             nomesCoresCSS = repartirArray(result.filtrosPrePedido.dadosPaleta.valoresCSS);
@@ -1767,9 +2049,13 @@ function editarProduto(parametro) {
             $menuTitulo.find('.navbar-header .navbar-center').text('Edição de Produto');
             $(".selectpicker").selectpicker('refresh');
             $(".dadosTab").addClass('ocultarElemento');
-            $("#frmGradeReferencia3").removeClass('ocultarElemento');
+            if (permissoesUsuarioLogado.indexOf('Editar Referencia de Item') > -1) {
+                $("#frmGradeReferencia3").removeClass('ocultarElemento');
+            }
+
             $("#divCompProd").removeClass('ocultarElemento');
             $(".packTab").addClass('ocultarElemento');
+            $(".cad-prod").text('Atualizar')
             $("#frmCusto").remove();
             $("#tabFoto.tab-pane").find('button.prev-step').remove();
             $("#tabGrade.tab-pane").find('button.next-step').remove();
@@ -1909,8 +2195,11 @@ function geraCargaTamanhos(parametro) {
             $.each(result, function (index, value) {
                 sourceTamanho += criarTamanho(value.valor, value.token, value.descricao);
             });
-            $("#drpTamanhoGrade").html(sourceTamanho).selectpicker('val', '');
 
+            $("#drpTamanhoGrade").html(sourceTamanho).selectpicker('val', '');
+            if ($("#drpTamanhoGrade option").length < 7) {
+                configuraCombosOpcoes('#drpTamanhoGrade');
+            }
             $(".selectpicker").selectpicker();
             $(".selectpicker").selectpicker('refresh');
         },
@@ -1954,7 +2243,39 @@ function carregaImagemProduto(parametro) {
         },
     });
 }
+function carregarComboUsuarioNextt() {
+    $.ajax({
+        type: 'POST',
+        crossDomain: true,
+        cache: false,
+        url: urlApi + 'ListarUsuariosNextt',
+        beforeSend: function (req) {
+            req.setRequestHeader('Authorization', sessionStorage.getItem("token"));
+        },
 
+        success: function (result) {
+            console.log(result)
+            $.each(result, function (index, value) {
+                $("#cbUsuarioNextt").append("<option value='" + value.id + "'>" + value.nome + "</option>");
+                //$("#cbPermissaoAtualizar").append("<option value='" + value.id + "'>" + value.descricao + "</option>");
+            });
+            $('.selectpicker').selectpicker({
+                size: 7
+            });
+            $('#cbUsuarioNextt').selectpicker('refresh');
+            //$('#cbPermissaoAtualizar').selectpicker('refresh');
+
+        },
+        error: function (erro) {
+            modal({
+                messageText: "Ocorreu um erro durante a operação. Informe o administrador do sistema o erro abaixo: <br/>Erro " + erro.status + ": " + tratamentoErro(erro),
+                type: "alert",
+                headerText: "Falha Interna",
+                alertType: "warning"
+            });
+        }
+    });
+}
 function salvarPedido(parametro) {
     $.ajax({
         type: 'POST',
@@ -2376,7 +2697,7 @@ function cargaInicialPedido() {
             }
             if (result.statusPedido) {
                 $.each(result.statusPedido, function (index, value) {
-                    if (value.dadosAdicionais) {
+                    if (value.dadosAdicionais.length > 0) {
                         observacaoStatus.push(value.valor);
                     }
 
@@ -2504,7 +2825,7 @@ function carregaPedidoSintetico(parametro) {
                 });
             }
             $('#modalBodyDetalhePedido').removeClass('ocultarElemento');
-            var statusTransicao = result.idStatusPedidoPara.split(',');
+            var statusTransicao = result.idStatusPedidoPara ? result.idStatusPedidoPara.split(',') : []
             for (var i = 0; i < statusTransicao.length; i++) {
                 $('.btnFooters .status' + statusTransicao[i]).removeClass('ocultarElemento');
             }
@@ -2546,7 +2867,6 @@ function geraCargaPedidoAnalitico(parametro) {
                 $.each(result.filtrosPrePedido.grupoEmpresaPrecos, function (index, value) {
                     criaPainelPrecoVenda(value)
                 });
-
             }
             objEnvio.codigo = result.idProduto;
             sessionStorage.setItem("pedidoStatus", result.status);
@@ -2579,7 +2899,7 @@ function geraCargaPedidoAnalitico(parametro) {
             }
             if (result.filtrosPrePedido.compradoresProduto) {
                 $.each(result.filtrosPrePedido.compradoresProduto, function (index, value) {
-                    sourceCompradorProduto += "<option data-tokens='" + value.token + "' value='" + value.valor + "'>" + value.descricao + "</option>";
+                    sourceCompradorProduto += "<option selected data-tokens='" + value.token + "' value='" + value.valor + "'>" + value.descricao + "</option>";
                 });
 
             }
@@ -2645,7 +2965,11 @@ function geraCargaPedidoAnalitico(parametro) {
             if ($("#drpTamanhoGrade option").length < 7) {
                 configuraCombosOpcoes('#drpTamanhoGrade');
             }
-            statusTransicao = result.idStatusPedidoPara.split(',');
+            statusTransicao = result.idStatusPedidoPara ? result.idStatusPedidoPara.split(',') : [];
+            if (result.status.toLowerCase() !== "a") {
+                $(".finish-change").addClass('ocultarElemento');
+                $("#drpCompPed").attr('disabled', true);
+            }
             for (var i = 0; i < statusTransicao.length; i++) {
                 if (statusTransicao[i].toLowerCase() != 'c') {
                     $('.exibeBtn.status' + statusTransicao[i]).removeClass('ocultarElemento')
@@ -2668,6 +2992,7 @@ function geraCargaPedidoAnalitico(parametro) {
             $('#drpClassificacao').html(souceClass).selectpicker('val', '');
             $("#drpCondPgtoPed").html(sourceCondicao);
             $("#drpFrmPgtoPed").html(sourceForma);
+            $("#drpCompProd option").attr('disabled', true);
 
             ordenaOpcao();
             $(".selectpicker").selectpicker();
@@ -2688,12 +3013,26 @@ function geraCargaPedidoAnalitico(parametro) {
             $("#txtProdutoPed").val(result.codProduto).attr('disabled', true);
             if (result.produtoInativo) {
                 $("#txtStatusProd").val('Inativo');
-                $("#drpMarc").attr('disabled', false);
                 $("#drpMarc option[value='" + result.filtrosPrePedido.marcaSelecionada + "']").attr('selected', 'selected');
-                $("#txtCodOriPed").val(result.codigoOriginal).attr('disabled', false);
-                $("#txtRefPed").val(result.referenciaFornecedor).attr('disabled', false);
-                $("#txtDescPed").val(result.descricaoProduto).attr('disabled', false);
-                $("#txtDescResPed").val(result.descricaoReduzidaProduto).attr('disabled', false);
+                permissoesUsuarioLogado.indexOf('Editar Marca') === -1 ?
+                    $("#drpMarc").attr('disabled', true) :
+                    $("#drpMarc").attr('disabled', false);
+                $("#txtCodOriPed").val(result.codigoOriginal);
+                permissoesUsuarioLogado.indexOf('Editar Código Original') === -1 ?
+                    $("#txtCodOriPed").attr('disabled', true) :
+                    $("#txtCodOriPed").attr('disabled', false);
+                $("#txtRefPed").val(result.referenciaFornecedor);
+                permissoesUsuarioLogado.indexOf('Editar Referência Produto') === -1 ?
+                    $("#txtRefPed").attr('disabled', true) :
+                    $("#txtRefPed").attr('disabled', false);
+                $("#txtDescPed").val(result.descricaoProduto)
+                permissoesUsuarioLogado.indexOf('Editar Descrição') === -1 ?
+                    $("#txtDescPed").attr('disabled', true) :
+                    $("#txtDescPed").attr('disabled', false);
+                $("#txtDescResPed").val(result.descricaoReduzidaProduto)
+                permissoesUsuarioLogado.indexOf('Editar Descrição Reduzida') === -1 ?
+                    $("#txtDescResPed").attr('disabled', true) :
+                    $("#txtDescResPed").attr('disabled', false);
             } else {
                 $("#txtStatusProd").val('Ativo');
                 $("#txtCodOriPed").val(result.codigoOriginal).attr('disabled', true);
@@ -2745,7 +3084,7 @@ function geraCargaPedidoAnalitico(parametro) {
                 var dadosPack = retornaPackCadDados(result.packs[i].packItens);
                 carregarPackPedidoCadastrado("tblPackCad" + result.packs[i].idPedidoPack, dadosOriginais, dadosPack, colPack);
             }
-            var textoTitulo = 'Pedido ' + sessionStorage.getItem("pedidoId") + ': ' + retornaStatusTextoTit(result.status);
+            var textoTitulo = 'Pedido ' + sessionStorage.getItem("pedidoId") + ': ' + result.descricaoStatus;
             $menuTitulo.find('.navbar-header .navbar-center').text(textoTitulo);
             $(".finish-change").html('Atualizar');
             $(".selectpicker").selectpicker('refresh');
@@ -2786,6 +3125,7 @@ function geraCargaPedidoAnalitico(parametro) {
 
         },
         error: function (erro) {
+
             sessionStorage.removeItem('compra');
             sessionStorage.removeItem("pedidoId");
             sessionStorage.removeItem("pedidoStatus");
@@ -2915,13 +3255,11 @@ function cargaMovimentacaoProdutoOTB(parametro) {
     });
 }
 function validarPrimeiroAcesso() {
-    //document.cookie = "session-id=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/gerenciamento/configuracao.cshtml";
     sessionStorage.removeItem("cookies");
     console.log(document.cookie);
     $.ajax({
         type: 'GET',
         crossDomain: true,
-        //dataType: 'jsonp',
         url: urlApi + 'ValidarPrimeiroAcesso',
         success: function (result) {
             if (result.headers) {
@@ -2932,32 +3270,26 @@ function validarPrimeiroAcesso() {
                     var coks = coockiesServer.value[0];
                     sessionStorage.setItem("cookies", JSON.stringify(coockiesServer));
                     console.log(coks);
-                    //document.cookie = coks;
-                    //console.log(document.cookie);
                     window.location = "../gerenciamento/configuracao.cshtml";
                 }
-
             }
             else {
 
                 $(".bg_load").fadeOut();
                 $(".wrapper").fadeOut();
             }
-            //sessionStorage.setItem("id_usuarioLogado", result.nome);
-            //sessionStorage.setItem("id_usuario", result.userID);
-            //sessionStorage.setItem("perfilSistema", result.perfil);
-            //sessionStorage.setItem("perfilAdmin", result.gerenciarUsuario);
-            ////window.location = "../home.cshtml";
         },
         error: function (error) {
             console.log(error)
             if (error.status === 401) {
                 localStorage.setItem("erro", "Acesso negado! Verifique usuario e senha. Caso o erro persista, entre em contato com o administrador do sistema para confirmar se está autorizado a logar");
-                //location.reload();
+                location.reload();
+            } else if (error.status === 0) {
+                location.reload();
             }
             else {
                 localStorage.setItem("erro", "Acesso negado! " + tratamentoErro(error));
-                //    location.reload();
+                location.reload();
             }
         }
     });

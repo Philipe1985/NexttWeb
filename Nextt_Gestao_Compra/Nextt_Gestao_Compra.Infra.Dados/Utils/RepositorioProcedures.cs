@@ -48,7 +48,7 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Utils
 
                     command.CommandTimeout = 0;
                     command.CommandText = "EXEC " + _storedProcedure;
-                    if (_storedProcedure.IndexOf("SELECT") >= 0)
+                    if (_storedProcedure.ToUpper().IndexOf("SELECT") >= 0)
                     {
                         command.CommandText = _storedProcedure;
                     }

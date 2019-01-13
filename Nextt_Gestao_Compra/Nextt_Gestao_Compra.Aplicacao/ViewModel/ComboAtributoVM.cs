@@ -16,7 +16,7 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
         public ComboAtributoVM(TipoLista tipoLista, FabricaViewModel fabrica)
         {
             IDTipoAtributo = tipoLista.IDTipoAtributo;
-            Descricao = tipoLista.Descricao;
+            Descricao = tipoLista.Descricao; 
             Obrigatorio = tipoLista.Obrigatorio;
             Multiplo = tipoLista.MultiSelect;
             ValorDef = tipoLista.ValorInicial;

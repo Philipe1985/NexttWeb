@@ -39,6 +39,9 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="Invoicer">
+      <HintPath>..\..\..\..\..\Users\Alcione\Desktop\Invoicer-master\Invoicer.Console\bin\Debug\Invoicer.dll</HintPath>
+    </Reference>
     <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
     </Reference>
@@ -81,12 +84,24 @@
     <Reference Include="Microsoft.Practices.Unity.RegistrationByConvention, Version=4.0.0.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
       <HintPath>..\packages\Unity.4.0.1\lib\net45\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
     </Reference>
+    <Reference Include="MigraDoc.DocumentObjectModel">
+      <HintPath>..\..\..\..\..\Users\Alcione\Desktop\Invoicer-master\Invoicer.Console\bin\Debug\MigraDoc.DocumentObjectModel.dll</HintPath>
+    </Reference>
+    <Reference Include="MigraDoc.Rendering">
+      <HintPath>..\..\..\..\..\Users\Alcione\Desktop\Invoicer-master\Invoicer.Console\bin\Debug\MigraDoc.Rendering.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="PdfSharp">
+      <HintPath>..\..\..\..\..\Users\Alcione\Desktop\Invoicer-master\Invoicer.Console\bin\Debug\PdfSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="PdfSharp.Charting">
+      <HintPath>..\..\..\..\..\Users\Alcione\Desktop\Invoicer-master\Invoicer.Console\bin\Debug\PdfSharp.Charting.dll</HintPath>
     </Reference>
     <Reference Include="RDI_Gerenciador_Usuario.Aplicacao, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -108,6 +123,7 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.IdentityModel" />
     <Reference Include="System.IdentityModel.Tokens.Jwt, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\System.IdentityModel.Tokens.Jwt.4.0.0\lib\net45\System.IdentityModel.Tokens.Jwt.dll</HintPath>
@@ -139,6 +155,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Gerenciador\Compra\GerenciadorAplicacaoCompra.cs" />
+    <Compile Include="Gerenciador\GrupoEmpresas\GerenciadorAplicacaoGrupoEmpresa.cs" />
     <Compile Include="Gerenciador\Grupo\GerenciamentoAplicacaoGrupo.cs" />
     <Compile Include="Gerenciador\Movimentacao\GerenciamentoAplicacaoMovimentacao.cs" />
     <Compile Include="Gerenciador\Pedido\GerenciadorAplicacaoPedido.cs" />
@@ -147,16 +164,20 @@
     <Compile Include="Servicos\AppServicoPadrao.cs" />
     <Compile Include="Servicos\Gerenciamento\AppServicoCompra.cs" />
     <Compile Include="Servicos\Gerenciamento\AppServicoGrupo.cs" />
+    <Compile Include="Servicos\Gerenciamento\AppServicoGrupoEmpresa.cs" />
     <Compile Include="Servicos\Gerenciamento\AppServicoMovimentacao.cs" />
     <Compile Include="Servicos\Gerenciamento\AppServicoPedido.cs" />
     <Compile Include="Servicos\Gerenciamento\AppServicoProduto.cs" />
     <Compile Include="Servicos\Interfaces\Gerenciamento\IAppServicoCompra.cs" />
     <Compile Include="Servicos\Interfaces\Gerenciamento\IAppServicoGrupo.cs" />
+    <Compile Include="Servicos\Interfaces\Gerenciamento\IAppServicoGrupoEmpresa.cs" />
     <Compile Include="Servicos\Interfaces\Gerenciamento\IAppServicoMovimentacao.cs" />
     <Compile Include="Servicos\Interfaces\Gerenciamento\IAppServicoPedido.cs" />
     <Compile Include="Servicos\Interfaces\Gerenciamento\IAppServicoProduto.cs" />
     <Compile Include="Servicos\Interfaces\IAppServicoPadrao.cs" />
+    <Compile Include="Utils\CriarArquivo.cs" />
     <Compile Include="ViewModel\AtributoElementoVM.cs" />
+    <Compile Include="ViewModel\AtributoPdfVM.cs" />
     <Compile Include="ViewModel\ComboAtributoVM.cs" />
     <Compile Include="ViewModel\ComboFiliaisVM.cs" />
     <Compile Include="ViewModel\CondicaoFormaPgtoVM.cs" />
@@ -171,12 +192,17 @@
     <Compile Include="ViewModel\GrupoAtualizarVM.cs" />
     <Compile Include="ViewModel\FilialAtualizarVM.cs" />
     <Compile Include="ViewModel\GrupoDistribuicaoVM.cs" />
+    <Compile Include="ViewModel\GrupoEmpresaEditarVM.cs" />
+    <Compile Include="ViewModel\GrupoEmpresaEnvio.cs" />
     <Compile Include="ViewModel\GrupoEmpresaPrecosVM.cs" />
+    <Compile Include="ViewModel\GrupoEmpresaSalvarVM.cs" />
+    <Compile Include="ViewModel\GrupoEmpresaVM.cs" />
     <Compile Include="ViewModel\GrupoFiliaisValidadorVM.cs" />
     <Compile Include="ViewModel\GrupoFilialOperacaoVM.cs" />
     <Compile Include="ViewModel\GruposValidadosVM.cs" />
     <Compile Include="ViewModel\HistoricoPedidoVM.cs" />
     <Compile Include="ViewModel\ImagensProdutoVM.cs" />
+    <Compile Include="ViewModel\MarcaVinculadaVM.cs" />
     <Compile Include="ViewModel\NovaCondicaoPgtoVM.cs" />
     <Compile Include="ViewModel\NovaCorItemProduto.cs" />
     <Compile Include="ViewModel\PackItensVM.cs" />
@@ -188,6 +214,7 @@
     <Compile Include="ViewModel\PedidoCompletoVM.cs" />
     <Compile Include="ViewModel\PedidoPackDistribuicaoVM.cs" />
     <Compile Include="ViewModel\PedidoPackProdutoItemVM.cs" />
+    <Compile Include="ViewModel\PedidoPdfVM.cs" />
     <Compile Include="ViewModel\PedidosFiltradoVM.cs" />
     <Compile Include="ViewModel\PedidoVM.cs" />
     <Compile Include="ViewModel\PrecoVendaVM.cs" />

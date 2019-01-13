@@ -1,0 +1,106 @@
+
+ERROR 2018-12-25 01:28:49 - Erro ao Recuperar Dados do Pedido Sintético
+System.NullReferenceException: Referência de objeto não definida para uma instância de um objeto.
+   em Nextt_Gestao_Compra.Aplicacao.ViewModel.RetornoPedidoSinteticoVM..ctor(PedidoCadastrado dadosPedido, Fornecedor fornecedor, DadosPrePedido dadosPrePedido, ImagensProdutoVM imagem) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\ViewModel\RetornoPedidoSinteticoVM.cs:linha 39
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido.GerenciadorAplicacaoPedido.RetornaPedidoSintetico(IAppServicoPedido pedidoServico, ParametrosVM parametroVM) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Pedido\GerenciadorAplicacaoPedido.cs:linha 64
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Cadastro.PedidoController.RetornaPedidoSintetico(ParametrosVM parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Cadastro\PedidoController.cs:linha 74
+
+ERROR 2018-12-25 03:37:23 - Erro ao Recuperar Dados do Pedido Sintético
+System.ArgumentOutOfRangeException: Argumento especificado estava fora do intervalo de valores válidos.
+Nome do parâmetro: index
+   em MigraDoc.DocumentObjectModel.Tables.Cells.get_Item(Int32 index)
+   em MigraDoc.DocumentObjectModel.Tables.Table.get_Item(Int32 rwIdx, Int32 clmIdx)
+   em MigraDoc.DocumentObjectModel.Visitors.MergedCellList.GetEffectiveBorders(Cell cell)
+   em MigraDoc.Rendering.TableRenderer.FormatCells()
+   em MigraDoc.Rendering.TableRenderer.InitFormat(Area area, FormatInfo previousFormatInfo)
+   em MigraDoc.Rendering.TableRenderer.Format(Area area, FormatInfo previousFormatInfo)
+   em MigraDoc.Rendering.TopDownFormatter.FormatOnAreas(XGraphics gfx, Boolean topLevel)
+   em MigraDoc.Rendering.FormattedHeaderFooter.Format(XGraphics gfx)
+   em MigraDoc.Rendering.FormattedDocument.FormatHeader(HeaderFooterPosition hfp, HeaderFooter header)
+   em MigraDoc.Rendering.FormattedDocument.FormatHeadersFooters()
+   em MigraDoc.Rendering.FormattedDocument.MigraDoc.Rendering.IAreaProvider.GetNextArea()
+   em MigraDoc.Rendering.TopDownFormatter.FormatOnAreas(XGraphics gfx, Boolean topLevel)
+   em MigraDoc.Rendering.FormattedDocument.Format(XGraphics gfx)
+   em MigraDoc.Rendering.DocumentRenderer.PrepareDocument()
+   em MigraDoc.Rendering.PdfDocumentRenderer.PrepareDocumentRenderer(Boolean prepareCompletely)
+   em MigraDoc.Rendering.PdfDocumentRenderer.PrepareRenderPages()
+   em MigraDoc.Rendering.PdfDocumentRenderer.RenderDocument()
+   em Invoicer.Services.Impl.PdfInvoice.Save(String filename, String password) na C:\Users\Alcione\Desktop\Invoicer-master\Invoicer\Services\Impl\PdfInvoice.cs:linha 73
+   em Invoicer.Services.InvoicerApi.Save(String filename, String password) na C:\Users\Alcione\Desktop\Invoicer-master\Invoicer\Services\InvoicerApi.cs:linha 130
+   em Nextt_Gestao_Compra.Aplicacao.Servicos.Utils.CriarArquivo.GerarPDFPedido(RetornoPedidoSinteticoVM Pedido) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Utils\CriarArquivo.cs:linha 34
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido.GerenciadorAplicacaoPedido.RetornaPedidoSintetico(IAppServicoPedido pedidoServico, ParametrosVM parametroVM) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Pedido\GerenciadorAplicacaoPedido.cs:linha 72
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Cadastro.PedidoController.RetornaPedidoSintetico(ParametrosVM parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Cadastro\PedidoController.cs:linha 74
+
+ERROR 2018-12-25 03:44:48 - Erro ao Recuperar Filtros da Pesquisa de Pedidos
+System.Exception: RepositorioPedido.CarregaFiltrosPesquisaPedido: 
+Ocorreu um erro no nível de transporte durante o recebimento de resultados do servidor. (provider: TCP Provider, error: 0 - O tempo limite do semáforo expirou.) ---> System.Data.SqlClient.SqlException: Ocorreu um erro no nível de transporte durante o recebimento de resultados do servidor. (provider: TCP Provider, error: 0 - O tempo limite do semáforo expirou.) ---> System.ComponentModel.Win32Exception: O tempo limite do semáforo expirou
+   --- Fim do rastreamento de pilha de exceções internas ---
+   em System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   em System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   em System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   em System.Data.SqlClient.TdsParserStateObject.ReadSniError(TdsParserStateObject stateObj, UInt32 error)
+   em System.Data.SqlClient.TdsParserStateObject.ReadSniSyncOverAsync()
+   em System.Data.SqlClient.TdsParserStateObject.TryReadNetworkPacket()
+   em System.Data.SqlClient.TdsParserStateObject.TryPrepareBuffer()
+   em System.Data.SqlClient.TdsParserStateObject.TryReadByte(Byte& value)
+   em System.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   em System.Data.SqlClient.SqlDataReader.TryConsumeMetaData()
+   em System.Data.SqlClient.SqlDataReader.get_MetaData()
+   em System.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString, Boolean isInternal, Boolean forDescribeParameterEncryption, Boolean shouldCacheForAlwaysEncrypted)
+   em System.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean async, Int32 timeout, Task& task, Boolean asyncWrite, Boolean inRetry, SqlDataReader ds, Boolean describeParameterEncryptionRequest)
+   em System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry)
+   em System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method)
+   em System.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior, String method)
+   em System.Data.SqlClient.SqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   em System.Data.Common.DbCommand.ExecuteReader()
+   em Nextt_Gestao_Compra.Infra.Dados.Utils.RepositorioProcedures.MultiplosResultSetEncapsulador.Executar() na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Utils\RepositorioProcedures.cs:linha 56
+   em Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento.RepositorioPedido.CarregaFiltrosPesquisaPedido() na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Repositorios\Gerenciamento\RepositorioPedido.cs:linha 16
+   --- Fim do rastreamento de pilha de exceções internas ---
+   em Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento.RepositorioPedido.CarregaFiltrosPesquisaPedido() na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Repositorios\Gerenciamento\RepositorioPedido.cs:linha 28
+   em Nextt_Gestao_Compra.Dominio.Servicos.Gerenciamento.ServicoPedido.CarregaFiltrosPesquisaPedido() na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Dominio\Servicos\Gerenciamento\ServicoPedido.cs:linha 22
+   em Nextt_Gestao_Compra.Aplicacao.Servicos.Gerenciamento.AppServicoPedido.CarregaFiltrosPesquisaPedido() na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Servicos\Gerenciamento\AppServicoPedido.cs:linha 19
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido.GerenciadorAplicacaoPedido.RetornaFiltroInicial(IAppServicoPedido pedidoServico, FabricaViewModel fabrica) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Pedido\GerenciadorAplicacaoPedido.cs:linha 16
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Cadastro.PedidoController.CarregaFiltrosPesquisa() na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Cadastro\PedidoController.cs:linha 26
+
+ERROR 2018-12-25 03:47:02 - Erro ao Recuperar Dados do Pedido Sintético
+System.ArgumentOutOfRangeException: Argumento especificado estava fora do intervalo de valores válidos.
+Nome do parâmetro: index
+   em MigraDoc.DocumentObjectModel.Tables.Cells.get_Item(Int32 index)
+   em Invoicer.Services.Impl.PdfInvoice.HeaderSection() na C:\Users\Alcione\Desktop\Invoicer-master\Invoicer\Services\Impl\PdfInvoice.Sections.cs:linha 26
+   em Invoicer.Services.Impl.PdfInvoice.CreateDocument() na C:\Users\Alcione\Desktop\Invoicer-master\Invoicer\Services\Impl\PdfInvoice.cs:linha 89
+   em Invoicer.Services.Impl.PdfInvoice.Save(String filename, String password) na C:\Users\Alcione\Desktop\Invoicer-master\Invoicer\Services\Impl\PdfInvoice.cs:linha 69
+   em Invoicer.Services.InvoicerApi.Save(String filename, String password) na C:\Users\Alcione\Desktop\Invoicer-master\Invoicer\Services\InvoicerApi.cs:linha 130
+   em Nextt_Gestao_Compra.Aplicacao.Servicos.Utils.CriarArquivo.GerarPDFPedido(RetornoPedidoSinteticoVM Pedido) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Utils\CriarArquivo.cs:linha 34
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido.GerenciadorAplicacaoPedido.RetornaPedidoSintetico(IAppServicoPedido pedidoServico, ParametrosVM parametroVM) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Pedido\GerenciadorAplicacaoPedido.cs:linha 72
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Cadastro.PedidoController.RetornaPedidoSintetico(ParametrosVM parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Cadastro\PedidoController.cs:linha 74
+
+ERROR 2018-12-25 04:32:48 - Erro ao Recuperar Dados do Pedido Sintético
+System.Exception: RepositorioPedido.RetornaPedidoSintetico: 
+Ocorreu um erro no nível de transporte durante o recebimento de resultados do servidor. (provider: TCP Provider, error: 0 - O tempo limite do semáforo expirou.) ---> System.Data.SqlClient.SqlException: Ocorreu um erro no nível de transporte durante o recebimento de resultados do servidor. (provider: TCP Provider, error: 0 - O tempo limite do semáforo expirou.) ---> System.ComponentModel.Win32Exception: O tempo limite do semáforo expirou
+   --- Fim do rastreamento de pilha de exceções internas ---
+   em System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   em System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   em System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   em System.Data.SqlClient.TdsParserStateObject.ReadSniError(TdsParserStateObject stateObj, UInt32 error)
+   em System.Data.SqlClient.TdsParserStateObject.ReadSniSyncOverAsync()
+   em System.Data.SqlClient.TdsParserStateObject.TryReadNetworkPacket()
+   em System.Data.SqlClient.TdsParserStateObject.TryPrepareBuffer()
+   em System.Data.SqlClient.TdsParserStateObject.TryReadByte(Byte& value)
+   em System.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   em System.Data.SqlClient.SqlDataReader.TryConsumeMetaData()
+   em System.Data.SqlClient.SqlDataReader.get_MetaData()
+   em System.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString, Boolean isInternal, Boolean forDescribeParameterEncryption, Boolean shouldCacheForAlwaysEncrypted)
+   em System.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean async, Int32 timeout, Task& task, Boolean asyncWrite, Boolean inRetry, SqlDataReader ds, Boolean describeParameterEncryptionRequest)
+   em System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry)
+   em System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method)
+   em System.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior, String method)
+   em System.Data.SqlClient.SqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   em System.Data.Common.DbCommand.ExecuteReader()
+   em Nextt_Gestao_Compra.Infra.Dados.Utils.RepositorioProcedures.MultiplosResultSetEncapsulador.Executar() na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Utils\RepositorioProcedures.cs:linha 56
+   em Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento.RepositorioPedido.RetornaPedidoSintetico(Parametros parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Repositorios\Gerenciamento\RepositorioPedido.cs:linha 67
+   --- Fim do rastreamento de pilha de exceções internas ---
+   em Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento.RepositorioPedido.RetornaPedidoSintetico(Parametros parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Repositorios\Gerenciamento\RepositorioPedido.cs:linha 79
+   em Nextt_Gestao_Compra.Dominio.Servicos.Gerenciamento.ServicoPedido.RetornaPedidoSintetico(Parametros parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Dominio\Servicos\Gerenciamento\ServicoPedido.cs:linha 37
+   em Nextt_Gestao_Compra.Aplicacao.Servicos.Gerenciamento.AppServicoPedido.RetornaPedidoSintetico(Parametros parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Servicos\Gerenciamento\AppServicoPedido.cs:linha 34
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido.GerenciadorAplicacaoPedido.RetornaPedidoSintetico(IAppServicoPedido pedidoServico, ParametrosVM parametroVM) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Pedido\GerenciadorAplicacaoPedido.cs:linha 58
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Cadastro.PedidoController.RetornaPedidoSintetico(ParametrosVM parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Cadastro\PedidoController.cs:linha 74

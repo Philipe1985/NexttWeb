@@ -30,6 +30,7 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
         public decimal PrecoVenda { get; set; }
         public List<PackVM> Packs { get; set; }
         public ImagensProdutoVM FotoProduto { get; set; }
+
         public RetornoPedidoSinteticoVM(PedidoCadastrado dadosPedido, Fornecedor fornecedor, DadosPrePedido dadosPrePedido, ImagensProdutoVM imagem)
         {
             Status = dadosPedido.Status;

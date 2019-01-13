@@ -125,7 +125,7 @@ $(document).ready(function myfunction() {
                 sessionStorage.removeItem('compra');
                 sessionStorage.removeItem("pedidoId");
                 sessionStorage.removeItem("pedidoStatus");
-                if (!compraId) {
+                if (!compraId || listaProd) {
                     if (listaProd) {
                         window.location = "../gerenciamento/compraprodutos.cshtml";
                     } else {
@@ -151,8 +151,10 @@ $(document).ready(function myfunction() {
         }
     });
     $(".cad-prod").click(function (e) {
-        if (referenciaGrade && coresGrade && tamanhosGrade) {
+        if (referenciaGrade.length && coresGrade.length && tamanhosGrade.length) {
             salvarProduto();
+        } else {
+            erroCadCompra("É necessário inserir ao menos uma cor, um tamanho e uma referência para prosseguir!", "alertCadGrade");
         }
 
     });
@@ -167,7 +169,12 @@ $(document).ready(function myfunction() {
 
     });
     $(document).on('click', '#btnCancelar', function (e) {
-        atualizarPedidoOpcao('Cancelar Pedido!', 'Este pedido será cancelado ao confirmar essa operação.', 'C')
+        if (permissoesUsuarioLogado.indexOf('Cancelar Qualquer Pedidos') === -1) {
+            semAcesso();
+        } else {
+            atualizarPedidoOpcao('Cancelar Pedido!', 'Este pedido será cancelado ao confirmar essa operação.', 'C')
+        }
+        
         //if (observacaoStatus.indexOf('C') > -1) {
         //    alteraStatusPedido('C', sessionStorage.getItem("pedidoId"))
         //}
@@ -180,7 +187,12 @@ $(document).ready(function myfunction() {
 
     });
     $(document).on('click', '#btnReprovar', function (e) {
-        atualizarPedidoOpcao('Reprovar Pedido!', 'Este pedido será reprovado ao confirmar essa operação.', 'R')
+        if (permissoesUsuarioLogado.indexOf('Reprovar Qualquer Pedido') === -1) {
+            semAcesso();
+        } else {
+            atualizarPedidoOpcao('Reprovar Pedido!', 'Este pedido será reprovado ao confirmar essa operação.', 'R')
+        }
+        
         //if (observacaoStatus.indexOf('R') > -1) {
         //    alteraStatusPedido('R', sessionStorage.getItem("pedidoId"))
         //}
@@ -192,7 +204,12 @@ $(document).ready(function myfunction() {
         //}
     });
     $(document).on('click', '#btnAprovar', function (e) {
-        atualizarPedidoOpcao('Aprovar Pedido!', 'Este pedido será aprovado ao confirmar essa operação.', 'L')
+        if (permissoesUsuarioLogado.indexOf('Aprovar Qualquer Pedidos') === -1) {
+            semAcesso();
+        } else {
+            atualizarPedidoOpcao('Aprovar Pedido!', 'Este pedido será aprovado ao confirmar essa operação.', 'L')
+        }
+        
         //if (observacaoStatus.indexOf('L') > -1) {
         //    alteraStatusPedido('L', sessionStorage.getItem("pedidoId"))
         //}
@@ -205,7 +222,12 @@ $(document).ready(function myfunction() {
 
     });
     $(document).on('click', '#btnDevolver', function (e) {
-        atualizarPedidoOpcao('Devolver Pedido!', 'Este pedido retornará para o status aberto, possibilitando alterações.', 'A')
+        if (permissoesUsuarioLogado.indexOf('Reprovar para Editar Qualquer Pedidos') === -1) {
+            semAcesso();
+        } else {
+            atualizarPedidoOpcao('Devolver Pedido!', 'Este pedido retornará para o status aberto, possibilitando alterações.', 'A')
+        }
+        
         //origemModal = true;
         //if (observacaoStatus.indexOf('A') > -1) {
         //    alteraStatusPedido('A', sessionStorage.getItem("pedidoId"))
@@ -232,7 +254,7 @@ function validaOperacaoPassoWizard(parametroTab, evento) {
                     return validaAbaDadosCamposObrigatorios(parametroTab, evento);
                 case 'Foto':
                     var retorno = validaAbaFotoCamposObrigatorios(parametroTab, evento);
-                    if (cadastroNovoSession || (cadastroNovoProduto && cadastroNovoProduto === '0')) {
+                    if (retorno && (cadastroNovoSession || (cadastroNovoProduto && cadastroNovoProduto === '0'))) {
                         var $refEl = $('#drpReferenciaGrade')
                         if ($refEl.find('option').length == 0) {
                             var refNova = $('#txtRefPed').val().trim();
@@ -529,11 +551,12 @@ function validaImagensPendentes() {
 function validaDadosProduto() {
     //Aba Dados Produto
     var $codProdEl = $("#txtProdutoPed"), $refFornEl = $("#txtRefPed"), $custoEl = $("#txtCustoBrutoPed"), $descPedEl = $("#txtDescPed"), $desResPedEl = $("#txtDescResPed"),
-        $marcProdEl = $('#drpMarc'), $secProdEl = $('#drpSec'), $segProdEl = $('#drpSeg'), $espProdEl = $('#drpEsp'), $classProdEl = $('#drpClassificacao'), $uniMedEl = $('#drpUnidadeMed');
+        $marcProdEl = $('#drpMarc'), $compProdEl = $('#drpCompProd'), $secProdEl = $('#drpSec'), $segProdEl = $('#drpSeg'), $espProdEl = $('#drpEsp'), $classProdEl = $('#drpClassificacao'), $uniMedEl = $('#drpUnidadeMed');
     var codProd = $codProdEl.val(), custo = $custoEl.maskMoney('unmasked')[0], refForn = $refFornEl.val(), descPed = $descPedEl.val(), desResPed = $desResPedEl.val(),
-        marcProd = $marcProdEl.val(), secProd = $secProdEl.val(), segProd = $segProdEl.val(), espProd = $espProdEl.val(), classProd = $classProdEl.val(), uniMed = $uniMedEl.val();
+        marcProd = $marcProdEl.val(), compProd = $compProdEl.val(), secProd = $secProdEl.val(), segProd = $segProdEl.val(), espProd = $espProdEl.val(), classProd = $classProdEl.val(), uniMed = $uniMedEl.val();
     var retorno = null, uniMedHasOpt = $uniMedEl.find('option').length > 1;
 
+    console.log($compProdEl.find('option:selected'))
     if (!marcProd.length) {
         retorno = {};
         retorno.field = 1;
@@ -554,18 +577,25 @@ function validaDadosProduto() {
         retorno.field = 1;
         retorno.elemento = $espProdEl;
         retorno.textoMensagem = 'É necessário selecionar uma espécie para realizar esta operação!';
-    } else if (!uniMed.length && uniMedHasOpt) {
+    } else if (!$compProdEl.find('option:selected').length) {
+        retorno = {};
+        retorno.field = 1;
+        retorno.elemento = $compProdEl;
+        retorno.textoMensagem = 'É necessário selecionar um comprador para realizar esta operação!';
+    } else if (!uniMed.length) {
         retorno = {};
         retorno.field = 1;
         retorno.elemento = $uniMedEl;
         retorno.textoMensagem = 'É necessário selecionar uma unidade de medida para realizar esta operação!';
-    } else if ($("#txtPrVendaPed").maskMoney('unmasked')[0] === 0) {
-        retorno = {};
-        retorno.field = 1;
-        retorno.elemento = $("#txtPrVendaPed");
-        retorno.isInput = true;
-        retorno.textoMensagem = 'É necessário informar um valor de venda para realizar esta operação!';
-    } else if (!classProd.length) {
+    }
+    //else if ($("#txtPrVendaPed").maskMoney('unmasked')[0] === 0) {
+    //    retorno = {};
+    //    retorno.field = 1;
+    //    retorno.elemento = $("#txtPrVendaPed");
+    //    retorno.isInput = true;
+    //    retorno.textoMensagem = 'É necessário informar um valor de venda para realizar esta operação!';
+    //}
+    else if (!classProd.length) {
         retorno = {};
         retorno.field = 1;
         retorno.elemento = $classProdEl;

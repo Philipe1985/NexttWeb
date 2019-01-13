@@ -2,12 +2,9 @@
 using Nextt_Gestao_Compra.Aplicacao.Servicos.Interfaces.Gerenciamento;
 using Nextt_Gestao_Compra.Aplicacao.ViewModel;
 using Nextt_Gestao_Compra.Dominio.Entidades;
-using RDI_Gerenciador_Usuario.Aplicacao.Gerenciador;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido
 {
@@ -44,6 +41,8 @@ namespace Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido
         {
             var filtro = Mapper.Map<ParametrosVM, Parametros>(parametroVM);
             pedidoServico.AtualizaStatusPedido(filtro);
+            //CriarArquivo.GerarPDFPedido(int.Parse(filtro.Codigo));
+
 
         }
         public static int ClonarPedido(IAppServicoPedido pedidoServico, ParametrosVM parametroVM)
@@ -69,6 +68,7 @@ namespace Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido
             {
                 retorno.Packs.Add(new PackVM(listaItensPackAgrupado.ElementAt(i), listaDistribuicaoPackAgrupado.ElementAt(i)));
             }
+            
             return retorno;
         }
         public static RetornoPedidoAnalitico RetornaPedidoAnalitico(IAppServicoPedido pedidoServico, ParametrosVM parametroVM, FabricaViewModel fabrica)
@@ -106,6 +106,8 @@ namespace Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido
             var compradoresSel = dadosPedido.IDComprador;
             var configPadrao = dados.ElementAt(18).Cast<ConfigDefault>().FirstOrDefault();
             var listaTabelaPrecoEmpresa = dados.ElementAt(19).Cast<PrecoGrupoEmpresa>().GroupBy(x => x.IDGrupoEmpresa).Select(x => new GrupoEmpresaPrecosVM(x)).ToList();
+            var listaCompradorProduto = dados.ElementAt(20).Cast<Comprador>().ToList();
+
             var datasCargaInicial = new DadosConfigPadraoVM(configPadrao)
             {
                 DataEntregaInicio = dadosPedido.DataEntregaInicio,
@@ -116,6 +118,7 @@ namespace Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido
 
             var filtrosPesquisa = new FiltrosPesquisa(dadosPedido, fabrica, dadosCores, pedidoServico)
             {
+                CompradoresProduto = listaCompradorProduto.Count > 0 ? listaCompradorProduto.OrderBy(x => x.Nome).Select(x => fabrica.Criar(x)).ToList() : null,
                 GrupoEmpresaPrecos = listaTabelaPrecoEmpresa,
                 Compradores = listaComprador,
                 UniMedida = listaMedida,
@@ -135,7 +138,7 @@ namespace Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido
             };
             if (!dadosPedido.Ativo)
                 filtrosPesquisa.Marcas = dados.ElementAt(21).Cast<Marca>().OrderBy(x => x.Nome).Select(x => fabrica.Criar(x)).ToList();
-            
+
             var retorno = new RetornoPedidoAnalitico(dadosPedido, filtrosPesquisa, resumoPedido)
             {
                 Historicos = historicoPedido,
@@ -149,6 +152,22 @@ namespace Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido
             {
                 retorno.Packs.Add(new PackVM(listaItensPackAgrupado.ElementAt(i), listaDistribuicaoPackAgrupado.ElementAt(i)));
             }
+            //Criando pdf
+            //var fichaDados = new PedidoPdfVM(filtro.Codigo, dadosPedido, resumoPedido)
+            //{
+            //    UnidadeMedida = listaMedida.Where(x => x.Valor == dadosPedido.IDUnidadeMedida.ToString()).Select(x => x.Descricao).FirstOrDefault(),
+            //    CondicaoPagamento = condicoesOrdenadas.Where(x => x.Valor == dadosPedido.IDCondicaoPagamento.ToString()).Select(x => x.Descricao).FirstOrDefault(),
+            //    FormasPagamento = string.Join(", ", listaForma.Where(x => x.ContemPedido == true).Select(x => x.DescricaoFormaPagamento).ToList()),
+            //    Packs = retorno.Packs,
+            //    Comprador = listaComprador.Where(x => x.Valor == dadosPedido.IDComprador).Select(x => x.Descricao).FirstOrDefault()
+            //};
+            //var listaAtributosEleProd = listaElemProd.Where(x => !string.IsNullOrEmpty(x.ValorDef)).ToList();
+            //var listaAtributosComboProd = comboAttrProd.Where(x => x.Opcoes.Where(y => y.DadosAdicionais[0] == "1").Count() > 0).ToList();
+            //fichaDados.CarregaAtributosProduto(listaAtributosEleProd, listaAtributosComboProd);
+            //var listaAtributosElePed = listaElemPed.Where(x => !string.IsNullOrEmpty(x.ValorDef)).ToList();
+            //var listaAtributosComboPed = comboAttrPed.Where(x => x.Opcoes.Where(y => y.DadosAdicionais[0] == "1").Count() > 0).ToList();
+            //fichaDados.CarregaAtributosPedido(listaAtributosElePed, listaAtributosComboPed);
+            //CriarArquivo.GerarPDFPedido(fichaDados);
             return retorno;
         }
         #region Métodos de Manipulação de Objetos

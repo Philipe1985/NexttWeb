@@ -10,5 +10,6 @@ namespace Nextt_Gestao_Compra.Dominio.Entidades
     {
         public string IDComprador { get; set; }
         public string Nome { get; set; }
+        public bool Selecionado { get; set; }
     }
 }

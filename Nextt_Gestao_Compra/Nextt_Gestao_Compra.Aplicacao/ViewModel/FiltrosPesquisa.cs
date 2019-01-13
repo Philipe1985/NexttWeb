@@ -15,6 +15,7 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
         public List<ComboFiltroVM> StatusPedido { get; set; }
         public List<ComboFiltroVM> AttrFornecedores { get; set; }
         public List<RetornoEspecieFiltroVM> EspeciesRecarga { get; set; }
+        public List<GrupoEmpresaVM> GrupoEmpresas { get; set; }
         public List<ComboFiltroVM> Compradores { get; set; }
         public List<ComboFiltroVM> CompradoresProduto { get; set; }
         public List<ComboFiltroVM> UniMedida { get; set; }
@@ -166,6 +167,10 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
         public FiltrosPesquisa(List<RetornoEspecieFiltroVM> especieFiltroVMs)
         {
             EspeciesRecarga = especieFiltroVMs;
+        }
+        public FiltrosPesquisa()
+        {
+
         }
     }
 }

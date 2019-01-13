@@ -1,0 +1,134 @@
+﻿section {
+    padding-top: 4rem;
+    padding-bottom: 5rem;
+    background-color: #f1f4fa;
+}
+
+.wrap {
+    display: flex;
+    background: white;
+    padding: 1rem 1rem 1rem 1rem;
+    border-radius: 0.5rem;
+    border:1px solid black;
+    box-shadow: 7px 7px 30px -5px rgba(0,0,0,0.1);
+    margin-bottom: 2rem;
+}
+
+    .wrap.hover-accept:hover {
+        background: linear-gradient(135deg,#6394ff 0%,#0a193b 100%);
+        color: white;
+        /*cursor: pointer;*/
+    }
+    .wrap.bg-blue:hover {
+        cursor: pointer;
+    }
+
+.ico-wrap {
+    margin: auto;
+}
+
+.mbr-iconfont {
+    font-size: 4.5rem !important;
+    /*color: #313131;*/
+    margin: 1rem;
+    padding-right: 1rem;
+}
+
+.vcenter {
+    margin: auto;
+}
+
+.mbr-section-title3 {
+    text-align: center;
+}
+
+h2 {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.display-5 {
+    font-family: 'Source Sans Pro',sans-serif;
+    font-size: 1.6rem;
+}
+
+.mbr-bold {
+    font-weight: 700;
+}
+
+p {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    line-height: 25px;
+}
+
+.display-6 {
+    font-family: 'Source Sans Pro',sans-serif;
+    font-size: 1.4rem;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*By DjelalEddine@gmail.com*/
+#user .avatar {
+    width: 60px;
+}
+
+    #user .avatar > img {
+        width: 50px;
+        height: 50px;
+        border-radius: 10%;
+    }
+/*Card*/
+#user .panel-thumb {
+    margin: 5px auto;
+    text-align: center;
+}
+
+    #user .panel-thumb .avatar-card {
+        text-align: center;
+        height: 200px;
+        margin: auto;
+        overflow: hidden;
+    }
+
+        #user .panel-thumb .avatar-card > img {
+            max-width: 200px;
+            max-height: 200px;
+        }
+
+/* table*/
+#user .panel-table {
+    animation-duration: 3s;
+}
+
+    #user .panel-table .panel-body .table {
+        margin: 0px;
+    }
+
+    #user .panel-table .panel-body {
+        padding: 0px;
+    }
+
+        #user .panel-table .panel-body .table-bordered > thead > tr > th {
+            text-align: center;
+        }
+
+    #user .panel-table .panel-footer {
+        height: 60px;
+        padding: 0px;
+    }

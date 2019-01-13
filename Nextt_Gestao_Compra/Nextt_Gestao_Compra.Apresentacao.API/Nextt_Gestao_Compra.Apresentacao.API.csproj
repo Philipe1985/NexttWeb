@@ -191,6 +191,7 @@
     <Compile Include="Controllers\Cadastro\GrupoController.cs" />
     <Compile Include="Controllers\Cadastro\ProdutoController.cs" />
     <Compile Include="Controllers\Gerenciamento\CompraController.cs" />
+    <Compile Include="Controllers\Gerenciamento\GrupoEmpresaController.cs" />
     <Compile Include="Controllers\Gerenciamento\MovimentacaoController.cs" />
     <Compile Include="Controllers\PadraoController.cs" />
     <Compile Include="Controllers\UsuarioController.cs" />
@@ -198,6 +199,8 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="ImagensArquivos\nexttLogo.png" />
+    <Content Include="Updates\configuracao.xml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>

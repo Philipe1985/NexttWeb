@@ -66,9 +66,13 @@
         var id = usuario.id;
         var perfilAlterado = $("#ucComboAdminsEditar").val();
         var altaracaoPerfil = perfilAlterado === usuario.roles ? false : true;
-
+        var alteracaoUsuarioNextt = false;
+        if ($("#cbUsuarioNextt").val() && usuario.idUsuarioNextt !== $("#cbUsuarioNextt").val()) {
+            alteracaoUsuarioNextt = true;
+            usuario.idUsuarioNextt = parseInt($("#cbUsuarioNextt").val());
+        }
         if (email === usuario.email && usuarioExibicao === usuario.userName && usuario.nome === nome && usuario.sobrenome === sobrenome
-            && status === usuario.locked && !altaracaoPerfil) {
+            && status === usuario.locked && !altaracaoPerfil && !alteracaoUsuarioNextt) {
             var texto = 'Nenhuma alteração foi efetuada.', titulo = 'Operação não Executada';
 
             modal({
@@ -87,6 +91,7 @@
             usuarioObj.locked = status;
             usuarioObj.id = usuario.id;
             usuarioObj.roles = perfilAlterado;
+            usuarioObj.idUsuarioNextt = usuario.idUsuarioNextt
 
             if (!validaEmail(email)) {
                 var texto = 'Informe um e-mail válido para salvar as alterações.', titulo = 'Operação Inválida';
@@ -116,7 +121,7 @@
 
     })
 
-
+     
 
     $(document).on('switchChange.bootstrapSwitch', '#ckbAdministrador', function (event, state) {
         state ?
@@ -174,6 +179,7 @@ function carregaUsuarioEditar() {
     } else {
         $("#ckbAdministrador").bootstrapSwitch('state', false);
     }
+    $("#cbUsuarioNextt option[value='" + usuario.idUsuarioNextt + "']").attr('selected', 'selected')
     for (var i = 0; i < usuario.roles.length; i++) {
 
         var texto = usuario.roles[i];
@@ -183,6 +189,7 @@ function carregaUsuarioEditar() {
     };
     checarPermissoesEdicao()
     $('#ucComboAdminsEditar').selectpicker('refresh');
+    $('#cbUsuarioNextt').selectpicker('refresh');
 
 
     $(".bg_load").fadeOut();
@@ -194,6 +201,7 @@ function carregaUsuarioEditar() {
 }
 
 window.onload = function () {
-    carregaComboPerfilEditar()
+    carregarComboUsuarioNextt();
+    carregaComboPerfilEditar();
     $(".switch").bootstrapSwitch();
 }

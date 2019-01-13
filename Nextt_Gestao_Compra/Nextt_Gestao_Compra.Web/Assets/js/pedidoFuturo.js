@@ -72,6 +72,13 @@ $(document).ready(function () {
         }
         e.preventDefault();
     })
+    $(document).on('keyup', '.txtInteiro', function (e) {
+        var element = event.target;
+        var validString = element.value.replace(/[^0-9]/g, '');
+        if (validString !== element.value) {
+            element.value = validString;
+        }
+    });
     $(document).on('keyup touchend', '#txtCustoBrutoPed', function (evento) {
 
         var code = (evento.keyCode ? evento.keyCode : evento.which);
@@ -388,7 +395,8 @@ $(document).ready(function () {
                 row = $(this).parent()[0];
                 gridNome = $(this).closest('table').attr('id');
                 valorInicial = $(cell).html();
-                $(this).html(geraEditorPackCadastrado(1, $(this).html()))
+                $(this).html(geraEditorPackCadastrado(1, $(this).html()));
+                $(this).find('input[type="text"]').addClass("limiteQtd1000");
                 $(this).find('input[type="text"]').focus().select();
             }
 
@@ -411,6 +419,28 @@ $(document).ready(function () {
         }
 
     });
+    $(document).on('keyup', '.limiteQtd1000', function (event) {
+        var element = event.target;
+        var valorInformado = parseInt(element.value);
+        var valorInicial = $(element).attr("data-valor-inicial");
+        if (valorInformado > 1000) {
+            $(element).val($(element).attr("data-valor-inicial"));
+        } else {
+            $(element).attr("data-valor-inicial", valorInformado.toString());
+        }
+        console.log(valorInicial)
+    });
+    $(document).on('keyup', '.limiteQtd10000', function (event) {
+        var element = event.target;
+        var valorInformado = parseInt(element.value);
+        var valorInicial = $(element).attr("data-valor-inicial");
+        if (valorInformado > 9999) {
+            $(element).val($(element).attr("data-valor-inicial"));
+        } else {
+            $(element).attr("data-valor-inicial", valorInformado.toString());
+        }
+        console.log(valorInicial)
+    });
     $(document).on('click', '.qtdPack', function (e) {
         var existInput = $('.pretty.dataTable').find('input').length;
         if (!existInput && (!statusPedido || statusPedido === 'A')) {
@@ -421,6 +451,7 @@ $(document).ready(function () {
                 gridNome = $(this).closest('table').attr('id');
                 valorInicial = $(cell).html();
                 $(this).html(geraEditor(1, $(this).html()))
+                $(this).find('input[type="text"]').addClass("limiteQtd10000");
                 $(this).find('input[type="text"]').focus().select();
             }
 
@@ -429,7 +460,7 @@ $(document).ready(function () {
     });
     $(document).on('click', '.qtdPackFilial', function (e) {
         var existInput = $('.pretty.dataTable').find('input').length;
-        if (!existInput && (!statusPedido || statusPedido === 'A')) {
+        if (!existInput && (!statusPedido || statusPedido === 'A') && permissoesUsuarioLogado.indexOf('Alterar Quantidade Distribuida nas Filiais') > -1) {
             cell = this;
             col = $(this).parent().children().index($(this));
             row = $(this).parent().index();
@@ -704,7 +735,7 @@ $(document).ready(function () {
         validaMudancaGrade();
     });
 
-    $('#drpTamanhoGrade').on('changed.bs.select', function (e, clickedIndex, newValue, oldValue) {
+    $('#drpTamanhoGrade').on('change', function (e) {
         if ($('#drpTamanhoGrade').val()) {
             retornaTamanhosSelecionados()
             tamanhosGrade = $('#drpTamanhoGrade').val();
@@ -762,8 +793,9 @@ $(document).ready(function () {
         $("#drpEsp").html('<option selected value="">Nenhuma</option>').prop('disabled', true);
         $("#drpEsp").selectpicker('refresh');
         if ($('#drpSec').val()) {
+            $('#drpTamanhoCategoria ').prop('disabled', false);
             $('#drpTamanhoCategoria ').val($('#drpSec').val().split('-')[1]);
-            
+
             localStorage.setItem("combo", "secao");
             $("#divEsp").addClass('ocultarElemento');
             $('.selectpicker').selectpicker('hide');
@@ -851,6 +883,7 @@ function validaPermissaoPedidoCadastro() {
     }
     if (permissoesUsuarioLogado.indexOf('Alterar Comprador') === -1) {
         $('#drpCompPed option').attr("disabled", true);
+        $('#drpCompProd option').attr("disabled", true);
     }
     if (permissoesUsuarioLogado.indexOf('Cadastrar Novas Condições de Pagamento') === -1) {
         $('#txtCadCondPgtoPed').attr("disabled", true);
@@ -1276,7 +1309,7 @@ function addGrupo(novoPack) {
                         param.ano = dataEntregaPrev.getFullYear() - 1;
                     }
                     else {
-                        param.mes = new Date().getMonth();
+                        param.mes = new Date().getMonth() + 1;
                         param.ano = new Date().getFullYear();
                     }
                     $('.selectpicker').selectpicker('hide');
@@ -1622,6 +1655,7 @@ function perdeFoco() {
             row = $(cell).parent()[0];
             valorInicial = $(cell).html();
             $(cell).html(geraEditor(1, $(cell).html()));
+            $(cell).find('input[type="text"]').addClass("limiteQtd10000");
             $(cell).find('input[type="text"]').focus().select();
         } else {
             var editaQtdPack = tbPlanejamento.rows(0).nodes()[0];//;
@@ -2031,11 +2065,12 @@ function criaPainelPrecoVenda(grupo) {
     criaObjetoPrecoGrupo(grupo.precos, ('frm' + converterFormatoVariavel(grupo.descricaoGrupo)));
 }
 function criaObjetoPrecoGrupo(precos, pnlId) {
-    
+
     for (var i = 0; i < precos.length; i++) {
         var val = precos[i].valor.toFixed(2).replace('.', ',')
         var elemento = '<input name="cbPrVenda' + precos[i].idTabelaPreco + '" id="cbPrVenda' + precos[i].idTabelaPreco +
-            '" type="text" data-prefix="R$ " data-select-all-on-focus="true" data-affixes-stay="true" data-allow-zero="true" data-thousands="." data-decimal="," class="form-control prVenda money" value="' + val + '" />';
+            '" autocomplete="off" type="text" onkeyup="validaValor(this)" data-initial-val="' + val + '" data-prefix="R$ " data-select-all-on-focus="true" data-affixes-stay="true" data-allow-zero="true" data-thousands="." data-decimal="," ' +
+            ' data-max-val="100000" data-min-val="0" data-precision="2" class="form-control prVenda money" value="' + val + '" />';
         retornaContainerVenda(precos[i].descricao, elemento, pnlId);
     }
 }
@@ -2405,12 +2440,13 @@ function geraCargaDistPackFiliais(grupos, indexPack) {
 }
 
 function retornaLinhaOpcoesGrupo(idField, qtdPart) {
+    var desablitaCampo = permissoesUsuarioLogado.indexOf('Alterar Quantidade Distribuida nos Grupos') === -1 ? '' : 'disabled';
     var retorno = '<div class="row">' +
         '<div class="col-md-2 col-sm-12 col-xs-12">' +
         '<div class="form-group">' +
         '<label class="form-label">Qtd. Pack:</label>' +
         '<div class="controls">' +
-        '<input type="text"  class="form-control txtInteiro grpPackQtd" id="txtQtdGrpPack' + idField + '" value="' + qtdPart + '" />' +
+        '<input type="text" ' + desablitaCampo + ' class="form-control txtInteiro grpPackQtd" id="txtQtdGrpPack' + idField + '" value="' + qtdPart + '" />' +
         '</div>' +
         '</div>' +
         '</div>' +
@@ -2663,24 +2699,15 @@ function validaValor(e) {
 
     if (limMax !== limMin) {
         var valAtual = parseInt($(e).attr("data-precision")) ? $(e).maskMoney('unmasked')[0] : parseInt($(e).val().replace('.', ''));
-        console.log(valAtual)
-        console.log(valIni)
-        console.log($(e).hasClass('attrNum'))
-        console.log($(e).val())
         var valAtu = valAtual <= limMax && valAtual >= limMin ? valAtual.toString().replace('.', ',') : valIni.toString().replace('.', ',');
-        //$(this).data().initail.toFixed(2).replace('.', ',');
         $(e).attr("data-initial-val", valAtu);
         $(e).val(valAtu).maskMoney('mask');
-
     }
-
-    //$(".attributo-cad").bootstrapSwitch('state', false, true);
-    //$("#cbTipoDado").selectpicker('val', '');
 }
 function criAttrLista(mult, val, opt, obr, id) {
-    var classesCb = obr ? ' validarAttr' : '', multiple = mult ? ' multiple data-count-selected-text="Selecionado {0} de {1}" data-selected-text-format="count > 1" ' : '';
+    var classesCb = obr ? ' validarAttr' : '', multiple = mult ? ' multiple data-actions-box="true" data-select-all-text="Marcar Todas" data-deselect-all-text="Desmarcar Todas" data-count-selected-text="Selecionado {0} de {1}" data-selected-text-format="count > 1" ' : '';
     var searchBox = opt.length > 7 ? 'data-live-search="true" ' : ''
-    var sourceAttr = '<select name="cbAttr' + id + '" id="cbAttr' + id + '" class="selectpicker show-tick form-control listAttr pull-right' +
+    var sourceAttr = '<select name="cbAttr' + id + '" id="cbAttr' + id + '" class="selectpicker show-tick form-control listAttr' +
         classesCb + '" ' + multiple + searchBox + 'data-width="100%" data-size="auto">';
 
     if (!mult) sourceAttr += '<option value="">Nenhum</option>';
@@ -2720,6 +2747,63 @@ function retornaContainerAttr(desc, obr, id, elementoCont, tipo) {
         painelAppend.append(novoAttr);
     }
 }
+//tarefa config Produto
+function desabilitaConfiguracaoProduto() {
+    //dados
+    $("#frmDados").find('input[type=text]:not([disabled])').attr('disabled', true);
+    $("#frmDados").find('.selectpicker:not([multiple])').attr('disabled', true);
+    $("#frmDados").find('.selectpicker[multiple]').each(function () {
+        if (this.length) $(this).find('option:not([disabled])').attr('disabled', true);
+        $(this).selectpicker('destroy').selectpicker({
+            actionsBox: false,
+        });
+    });
+    //custo
+    $("#frmCusto").find('input[type=text]:not([disabled])').attr('disabled', true);
+    $("#frmCusto").find('.selectpicker:not([multiple])').attr('disabled', true);
+    $("#frmCusto").find('.selectpicker[multiple]').each(function () {
+        if (this.length) $(this).find('option:not([disabled])').attr('disabled', true);
+        $(this).selectpicker('destroy').selectpicker({
+            actionsBox: false,
+        });
+    });
+    //Atributos
+    $("#frmAttrProd").find('input[type=text]:not([disabled])').attr('disabled', true);
+    $("#frmAttrProd").find('.selectpicker:not([multiple])').attr('disabled', true);
+    $("#frmAttrProd").find('.selectpicker[multiple]').each(function () {
+        if (this.length) $(this).find('option:not([disabled])').attr('disabled', true);
+        $(this).selectpicker('destroy').selectpicker({
+            actionsBox: false,
+        });
+    });
+    //Preço
+    $("#frmGrupoPreco").find('input[type=text]:not([disabled])').attr('disabled', true);
+    $("#frmGrupoPreco").find('.selectpicker:not([multiple])').attr('disabled', true);
+    $("#frmGrupoPreco").find('.selectpicker[multiple]').each(function () {
+        if (this.length) $(this).find('option:not([disabled])').attr('disabled', true);
+        $(this).selectpicker('destroy').selectpicker({
+            actionsBox: false,
+        });
+    });
+    //Referencia Grade
+    $("#drpReferenciaGrade").find('option:not([disabled])').attr('disabled', true);
+    $("#drpReferenciaGrade").selectpicker('destroy').selectpicker({
+        actionsBox: false,
+    });
+    //Cor Grade
+    $("#drpCoresGrade").find('option:not([disabled])').attr('disabled', true);
+    $("#drpCoresGrade").selectpicker('destroy').selectpicker({
+        actionsBox: false,
+    });
+    $('#frmGradeCor2').addClass("ocultarElemento");
+    $('#frmGradeCor3').addClass("ocultarElemento");
+    //Tamanho Grade
+    $("#drpTamanhoGrade").find('option:not([disabled])').attr('disabled', true);
+    $("#drpTamanhoGrade").selectpicker('destroy').selectpicker({
+        actionsBox: false,
+    });
+    $(".selectpicker").selectpicker('refresh');
+}
 function carregaAtributosPorOrdem(elementos, combos, ordemCarga, isPedido) {
     if (!ordemCarga.length) {
         var painelAppend = isPedido ? $("#pnlAttrPed") : $("#pnlAttrProd");
@@ -2729,8 +2813,10 @@ function carregaAtributosPorOrdem(elementos, combos, ordemCarga, isPedido) {
     }
     for (var i = 0; i < ordemCarga.length; i++) {
         if (ordemCarga[i]) {
-            var elAttr = criAttrLista(combos[0].multiplo, combos[0].valorDef, combos[0].opcoes, combos[0].obrigatorio, combos[0].idTipoAtributo);
-            retornaContainerAttr(combos[0].descricao, combos[0].obrigatorio, combos[0].idTipoAtributo, elAttr, isPedido);
+            if (combos[0].opcoes.length > 0) {
+                var elAttr = criAttrLista(combos[0].multiplo, combos[0].valorDef, combos[0].opcoes, combos[0].obrigatorio, combos[0].idTipoAtributo);
+                retornaContainerAttr(combos[0].descricao, combos[0].obrigatorio, combos[0].idTipoAtributo, elAttr, isPedido);
+            }
             combos.shift();
         } else {
             if (elementos[0]) {
@@ -2742,24 +2828,6 @@ function carregaAtributosPorOrdem(elementos, combos, ordemCarga, isPedido) {
             }
         }
     }
-}
-function retornaStatusTextoTit(status) {
-    var retorno = '';
-    switch (status) {
-        case 'A':
-            retorno = 'Aberto';
-            break;
-        case 'C':
-            retorno = 'Cancelado';
-            break;
-        case 'F':
-            retorno = 'Pendente';
-            break;
-        case 'L':
-            retorno = 'Liberado';
-            break;
-    }
-    return retorno;
 }
 function retornaDescColunaTabelaHitorico(obj) {
     return Object.keys(obj)

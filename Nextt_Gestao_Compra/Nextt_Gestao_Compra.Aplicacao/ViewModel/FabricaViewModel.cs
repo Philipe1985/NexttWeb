@@ -93,6 +93,7 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
                 Descricao = marca.Nome
             };
         }
+
         public ComboFiltroVM Criar(Atributos atributos)
         {
             var dadosAdd = string.IsNullOrEmpty(atributos.ValorDefault) ? new List<string>() : new List<string>
@@ -257,11 +258,17 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
         }
         public ComboFiltroVM Criar(Comprador comprador)
         {
+            var dadosAdicionais = new List<string>();
+            if (comprador.Selecionado)
+            {
+                dadosAdicionais.Add("selected");
+            }
             return new ComboFiltroVM
             {
                 Valor = comprador.IDComprador,
                 Token = comprador.IDComprador + "," + comprador.Nome.Trim(),
-                Descricao = comprador.Nome.Trim()
+                Descricao = comprador.Nome.Trim(),
+                DadosAdicionais = dadosAdicionais
             };
         }
         public ComboFiltroVM Criar(UnidadeMedida medida)

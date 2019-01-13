@@ -258,7 +258,7 @@
                                     <fieldset id="frmGradeCor2" class="collapsibleChild frmCores ocultarElemento">
                                         <legend class="blockClick">Informe a Descrição para Nova Cor</legend>
                                         <div class="col-md-12 col-sm-12 col-xs-12">
-                                            <input type="text" id="txtNomeNovaCor" name="txtNomeNovaCor" style="width:100%" placeholder="Ex:Preto/Branco/Verde" class="form-control" />
+                                            <input type="text"  autocomplete="off" id="txtNomeNovaCor" name="txtNomeNovaCor" style="width:100%" placeholder="Ex:Preto/Branco/Verde" class="form-control" />
                                         </div>
                                     </fieldset>
                                     <br />
@@ -427,7 +427,7 @@
                                         <div class="form-group">
                                             <label id="lblCodOriPed" class="form-label">Cod. Original</label>
                                             <div class="controls">
-                                                <input type="text" id="txtCodOriPed" maxlength="40" class="form-control" />
+                                                <input type="text"  autocomplete="off" id="txtCodOriPed" maxlength="40" class="form-control" />
                                             </div>
                                         </div>
                                     </div>
@@ -435,7 +435,7 @@
                                         <div class="form-group">
                                             <label id="lblRefPed" class="form-label">Referência</label><span class="obrigatorio"> *</span>
                                             <div class="controls">
-                                                <input type="text" id="txtRefPed" style="font-weight:bold!important" class="form-control" />
+                                                <input type="text" id="txtRefPed" autocomplete="off" style="font-weight:bold!important" class="form-control" />
                                             </div>
                                         </div>
                                     </div>
@@ -443,7 +443,7 @@
                                         <div class="form-group">
                                             <label id="lblDesPedc" class="form-label">Descrição</label><span class="obrigatorio"> *</span>
                                             <div class="controls">
-                                                <input type="text" id="txtDescPed" style="font-weight:bold!important" class="form-control" />
+                                                <input type="text"  autocomplete="off" id="txtDescPed" style="font-weight:bold!important" class="form-control" />
                                             </div>
                                         </div>
                                     </div>
@@ -452,7 +452,7 @@
                                         <div class="form-group">
                                             <label id="lblDescResPed" class="form-label">Descrição Reduzida</label><span class="obrigatorio"> *</span>
                                             <div class="controls">
-                                                <input type="text" id="txtDescResPed" style="font-weight:bold!important" class="form-control" />
+                                                <input type="text"  autocomplete="off" id="txtDescResPed" style="font-weight:bold!important" class="form-control" />
                                             </div>
                                         </div>
                                     </div>
@@ -460,11 +460,11 @@
 
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-2 col-sm-12 col-xs-12">
+                                    <div class="col-md-2 col-sm-12 col-xs-12 ocultarElemento">
                                         <div class="form-group">
                                             <label id="lblPrVendaPed" class="form-label">Preço Venda</label><span class="obrigatorio"> *</span>
                                             <div class="controls">
-                                                <input type="text" id="txtPrVendaPed" MaxLength="15" class="form-control money" />
+                                                <input type="text"  autocomplete="off" id="txtPrVendaPed" MaxLength="15" class="form-control money" />
                                             </div>
                                         </div>
                                     </div>
@@ -479,7 +479,7 @@
                                     </div>
                                     <div id="divCompProd" class="col-md-3 col-sm-12 col-xs-12">
                                         <div class="form-group">
-                                            <label id="lblCompPed" class="form-label">Compradores</label>@*<span class="obrigatorio"> *</span>*@
+                                            <label id="lblCompPed" class="form-label">Compradores</label><span class="obrigatorio"> *</span>
                                             <div class="controls ocultarElemento">
                                                 <select id="drpCompProd" class="selectpicker show-tick form-control" multiple data-live-search="true" data-selected-text-format="count > 1"
                                                         data-width="100%" data-size="5" title="Selecione..." data-count-selected-text="Selecionado {0} de {1}"></select>

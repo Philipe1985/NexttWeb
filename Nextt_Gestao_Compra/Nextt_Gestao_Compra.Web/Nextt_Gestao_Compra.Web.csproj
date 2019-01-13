@@ -103,6 +103,7 @@
     <Content Include="Assets\css\colors\color-light.css" />
     <Content Include="Assets\css\colors\color-red.css" />
     <Content Include="Assets\css\custom-default-moblile.css" />
+    <Content Include="Assets\css\custom-menu-card.css" />
     <Content Include="Assets\css\custom.css" />
     <Content Include="Assets\css\customCheckboxRadioButton.css" />
     <Content Include="Assets\css\customConta.css" />
@@ -1654,6 +1655,7 @@
     <Content Include="Assets\js\distribuicao.js" />
     <Content Include="Assets\js\fastselect.js" />
     <Content Include="Assets\js\fastselect.standalone.js" />
+    <Content Include="Assets\js\grupo-empresa.js" />
     <Content Include="Assets\js\grupo-filiais.js" />
     <Content Include="Assets\js\jquery-1.11.1.min.js" />
     <Content Include="Assets\js\jquery-1.12.4.js" />
@@ -2468,6 +2470,8 @@
     <Content Include="Assets\fonts\font-awesome-action\fonts\fontawesome-webfont.woff" />
     <Content Include="Assets\fonts\font-awesome-action\fonts\fontawesome-webfont.woff2" />
     <Content Include="Assets\fonts\font-awesome-action\fonts\FontAwesome.otf" />
+    <Content Include="Gerenciamento\GrupoEmpresa.cshtml" />
+    <Content Include="Gerenciamento\GrupoEmpresa2.cshtml" />
     <None Include="packages.config" />
     <Content Include="Gerenciamento\Pedido.cshtml" />
     <Content Include="Cadastro\Compra.cshtml" />

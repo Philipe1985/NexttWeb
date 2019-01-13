@@ -128,6 +128,7 @@ $(document).ready(function () {
     $('#cbPerfilAtualizar').change(function () {
         if ($('#cbPerfilAtualizar').val()) {
             var objEnvio = { id: $('#cbPerfilAtualizar').val() }
+
             $('#txtNomePerfilAtualizar').val($('#cbPerfilAtualizar option:selected').text()).attr('disabled', false);
             console.log(objEnvio);
             selecionaPermissaoPorPerfil(objEnvio);
@@ -155,7 +156,8 @@ function cadastrarNovo() {
     var user = $("#txtUserName").val();
     var nome = $("#txtNome").val();
     var sobnome = $("#txtSobrenome").val();
-    var perfil = $("#cbPerfil").val() ? [$("#cbPerfil").val()] : [];
+    var perfil = $("#cbPerfilUsuario").val() ? [$("#cbPerfilUsuario").val()] : [];
+    var idNextt = $("#cbUsuarioNextt").val() ? parseInt($("#cbUsuarioNextt").val()) : null;
     var textoLoad = 'Cadastrando. Aguarde!', titulo = "Falha no Cadastro",
         texto = 'Para cadastrar um novo usuário, é necessário preencher todos os campos.';
 
@@ -170,7 +172,7 @@ function cadastrarNovo() {
     } else {
 
         waitingDialog.show(textoLoad, { dialogSize: 'lg', progressType: 'warning' });
-        cadastrarUsuario(email, user, nome, sobnome, perfil, false);
+        cadastrarUsuario(email, user, nome, sobnome, perfil, false,idNextt);
     }
 
 }
@@ -273,8 +275,10 @@ function carregarUsuario() {
         });
 
         $('#tabelaUsuarios thead tr th').removeClass('sorting_asc');
+        carregarComboUsuarioNextt();
         carregaComboPerfil();
         carregaComboPermissao();
+        
 
     }
 }
@@ -286,14 +290,15 @@ function limparModalCadastro() {
     $("#txtSobrenome").val('');
     $("#txtCelular").val('');
     $("#txtNomePerfil").val('');
-
-    $('#cbPerfil').selectpicker('val', '');
+    $('#txtNomePerfilAtualizar').val('');
+    $('#cbPerfilUsuario').selectpicker('val', '');
+    $('#cbUsuarioNextt').selectpicker('val', '');
     $('#cbPermissaoConceder').selectpicker('deselectAll');
     $('#cbPerfilAtualizar').selectpicker('val', '');
     $('#cbPermissaoAtualizar').selectpicker('deselectAll');
 
     //$('.divSelectPicker').addClass('ocultarElemento');
-    //$('#tabelaUsuarios_paginate').css('display', 'none');
+    //$('#txtNomePerfilAtualizar').css('display', 'none');
     //$(".table-responsive").find('.selectpicker').selectpicker('hide');
     //$(".navbar.navbar-default.navbar-fixed-top").css("display", "none");
 
@@ -354,7 +359,7 @@ function abrirModalPerfil() {
     }
 }
 function abrirModalPerfilManager() {
-    if (permissoesUsuarioLogado.indexOf('Cadastrar Perfil') === -1) {
+    if (permissoesUsuarioLogado.indexOf('Editar Perfil') === -1) {
         semAcesso();
     } else if ($('#cbPerfilAtualizar option').length < 1) {
         modal({
@@ -431,7 +436,6 @@ function atualizarPerfilEditado() {
             headerText: "Atenção!"
         });
     } else {
-
         var idPerfilEditado = $("#cbPerfilAtualizar").val();
         var nomePerfilEditado = $("#txtNomePerfilAtualizar").val().trim();
         var permissoesConcedidas = [];

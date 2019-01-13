@@ -7,8 +7,16 @@ Array.prototype.sum = function (prop) {
     return total;
 };
 Array.prototype.equals = function (array) {
-    return this.length == array.length &&
-        this.every(function (this_i, i) { return this_i == array[i] })
+    return this.length === array.length &&
+        this.every(function (this_i, i) { return this_i === array[i] })
+};
+Date.prototype.addHours = function (h) {
+    this.setHours(this.getHours() + h);
+    return this;
+};
+Date.prototype.addMinutes = function (m) {
+    this.setMinutes(this.getMinutes() + m);
+    return this;
 };
 var nomesCoresCSS = [], nomesCoresPtCSS = [], sizePaletaLine = 5;
 var configuracaoCalendarios = {
@@ -109,7 +117,7 @@ function geraEditor(tipo, valorInicial) {
         classFiltro = "txtDecimal";
     }
     return '<div class="controls" style="height: 20px;"><input type="text" class="form-control ' + classFiltro + '" style="height: 20px;font-size: small;"' +
-        'onkeydown="bloqueiaRefreshQtdPack(this,event)" onblur="perdeFoco()" value="' + valorInicial + '" /></div>';
+        'onkeydown="bloqueiaRefreshQtdPack(this,event)" onblur="perdeFoco()" data-valor-inicial="' + valorInicial + '"  value="' + valorInicial + '" /></div>';
 }
 function geraEditorPack(tipo, valorInicial) {
     if (tipo === 1) {
@@ -163,6 +171,7 @@ function funcaoInativa() {
 function tratamentoErro(erro) {
     console.log(erro)
     var mensagem = '';
+    
     if (erro.responseJSON.exceptionMessage !== null && erro.responseJSON.exceptionMessage) {
         mensagem = erro.responseJSON.exceptionMessage;
     } else if (erro.responseJSON.error_description !== null && erro.responseJSON.error_description) {
@@ -173,7 +182,7 @@ function tratamentoErro(erro) {
 
     if (erro.responseJSON.modelState !== null && erro.responseJSON.modelState) {
         mensagem = mensagem + '<br /><hr><ul class="fa-ul">';
-        $.each(erro.responseJSON.modelState, function (i, objeto) {
+        $.each(erro.responseJSON.modelState, function (indice, objeto) {
             for (var i = 0; i < objeto.length; i++) {
                 mensagem = mensagem + '<li><i class="fa-li fa fa-ban"></i>' + (i + 1) + 'º- <strong>' + objeto[i] + '</strong>;</li>';
                 //objeto[i]

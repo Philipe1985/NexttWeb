@@ -17,7 +17,6 @@
             if (refFiltro.indexOf(search) === -1) {
                 $(this).addClass('oculto');
             }
-
             else {
                 $(this).removeClass('oculto');
             }

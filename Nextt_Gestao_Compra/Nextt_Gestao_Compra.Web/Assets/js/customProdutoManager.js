@@ -9,6 +9,8 @@ specialKeys.push(46); //Delete
 specialKeys.push(96); //numpad 0
 $(document).ready(function () {
     $(document).on('keydown', '.txtInteiro', function (e) {
+        console.log(e.keyCode)
+        console.log()
         if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110]) !== -1 ||
             (e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) ||
             (e.keyCode === 86 && (e.ctrlKey === true || e.metaKey === true)) ||
@@ -17,8 +19,16 @@ $(document).ready(function () {
         }
         if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
             e.preventDefault();
+            return false;
         }
     })
+    $(document).on('keyup', '.txtInteiro', function (e) {
+        var element = event.target;
+        var validString = element.value.replace(/[^0-9]/g, '');
+        if (validString !== element.value) {
+            element.value = validString;
+        }
+    });
     $(document).on('paste', '.txtInteiro', function (e) {
         var paste = e.originalEvent.clipboardData.getData('Text');
 

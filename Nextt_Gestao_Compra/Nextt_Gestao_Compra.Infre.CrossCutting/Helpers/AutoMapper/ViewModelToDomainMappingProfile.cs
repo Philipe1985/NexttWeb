@@ -10,6 +10,7 @@ namespace Nextt_Gestao_Compra.Infre.CrossCutting.Helpers.AutoMapper
         {
             CreateMap<ProdutosFiltradosVM, DadosGerenciamentoProdutoCompra>().ForSourceMember(x => x.Selecionado, opt => opt.Ignore());
             CreateMap<ParametrosVM, Parametros>();
+            CreateMap<GrupoEmpresaVM, GrupoEmpresa>();
             CreateMap<ImagensProdutoVM, FotoProduto>();
             CreateMap<PedidosFiltradoVM, PedidoConsulta>();
             CreateMap<GradePadraoVM, Grade>();

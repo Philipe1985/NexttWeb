@@ -305,16 +305,23 @@ function manipularGrupo(tit, desc, part) {
             '<label class="control-label">Participação</label>' +
             '<input type="text" id="txtPartGrp" disabled value="' + Math.round10(part, -2).toLocaleString('pt-BR') + '%' + '" class="form-control">' +
             '</div>' +
+            '<div class="col-md-6 form-group">' +
+            '<label class="control-label">Exibir Selecionados</label>' +
+            '<input type="checkbox" class="switch ckbFilialSelecionada" data-on-color="success" data-off-color="danger" data-on-text="Sim" data-off-text="Não">' +
+            '</div>' +
+            '<div class="col-md-6 form-group">' +
+            '<label class="control-label">Pesquisar</label>' +
+            '<input type="text" onclick="this.select()" id="fTxtBusca" placeholder="Busque aqui..." class="form-control" />' +
+            '</div>' +
             '<div class="col-md-12 form-group">' +
             '<div class="panel panel-primary">' +
             '<div class="panel-heading">' +
             '<h5 id="tltAtivo" class="panel-title" style="font-size:17px!important">Filiais</h5>' +
             '</div>' +
             '<div class="panel-body">' +
-            '<div style="height:200px; max-height: 500px;overflow: auto;">' +
+            '<div style="max-height: 170px;overflow: auto;">' +
             '<ul id="funcoesHabilitado" class="esq connectedSortable" style="list-style-type: none;min-height:100px">' +
             localStorage.getItem('filiaisLista') +
-
             '</ul>' +
             '</div>' +
             '</div>' +
@@ -378,7 +385,62 @@ function manipularGrupo(tit, desc, part) {
         },
         onContentReady: function () {
             var self = this;
-
+            self.$content.find('#fTxtBusca').keyup(function (evento) {
+                var filtroSelecionado = $(self.$content.find('.ckbFilialSelecionada')).bootstrapSwitch('state')
+                var code = (evento.keyCode ? evento.keyCode : evento.which);
+                if (code === 9 || code === 13) {
+                    $(this).blur();
+                } else {
+                    var search = $.trim($(this).val());
+                    search = search.toLowerCase();
+                    var hltd = $('#funcoesHabilitado li').each(function () {
+                        var refFiltro = $(this).attr('data-filtro').toLowerCase();
+                        if (refFiltro.indexOf(search) === -1) {
+                            if (filtroSelecionado && $(this).find('input:checked').length && !$(this).hasClass('oculto')) {
+                                $(this).addClass('oculto');
+                            } else if(!filtroSelecionado){
+                                $(this).addClass('oculto');
+                            }
+                        }
+                        else {
+                            if (filtroSelecionado && $(this).find('input:checked').length && $(this).hasClass('oculto')) {
+                                $(this).removeClass('oculto');
+                            } else if (!filtroSelecionado) {
+                                $(this).removeClass('oculto');
+                            }
+                            //$(this).removeClass('oculto');
+                        }
+                    })
+                }
+            });
+            $(self.$content.find('.ckbFilialSelecionada')).on('switchChange.bootstrapSwitch', function (event, state){
+                self.$content.find('#fTxtBusca').val('');
+                $('#funcoesHabilitado li').removeClass('oculto');
+                console.log(state);
+                if (state) {
+                    $('#funcoesHabilitado li').each(function () {
+                        if ($(this).find('input:not(:checked)').length && !$(this).hasClass('oculto')) {
+                            $(this).addClass('oculto');
+                        }
+                    })
+                } else {
+                    $('#funcoesHabilitado li').each(function () {
+                        if ($(this).find('input:not(:checked)').length && $(this).hasClass('oculto')) {
+                            $(this).removeClass('oculto');
+                        }
+                    })
+                }               
+            });
+            self.$content.find('#funcoesHabilitado li input:checkbox').change(function () {
+                var ischecked = $(this).is(':checked');
+                var filtroSelecionado = $(self.$content.find('.ckbFilialSelecionada')).bootstrapSwitch('state');
+                if (filtroSelecionado && !ischecked) {
+                    var li = this.parentNode.parentNode;
+                    $(li).addClass('oculto');
+                }
+                
+                    console.log(ischecked);
+            }); 
             this.$content.find('#txtDescGrp').keyup(function (evento) {
                 var code = (evento.keyCode ? evento.keyCode : evento.which);
                 if (code === 9 || code === 13) {
@@ -397,7 +459,7 @@ function manipularGrupo(tit, desc, part) {
             } else if(tit.toLowerCase().indexOf('atualizar') > -1) {
                 self.buttons.confirm.setText('Atualizar')
             }
-
+            $(".ckbFilialSelecionada").bootstrapSwitch();
             for (i = 0; i !== idsSelecionados.length; i++) {
                 var checkbox = self.$content.find("li input[type='checkbox'][value='" + idsSelecionados[i] + "']");
                 checkbox.attr("checked", "checked");

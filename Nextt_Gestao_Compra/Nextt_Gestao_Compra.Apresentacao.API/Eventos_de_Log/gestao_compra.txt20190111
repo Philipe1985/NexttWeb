@@ -1,0 +1,36 @@
+
+ERROR 2019-01-11 06:48:43 - Erro ao Recuperar Carga Inicial de Grupos de Empresas
+System.Exception: RepositorioGrupoEmpresa.BuscaCargaInicial: 
+Incorrect syntax near the keyword 'select'. ---> System.Data.SqlClient.SqlException: Incorrect syntax near the keyword 'select'.
+   em System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   em System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   em System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   em System.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   em System.Data.SqlClient.SqlDataReader.TryConsumeMetaData()
+   em System.Data.SqlClient.SqlDataReader.get_MetaData()
+   em System.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString, Boolean isInternal, Boolean forDescribeParameterEncryption, Boolean shouldCacheForAlwaysEncrypted)
+   em System.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean async, Int32 timeout, Task& task, Boolean asyncWrite, Boolean inRetry, SqlDataReader ds, Boolean describeParameterEncryptionRequest)
+   em System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry)
+   em System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method)
+   em System.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior, String method)
+   em System.Data.SqlClient.SqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   em System.Data.Common.DbCommand.ExecuteReader()
+   em Nextt_Gestao_Compra.Infra.Dados.Utils.RepositorioProcedures.MultiplosResultSetEncapsulador.Executar() na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Utils\RepositorioProcedures.cs:linha 56
+   em Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento.RepositorioGrupoEmpresa.BuscaCargaInicial() na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Repositorios\Gerenciamento\RepositorioGrupoEmpresa.cs:linha 16
+   --- Fim do rastreamento de pilha de exceções internas ---
+   em Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento.RepositorioGrupoEmpresa.BuscaCargaInicial() na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Repositorios\Gerenciamento\RepositorioGrupoEmpresa.cs:linha 23
+   em Nextt_Gestao_Compra.Dominio.Servicos.Gerenciamento.ServicoGrupoEmpresa.BuscaCargaInicial() na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Dominio\Servicos\Gerenciamento\ServicoGrupoEmpresa.cs:linha 20
+   em Nextt_Gestao_Compra.Aplicacao.Servicos.Gerenciamento.AppServicoGrupoEmpresa.BuscaCargaInicial() na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Servicos\Gerenciamento\AppServicoGrupoEmpresa.cs:linha 18
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.GrupoEmpresas.GerenciadorAplicacaoGrupoEmpresa.RetornaDadosFiltroInicial(IAppServicoGrupoEmpresa grpEmpServico, FabricaViewModel fabrica) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\GrupoEmpresas\GerenciadorAplicacaoGrupoEmpresa.cs:linha 14
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Gerenciamento.GrupoEmpresaController.RecuperaDadosInicial() na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Gerenciamento\GrupoEmpresaController.cs:linha 23
+
+ERROR 2019-01-11 13:41:29 - Erro ao Recuperar Dados do Grupos de Empresas a Editar
+System.Exception: RepositorioGrupoEmpresa.BuscaMarcasGrupo: 
+Referência de objeto não definida para uma instância de um objeto. ---> System.NullReferenceException: Referência de objeto não definida para uma instância de um objeto.
+   em Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento.RepositorioGrupoEmpresa.BuscaMarcasGrupo(Parametros parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Repositorios\Gerenciamento\RepositorioGrupoEmpresa.cs:linha 31
+   --- Fim do rastreamento de pilha de exceções internas ---
+   em Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento.RepositorioGrupoEmpresa.BuscaMarcasGrupo(Parametros parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Repositorios\Gerenciamento\RepositorioGrupoEmpresa.cs:linha 38
+   em Nextt_Gestao_Compra.Dominio.Servicos.Gerenciamento.ServicoGrupoEmpresa.BuscaMarcasGrupo(Parametros parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Dominio\Servicos\Gerenciamento\ServicoGrupoEmpresa.cs:linha 24
+   em Nextt_Gestao_Compra.Aplicacao.Servicos.Gerenciamento.AppServicoGrupoEmpresa.BuscaMarcasGrupo(Parametros parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Servicos\Gerenciamento\AppServicoGrupoEmpresa.cs:linha 23
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.GrupoEmpresas.GerenciadorAplicacaoGrupoEmpresa.RetornaDadosGrupoEditar(IAppServicoGrupoEmpresa grpEmpServico, ParametrosVM parametroVM) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\GrupoEmpresas\GerenciadorAplicacaoGrupoEmpresa.cs:linha 28
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Gerenciamento.GrupoEmpresaController.RecuperaDadosGrupoEditar(ParametrosVM parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Gerenciamento\GrupoEmpresaController.cs:linha 41

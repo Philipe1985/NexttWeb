@@ -8,28 +8,20 @@ $(document).ready(function () {
     $(window).on("load", carregar);
     $('.btnFooters').prepend($.parseHTML(btnStatusTransicao));
     $(document).on('click', '.clonarPedido', function (e) {
-        objEnvio = {};
-        objEnvio.codigo = $(this).closest('tr').children().eq(2).html();
-        objEnvio.idUsuarios = sessionStorage.getItem("id_usuario");
-
-        $('.selectpicker').selectpicker('hide');
-        $(".navbar.navbar-default.navbar-fixed-top").addClass('ocultarElemento');
-        $(".bg_load").show();
-        $(".wrapper").show();
-        criarClonePedido(objEnvio);
-    });
-    $(document).on('click', '.devolverPedido', function (e) {
-        if (observacaoStatus.indexOf('A') > -1) {
-            alteraStatusPedido('A', $(this).closest('tr').children().eq(2).html())
-        }
-        else {
+        if (permissoesUsuarioLogado.indexOf('Clonar Qualquer Pedido') === -1) {
+            semAcesso();
+        } else {
             objEnvio = {};
             objEnvio.codigo = $(this).closest('tr').children().eq(2).html();
-            objEnvio.status = 'A';
-            atualizarStatus(objEnvio);
+            objEnvio.idUsuarios = sessionStorage.getItem("id_usuario");
+            $('.selectpicker').selectpicker('hide');
+            $(".navbar.navbar-default.navbar-fixed-top").addClass('ocultarElemento');
+            $(".bg_load").show();
+            $(".wrapper").show();
+            criarClonePedido(objEnvio);
         }
     });
-
+    
     $(document).on('click', '.validarPedido', function (e) {
         objEnvio = {};
         objEnvio.codigo = $(this).closest('tr').children().eq(2).html();
@@ -46,119 +38,168 @@ $(document).ready(function () {
             keyboard: false
         });
     });
-    $(document).on('click', '.cancelarPedido', function (e) {
-        if (observacaoStatus.indexOf('C') > -1) {
-            alteraStatusPedido('C', $(this).closest('tr').children().eq(2).html())
+    $(document).on('click', '.devolverPedido', function (e) {
+        if (permissoesUsuarioLogado.indexOf('Reprovar para Editar Qualquer Pedidos') === -1) {
+            semAcesso();
+        } else {
+            if (observacaoStatus.indexOf('A') > -1) {
+                alteraStatusPedido('A', $(this).closest('tr').children().eq(2).html())
+            }
+            else {
+                objEnvio = {};
+                objEnvio.codigo = $(this).closest('tr').children().eq(2).html();
+                objEnvio.status = 'A';
+                atualizarStatus(objEnvio);
+            }
         }
-        else {
-            objEnvio = {};
-            objEnvio.codigo = $(this).closest('tr').children().eq(2).html();
-            objEnvio.status = 'C';
-            atualizarStatus(objEnvio);
+    });
+
+    $(document).on('click', '.cancelarPedido', function (e) {
+        if (permissoesUsuarioLogado.indexOf('Cancelar Qualquer Pedidos') === -1) {
+            semAcesso();
+        } else {
+            if (observacaoStatus.indexOf('C') > -1) {
+                alteraStatusPedido('C', $(this).closest('tr').children().eq(2).html())
+            }
+            else {
+                objEnvio = {};
+                objEnvio.codigo = $(this).closest('tr').children().eq(2).html();
+                objEnvio.status = 'C';
+                atualizarStatus(objEnvio);
+            }
         }
     });
     $(document).on('click', '.aprovarPedido', function (e) {
-        if (observacaoStatus.indexOf('L') > -1) {
-            alteraStatusPedido('L', $(this).closest('tr').children().eq(2).html())
-        }
-        else {
-            objEnvio = {};
-            objEnvio.codigo = $(this).closest('tr').children().eq(2).html();
-            objEnvio.status = 'L';
-            atualizarStatus(objEnvio);
+        if (permissoesUsuarioLogado.indexOf('Aprovar Qualquer Pedidos') === -1) {
+            semAcesso();
+        } else {
+            if (observacaoStatus.indexOf('L') > -1) {
+                alteraStatusPedido('L', $(this).closest('tr').children().eq(2).html())
+            }
+            else {
+                objEnvio = {};
+                objEnvio.codigo = $(this).closest('tr').children().eq(2).html();
+                objEnvio.status = 'L';
+                atualizarStatus(objEnvio);
+            }
         }
     });
     $(document).on('click', '.reprovarPedido', function (e) {
-        if (observacaoStatus.indexOf('R') > -1) {
-            alteraStatusPedido('R', $(this).closest('tr').children().eq(2).html())
-        }
-        else {
-            objEnvio = {};
-            objEnvio.codigo = $(this).closest('tr').children().eq(2).html();
-            objEnvio.status = 'R';
-            atualizarStatus(objEnvio);
+        if (permissoesUsuarioLogado.indexOf('Reprovar Qualquer Pedido') === -1) {
+            semAcesso();
+        } else {
+            if (observacaoStatus.indexOf('R') > -1) {
+                alteraStatusPedido('R', $(this).closest('tr').children().eq(2).html())
+            }
+            else {
+                objEnvio = {};
+                objEnvio.codigo = $(this).closest('tr').children().eq(2).html();
+                objEnvio.status = 'R';
+                atualizarStatus(objEnvio);
+            }
         }
     });
     $(document).on('click', '.finalizarPedido', function (e) {
-        $('#modalDetalhamentoPedido').modal('hide');
-        if (observacaoStatus.indexOf('F') > -1) {
-            alteraStatusPedido('F', $(this).closest('tr').children().eq(2).html())
+        if (permissoesUsuarioLogado.indexOf('Finalizar para Aprovar Qualquer Pedidos') === -1) {
+            semAcesso();
+        } else {
+            $('#modalDetalhamentoPedido').modal('hide');
+            if (observacaoStatus.indexOf('F') > -1) {
+                alteraStatusPedido('F', $(this).closest('tr').children().eq(2).html())
+            }
+            else {
+                objEnvio = {};
+                objEnvio.codigo = $(this).closest('tr').children().eq(2).html();
+                objEnvio.status = 'F';
+                atualizarStatus(objEnvio);
+            }
         }
-        else {
-            objEnvio = {};
-            objEnvio.codigo = $(this).closest('tr').children().eq(2).html();
-            objEnvio.status = 'F';
-            atualizarStatus(objEnvio);
-        }
+
     });
     $(document).on('click', '#btnFinalizar', function (e) {
-        origemModal = true;
-        $('#modalDetalhamentoPedido').modal('hide');
-        if (observacaoStatus.indexOf('F') > -1) {
-            alteraStatusPedido('F', $('#spnCodPed').html().replace(/\D/g, ""))
+        if (permissoesUsuarioLogado.indexOf('Finalizar para Aprovar Qualquer Pedidos') === -1) {
+            semAcesso();
+        } else {
+            origemModal = true;
+            $('#modalDetalhamentoPedido').modal('hide');
+            if (observacaoStatus.indexOf('F') > -1) {
+                alteraStatusPedido('F', $('#spnCodPed').html().replace(/\D/g, ""))
+            }
+            else {
+                objEnvio = {};
+                objEnvio.codigo = $('#spnCodPed').html().replace(/\D/g, "");
+                objEnvio.status = 'F';
+                atualizarStatus(objEnvio);
+            }
         }
-        else {
-            objEnvio = {};
-            objEnvio.codigo = $('#spnCodPed').html().replace(/\D/g, "");
-            objEnvio.status = 'F';
-            atualizarStatus(objEnvio);
-        }
-
     });
     $(document).on('click', '#btnCancelar', function (e) {
-        origemModal = true;
-        $('#modalDetalhamentoPedido').modal('hide');
-        if (observacaoStatus.indexOf('C') > -1) {
-            alteraStatusPedido('C', $('#spnCodPed').html().replace(/\D/g, ""))
+        if (permissoesUsuarioLogado.indexOf('Cancelar Qualquer Pedidos') === -1) {
+            semAcesso();
+        } else {
+            origemModal = true;
+            $('#modalDetalhamentoPedido').modal('hide');
+            if (observacaoStatus.indexOf('C') > -1) {
+                alteraStatusPedido('C', $('#spnCodPed').html().replace(/\D/g, ""))
+            }
+            else {
+                objEnvio = {};
+                objEnvio.codigo = $('#spnCodPed').html().replace(/\D/g, "");
+                objEnvio.status = 'C';
+                atualizarStatus(objEnvio);
+            }
         }
-        else {
-            objEnvio = {};
-            objEnvio.codigo = $('#spnCodPed').html().replace(/\D/g, "");
-            objEnvio.status = 'C';
-            atualizarStatus(objEnvio);
-        }
-
     });
     $(document).on('click', '#btnReprovar', function (e) {
-        origemModal = true;
-        $('#modalDetalhamentoPedido').modal('hide');
-        if (observacaoStatus.indexOf('R') > -1) {
-            alteraStatusPedido('R', $('#spnCodPed').html().replace(/\D/g, ""))
-        }
-        else {
-            objEnvio = {};
-            objEnvio.codigo = $('#spnCodPed').html().replace(/\D/g, "");
-            objEnvio.status = 'R';
-            atualizarStatus(objEnvio);
+        if (permissoesUsuarioLogado.indexOf('Reprovar Qualquer Pedidos') === -1) {
+            semAcesso();
+        } else {
+            origemModal = true;
+            $('#modalDetalhamentoPedido').modal('hide');
+            if (observacaoStatus.indexOf('R') > -1) {
+                alteraStatusPedido('R', $('#spnCodPed').html().replace(/\D/g, ""))
+            }
+            else {
+                objEnvio = {};
+                objEnvio.codigo = $('#spnCodPed').html().replace(/\D/g, "");
+                objEnvio.status = 'R';
+                atualizarStatus(objEnvio);
+            }
         }
     });
     $(document).on('click', '#btnAprovar', function (e) {
-        origemModal = true;
-        $('#modalDetalhamentoPedido').modal('hide');
-        if (observacaoStatus.indexOf('L') > -1) {
-            alteraStatusPedido('L', $('#spnCodPed').html().replace(/\D/g, ""))
+        if (permissoesUsuarioLogado.indexOf('Aprovar Qualquer Pedidos') === -1) {
+            semAcesso();
+        } else {
+            origemModal = true;
+            $('#modalDetalhamentoPedido').modal('hide');
+            if (observacaoStatus.indexOf('L') > -1) {
+                alteraStatusPedido('L', $('#spnCodPed').html().replace(/\D/g, ""))
+            }
+            else {
+                objEnvio = {};
+                objEnvio.codigo = $('#spnCodPed').html().replace(/\D/g, "");
+                objEnvio.status = 'L';
+                atualizarStatus(objEnvio);
+            }
         }
-        else {
-            objEnvio = {};
-            objEnvio.codigo = $('#spnCodPed').html().replace(/\D/g, "");
-            objEnvio.status = 'L';
-            atualizarStatus(objEnvio);
-        }
-
     });
     $(document).on('click', '#btnDevolver', function (e) {
-        origemModal = true;
-        $('#modalDetalhamentoPedido').modal('hide');
-        if (observacaoStatus.indexOf('A') > -1) {
-            alteraStatusPedido('A', $('#spnCodPed').html().replace(/\D/g, ""))
+        if (permissoesUsuarioLogado.indexOf('Reprovar para Editar Qualquer Pedidos') === -1) {
+            semAcesso();
+        } else {
+            origemModal = true;
+            $('#modalDetalhamentoPedido').modal('hide');
+            if (observacaoStatus.indexOf('A') > -1) {
+                alteraStatusPedido('A', $('#spnCodPed').html().replace(/\D/g, ""))
+            }
+            else {
+                objEnvio = {};
+                objEnvio.codigo = $('#spnCodPed').html().replace(/\D/g, "");
+                objEnvio.status = 'A';
+                atualizarStatus(objEnvio);
+            };
         }
-        else {
-            objEnvio = {};
-            objEnvio.codigo = $('#spnCodPed').html().replace(/\D/g, "");
-            objEnvio.status = 'A';
-            atualizarStatus(objEnvio);
-        };
-
     });
     $(document).on('click', '.acessarPedido', function (e) {
         sessionStorage.setItem("pedidoId", $(this).closest('tr').children().eq(2).html());
@@ -213,6 +254,13 @@ $(document).ready(function () {
             e.preventDefault();
         }
     })
+    $(document).on('keyup', '.txtInteiro', function (e) {
+        var element = event.target;
+        var validString = element.value.replace(/[^0-9]/g, '');
+        if (validString !== element.value) {
+            element.value = validString;
+        }
+    });
     $(document).on('paste', '.txtInteiro', function (e) {
         var paste = e.originalEvent.clipboardData.getData('Text');
 
@@ -479,7 +527,7 @@ function retornaBotõesAlteraStatus(opcoes) {
     }
 }
 function geraLinhaRetornoPedido(retorno) {
-    var statusTransicao = retorno.idStatusPedidoPara.split(',');
+    var statusTransicao = retorno.idStatusPedidoPara ? retorno.idStatusPedidoPara.split(','):[];
 
     var btnClonar = '<a href="#" class="btn btn-primary clonarPedido" data-toggle="tooltip" data-container="body" title="Copiar Pedido" style="margin:auto"><i class="fa fa-plus-square" aria-hidden="true"></i></a>'
     var btnHTML = $.parseHTML(btnStatusTransicaoIcones);
@@ -715,6 +763,11 @@ function retornaTabela(id) {
 function buscarPedidosFiltrado() {
     $('.selectpicker').selectpicker('hide');
     $(".navbar.navbar-default.navbar-fixed-top").addClass('ocultarElemento');
+    //objEnvio = {};
+    //objEnvio.codigo = "2";
+    ////var statusAtual = retornaStatusValor($(this).closest('tr').children().eq(12).html());
+    //$('.btnFooters .exibeBtn').addClass('ocultarElemento');
+    //carregaPedidoSintetico(objEnvio)
     $(".bg_load").show();
     $(".wrapper").show();
     tbPedido.ajax.reload();
@@ -815,41 +868,4 @@ function retornoRodapeTabelaNF(tamanhos) {
     }
     tabelaHtml += '<th class="groupHeaderTable" style="border-right:none !important">0</th><th class="groupHeaderTable" style="border-left:none !important;border-right:none !important"></th><th class="groupHeaderTable" style="border-left:none !important"></th></tr></tfoot>';
     return tabelaHtml;
-}
-
-function retornaStatusTexto(status) {
-    var retorno = '';
-    switch (status) {
-        case 'A':
-            retorno = 'Aberto/Digitando';
-            break;
-        case 'C':
-            retorno = 'Cancelado';
-            break;
-        case 'F':
-            retorno = 'Fechado/Pendente de Liberação';
-            break;
-        case 'L':
-            retorno = 'Liberado';
-            break;
-    }
-    return retorno;
-}
-function retornaStatusValor(status) {
-    var retorno = '';
-    switch (status) {
-        case 'Aberto/Digitando':
-            retorno = 'A';
-            break;
-        case 'Cancelado':
-            retorno = 'C';
-            break;
-        case 'Fechado/Pendente de Liberação':
-            retorno = 'F';
-            break;
-        case 'Liberado':
-            retorno = 'L';
-            break;
-    }
-    return retorno;
 }

@@ -9,7 +9,7 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
     {
         public int IDPedidoPack { get; set; }
         public List<GrupoDistribuicaoVM> GruposDistribuir { get; set; }
-        public List<PackItensVM> PackItens { get; set; }
+        public List<PackItensVM> PackItens { get; set; } 
         public PackVM(List<ProdutoItem> produtoItems, List<GrupoFilial> grupoFilials)
         { 
             IDPedidoPack = produtoItems.ElementAt(0).Pack;
