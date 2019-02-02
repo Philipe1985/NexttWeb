@@ -1,0 +1,338 @@
+﻿@{
+    Layout = "~/_LayoutPrincipal.cshtml";
+}
+<script src="../Assets/js/plugins/moment.min.js"></script>
+<link href="../Assets/js/plugins/bootstrap-datepicker/daterangepicker.css" rel="stylesheet" />
+<script src="../Assets/js/plugins/bootstrap-datepicker/daterangepicker.js"></script>
+<link href="../Assets/css/custom-menu-card.css" rel="stylesheet" />
+<script src="../Assets/js/calculosRelatorio.js"></script>
+<script src="../Assets/js/table_dynamic.js"></script>
+<script src="../Assets/js/cadastro-atributo.js"></script>
+
+<div class="col-md-12" id="principal">
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12" style="text-align:center">
+            <div id="alertCadItemListaModal" class="alertCustomizado alert-danger" style="display:none"></div>
+        </div>
+        <div class="col-md-12">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title" id="pnlDadosBasicos">Dados do atributo</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-1">
+                            <div class="form-group">
+                                <label class="form-label">ID</label>
+                                <div class="controls">
+                                    <input type="text" id="txtIdAtributo" style="text-align:center!important" disabled value="0" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">Descrição</label><span class="obrigatorio"> *</span>
+                                <div class="controls">
+                                    <input type="text" id="txtDescAttr" autocomplete="off" maxlength="50" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label class="form-label">Tipo</label><span class="obrigatorio"> *</span>
+                                <div class="controls ocultarElemento">
+                                    <select id="drpTipoAttrCad" class="selectpicker show-tick form-control" data-show-subtext="true"
+                                            title="Selecione..." data-select-header="true" data-size="auto">
+                                        <option value="0">Texto</option>
+                                        <option selected value="1">Numerico</option>
+                                        <option value="2">Monetario</option>
+                                        <option value="3">Percentual</option>
+                                        <option value="4">Data</option>
+                                        <option value="5">Boleano</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-1">
+                            <div class="form-group">
+                                <label class="form-label">Lista</label>
+                                <div class="controls">
+                                    <input id="ckbAttrLista" name="ckbAttrLista" type="checkbox" data-on-color="success" data-off-color="danger"
+                                           data-on-text="Sim" data-off-text="Não">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <div class="form-group">
+                                <label class="form-label">Ordem</label><span class="obrigatorio"> *</span>
+                                <div class="controls">
+                                    <input type="text" onclick="this.select()" id="txtNumOrdem" value="1" style="text-align:center!important" class="form-control txtInteiro" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <div class="form-group">
+                                <label class="form-label">Obrigatório</label>
+                                <div class="controls">
+                                    <input id="ckbAttrObg" type="checkbox" data-on-color="success" data-off-color="danger"
+                                           data-on-text="Sim" data-off-text="Não">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <div class="form-group">
+                                <label class="form-label">Status</label>
+                                <div class="controls">
+                                    <input id="ckbStatusAttr" type="checkbox" data-on-color="success" data-off-color="danger" data-on-text="Ativo" data-off-text="Inativo">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label class="form-label">Atributo Para</label>
+                                <div class="controls">
+                                    <input id="ckbTipoAttrModal" name="ckbTipoAttrModal" type="checkbox" data-on-color="success" data-off-color="primary"
+                                           data-off-text="Pedido" data-on-text="Produto">
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div id="divNumerico" class="row">
+                        <div id="divDecimal" class="col-md-2 not-lista">
+                            <div class="form-group">
+                                <label class="form-label">Casas Decimais</label>
+                                <div class="controls">
+                                    <input type="text" onchange="alteraPrecisao(this)" id="txtNumPrecisao" value="0" style="text-align:center!important" autocomplete="off"
+                                           onclick="this.select()" class="form-control txtInteiro" />
+                                </div>
+                            </div>
+                        </div>
+                        <div id="divValDef" class="col-md-2 not-lista" style="padding-left:5px!important;padding-right:5px!important">
+                            <div class="form-group">
+                                <label class="form-label">Valor Padrão</label>
+                                <div class="controls">
+                                    <input type="text" onkeyup="validaValorCadAtributo(this)" id="txtNumValDef" data-min-val="0"
+                                           data-max-val="1000000" data-initial-val="0" value="0"
+                                           style="text-align:center!important" autocomplete="off" class="form-control attrNum" />
+                                </div>
+                            </div>
+                        </div>
+                        <div id="divValBool" class="col-md-5 ocultarElemento">
+                            <div class="form-group">
+                                <label class="form-label">Valor Padrão</label><span class="obrigatorio"> *</span>
+                                <div class="controls">
+                                    <div class="phradio">
+                                        <div class="phradio-primary">
+                                            <input type="radio" name="radioBool" checked="checked" value="1" id="rdBtnSim" />
+                                            <label style="text-overflow:unset!important" for="rdBtnSim">Sim</label>
+                                        </div>
+                                        <div class="phradio-primary">
+                                            <input type="radio" name="radioBool" value="0" id="rdBtnNao" />
+                                            <label style="text-overflow:unset!important" for="rdBtnNao">Não</label>
+                                        </div>
+                                        <div class="phradio-primary">
+                                            <input type="radio" name="radioBool" value="-1" id="rdBtnNulo" />
+                                            <label style="text-overflow:unset!important" for="rdBtnNulo">Nenhum</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-2 not-lista" style="padding-left:5px!important;padding-right:5px!important">
+                            <div class="form-group">
+                                <label id="lblValMax" class="form-label">Valor Máximo</label>
+                                <div class="controls">
+                                    <input type="text" id="txtNumValMax" data-initial-val="1000000" value="1000000"
+                                           data-min-val="0" data-max-val="1000000" onchange="atualizaValMax(this)"
+                                           style="text-align:center!important" autocomplete="off" class="form-control attrNum" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2 not-lista" style="padding-left:5px!important;padding-right:5px!important">
+                            <div class="form-group">
+                                <label id="lblValMin" class="form-label">Valor Mínimo</label>
+                                <div class="controls">
+                                    <input type="text" id="txtNumValMin" data-min-val="0" data-max-val="1000000"
+                                           data-initial-val="0" value="0" style="text-align:center!important" autocomplete="off" onchange="atualizaValMin(this)"
+                                           class="form-control attrNum" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="divSegSecEsp" class="row ocultarElemento">
+                        <h5 style="color:blue" class="text-center"><strong>Selecione os Segmentos, Seçoes e/ou Espécies do Atributo </strong>(Opcional)</h5>
+
+                        <div id="divSegCad" class="col-md-4 col-sm-5 col-xs-12">
+                            <div class="form-group">
+                                <label class="form-label">Segmentos</label>
+                                <div class="controls">
+                                    <select id="drpSegCad" class="selectpicker show-tick form-control" data-actions-box="true" data-show-subtext="true" multiple data-live-search="true"
+                                            data-count-selected-text="Selecionado {0} de {1}" title="0 selecionados..." data-select-all-text="Marcar" data-deselect-all-text="Desmarcar"
+                                            data-width="100%" data-select-header="true" data-size="7" data-selected-text-format="count > 2"></select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="divSecCad" class="col-md-4 col-sm-5 col-xs-12 ocultarElemento">
+                            <div class="form-group">
+                                <label class="form-label">Seções</label>
+                                <div class="controls">
+                                    <select id="drpSecCad" class="selectpicker show-tick form-control" data-show-subtext="true" data-actions-box="true" multiple data-live-search="true"
+                                            data-select-all-text="Marcar" data-container="body" data-deselect-all-text="Desmarcar" data-count-selected-text="Selecionado {0} de {1}" title="0 selecionados..."
+                                            data-width="100%" data-select-header="true" data-size="7" data-selected-text-format="count > 2"></select>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="divEspCad" class="col-md-4 col-sm-5 col-xs-12 ocultarElemento">
+                            <div class="form-group">
+                                <label class="form-label">Espécies</label>
+                                <div class="controls">
+                                    <select id="drpEspCad" class="selectpicker show-tick form-control" data-show-subtext="true" data-actions-box="true" multiple data-live-search="true"
+                                            data-select-all-text="Marcar" data-deselect-all-text="Desmarcar" data-count-selected-text="Selecionado {0} de {1}" title="0 selecionados..."
+                                            data-width="100%" data-select-header="true" data-size="5" data-selected-text-format="count > 2"></select>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div id="divLista" class="col-md-12">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Dados da lista</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row filtrosItemLista">
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label class="form-label">Multipla Seleção</label>
+                                <div class="controls">
+                                    <input id="ckbAttrMult" name="ckbAttrMult" type="checkbox" data-on-color="success" data-off-color="danger"
+                                           data-on-text="Sim" data-off-text="Não">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 col-sm-12 col-xs-12">
+                            <div class="form-group">
+                                <label class="form-label">Pesquisar</label>
+                                <div class="controls ocultarElemento">
+                                    <input type="text" id="fTxtBusca" placeholder="Busque aqui..." class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-sm-12 col-xs-12">
+                            <div class="form-group">
+                                <label class="form-label">Status</label>
+                                <div class="controls ocultarElemento">
+                                    <select name="cbStatusItem" id="cbStatusItem" class="selectpicker show-tick form-control"
+                                            data-width="100%" data-size="auto">
+                                        <option selected value="">Todos</option>
+                                        <option value="true">Ativo</option>
+                                        <option value="false">Inativo</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-sm-12 col-xs-12">
+                            <div class="form-group">
+                                <label class="form-label">Comparar Ordem</label>
+                                <div class="controls ocultarElemento">
+                                    <select name="ucComboMetrica" id="ucComboMetrica" class="selectpicker show-tick form-control" data-width="100%" multiple data-max-options="1"
+                                            data-size="auto" title="Parametro...">
+                                        <option data-icon="fa fa-less-than" value="0">Menor que</option>
+                                        <option data-icon="fa fa-less-than-equal" value="1">Menor ou igual a</option>
+                                        <option data-icon="fa fa-equal" value="2">Igual a</option>
+                                        <option data-icon="fa fa-greater-than-equal" value="3">Maior ou igual a</option>
+                                        <option data-icon="fa fa-greater-than" value="4">Maior que</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="filtroOrdemPesquisa" style="display:none" class="col-md-2 col-sm-12 col-xs-12">
+                            <div class="form-group">
+                                <label class="form-label">Filtro de Ordem</label>
+                                <div class="controls ocultarElemento">
+                                    <input type="text" id="fTxtOrdemFiltro" name="fTxtOrdemFiltro" class="form-control txtInteiro filtroOrdem" placeholder="Informe uma ordem..." />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-1 col-sm-12 col-xs-12">
+                            <div class="form-group">
+                                <label class="form-label">Limpar</label>
+                                <div class="controls">
+                                    <a href="javascript:limparCamposPesquisa();" data-toggle="tooltip" title="Limpar Filtros" style="vertical-align:top !important;padding-top:0px!important" class="btn text-center clear-filter">
+                                        @*<i class="fa fa-filter fa-2x" aria-hidden="true"></i>*@
+                                        <span class="fa fa-filter-remove fa-2x"></span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="col-md-12 col-sm-12 col-xs-12 table-responsive filter-right">
+                                <table id="listaCadastrados" cellpadding="0" cellspacing="0" class="table-tools cell-border hover table cell nowrap stripe compact pretty">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>Descrição</th>
+                                            <th>Selecionado</th>
+                                            <th>Status</th>
+                                            <th>Ordem</th>
+                                            <th class="grupoOperacao" style="text-align:left!important">
+                                                <button type="button" onclick="addNovoItem()" class="btn btn-success btn-create">
+                                                    <i class="fa fa-plus" aria-hidden="true"></i>
+                                                </button>
+                                            </th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="panel">
+                <div class="panel-body" style="padding-top: 0px;">
+                    <div class="row text-center">
+                        <div class="col-md-6 col-sm-6 col-xs-6">
+                            <button type="button" class="btn btn-danger" onclick="voltarGerenciamentoAtributo()"><i class="fa fa-times" aria-hidden="true"></i> Cancelar</button>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xs-6">
+                            <button id="btnSalvarEdicao" type="button" onclick="salvarAtributo()" class="btn btn-success"><i class="fa fa-check" aria-hidden="true"></i> Salvar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-md-3 bootstrap-select" id="combo"></div>
+</div>
+<div class="bg_load"></div>
+<div class="wrapper">
+    <div class="inner">
+        <span>
+            <span>A</span>
+            <span>g</span>
+            <span>u</span>
+            <span>a</span>
+            <span>r</span>
+            <span>d</span>
+            <span>e</span>
+        </span>
+    </div>
+</div>

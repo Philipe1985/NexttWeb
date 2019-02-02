@@ -5,6 +5,7 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
     public class ProdutosFiltradosVM
     {
         public bool Selecionado { get; set; }
+        public bool Ativo { get; set; }
         public int IDMarca { get; set; }
         public int IDProduto { get; set; }
         public string CodProduto { get; set; }

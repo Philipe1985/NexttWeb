@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Newtonsoft.Json;
 using Nextt_Gestao_Compra.Aplicacao.Servicos.Interfaces.Gerenciamento;
+using Nextt_Gestao_Compra.Aplicacao.Utils;
 using Nextt_Gestao_Compra.Aplicacao.ViewModel;
 using Nextt_Gestao_Compra.Dominio.Entidades;
 using System;
@@ -20,7 +21,7 @@ namespace Nextt_Gestao_Compra.Aplicacao.Gerenciador.Compra
             var listaMarcas = dados.ElementAt(1).Cast<Marca>().OrderBy(x => x.Nome).Select(x => fabrica.Criar(x)).ToList();
 
             var listaSegmentos = dados.ElementAt(2).Cast<Segmento>().OrderBy(x => x.Descricao).Select(x => fabrica.Criar(x)).ToList();
-            var listaAttrForn = dados.ElementAt(3).Cast<Atributos>().OrderBy(x => x.Descricao).Select(x => fabrica.Criar(x)).ToList();
+            var listaAttrForn = dados.ElementAt(3).Cast<Atributo>().OrderBy(x => x.Descricao).Select(x => fabrica.Criar(x)).ToList();
             var retorno = new FiltrosPesquisa(listaFornecedores, listaSegmentos, listaMarcas)
             {
                 AttrFornecedores = listaAttrForn
@@ -45,39 +46,40 @@ namespace Nextt_Gestao_Compra.Aplicacao.Gerenciador.Compra
         public static FiltrosPesquisa RetornaDadosCadInicial(IAppServicoCompra compraServico, FabricaViewModel fabrica)
         {
             var dados = compraServico.RetornaCargaInicialCadNovo(new Parametros());
+            var listaStatus = dados.ElementAt(0).Cast<StatusPedido>().Select(x => fabrica.Criar(x)).ToList();
+            var listaFornecedores = dados.ElementAt(1).Cast<Fornecedor>().OrderBy(x => x.NomeFantasia).Select(x => fabrica.Criar(x)).ToList();
 
-            var listaFornecedores = dados.ElementAt(0).Cast<Fornecedor>().OrderBy(x => x.NomeFantasia).Select(x => fabrica.Criar(x)).ToList();
+            var listaMarcas = dados.ElementAt(2).Cast<Marca>().OrderBy(x => x.Nome).Select(x => fabrica.Criar(x)).ToList();
 
-            var listaMarcas = dados.ElementAt(1).Cast<Marca>().OrderBy(x => x.Nome).Select(x => fabrica.Criar(x)).ToList();
-
-            var listaSegmentos = dados.ElementAt(2).Cast<Segmento>().OrderBy(x => x.Descricao).Select(x => fabrica.Criar(x)).ToList();
-            var dadosCores = dados.ElementAt(5).Cast<Cor>().ToList();
+            var listaSegmentos = dados.ElementAt(3).Cast<Segmento>().OrderBy(x => x.Descricao).Select(x => fabrica.Criar(x)).ToList();
+            var dadosCores = dados.ElementAt(6).Cast<Cor>().ToList();
             ChecaCoresSemRgb(dadosCores);
-            var dadosTamanho = dados.ElementAt(4).Cast<GrupoTamanho>().ToList();
+            var dadosTamanho = dados.ElementAt(5).Cast<GrupoTamanho>().ToList();
 
-            var gruposAtivo = RetornaGruposAtivos(dados.ElementAt(10).Cast<GrupoFilial>().ToList()).Select(x => new GruposValidadosVM(x)).ToList();
-            var gruposRelacionadosDesativar = RetornaGruposRelacionados(dados.ElementAt(11).Cast<GrupoFilial>().ToList(), gruposAtivo);
-            var listaForma = dados.ElementAt(6).Cast<FormaPgto>().OrderBy(x => x.DescricaoFormaPagamento).Select(x => fabrica.Criar(x)).ToList();
-            var condicoesOrdenadas = dados.ElementAt(7).Cast<CondicaoPgto>().OrderBy(x => x.Condicao.Split('+').Length).Select(x => x).ToList();
-            var listaClassificacao = dados.ElementAt(8).Cast<ClassificacaoFiscal>().OrderBy(x => x.CodigoFiscal).Select(x => fabrica.Criar(x)).ToList();
-            var listaAttrProd = dados.ElementAt(12).Cast<Atributos>().OrderBy(x => x.Ordem).ToList();
-            var listaAttrPed = dados.ElementAt(13).Cast<Atributos>().OrderBy(x => x.Ordem).ToList();
+            var gruposAtivo = RetornaGruposAtivos(dados.ElementAt(11).Cast<GrupoFilial>().ToList()).Select(x => new GruposValidadosVM(x)).ToList();
+            var gruposRelacionadosDesativar = RetornaGruposRelacionados(dados.ElementAt(12).Cast<GrupoFilial>().ToList(), gruposAtivo);
+            var listaForma = dados.ElementAt(7).Cast<FormaPgto>().OrderBy(x => x.DescricaoFormaPagamento).Select(x => fabrica.Criar(x)).ToList();
+            var condicoesOrdenadas = dados.ElementAt(8).Cast<CondicaoPgto>().OrderBy(x => x.Condicao.Split('+').Length).Select(x => x).ToList();
+            var listaClassificacao = dados.ElementAt(9).Cast<ClassificacaoFiscal>().OrderBy(x => x.CodigoFiscal).Select(x => fabrica.Criar(x)).ToList();
+            var listaAttrProd = dados.ElementAt(13).Cast<Atributo>().OrderBy(x => x.Ordem).ToList();
+            var listaAttrPed = dados.ElementAt(14).Cast<Atributo>().OrderBy(x => x.Ordem).ToList();
             var ordemPed = listaAttrPed.Where(x => x.IDTipoAtributo == x.IDTipoAtributoKey).Select(x => x.Lista).ToList();
             var ordemProd = listaAttrProd.Where(x => x.IDTipoAtributo == x.IDTipoAtributoKey).Select(x => x.Lista).ToList();
             var listaElemPed = compraServico.RetornaAtributosCampos(listaAttrPed).Select(x => new AtributoElementoVM(x));
             var listaElemProd = compraServico.RetornaAtributosCampos(listaAttrProd).Select(x => new AtributoElementoVM(x));
             var comboAttrPed = compraServico.RetornaAtributosTipoLista(listaAttrPed).Select(x => new ComboAtributoVM(x, fabrica));
             var comboAttrProd = compraServico.RetornaAtributosTipoLista(listaAttrProd).Select(x => new ComboAtributoVM(x, fabrica));
-            var listaComprador = dados.ElementAt(14).Cast<Comprador>().OrderBy(x => x.Nome).Select(x => fabrica.Criar(x)).ToList();
-            var listaMedida = dados.ElementAt(15).Cast<UnidadeMedida>().OrderBy(x => x.Descricao).Select(x => fabrica.Criar(x)).ToList();
-            var configPadrao = dados.ElementAt(16).Cast<ConfigDefault>().FirstOrDefault();
+            var listaComprador = dados.ElementAt(15).Cast<Comprador>().OrderBy(x => x.Nome).Select(x => fabrica.Criar(x)).ToList();
+            var listaMedida = dados.ElementAt(16).Cast<UnidadeMedida>().OrderBy(x => x.Descricao).Select(x => fabrica.Criar(x)).ToList();
+            var configPadrao = dados.ElementAt(17).Cast<ConfigDefault>().FirstOrDefault();
             var datasCargaInicial = new DadosConfigPadraoVM(configPadrao);
-            var listaTabelaPrecoEmpresa = dados.ElementAt(17).Cast<PrecoGrupoEmpresa>().GroupBy(x => x.IDGrupoEmpresa).Select(x => new GrupoEmpresaPrecosVM(x)).ToList();
+            var listaTabelaPrecoEmpresa = dados.ElementAt(18).Cast<PrecoGrupoEmpresa>().GroupBy(x => x.IDGrupoEmpresa).Select(x => new GrupoEmpresaPrecosVM(x)).ToList();
             var listaCondicao = ComparaCondicaoPagamento(condicoesOrdenadas).Select(x => fabrica.Criar(x)).ToList();
-            var listaCompradorProduto = dados.ElementAt(18).Cast<Comprador>().ToList();
+            var listaCompradorProduto = dados.ElementAt(19).Cast<Comprador>().ToList();
 
             var filtrosPesquisa = new FiltrosPesquisa(compraServico, fabrica, dadosCores, listaFornecedores, listaSegmentos, listaMarcas, dadosTamanho, datasCargaInicial)
             {
+                StatusPedido = listaStatus,
                 GrupoEmpresaPrecos = listaTabelaPrecoEmpresa,
                 Compradores = listaComprador,
                 UniMedida = listaMedida,
@@ -93,24 +95,19 @@ namespace Nextt_Gestao_Compra.Aplicacao.Gerenciador.Compra
                 RelacionamentoGrupos = gruposRelacionadosDesativar
             };
             filtrosPesquisa.CompradoresProduto = listaCompradorProduto.Count > 0 ? listaCompradorProduto.OrderBy(x => x.Nome).Select(x => fabrica.Criar(x)).ToList() : null;
-            //if (dadosUltimaCompra.Count > 0 && dadosUltimaCompra[0].DataEntregaInicio.Year >= DateTime.Now.Year)
-            //{
-            //    filtrosPesquisa.DataEntregaInicio = dadosUltimaCompra[0].DataEntregaInicio;
-            //    filtrosPesquisa.DataEntregaFinal = dadosUltimaCompra[0].DataEntregaFinal;
-            //    filtrosPesquisa.DataToleranciaAtrasoInicio = dadosUltimaCompra[0].DataToleranciaAtrasoInicio;
-            //    filtrosPesquisa.DataToleranciaAtrasoFinal = dadosUltimaCompra[0].DataToleranciaAtrasoFinal;
-            //}
+          
             return filtrosPesquisa;
         }
 
         public static RetornoProdutosVM RetornaProdutoFiltrado(IAppServicoCompra compraServico, ParametrosVM parametroVM)
         {
+            
             var filtro = Mapper.Map<ParametrosVM, Parametros>(parametroVM);
             var dados = compraServico.BuscaProdutosFiltrados(filtro);
             var produtosRetorno = dados.ElementAt(0).Cast<DadosGerenciamentoProdutoCompra>();
             var paginasRetorno = RetonaListaPagina(dados.ElementAt(1).Cast<Paginas>().ToList());
             var listaRetorno = Mapper.Map<IEnumerable<DadosGerenciamentoProdutoCompra>, IEnumerable<ProdutosFiltradosVM>>(produtosRetorno).ToList();
-
+             
             return new RetornoProdutosVM(listaRetorno, paginasRetorno);
         }
 
@@ -118,10 +115,10 @@ namespace Nextt_Gestao_Compra.Aplicacao.Gerenciador.Compra
         {
             var filtro = Mapper.Map<ParametrosVM, Parametros>(parametroVM);
             var dados = compraServico.RetornaCargaEspeciesFiltros(filtro);
-            var especiesGrupo = dados.ElementAt(0).Cast<Especie>()
+            var especiesGrupo = dados.ElementAt(0).Cast<Especie>().OrderBy(x=>x.IDSecao)
                 .GroupBy(x => x.IDSecao).Select(grp => grp.ToList());
-            var attrSelForn = dados.ElementAt(2).Cast<Atributos>().ToList();
-            var listaAttrProd = dados.ElementAt(1).Cast<Atributos>().OrderBy(x => x.Ordem).ToList();
+            var attrSelForn = dados.ElementAt(2).Cast<Atributo>().ToList();
+            var listaAttrProd = dados.ElementAt(1).Cast<Atributo>().OrderBy(x => x.Ordem).ToList();
             var ordemProd = listaAttrProd.Where(x => x.IDTipoAtributo == x.IDTipoAtributoKey).Select(x => x.Lista).ToList();
             var listaElemProd = compraServico.RetornaAtributosCampos(listaAttrProd).Select(x => new AtributoElementoVM(x));
             var comboAttrProd = compraServico.RetornaAtributosTipoLista(listaAttrProd).Select(x => new ComboAtributoVM(x, fabrica));
@@ -165,7 +162,7 @@ namespace Nextt_Gestao_Compra.Aplicacao.Gerenciador.Compra
             //var dadosConfig = dados.ElementAt(0).Cast<ConfigDefault>().FirstOrDefault();
             var dadosFornecedorProd = dados.ElementAt(0).Cast<DadosCompraFornecedor>().FirstOrDefault();
             var dadosPagamento = dados.ElementAt(1).Cast<DadosUltimaCompra>().ToList();
-            var dadosAttrForn = dados.ElementAt(2).Cast<Atributos>().ToList();
+            var dadosAttrForn = dados.ElementAt(2).Cast<Atributo>().ToList();
             //var datasCargaInicial = new DadosConfigPadraoVM(dadosConfig);
             return new FornecedorProdDadosVM(dadosPagamento, dadosFornecedorProd, dadosAttrForn);
         }
@@ -174,42 +171,44 @@ namespace Nextt_Gestao_Compra.Aplicacao.Gerenciador.Compra
         {
             var filtro = Mapper.Map<ParametrosVM, Parametros>(parametroVM);
             var dadoPre = compraServico.RetornaDadosPrePedido(filtro);
-            var dadosCadastro = dadoPre.ElementAt(0).Cast<DadosPrePedido>().ElementAt(0);
-            var dadosReferencia = dadoPre.ElementAt(1).Cast<ReferenciaProduto>().ToList();
-            var dadosTamanho = dadoPre.ElementAt(2).Cast<GrupoTamanho>().ToList();
-            var dadosCores = dadoPre.ElementAt(3).Cast<Cor>().ToList();
+            var listaStatus = dadoPre.ElementAt(0).Cast<StatusPedido>().Select(x => fabrica.Criar(x)).ToList();
+            var dadosCadastro = dadoPre.ElementAt(1).Cast<DadosPrePedido>().ElementAt(0);
+            var dadosReferencia = dadoPre.ElementAt(2).Cast<ReferenciaProduto>().ToList();
+            var dadosTamanho = dadoPre.ElementAt(3).Cast<GrupoTamanho>().ToList();
+            var dadosCores = dadoPre.ElementAt(4).Cast<Cor>().ToList();
             ChecaCoresSemRgb(dadosCores);
-            var gradePadrao = dadoPre.ElementAt(7).Cast<Grade>().ToList();
+            var gradePadrao = dadoPre.ElementAt(8).Cast<Grade>().ToList();
             ValidaTamanhoGrade(dadosTamanho, gradePadrao);
             ValidaCorGrade(dadosCores, gradePadrao);
             ValidaReferenciaGrade(dadosReferencia, gradePadrao);
 
-            var gruposAtivo = RetornaGruposAtivos(dadoPre.ElementAt(8).Cast<GrupoFilial>().ToList()).Select(x => new GruposValidadosVM(x)).ToList(); ;
-            var gruposRelacionadosDesativar = RetornaGruposRelacionados(dadoPre.ElementAt(9).Cast<GrupoFilial>().ToList(), gruposAtivo);
+            var gruposAtivo = RetornaGruposAtivos(dadoPre.ElementAt(9).Cast<GrupoFilial>().ToList()).Select(x => new GruposValidadosVM(x)).ToList(); ;
+            var gruposRelacionadosDesativar = RetornaGruposRelacionados(dadoPre.ElementAt(10).Cast<GrupoFilial>().ToList(), gruposAtivo);
 
-            var listaForma = dadoPre.ElementAt(4).Cast<FormaPgto>().OrderBy(x => x.DescricaoFormaPagamento).Select(x => fabrica.Criar(x)).ToList();
-            var listaClassificacao = dadoPre.ElementAt(6).Cast<ClassificacaoFiscal>().OrderBy(x => x.CodigoFiscal).Select(x => fabrica.Criar(x)).ToList();
-            var condicoesOrdenadas = dadoPre.ElementAt(5).Cast<CondicaoPgto>().OrderBy(x => x.Condicao.Split('+').Length).Select(x => x).ToList();
+            var listaForma = dadoPre.ElementAt(5).Cast<FormaPgto>().OrderBy(x => x.DescricaoFormaPagamento).Select(x => fabrica.Criar(x)).ToList();
+            var listaClassificacao = dadoPre.ElementAt(7).Cast<ClassificacaoFiscal>().OrderBy(x => x.CodigoFiscal).Select(x => fabrica.Criar(x)).ToList();
+            var condicoesOrdenadas = dadoPre.ElementAt(6).Cast<CondicaoPgto>().OrderBy(x => x.Condicao.Split('+').Length).Select(x => x).ToList();
             var listaCondicao = ComparaCondicaoPagamento(condicoesOrdenadas).Select(x => fabrica.Criar(x)).ToList();
-            var listaAttrProd = dadoPre.ElementAt(10).Cast<Atributos>().OrderBy(x => x.Ordem).ToList();
-            var listaAttrPed = dadoPre.ElementAt(11).Cast<Atributos>().OrderBy(x => x.Ordem).ToList();
-            var listaFornecedores = dadoPre.ElementAt(12).Cast<Fornecedor>().OrderBy(x => x.NomeFantasia).Select(x => fabrica.Criar(x)).ToList();
-            var listaComprador = dadoPre.ElementAt(13).Cast<Comprador>().OrderBy(x => x.Nome).Select(x => fabrica.Criar(x)).ToList();
-            var listaMedida = dadoPre.ElementAt(14).Cast<UnidadeMedida>().OrderBy(x => x.Descricao).Select(x => fabrica.Criar(x)).ToList();
-            var configPadrao = dadoPre.ElementAt(15).Cast<ConfigDefault>().FirstOrDefault();
+            var listaAttrProd = dadoPre.ElementAt(11).Cast<Atributo>().OrderBy(x => x.Ordem).ToList();
+            var listaAttrPed = dadoPre.ElementAt(12).Cast<Atributo>().OrderBy(x => x.Ordem).ToList();
+            var listaFornecedores = dadoPre.ElementAt(13).Cast<Fornecedor>().OrderBy(x => x.NomeFantasia).Select(x => fabrica.Criar(x)).ToList();
+            var listaComprador = dadoPre.ElementAt(14).Cast<Comprador>().OrderBy(x => x.Nome).Select(x => fabrica.Criar(x)).ToList();
+            var listaMedida = dadoPre.ElementAt(15).Cast<UnidadeMedida>().OrderBy(x => x.Descricao).Select(x => fabrica.Criar(x)).ToList();
+            var configPadrao = dadoPre.ElementAt(16).Cast<ConfigDefault>().FirstOrDefault();
             var datasCargaInicial = new DadosConfigPadraoVM(configPadrao);
-            var listaTabelaPrecoEmpresa = dadoPre.ElementAt(16).Cast<PrecoGrupoEmpresa>().GroupBy(x => x.IDGrupoEmpresa).Select(x => new GrupoEmpresaPrecosVM(x)).ToList();
+            var listaTabelaPrecoEmpresa = dadoPre.ElementAt(17).Cast<PrecoGrupoEmpresa>().GroupBy(x => x.IDGrupoEmpresa).Select(x => new GrupoEmpresaPrecosVM(x)).ToList();
             var ordemPed = listaAttrPed.Where(x => x.IDTipoAtributo == x.IDTipoAtributoKey).Select(x => x.Lista).ToList();
             var ordemProd = listaAttrProd.Where(x => x.IDTipoAtributo == x.IDTipoAtributoKey).Select(x => x.Lista).ToList();
             var listaElemPed = compraServico.RetornaAtributosCampos(listaAttrPed).Select(x => new AtributoElementoVM(x));
             var listaElemProd = compraServico.RetornaAtributosCampos(listaAttrProd).Select(x => new AtributoElementoVM(x));
             var comboAttrPed = compraServico.RetornaAtributosTipoLista(listaAttrPed).Select(x => new ComboAtributoVM(x, fabrica));
             var comboAttrProd = compraServico.RetornaAtributosTipoLista(listaAttrProd).Select(x => new ComboAtributoVM(x, fabrica));
-            var listaCompradorProduto = dadoPre.ElementAt(17).Cast<Comprador>().ToList();
+            var listaCompradorProduto = dadoPre.ElementAt(18).Cast<Comprador>().ToList();
 
-            var listaMarcas = dadoPre.ElementAt(18).Cast<Marca>().ToList();
+            var listaMarcas = dadoPre.ElementAt(19).Cast<Marca>().ToList();
             var filtrosPesquisa = new FiltrosPesquisa(dadosCadastro, compraServico, fabrica, dadosCores, dadosTamanho, dadosReferencia, datasCargaInicial)
             {
+                StatusPedido = listaStatus,
                 CompradoresProduto = listaCompradorProduto.Count > 0 ? listaCompradorProduto.OrderBy(x => x.Nome).Select(x => fabrica.Criar(x)).ToList() : null,
                 GrupoEmpresaPrecos = listaTabelaPrecoEmpresa,
                 Compradores = listaComprador,
@@ -255,7 +254,7 @@ namespace Nextt_Gestao_Compra.Aplicacao.Gerenciador.Compra
         }
         public static int GravarPedido(IAppServicoCompra compraServico, PedidoCompletoVM pedidoCompleto, log4net.ILog log)
         {
-            var pedidoJson = JsonConvert.SerializeObject(pedidoCompleto);
+            var pedidoJson = pedidoCompleto.RetornaJsonPedido(new PropertyRenameAndIgnoreSerializerContractResolver());
             log.Debug("Json Gerado - Enviando ao Banco");
             var idPedido = compraServico.GravarPedido(pedidoJson);
             log.Debug("Pedido Gerado: " + idPedido);

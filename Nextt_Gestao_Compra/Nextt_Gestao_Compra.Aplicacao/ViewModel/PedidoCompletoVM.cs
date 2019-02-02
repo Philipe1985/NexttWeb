@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using Nextt_Gestao_Compra.Aplicacao.Utils;
+using System.Collections.Generic;
 
 namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
 {
@@ -11,6 +13,14 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
         public List<PedidoAtributoVM> PedidoAtributo { get; set; }
         public List<ProdutoAtributoVM> ProdutoAtributo { get; set; }
         public List<TabelaPrecoVM> ProdutoTabelaPreco { get; set; }
+        public ParametrosVM Parametros { get; set; }
 
+        public string RetornaJsonPedido(PropertyRenameAndIgnoreSerializerContractResolver jsonResolver)
+        {
+            var ignorar = new string[] { "Parametros" };
+            jsonResolver.IgnoreProperty(typeof(PedidoCompletoVM), ignorar);
+            var jsonSettings = new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore, ContractResolver = jsonResolver };
+            return JsonConvert.SerializeObject(this, jsonSettings);
+        }
     }
 }

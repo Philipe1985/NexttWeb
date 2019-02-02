@@ -56,12 +56,12 @@ namespace Nextt_Gestao_Compra.Aplicacao.Servicos.Gerenciamento
         {
             return _servicoPedido.ClonarPedido(parametros);
         }
-        public List<Atributos> RetornaAtributosCampos(List<Atributos> _listaAttr)
+        public List<Atributo> RetornaAtributosCampos(List<Atributo> _listaAttr)
         {
             return _servicoPedido.RetornaAtributosCampos(_listaAttr);
         }
 
-        public List<TipoLista> RetornaAtributosTipoLista(List<Atributos> _listaAttr)
+        public List<TipoLista> RetornaAtributosTipoLista(List<Atributo> _listaAttr)
         {
             return _servicoPedido.RetornaAtributosTipoLista(_listaAttr);
         }

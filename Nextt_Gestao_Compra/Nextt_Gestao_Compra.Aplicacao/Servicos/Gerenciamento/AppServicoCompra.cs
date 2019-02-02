@@ -34,12 +34,12 @@ namespace Nextt_Gestao_Compra.Aplicacao.Servicos.Gerenciamento
             return _servicoCompra.GravarPedido(pedidoJson);
         }
 
-        public List<Atributos> RetornaAtributosCampos(List<Atributos> _listaAttr)
+        public List<Atributo> RetornaAtributosCampos(List<Atributo> _listaAttr)
         {
             return _servicoCompra.RetornaAtributosCampos(_listaAttr);
         }
 
-        public List<TipoLista> RetornaAtributosTipoLista(List<Atributos> _listaAttr)
+        public List<TipoLista> RetornaAtributosTipoLista(List<Atributo> _listaAttr)
         {
             return _servicoCompra.RetornaAtributosTipoLista(_listaAttr);
         }

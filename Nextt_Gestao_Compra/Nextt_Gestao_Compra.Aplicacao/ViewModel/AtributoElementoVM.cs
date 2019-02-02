@@ -15,7 +15,7 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
         public int Minimo { get; set; }
         public int Precisao { get; set; }
         public int Ordem { get; set; }
-        public AtributoElementoVM(Atributos atributos)
+        public AtributoElementoVM(Atributo atributos)
         {
             IDTipoAtributo = atributos.IDTipoAtributo;
             Descricao = atributos.Descricao;
@@ -26,7 +26,7 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
             Precisao = atributos.CasaDecimal;
             Tipo = Enum.GetName(typeof(TipoAtributo), atributos.Tipo);
             Ordem = atributos.Ordem;
-
         }
+        public AtributoElementoVM() { }
     }
 }

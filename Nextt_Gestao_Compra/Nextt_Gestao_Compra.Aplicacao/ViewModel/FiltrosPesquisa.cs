@@ -99,10 +99,9 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
                             Nome = dadosCadastro.DescricaoMarca
                           }
                 )};
-            else
-            {
-                MarcaSelecionada = dadosCadastro.IDMarca.ToString();
-            }
+
+            MarcaSelecionada = dadosCadastro.IDMarca.ToString();
+
             Secoes = new List<ComboFiltroVM>() { fabrica.Criar(fabrica.CriarSecao(dadosCadastro)) };
             Segmentos = new List<ComboFiltroVM>() { fabrica.Criar(fabrica.CriarSegmento(dadosCadastro)) };
             Especies = new List<ComboFiltroVM>() { fabrica.Criar(fabrica.CriarEspecie(dadosCadastro)) };
@@ -132,10 +131,7 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
                             Nome = dadosCadastro.DescricaoMarca
                           }
                 )};
-            else
-            {
-                MarcaSelecionada = dadosCadastro.IDMarca.ToString();
-            }
+            MarcaSelecionada = dadosCadastro.IDMarca.ToString();
             Secoes = new List<ComboFiltroVM>() { fabrica.Criar(
                 new Secao { IDSecao = dadosCadastro.IDSecao,
                             Descricao = dadosCadastro.DescricaoSecao

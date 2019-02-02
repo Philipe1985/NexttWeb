@@ -4,91 +4,109 @@ $(document).ready(function () {
     $('.selectpicker').selectpicker('refresh');
     $(window).on("load", carregar);
     $(document).on('click', '.painelCard', function (evento) {
-        limpaModalGrupoEmpresas();
-        var cod = $(this).attr('id');
-        if (parseInt(cod) > 0) {
+        criaNovoGrp()
+    });
+    $(document).on('click', '.editarGrupo', function (evento) {
+        if (permissoesUsuarioLogado.indexOf('Editar Grupo de Empresas') === -1) {
+            semAcesso()
+        } else {
+            limpaModalGrupoEmpresas();
+            var linha = $(this).parent().parent();
+            var dadoLinha = dtbCadGrp.row($(linha)).data()
+            var objEnvio = {};
+            objEnvio.codigo = dadoLinha.idGrupoEmpresa;
+            $('#txtCodGrupo').val(dadoLinha.idGrupoEmpresa);
+            $('#txtNomeGrupoEmpresa').val(dadoLinha.nome);
+            $(".bg_load").show();
+            $(".wrapper").show();
+            $(".navbar.navbar-default.navbar-fixed-top").addClass('ocultarElemento');
+            editarGrupoEmpresa(objEnvio);
+        }
+    })
+    $(document).on('click', '.excluirGrupo', function (evento) {
+        if (permissoesUsuarioLogado.indexOf('Excluir Grupo de Empresas') === -1) {
+            semAcesso()
+        } else {
+            var linha = $(this).parent().parent();
+            var dadoLinha = dtbCadGrp.row($(linha)).data()
+            var objEnvio = {};
+            objEnvio.codigo = dadoLinha.idGrupoEmpresa;
+            $('#modalGrupoEmpresa').modal('hide');
             var $menuTitulo = $(".navbar.navbar-default.navbar-fixed-top");
             $menuTitulo.addClass('ocultarElemento');
             $(".bg_load").show();
             $(".wrapper").show();
-            objEnvio = {};
-            objEnvio.codigo = $(this).attr('id');
-            editarGrupoEmpresa(objEnvio);
-        } else {
-            if (!$('#btnExlcuirOperacao').hasClass('ocultarElemento')) {
-                $('#btnExlcuirOperacao').addClass('ocultarElemento');
-            }
-            $('#btnFinalizarOperacao').html('<i class="fa fa-check" aria-hidden="true"></i> Cadastrar')
-            $('#modalGrupoEmpresa').modal({
-                backdrop: 'static',
-                keyboard: false
-            });
+            excluirGrpEmpresas(objEnvio)
         }
+    })
+    $(document).on('click', '#btnExlcuirOperacao', function (evento) {
+        excluirGrpEmpresa($('#txtCodGrupo').val());
+    })
+});
+function carregar() {
+    if (permissoesUsuarioLogado.indexOf('Gerenciar Grupo de Empresas') === -1 &&
+        permissoesUsuarioLogado.indexOf('Cadastrar Grupo de Empresas') === -1 &&
+        permissoesUsuarioLogado.indexOf('Editar Grupo de Empresas') === -1 &&
+        permissoesUsuarioLogado.indexOf('Excluir Grupo de Empresas') === -1) {
+        window.location = "../home.cshtml"
+    } else {
+        cargaInicialGrupoEmpresa();
+    }
 
-
-    });
-    $(document).on('click', '.editarGrupo', function (evento) {
+}
+function criaNovoGrp() {
+    if (permissoesUsuarioLogado.indexOf('Cadastrar Grupo de Empresas') === -1) {
+        semAcesso()
+    } else {
         limpaModalGrupoEmpresas();
-        var linha = $(this).parent().parent();
-        var dadoLinha = dtbCadGrp.row($(linha)).data()
-        var objEnvio = {};
-        objEnvio.codigo = dadoLinha.idGrupoEmpresa;
-        $('#txtCodGrupo').val(dadoLinha.idGrupoEmpresa);
-        $('#txtNomeGrupoEmpresa').val(dadoLinha.nome);
+        if (!$('#btnExlcuirOperacao').hasClass('ocultarElemento')) {
+            $('#btnExlcuirOperacao').addClass('ocultarElemento');
+        }
+        $('#btnFinalizarOperacao').html('<i class="fa fa-check" aria-hidden="true"></i> Cadastrar')
+        var $menuTitulo = $(".navbar.navbar-default.navbar-fixed-top");
+        $menuTitulo.addClass('ocultarElemento');
         $(".bg_load").show();
         $(".wrapper").show();
-        $(".navbar.navbar-default.navbar-fixed-top").addClass('ocultarElemento');
+        objEnvio = {};
+        objEnvio.codigo = 0;
         editarGrupoEmpresa(objEnvio);
-    })
-    $(document).on('click', '.excluirGrupo', function (evento) {
-        var linha = $(this).parent().parent();
-        var dadoLinha = dtbCadGrp.row($(linha)).data()
-        var objEnvio = {};
-        objEnvio.codigo = dadoLinha.idGrupoEmpresa;
+    }
+
+}
+function acessarGrpEmpresa(id, desc) {
+    if (permissoesUsuarioLogado.indexOf('Editar Grupo de Empresas') === -1) {
+        semAcesso()
+    } else {
+        limpaModalGrupoEmpresas();
+        $('#txtCodGrupo').val(id);
+        $('#txtNomeGrupoEmpresa').val(desc);
+        $('#btnFinalizarOperacao').html('<i class="fa fa-check" aria-hidden="true"></i> Atualizar');
+        $('#btnExlcuirOperacao').removeClass('ocultarElemento');
+        $('#tituloGrupoEmpresa').html('<i class="fa fa-pencil-square-o"></i>&nbsp;Atualizar <strong>Grupo de Empresas</strong>')
+        var $menuTitulo = $(".navbar.navbar-default.navbar-fixed-top");
+        $menuTitulo.addClass('ocultarElemento');
+        $(".bg_load").show();
+        $(".wrapper").show();
+        objEnvio = {};
+        objEnvio.codigo = id;
+        editarGrupoEmpresa(objEnvio);
+    }
+}
+function excluirGrpEmpresa(id) {
+    if (permissoesUsuarioLogado.indexOf('Excluir Grupo de Empresas') === -1) {
+        semAcesso()
+    } else {
         $('#modalGrupoEmpresa').modal('hide');
         var $menuTitulo = $(".navbar.navbar-default.navbar-fixed-top");
         $menuTitulo.addClass('ocultarElemento');
         $(".bg_load").show();
         $(".wrapper").show();
-        excluirGrpEmpresas(objEnvio)
-    })
-});
-function carregar() {
-    cargaInicialGrupoEmpresa();
-}
-function criaNovoGrp() {
-    limpaModalGrupoEmpresas();
-    if (!$('#btnExlcuirOperacao').hasClass('ocultarElemento')) {
-        $('#btnExlcuirOperacao').addClass('ocultarElemento');
+        var objEnvio = {};
+        objEnvio.codigo = id;
+        excluirGrpEmpresas(objEnvio);
     }
-    $('#btnFinalizarOperacao').html('<i class="fa fa-check" aria-hidden="true"></i> Cadastrar')
-    $('#modalGrupoEmpresa').modal({
-        backdrop: 'static',
-        keyboard: false
-    });
 }
-function acessarGrpEmpresa(id, desc) {
-    limpaModalGrupoEmpresas();
-    $('#txtCodGrupo').val(id);
-    $('#txtNomeGrupoEmpresa').val(desc);
-    var $menuTitulo = $(".navbar.navbar-default.navbar-fixed-top");
-    $menuTitulo.addClass('ocultarElemento');
-    $(".bg_load").show();
-    $(".wrapper").show();
-    objEnvio = {};
-    objEnvio.codigo = id;
-    editarGrupoEmpresa(objEnvio);
-}
-function excluirGrpEmpresa(id) {
-    $('#modalGrupoEmpresa').modal('hide');
-    var $menuTitulo = $(".navbar.navbar-default.navbar-fixed-top");
-    $menuTitulo.addClass('ocultarElemento');
-    $(".bg_load").show();
-    $(".wrapper").show();
-    var objEnvio = {};
-    objEnvio.codigo = id;
-    excluirGrpEmpresas(objEnvio);
-}
+
 function validaDadosObrigarioGrpEmp() {
     if (!$('#txtNomeGrupoEmpresa').val())
         $('#txtNomeGrupoEmpresa').focus();

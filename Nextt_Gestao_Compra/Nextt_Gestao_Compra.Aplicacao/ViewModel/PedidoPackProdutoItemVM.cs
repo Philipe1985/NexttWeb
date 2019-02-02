@@ -6,6 +6,7 @@
         public int Item { get; set; }
         public int Qtde { get; set; }
         public int IDTamanho { get; set; }
+        public bool? Ativo { get; set; }
         public string Referencia { get; set; }
         public NovaCorItemProduto Cor { get; set; }
     }

@@ -792,9 +792,9 @@ function criaArrayProdutoitem(arrayPack) {
         var corItem = coresNovasCadastradas.filter(function (el) {
             var confirmado = false;
             if (typeof arrayPack[i].cores === 'undefined') {
-                confirmado = el.descricao === arrayPack[i].descricaoCor
+                confirmado = el.descricao.trim().toLowerCase() === arrayPack[i].descricaoCor.trim().toLowerCase()
             } else {
-                confirmado = el.descricao === arrayPack[i].cores
+                confirmado = el.descricao.trim().toLowerCase() === arrayPack[i].cores.trim().toLowerCase()
             }
             return confirmado;
         })[0];
@@ -821,18 +821,19 @@ function criaArrayProdutoitem(arrayPack) {
     return arrayRetorno;
 }
 function criaArrayProdItem() {
-    console.log(tamanhoTexto)
+    var refSelProd = cadastroNovoProduto === '0' ? $('#drpReferenciaGrade option:selected') : $('#drpReferenciaGrade option');
     var idItem = 1, idProduto = parseInt($("#txtIDProd").val()), arrayRetorno = [];
-    for (var i = 0; i < referenciaGrade.length; i++) {
+    for (var i = 0; i < refSelProd.length; i++) {
         for (var j = 0; j < coresGrade.length; j++) {
             var corItem = coresNovasCadastradas.filter(function (el) {
-                var confirmado = el.descricao === coresGrade[j];
+                var confirmado = el.descricao.trim().toLowerCase() === coresGrade[j].trim().toLowerCase();
                 return confirmado;
             })[0];
             for (var k = 0; k < tamanhosGrade.length; k++) {
                 var objJson = {};
                 objJson.idProduto = idProduto;
-                objJson.referencia = referenciaGrade[i];
+                objJson.referencia = $(refSelProd[i]).val();
+                objJson.ativo = $(refSelProd[i]).is(':selected');
                 objJson.idTamanho = tamanhoTexto.filter(function (el) {
                     return el.descricao.toLowerCase() === tamanhosGrade[k].toLowerCase();
                 })[0].id;
@@ -899,6 +900,7 @@ function pedidoOperacaoInvalida(msg) {
     });
 }
 function atualizarPedidoOpcao(tit, txt, status) {
+    console.log(observacaoStatus)
     $.confirm({
         icon: 'fa fa-gift',
         type: 'blue',
@@ -910,19 +912,26 @@ function atualizarPedidoOpcao(tit, txt, status) {
                 text: 'Sim',
                 btnClass: 'btn-primary',
                 action: function () {
-                    if (status === 'F') {
-                        geraPedidoSalvar('F');
-                    } else {
-                        //if (observacaoStatus.indexOf(status) > -1) {
-                        //    alteraStatusPedido(status, sessionStorage.getItem("pedidoId"))
-                        //}
-                        //else {
-                        objEnvio = {};
-                        objEnvio.codigo = sessionStorage.getItem("pedidoId");
-                        objEnvio.status = status;
-                        atualizarStatus(objEnvio);
-                        //}
+                    //if (status === 'F') {
+                    //    geraPedidoSalvar('F');
+                    //} else {
+                    var pedidoID = sessionStorage.getItem("pedidoId") ? sessionStorage.getItem("pedidoId") : '0';
+                    if (observacaoStatus.indexOf(status) > -1) {
+
+                        alteraStatusPedido(status, pedidoID)
                     }
+                    else {
+
+                        if (status.toLowerCase() == 'a' || status.toLowerCase() == 'f') {
+                            geraPedidoSalvar(status, null);
+                        } else {
+                            var objEnvio = {};
+                            objEnvio.codigo = pedidoID;
+                            objEnvio.status = status;
+                            atualizarStatus(objEnvio);
+                        }
+                    }
+                    //}
                 }
             },
             'Cancelar': {
@@ -934,124 +943,48 @@ function atualizarPedidoOpcao(tit, txt, status) {
 }
 
 function salvarPedidoOpcao() {
-    $.confirm({
-        icon: 'fa fa-gift',
-        type: 'blue',
-        title: 'Salvar Pedido!',
-        content: 'O pedido será salvo, mas não será enviado para aprovação. Tem certeza que deseja prosseguir?',
-        containerFluid: true,
-        buttons: {
-            //'F': {
-            //    text: 'Finalizar',
-            //    btnClass: 'btn-success',
-            //    isHidden: true,
-            //    action: function () {
-            //        geraPedidoSalvar('F');
-            //    }
-            //},
-            //'R': {
-            //    text: 'Reprovar',
-            //    btnClass: 'btn-danger',
-            //    isHidden: true,
-            //    action: function () {
-            //        if (observacaoStatus && observacaoStatus.indexOf('R') > -1) {
-            //            alteraStatusPedido('R', compraId)
-            //        } else {
-            //            var objEnvio = {};
-            //            objEnvio.status = 'R'
-            //            objEnvio.codigo = compraId;
-            //            atualizarStatus(objEnvio);
-            //        }
+    atualizarPedidoOpcao('Salvar Pedido!', 'O pedido será salvo, mas não será enviado para aprovação.', 'A')
+    //$.confirm({
+    //    icon: 'fa fa-gift',
+    //    type: 'blue',
+    //    title: 'Salvar Pedido!',
+    //    content: 'O pedido será salvo, mas não será enviado para aprovação. Tem certeza que deseja prosseguir?',
+    //    containerFluid: true,
+    //    buttons: {
+    //        'Confirmar': {
+    //            text: 'Sim',
+    //            btnClass: 'btn-primary',
+    //            action: function () {
+    //                geraPedidoSalvar('A');
+    //            }
+    //        },
+    //        'Cancelar': {
+    //            text: 'Não',
+    //            btnClass: 'btn-danger'
+    //        }
 
-            //    }
-            //},
-            //'L': {
-            //    text: 'Aprovar',
-            //    btnClass: 'btn-success',
-            //    isHidden: true,
-            //    action: function () {
-            //        if (observacaoStatus && observacaoStatus.indexOf('F') > -1) {
-            //            alteraStatusPedido('L', compraId)
-            //        } else {
-            //            var objEnvio = {};
-            //            objEnvio.status = 'L'
-            //            objEnvio.codigo = compraId;
-            //            atualizarStatus(objEnvio);
-            //        }
+    //    },
+    //    onContentReady: function () {
+    //        //var self = this;
+    //        //var statusPedido = sessionStorage.getItem("pedidoStatus");
+    //        //if (statusPedido) {
+    //        //    for (var i = 0; i < statusTransicao.length; i++) {
+    //        //        self.buttons[statusTransicao[i]].show();
+    //        //    }
+    //        //    if (statusPedido === 'A') {
 
-            //    }
-            //},
-            'Confirmar': {
-                text: 'Sim',
-                btnClass: 'btn-primary',
-                action: function () {
-                    geraPedidoSalvar('A');
-                }
-            },
-            'Cancelar': {
-                text: 'Não',
-                btnClass: 'btn-danger',
-                action: function () {
-                    //    if (observacaoStatus && observacaoStatus.indexOf('C') > -1) {
-                    //        alteraStatusPedido('C', compraId)
-                    //    }
-                    //    else {
-                    //        objEnvio = {};
-                    //        objEnvio.codigo = compraId;
-                    //        objEnvio.status = 'C';
-                    //        atualizarStatus(objEnvio);
-                    //    }
+    //        //        self.buttons.change.show();
 
-                    //    //var objEnvio = {};
-                    //    //objEnvio.status = 'C'
-                    //    //objEnvio.codigo = compraId;
-                    //    //atualizarStatus(objEnvio);
-                    //}
-                },
-            }
-            //'A': {
-            //    isHidden: true,
-            //    text: 'Editar',
-            //    btnClass: 'btn-primary',
-            //    action: function () {
-            //        if (observacaoStatus && observacaoStatus.indexOf('A') > -1) {
-            //            alteraStatusPedido('A', compraId)
-            //        }
-            //        else {
-            //            var objEnvio = {};
-            //            objEnvio.status = 'A'
-            //            sessionStorage.setItem('Editar', '1');
-            //            objEnvio.codigo = compraId;
-            //            atualizarStatus(objEnvio);
-            //        }
-            //    }
-            //},
-            //back: {
-            //    text: 'Voltar',
-            //    btnClass: 'btn-info'
-            //},
-        },
-        onContentReady: function () {
-            //var self = this;
-            //var statusPedido = sessionStorage.getItem("pedidoStatus");
-            //if (statusPedido) {
-            //    for (var i = 0; i < statusTransicao.length; i++) {
-            //        self.buttons[statusTransicao[i]].show();
-            //    }
-            //    if (statusPedido === 'A') {
+    //        //    } 
+    //        //} else {
+    //        //    self.buttons.F.show();
+    //        //    self.buttons.change.show();
+    //        //}
 
-            //        self.buttons.change.show();
-
-            //    } 
-            //} else {
-            //    self.buttons.F.show();
-            //    self.buttons.change.show();
-            //}
-
-        }
-    });
+    //    }
+    //});
 }
-function geraPedidoSalvar(status) {
+function geraPedidoSalvar(status, objAtualizaStatus) {
     $('.selectpicker').selectpicker('hide');
     $(".navbar.navbar-default.navbar-fixed-top").addClass('ocultarElemento');
     $(".bg_load").show();
@@ -1084,7 +1017,7 @@ function geraPedidoSalvar(status) {
     controleTempo("Criando objeto pedidoAtributo: ")
     pedidoEnvio.pedidoAtributo = criaArrayAtributo($("#pnlAttrPed"));
     pedidoEnvio.produtoTabelaPreco = criaArrayPrecoGrupo();
-
+    pedidoEnvio.parametros = objAtualizaStatus;
     controleTempo("Criado objeto pedidoAtributo: ")
     console.log('============================')
     controleTempo("Cadastrando: ")
@@ -1108,6 +1041,181 @@ function criaObjetoSalvarGrupoEmpresas() {
     console.log({ grupoEmpresa: grpEmpEnvio });
     salvarAtualizarGrupoEmpresas({ grupoEmpresa: grpEmpEnvio });
 }
+function geraDadosValor(attrEnvio) {
+    var precisao = $("#txtNumValMax").data('settings').precision;
+    attrEnvio.casaDecimal = precisao;
+    attrEnvio.valorMaximo = precisao ?
+        $("#txtNumValMax").maskMoney('unmasked')[0] :
+        parseInt($("#txtNumValMax").val().replace(/\./g, ''));
+
+    attrEnvio.valorMinimo = precisao ?
+        $("#txtNumValMin").maskMoney('unmasked')[0] :
+        parseInt($("#txtNumValMin").val().replace(/\./g, ''));
+
+    attrEnvio.valorDefault = attrEnvio.tipo > 0 && attrEnvio.tipo < 4 ?
+        precisao ?
+            $("#txtNumValDef").maskMoney('unmasked')[0].toString() :
+            $("#txtNumValDef").val().replace(/\./g, '') :
+        attrEnvio.tipo == 0 || attrEnvio.tipo == 4 ?
+            $("#txtNumValDef").val() :
+            $("input[name='radioBool']:checked").val() !== "-1" ?
+                $("input[name='radioBool']:checked").val() :
+                '';
+
+    return attrEnvio;
+}
+function excluirAtributo(idAttr) {
+    if (permissoesUsuarioLogado.indexOf('Excluir Atributos') === -1) {
+        semAcesso();
+    } else {
+        $.confirm({
+            icon: 'fa fa-warning',
+            type: 'red',
+            title: 'Excluir Atributo',
+            content: 'Ao confirmar essa operação, este atributo será excluído permanentemente. Tem certeza que deseja prosseguir?',
+            containerFluid: true,
+            buttons: {
+                'Confirmar': {
+                    text: 'Sim',
+                    btnClass: 'btn-primary',
+                    action: function () {
+
+                        $(".bg_load").show();
+                        $(".wrapper").show();
+                        $('.selectpicker').selectpicker('hide');
+                        $(".navbar.navbar-default.navbar-fixed-top").addClass('ocultarElemento');
+
+                        var attrEnvio = {};
+
+                        attrEnvio.tipoAtributoFilhos = [{ idTipoAtributo: idAttr }];
+
+                        excluirDadosAtributo(attrEnvio);
+                    }
+                },
+                'Cancelar': {
+                    text: 'Não',
+                    btnClass: 'btn-danger',
+                }
+            }
+        });
+    }
+}
+function salvarAtributo() {
+    if ($("#txtDescAttr").val() && $("#txtNumOrdem").val()) {
+        if ($("#ckbAttrLista").bootstrapSwitch('state') && dtbCad.data().count() < 2) {
+            $.confirm({
+                icon: 'fa fa-warning',
+                theme: 'modern',
+                animation: 'scale',
+                typeAnimated: true,
+                type: 'red',
+                title: 'Operação Invalida!',
+                containerFluid: true,
+                content: 'Para salvar uma lista é necessário cadastrar no mínimo 2 itens. Cancele a operação ou cadastre os itens para prosseguir!',
+                buttons: {
+                    ok: {
+                        btnClass: 'btn-red',
+                        text: 'Ok'
+                    },
+                },
+            });
+        }
+        else {
+            $('#listaCadastrados_paginate').css('display', 'none');
+            $(".bg_load").show();
+            $(".wrapper").show();
+            $('.selectpicker').selectpicker('hide');
+            $(".navbar.navbar-default.navbar-fixed-top").addClass('ocultarElemento');
+
+            var attrEnvio = {};
+            attrEnvio.idTipoAtributo = parseInt($("#txtIdAtributo").val());
+            attrEnvio.descricao = $("#txtDescAttr").val();
+            attrEnvio.ordem = parseInt($("#txtNumOrdem").val());
+            attrEnvio.ativo = $("#ckbStatusAttr").bootstrapSwitch('state');
+            attrEnvio.obrigatorio = $("#ckbAttrObg").bootstrapSwitch('state');
+            attrEnvio.lista = $("#ckbAttrLista").bootstrapSwitch('state');
+            attrEnvio.tipo = parseInt($("#drpTipoAttrCad").val());
+            attrEnvio.multiplaSelecao = $("#ckbAttrLista").bootstrapSwitch('state') && $("#ckbAttrMult").bootstrapSwitch('state');
+            if (!$("#ckbAttrLista").bootstrapSwitch('state') && $("#drpTipoAttrCad").val() !== "5") {
+                attrEnvio = geraDadosValor(attrEnvio);
+            } else {
+                if ($("#drpTipoAttrCad").val() == "5") {
+                    attrEnvio.valorDefault = $("input[name='radioBool']:checked").val() !== "-1" ?
+                        $("input[name='radioBool']:checked").val() :
+                        '';
+                }
+                attrEnvio.valorMinimo = -1;
+                attrEnvio.valorMaximo = -1
+            }
+            attrEnvio.classe = $("#ckbTipoAttrModal").bootstrapSwitch('state') ? 'Produto' : 'Pedido';
+            attrEnvio.tipoAtributoEspecies = $("#ckbTipoAttrModal").bootstrapSwitch('state') ? retornaSecaoEspecieAttr() : [];
+            attrEnvio.tipoAtributoFilhos = $("#ckbAttrLista").bootstrapSwitch('state') ? retornaItensAttr() : [];
+            var objEnvio = { tipoAtributo: attrEnvio };
+            console.log(objEnvio);
+            salvarDadosAtributo(objEnvio);
+        }
+    } else {
+        $.confirm({
+            icon: 'fa fa-warning',
+            theme: 'modern',
+            animation: 'scale',
+            typeAnimated: true,
+            type: 'red',
+            title: 'Operação Invalida!',
+            containerFluid: true,
+            content: 'Os campos descrição e ordem são obrigatórios. Cancele a operação ou preencha os campos obrigatórios para prosseguir!',
+            buttons: {
+                ok: {
+                    btnClass: 'btn-red',
+                    text: 'Ok'
+                },
+            },
+        });
+    }
+}
+function retornaSecaoEspecieAttr() {
+    var sec = $("#drpSecCad").val(), seg = $("#drpSegCad").val(), esp = $("#drpEspCad").val(), retorno = [];
+    if (sec) {
+        if (esp)
+            for (var i = 0; i < esp.length; i++)
+                retorno.push({ idSecao: parseInt(esp[i].split('-')[0]), idEspecie: parseInt(esp[i].split('-')[1]) });
+        else for (var i = 0; i < sec.length; i++)
+            retorno.push({ idSecao: parseInt(sec[i].split('-')[0]) });
+    } else if (seg) {
+        var opt = $("#drpSecCad option").map(function (_, o) {
+            return $(o).val();
+        }).get();
+        for (var i = 0; i < opt.length; i++)
+            retorno.push({ idSecao: parseInt(opt[i].split('-')[0]) });
+    }
+    return retorno;
+}
+function retornaItensAttr() {
+    var retorno = [], dados = dtbCad.data().toArray();
+    for (var i = 0; i < dados.length; i++) {
+        var itemRet = {};
+        itemRet.idTipoAtributo = dados[i].idTipoAtributo > 0 ? dados[i].idTipoAtributo : 0;
+        itemRet.descricao = dados[i].descricao;
+        itemRet.ordem = dados[i].ordem;
+        itemRet.ativo = dados[i].status;
+        itemRet.valorDefault = dados[i].preSelecionado ? '1' : '0';
+        itemRet.tipoAtributoEspecies = $("#ckbTipoAttrModal").bootstrapSwitch('state') ?
+            retornaSecaoEspecieAttrItem(dados[i].secoes.split(';'), dados[i].especies.split(';')) :
+            [];
+        retorno.push(itemRet);
+    }
+    return retorno;
+}
+function retornaSecaoEspecieAttrItem(sec, esp) {
+    var retorno = [];
+    if (esp.length && esp[0] !== "")
+        for (var i = 0; i < esp.length; i++)
+            retorno.push({ idSecao: parseInt(esp[i].split('-')[0]), idEspecie: parseInt(esp[i].split('-')[1]) });
+    else if (sec.length && sec[0] !== "")
+        for (var i = 0; i < sec.length; i++)
+            retorno.push({ idSecao: parseInt(sec[i].split('-')[0]) });
+    return retorno;
+}
 function salvarProduto() {
     //aqui produto
     var produtoEnvio = {};
@@ -1118,6 +1226,9 @@ function salvarProduto() {
     produtoEnvio.produtoTabelaPreco = criaArrayPrecoGrupo();
     console.log(produtoEnvio);
     salvarProdutoAtualizado(produtoEnvio)
+}
+function retornaReferenciasGrade() {
+
 }
 function retornaPackCadColunas(tamanhos) {
     var colunasPack = [{ "data": "referenciaItem", 'className': 'separaDireita' }, { "data": "descricaoCor", 'className': 'separaDireita' }];
@@ -1205,8 +1316,8 @@ function criaObjAttrBool(el, retornoArray) {
         var objRetorno = {};
         objRetorno.idPedido = compraId ? parseInt(compraId) : 0;
         objRetorno.idProduto = parseInt($("#txtIDProd").val());
-        objRetorno.idTipoAtributo = parseInt($(el[i]).parent().attr('id').replace(/\D/g, ""));
-        objRetorno.valor = $(el[i]).hasClass('active') ? 'true' : 'false';
+        objRetorno.idTipoAtributo = parseInt($(el[i]).attr('id').replace(/\D/g, ""));
+        objRetorno.valor = $(el[i]).bootstrapSwitch('state') ? "1" : "0";
         retornoArray.push(objRetorno);
     }
     return retornoArray;

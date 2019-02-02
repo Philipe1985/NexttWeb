@@ -33,11 +33,17 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
         {
             try
             {
+                var status = "'";
+                if (!string.IsNullOrEmpty(parametros.Status))
+                {
+                    status = "', @Ativo = " + (parametros.Status == "1") ;
+                }
                 return _Db.MultiplosResults("[dbo].[pr_consulta_produto_GESTAO_COMPRAS]" +
                                     " @IDSecao = '" + parametros.Secoes +
                                     "', @IDEspecie = '" + parametros.Especies +
                                     "', @IDSegmento = '" + parametros.Segmentos +
-                                    "', @IDMarca = '" + parametros.Marcas +
+                                    status +
+                                    ", @IDMarca = '" + parametros.Marcas +
                                     "', @ReferenciaForncedor = '" + parametros.ReferenciaFornecedor +
                                     "', @AtributoFornecedor = '" + parametros.AttrFornecedor +
                                     "', @IDFornecedor = '" + parametros.IDFornecedor +
@@ -63,8 +69,8 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
                                    "', @IDFornecedor = '" + parametros.IDFornecedor +
                                    "', @Especie = ''")
                                    .With<Especie>()
-                                   .With<Atributos>()
-                                   .With<Atributos>()
+                                   .With<Atributo>()
+                                   .With<Atributo>()
                                    .Executar();
 
             }
@@ -83,7 +89,7 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
                                     .With<Fornecedor>()
                                     .With<Marca>()
                                     .With<Segmento>()
-                                    .With<Atributos>()
+                                    .With<Atributo>()
                                     .Executar();
             }
             catch (Exception ex)
@@ -100,10 +106,11 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
                                     " @IDProduto = '" + parametros.Codigo +
                                     "', @CadastroNovo = " + true +
                                      ", @IDFornecedor = '" + parametros.IDFornecedor + "'")
+                                    .With<StatusPedido>()
                                     .With<Fornecedor>()
                                     .With<Marca>()
                                     .With<Segmento>()
-                                    .With<Atributos>()
+                                    .With<Atributo>()
                                     .With<GrupoTamanho>()
                                     .With<Cor>()
                                     .With<FormaPgto>()
@@ -112,8 +119,8 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
                                     .With<Grade>()
                                     .With<GrupoFilial>()
                                     .With<GrupoFilial>()
-                                    .With<Atributos>()
-                                    .With<Atributos>()
+                                    .With<Atributo>()
+                                    .With<Atributo>()
                                     .With<Comprador>()
                                     .With<UnidadeMedida>()
                                     .With<ConfigDefault>()
@@ -134,6 +141,7 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
                 return _Db.MultiplosResults("[dbo].[pr_informacao_cadastro_produto_dados_inicial_GESTAO_COMPRAS]" +
                                    " @IDProduto = '" + parametros.Codigo +
                                    "', @CadastroNovo = " + false )
+                                   .With<StatusPedido>()
                                    .With<DadosPrePedido>()
                                    .With<ReferenciaProduto>()
                                    .With<GrupoTamanho>()
@@ -144,8 +152,8 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
                                    .With<Grade>()
                                    .With<GrupoFilial>()
                                    .With<GrupoFilial>()
-                                   .With<Atributos>()
-                                   .With<Atributos>()
+                                   .With<Atributo>()
+                                   .With<Atributo>()
                                    .With<Fornecedor>()
                                    .With<Comprador>()
                                    .With<UnidadeMedida>()
@@ -249,24 +257,37 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
                     var paramIDFoto = command.CreateParameter();
                     var paramFoto = command.CreateParameter();
                     var paramExt = command.CreateParameter();
+                    var paramIDProduto = command.CreateParameter();
 
                     paramID.ParameterName = "@IDPedido";
                     paramIDFoto.ParameterName = "@IDProdutoFoto";
                     paramFoto.ParameterName = "@Imagem";
                     paramExt.ParameterName = "@Extensao";
-
-                    paramID.Value = fotoJson.IDProduto;
+                    paramIDProduto.ParameterName = "@IDProduto";
+                    if (!fotoJson.IsCadProduto)
+                    {
+                        paramID.Value = fotoJson.IDProduto;
+                        paramIDProduto.Value = 0;
+                    }
+                    else
+                    {
+                        paramID.Value = 0;
+                        paramIDProduto.Value = fotoJson.IDProduto;
+                    }
+                    
                     paramIDFoto.Value = fotoJson.IDProdutoFoto;
                     paramFoto.Value = fotoJson.Imagem;
                     paramExt.Value = fotoJson.Extensao;
 
 
                     paramID.DbType = DbType.Int32;
+                    paramIDProduto.DbType = DbType.Int32;
                     paramIDFoto.DbType = DbType.Guid;
                     paramFoto.DbType = DbType.Binary;
                     paramExt.DbType = DbType.String;
 
                     command.Parameters.Add(paramID);
+                    command.Parameters.Add(paramIDProduto);
                     command.Parameters.Add(paramIDFoto);
                     command.Parameters.Add(paramFoto);
                     command.Parameters.Add(paramExt);
@@ -309,7 +330,7 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
                                     "', @IDFornecedor = '" + parametros.IDFornecedor + "'")
                                       .With<DadosCompraFornecedor>()
                                       .With<DadosUltimaCompra>()
-                                      .With<Atributos>()
+                                      .With<Atributo>()
                                       .Executar();
 
             }

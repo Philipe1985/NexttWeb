@@ -11,7 +11,7 @@ using System.Web.Http;
 
 namespace Nextt_Gestao_Compra.Apresentacao.API.Controllers.Gerenciamento
 {
-    [RoutePrefix("api/gestaocompra/gerenciamento/compra")]
+    [RoutePrefix("api/gestaocompra/gerenciamento/compra")] 
     public class CompraController : PadraoController
     {
         private readonly IAppServicoCompra _compraServico;
@@ -237,6 +237,7 @@ namespace Nextt_Gestao_Compra.Apresentacao.API.Controllers.Gerenciamento
                 {
                     Extensao = dadosContent.Contents[0].Headers.ContentType.ToString().Split(new char[] { '/' }).ToList().ElementAt(1).ToUpper(),
                     IDProduto = int.Parse(dadosContent.Contents[2].ReadAsStringAsync().Result),
+                    IsCadProduto = bool.Parse(dadosContent.Contents[3].ReadAsStringAsync().Result),
                     Imagem = dadosContent.Contents[0].ReadAsByteArrayAsync().Result
                 };
 

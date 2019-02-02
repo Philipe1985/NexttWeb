@@ -8,5 +8,6 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
         public Byte[] Imagem { get; set; }
         public Guid IDProdutoFoto { get; set; }
         public string Extensao { get; set; }
+        public bool IsCadProduto { get; set; }
     }
 }

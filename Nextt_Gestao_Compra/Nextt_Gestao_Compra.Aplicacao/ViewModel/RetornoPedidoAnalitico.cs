@@ -70,7 +70,7 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
             DescricaoProduto = pedidoCadastrado.DescricaoProduto;
             DescricaoReduzidaProduto = pedidoCadastrado.DescricaoReduzidaProduto;
             PrecoCusto = pedidoCadastrado.PrecoCusto;
-            PrecoVenda = pedidoCadastrado.PrecoVenda;
+            PrecoVenda = pedidoCadastrado.PrecoVenda;   
             Desconto = pedidoCadastrado.Desconto;
             DescontoPontualidade = pedidoCadastrado.DescontoPontualidade;
             Acrescimo = pedidoCadastrado.Acrescimo;
@@ -82,7 +82,7 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
             QualidadeQtde = pedidoCadastrado.QualidadeQtde;
             IDUnidadeMedida = pedidoCadastrado.IDUnidadeMedida.ToString();
             Status = pedidoCadastrado.Status;
-            DescricaoStatus = pedidoCadastrado.DescricaoStatus;
+            DescricaoStatus = pedidoCadastrado.DescricaoStatusPedido;
         }
     }
 }

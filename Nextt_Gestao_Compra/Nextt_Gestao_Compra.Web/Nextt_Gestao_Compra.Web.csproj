@@ -1620,11 +1620,13 @@
     <Content Include="Assets\images\favicon\ms-icon-150x150.png" />
     <Content Include="Assets\images\favicon\ms-icon-310x310.png" />
     <Content Include="Assets\images\favicon\ms-icon-70x70.png" />
+    <Content Include="Assets\images\green circle transparent.png" />
     <Content Include="Assets\images\nexttLogo.png" />
     <Content Include="Assets\images\nexttLogoCentral.png" />
     <Content Include="Assets\images\produto\add-to-shopping-cart-47994.png" />
     <Content Include="Assets\images\produto\camisaCs.jpg" />
     <Content Include="Assets\images\produto\camisaFr.jpg" />
+    <Content Include="Assets\images\red-circle.png" />
     <Content Include="Assets\images\small\bars.png" />
     <Content Include="Assets\images\small\bars_active.png" />
     <Content Include="Assets\images\small\icons8-checked.png" />
@@ -1639,6 +1641,8 @@
     <Content Include="Assets\js\agenda.js" />
     <Content Include="Assets\js\animations.js" />
     <Content Include="Assets\js\application.js" />
+    <Content Include="Assets\js\atributo-manager.js" />
+    <Content Include="Assets\js\cadastro-atributo.js" />
     <Content Include="Assets\js\cadastro-compra.js" />
     <Content Include="Assets\js\cadastro-fornecedor.js" />
     <Content Include="Assets\js\calculosRelatorio.js" />
@@ -2472,6 +2476,8 @@
     <Content Include="Assets\fonts\font-awesome-action\fonts\FontAwesome.otf" />
     <Content Include="Gerenciamento\GrupoEmpresa.cshtml" />
     <Content Include="Gerenciamento\GrupoEmpresa2.cshtml" />
+    <Content Include="Gerenciamento\Atributos.cshtml" />
+    <Content Include="Cadastro\Atributo.cshtml" />
     <None Include="packages.config" />
     <Content Include="Gerenciamento\Pedido.cshtml" />
     <Content Include="Cadastro\Compra.cshtml" />

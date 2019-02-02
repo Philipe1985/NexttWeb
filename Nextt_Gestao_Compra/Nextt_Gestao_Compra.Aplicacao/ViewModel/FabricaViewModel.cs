@@ -86,20 +86,27 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
         }
         public ComboFiltroVM Criar(Marca marca)
         {
+            var dadosAdd = !marca.Associada ?
+                string.IsNullOrEmpty(marca.GrupoEmpresa) ?
+                new List<string>() :
+                new List<string> { marca.GrupoEmpresa } :
+            new List<string> { "selected" };
             return new ComboFiltroVM
             {
                 Valor = marca.IDMarca.ToString(),
                 Token = marca.IDMarca + " " + marca.Nome,
-                Descricao = marca.Nome
+                Descricao = marca.Nome,
+                DadosAdicionais = dadosAdd
             };
         }
 
-        public ComboFiltroVM Criar(Atributos atributos)
+        public ComboFiltroVM Criar(Atributo atributos, bool isCadastro = false)
         {
-            var dadosAdd = string.IsNullOrEmpty(atributos.ValorDefault) ? new List<string>() : new List<string>
-            {
-                atributos.ValorDefault
-            };
+            var dadosAdd = !isCadastro ?
+                string.IsNullOrEmpty(atributos.ValorDefault) ?
+                new List<string>() :
+                new List<string> { atributos.ValorDefault } :
+                new List<string> { atributos.Ordem.ToString() };
 
             return new ComboFiltroVM
             {

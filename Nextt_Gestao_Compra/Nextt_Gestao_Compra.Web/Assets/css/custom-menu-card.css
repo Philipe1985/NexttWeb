@@ -9,7 +9,7 @@
     background: white;
     padding: 1rem 1rem 1rem 1rem;
     border-radius: 0.5rem;
-    border:1px solid black;
+    border: 1px solid black;
     box-shadow: 7px 7px 30px -5px rgba(0,0,0,0.1);
     margin-bottom: 2rem;
 }
@@ -19,6 +19,7 @@
         color: white;
         /*cursor: pointer;*/
     }
+
     .wrap.bg-blue:hover {
         cursor: pointer;
     }
@@ -52,6 +53,11 @@ h2 {
     font-size: 1.6rem;
 }
 
+.display-5-5 {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 1.3rem;
+}
+
 .mbr-bold {
     font-weight: 700;
 }
@@ -69,66 +75,32 @@ p {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*By DjelalEddine@gmail.com*/
-#user .avatar {
-    width: 60px;
+.ui-autocomplete {
+    max-height: 200px!important;
+    overflow-y: auto!important;
+    min-height: 80px!important;
+    font-size: 14px !important;
+    text-align: left !important;
+    background-color: #fff !important;
+    -webkit-background-clip: padding-box !important;
+    background-clip: padding-box !important;
+    border: 1px solid #ccc !important;
+    border: 1px solid rgba(0,0,0,.15) !important;
+    border-radius: 4px !important;
+    z-index:3000 !important;
+    -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175) !important;
+    box-shadow: 0 6px 12px rgba(0,0,0,.175) !important;
 }
 
-    #user .avatar > img {
-        width: 50px;
-        height: 50px;
-        border-radius: 10%;
-    }
-/*Card*/
-#user .panel-thumb {
-    margin: 5px auto;
-    text-align: center;
-}
-
-    #user .panel-thumb .avatar-card {
-        text-align: center;
-        height: 200px;
-        margin: auto;
-        overflow: hidden;
+    .ui-autocomplete .ui-menu-item a {
+        color: #262626 !important;
+        cursor: pointer !important;
+        text-decoration: none !important;
+        background-color: inherit !important;
     }
 
-        #user .panel-thumb .avatar-card > img {
-            max-width: 200px;
-            max-height: 200px;
+        .ui-autocomplete .ui-menu-item a:focus {
+            color: #fff !important;
+            text-decoration: none !important;
+            background-color: #337ab7 !important;
         }
-
-/* table*/
-#user .panel-table {
-    animation-duration: 3s;
-}
-
-    #user .panel-table .panel-body .table {
-        margin: 0px;
-    }
-
-    #user .panel-table .panel-body {
-        padding: 0px;
-    }
-
-        #user .panel-table .panel-body .table-bordered > thead > tr > th {
-            text-align: center;
-        }
-
-    #user .panel-table .panel-footer {
-        height: 60px;
-        padding: 0px;
-    }

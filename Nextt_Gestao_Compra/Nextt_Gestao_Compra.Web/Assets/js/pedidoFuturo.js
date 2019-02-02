@@ -6,7 +6,7 @@ var currentDate = twoDigitDate + "/" + twoDigitMonth + "/" + fullDate.getFullYea
 
 var coresGrade = [], coresNovasCadastradas = [], tamanhosGrade = [], tamanhoTexto = [], referenciaGrade = [], tabelaPackCadastrados = [], tamanhoConfeccao = [],
     tamanhoCalcados = [], specialKeys = new Array(), tbDistribuicao, valorInicialPed, tabelaPack, tabResponsive, dadoPackOriginal, gridNome, titPack = undefined,
-    avanca = false, retorna = false, dadosPck;
+    avanca = false, retorna = false, dadosPck, prodBloqueado = false;
 
 var current = new Date().getMonth(),
     slides, currentIndex, grupoRelacionar, gradeAlterada = false;
@@ -428,7 +428,7 @@ $(document).ready(function () {
         } else {
             $(element).attr("data-valor-inicial", valorInformado.toString());
         }
-        console.log(valorInicial)
+        console.log(valorInicial);
     });
     $(document).on('keyup', '.limiteQtd10000', function (event) {
         var element = event.target;
@@ -449,8 +449,8 @@ $(document).ready(function () {
                 col = $(this).parent().children().index($(this));
                 row = $(this).parent()[0];
                 gridNome = $(this).closest('table').attr('id');
-                valorInicial = $(cell).html();
-                $(this).html(geraEditor(1, $(this).html()))
+                valorInicial = $(cell).html().replace(/[^\d]/g, '');
+                $(this).html(geraEditor(1, $(this).html().replace(/[^\d]/g, '')))
                 $(this).find('input[type="text"]').addClass("limiteQtd10000");
                 $(this).find('input[type="text"]').focus().select();
             }
@@ -464,12 +464,12 @@ $(document).ready(function () {
             cell = this;
             col = $(this).parent().children().index($(this));
             row = $(this).parent().index();
-            valorInicialPed = $(cell).html();
+            valorInicialPed = $(cell).html().replace(/[^\d]/g, '');
             if ($(this).is('td')) {
                 gridNome = $(this).closest('table').attr('id');
 
 
-                $(this).html(geraEditorPack(1, $(this).html()))
+                $(this).html(geraEditorPack(1, $(this).html().replace(/[^\d]/g, '')))
                 $(this).find('input[type="text"]').focus().select();
             }
 
@@ -749,8 +749,8 @@ $(document).ready(function () {
         }
         validaMudancaGrade();
     });
-    $('#drpClassificacao').on('change', function (e) {
-        //atualizaCbClassificacao();
+    $('#drpMarc').on('change', function (e) {
+        if ($('#drpMarc').val()) insereVlrVendaObrigatorio();
     });
     $('#drpTamanhoCategoria').on('change', function (e) {
         var objEnvio = {};
@@ -758,6 +758,12 @@ $(document).ready(function () {
         geraCargaTamanhos(objEnvio);
     });
     $('#drpCNPJ').on('change', function (e) {
+
+        var elbool = $('.attrBool');
+        for (var i = 0; i < elbool.length; i++) {
+            console.log($(elbool[i]).bootstrapSwitch('indeterminate'));
+        }
+        
         var objEnvio = {};
         //if (parseInt($('#txtIDProd').val()) > 0) {
         objEnvio.idFornecedor = $('#drpCNPJ').val();
@@ -865,6 +871,7 @@ function carregar() {
             } else {
                 var objEnvio = {};
                 objEnvio.codigo = cadastroNovoProduto;
+                carregaImagemProduto(objEnvio);
                 editarProduto(objEnvio);
             }
         } else {
@@ -1564,7 +1571,7 @@ function atualizaDadosPack() {
     if (isNaN(param) || param < 0) {
         $('#' + gridNome).find('.txtInteiro').focus().select();
     } else {
-        (($('#' + gridNome).find('.txtInteiro').val() === valorInicialPed) ? $(cell).html(valorInicialPed) : $(cell).html($('#' + gridNome).find('.txtInteiro').val()));
+        (($('#' + gridNome).find('.txtInteiro').val() === valorInicialPed) ? $(cell).html(parseInt(valorInicialPed).toLocaleString('pt-BR')) : $(cell).html($('#' + gridNome).find('.txtInteiro').val()));
         if (param !== parseInt(valorInicialPed)) {
             var totalQtdItens = tbPlanejamento.rows().data().toArray().sum("totalCor") * param;
             tbPlanejamento.rows().every(function (rowIdx, tableLoop, rowLoop) {
@@ -1604,7 +1611,7 @@ function atualizaDadosPack() {
             if ($(cell).html()) {
                 col = $(cell).parent().children().index($(cell));
                 row = $(cell).parent()[0];
-                valorInicial = $(cell).html();
+                valorInicial = $(cell).html().replace(/[^\d]/g, '');
                 $(cell).html(geraEditor(1, valorInicial));
                 $(cell).find('input[type="text"]').focus().select();
             }
@@ -1626,7 +1633,7 @@ function perdeFoco() {
         valorInicial = 0
         txtref.val('0')
     }
-    ((txtref.val() === valorInicial) ? $(cell).html(valorInicial) : $(cell).html(txtref.val()));
+    ((txtref.val() === valorInicial) ? $(cell).html(parseInt(valorInicial).toLocaleString('pt-BR')) : $(cell).html(txtref.val()));
     if (param !== parseInt(valorInicial)) {
         var qtdPackAtual = tbPlanejamento.row(row).data().qtdePack;
         if (!qtdPackAtual) {
@@ -1653,8 +1660,8 @@ function perdeFoco() {
         if ($(cell).html()) {
             col = $(cell).parent().children().index($(cell));
             row = $(cell).parent()[0];
-            valorInicial = $(cell).html();
-            $(cell).html(geraEditor(1, $(cell).html()));
+            valorInicial = $(cell).html().replace(/[^\d]/g, '');
+            $(cell).html(geraEditor(1, $(cell).html().replace(/[^\d]/g, '')));
             $(cell).find('input[type="text"]').addClass("limiteQtd10000");
             $(cell).find('input[type="text"]').focus().select();
         } else {
@@ -1673,7 +1680,7 @@ function perdeFoco() {
         if ($(cell).html()) {
             col = $(cell).parent().children().index($(cell));
             row = $(cell).parent()[0];
-            valorInicial = $(cell).html();
+            valorInicial = $(cell).html().replace(/[^\d]/g, '');
             $(cell).html(geraEditor(1, valorInicial));
             $(cell).find('input[type="text"]').focus().select();
         }
@@ -2075,7 +2082,7 @@ function criaObjetoPrecoGrupo(precos, pnlId) {
     }
 }
 function retornaContainerVenda(desc, elementoCont, idPnl) {
-    var classeObrigatorio = /*obr ? '<span class="obrigatorio"> *</span>' : */'';
+    var classeObrigatorio = '<span class="obrigatorio ocultarElemento"> *</span>';
     var novoAttr = '<div class="col-md-2 col-sm-2 col-xs-12">' +
         '<div class="form-group">' +
         '<label class="form-label">' + desc + '</label>' + classeObrigatorio +
@@ -2654,8 +2661,9 @@ function retornaElementoAtributo(validar, tipo, val, id, precisao, max, min) {
             elemento = '<input name="cbAttr' + id + '" data-initial-val="' + val + '" data-max-val="' + max + '" data-min-val="' + min + '" id="cbAttr' + id + '" type="text" class="form-control attrData' + validar + '" />';
             break;
         case 'Boleano':
-            var ativar = val === 'true' ? ' active' : '';
-            elemento = '<input name="cbAttr' + id + '" id="cbAttr' + id + '" type="checkbox" class="attrBool" data-on-color="success" data-off-color="danger" data-on-text="Sim" data-off-text="Não" />';
+            console.log(val)
+            var ativar = val === '1' ? ' checked' : !val.length ? ' data-indeterminate="true"':'';
+            elemento = '<input name="cbAttr' + id + '"' + ativar + ' id="cbAttr' + id + '" type="checkbox" class="attrBool' + validar + '" data-on-color="success" data-off-color="danger" data-on-text="Sim" data-off-text="Não" />';
             //'<div id="cbAttr' + id + '" class="btn-group" data-toggle="buttons"><label class="btn btn-primary attrBool' + ativar + '" style="width: 56px">' +
             // '<span class="checkBoxAllow fa fa-check"></span>' +
             // '<span class="nonCheckBoxAllow fa fa-times"></span>' +
@@ -2698,7 +2706,7 @@ function validaValor(e) {
     var valIni = Number($(e).attr("data-initial-val").replace(',', '.'));
 
     if (limMax !== limMin) {
-        var valAtual = parseInt($(e).attr("data-precision")) ? $(e).maskMoney('unmasked')[0] : parseInt($(e).val().replace('.', ''));
+        var valAtual = parseInt($(e).attr("data-precision")) ? $(e).maskMoney('unmasked')[0] : parseInt($(e).val().replace(/\./g, ''));
         var valAtu = valAtual <= limMax && valAtual >= limMin ? valAtual.toString().replace('.', ',') : valIni.toString().replace('.', ',');
         $(e).attr("data-initial-val", valAtu);
         $(e).val(valAtu).maskMoney('mask');
@@ -2758,15 +2766,6 @@ function desabilitaConfiguracaoProduto() {
             actionsBox: false,
         });
     });
-    //custo
-    $("#frmCusto").find('input[type=text]:not([disabled])').attr('disabled', true);
-    $("#frmCusto").find('.selectpicker:not([multiple])').attr('disabled', true);
-    $("#frmCusto").find('.selectpicker[multiple]').each(function () {
-        if (this.length) $(this).find('option:not([disabled])').attr('disabled', true);
-        $(this).selectpicker('destroy').selectpicker({
-            actionsBox: false,
-        });
-    });
     //Atributos
     $("#frmAttrProd").find('input[type=text]:not([disabled])').attr('disabled', true);
     $("#frmAttrProd").find('.selectpicker:not([multiple])').attr('disabled', true);
@@ -2786,22 +2785,14 @@ function desabilitaConfiguracaoProduto() {
         });
     });
     //Referencia Grade
-    $("#drpReferenciaGrade").find('option:not([disabled])').attr('disabled', true);
-    $("#drpReferenciaGrade").selectpicker('destroy').selectpicker({
-        actionsBox: false,
-    });
+    $("#drpReferenciaGrade").find('option:not(:checked)').addClass('oculto');
+    $("#frmGradeReferencia2").addClass("ocultarElemento");
     //Cor Grade
-    $("#drpCoresGrade").find('option:not([disabled])').attr('disabled', true);
-    $("#drpCoresGrade").selectpicker('destroy').selectpicker({
-        actionsBox: false,
-    });
+    $("#drpCoresGrade option:not(:checked)").addClass('oculto');
     $('#frmGradeCor2').addClass("ocultarElemento");
     $('#frmGradeCor3').addClass("ocultarElemento");
     //Tamanho Grade
-    $("#drpTamanhoGrade").find('option:not([disabled])').attr('disabled', true);
-    $("#drpTamanhoGrade").selectpicker('destroy').selectpicker({
-        actionsBox: false,
-    });
+    $("#drpTamanhoGrade").find('option:not(:checked)').addClass('oculto');
     $(".selectpicker").selectpicker('refresh');
 }
 function carregaAtributosPorOrdem(elementos, combos, ordemCarga, isPedido) {
@@ -2895,44 +2886,25 @@ function pesquisarProdutoEditar() {
 }
 function editarReferencia() {
     $.confirm({
-        icon: 'fa fa-pencil-square-o',
-        type: 'blue',
-        title: 'Editar',
+        icon: 'fa fa-trash',
+        type: 'red',
+        title: 'Excluir',
         backgroundDismissAnimation: 'glow',
         containerFluid: true,
-        content: '<div class="col-md-6 form-group">' +
+        content: '<div class="col-md-12 form-group">' +
             '<label class="control-label">Selecione a Referencia</label>' +
             '<select id="drpReferenciaGradeEditar" data-container=".jconfirm-box-container" class="selectpicker show-tick form-control" data-live-search="true"' +
             'data-count-selected-text="Selecionado {0} de {1} Referências" title="0 selecionadas..."' +
             'data-width="100%" data-size="5" data-selected-text-format="count > 4">' + sessionStorage.getItem('referenciaCadastradas') + '</select>' +
-            '</div>' +
-            '<div class="col-md-6 form-group">' +
-            '<label class="control-label">Descrição</label>' +
-            '<input type="text" id="txtDescRef" disabled placeholder="Digite aqui..."  class="form-control">' +
             '</div>',
         buttons: {
             confirm: {
-                text: 'Salvar',
-                btnClass: 'btn-green',
+                text: 'Excluir',
+                btnClass: 'btn-red',
                 action: function () {
-                    var refCad = [];
-                    $('#drpReferenciaGrade option').each(function () {
-                        refCad.push($(this).val());
-                    });
-                    var refAlt = [];
-                    $(this.$content.find('#drpReferenciaGradeEditar option:not(:first)')).each(function () {
-                        refAlt.push($(this).val());
-                    });
-                    var atualizou = refCad.join(',') !== refAlt.join(',');
-                    if (atualizou) {
-                        var cargaUpdated = $.parseHTML(sessionStorage.getItem('referenciaAtualizadas'));
-                        cargaUpdated.shift();
-                        $('#drpReferenciaGrade').html(cargaUpdated);
-                        $('#drpReferenciaGrade').selectpicker('refresh');
-                        sessionStorage.removeItem('referenciaCadastradas');
-                        sessionStorage.removeItem('referenciaAtualizadas');
-
-                        carregaPedidoGrade();
+                    if ($('#drpReferenciaGradeEditar').val()) {
+                        $('#drpReferenciaGrade option[value="' + $('#drpReferenciaGradeEditar').val() + '"]').remove();
+                        $('#drpReferenciaGrade').selectpicker('refresh')
                     } else {
                         $.confirm({
                             icon: 'fa fa-warning',
@@ -2942,7 +2914,7 @@ function editarReferencia() {
                             type: 'red',
                             title: 'Operação Invalida!',
                             containerFluid: true,
-                            content: 'Nenhuma alteração foi realizada. Cancele a operação ou atualize uma referencia para prosseguir!',
+                            content: 'Nenhuma referência foi selecionada. Cancele a operação ou selecione uma referencia para prosseguir!',
                             buttons: {
                                 ok: {
                                     btnClass: 'btn-red',
@@ -2955,8 +2927,8 @@ function editarReferencia() {
                 }
             },
             cancel: {
-                text: 'Cancelar',
-                btnClass: 'btn-red',
+                text: 'Sair',
+                btnClass: 'btn-blue',
                 action: function () {
                     sessionStorage.removeItem('referenciaCadastradas');
                     sessionStorage.removeItem('referenciaAtualizadas');

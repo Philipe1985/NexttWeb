@@ -5,6 +5,7 @@ namespace Nextt_Gestao_Compra.Dominio.Entidades
     public class DadosGerenciamentoProdutoCompra
     {
         public int IDMarca { get; set; }
+        public bool Ativo { get; set; }
         public int IDProduto { get; set; }
         public string CodProduto { get; set; }
         public string CodOriginal { get; set; }

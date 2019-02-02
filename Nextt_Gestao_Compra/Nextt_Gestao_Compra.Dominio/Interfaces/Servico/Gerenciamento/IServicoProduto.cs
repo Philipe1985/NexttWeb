@@ -8,8 +8,8 @@ namespace Nextt_Gestao_Compra.Dominio.Interfaces.Servico.Gerenciamento
     {
         List<IEnumerable> RetornaDadosProdutoEditar(Parametros parametros);
         List<IEnumerable> RetornaDadosCadastroProduto(Parametros parametros);
-        List<TipoLista> RetornaAtributosTipoLista(List<Atributos> _listaAttr);
-        List<Atributos> RetornaAtributosCampos(List<Atributos> _listaAttr);
+        List<TipoLista> RetornaAtributosTipoLista(List<Atributo> _listaAttr);
+        List<Atributo> RetornaAtributosCampos(List<Atributo> _listaAttr);
         List<string> RetornaDescricaoCor(List<Cor> _listaCores);
         List<GrupoTamanho> RetornaTamanhosAtivo(List<GrupoTamanho> _listaTamanho);
         List<Cor> RetornaCoresPrincipais(List<Cor> _listaCores);

@@ -145,9 +145,20 @@ $(document).ready(function () {
             }
         }
     });
+    Array.prototype.contains = function (needle) {
+        for (i in this) {
+            if (this[i] == needle) return true;
+        }
+        return false;
+    };
+    Array.prototype.hasMin = function (attrib) {
+        return this.reduce(function (prev, curr) {
+            return prev[attrib] < curr[attrib] ? prev : curr;
+        });
+    }
     validaSessaoExpirada();
     $(document).on("mouseup touchend", ".bootstrap-select .dropdown-header", function () {
-        $(this).closest('.bootstrap-select').find('select').attr('id').indexOf('OcultaColuna') > 0 ? iniciarOcultacaoColuna(this) : cliqueGrupoDpd(this);
+        cliqueGrupoDpd(this);
     });
     bloqueiaOpcoesPrincipais();
 });
@@ -222,6 +233,11 @@ function navBrandClick() {
                 }
             });
         } else {
+            if (!$('#divValBool').hasClass('ocultarElemento')) {
+                $('#divValBool').addClass('ocultarElemento')
+            }
+             sessionStorage.removeItem('paginacao');
+            sessionStorage.removeItem('parametrosFiltro');
             $('#tabelaUsuarios_paginate').css('display', 'none');
             $('.selectpicker').selectpicker('hide');
             $(".navbar.navbar-default.navbar-fixed-top").addClass('ocultarElemento');
@@ -233,7 +249,7 @@ function navBrandClick() {
     }
 } 
 function validarTexto(texto) {
-    var pallavrasTexto = texto.split(',');
+    var pallavrasTexto = texto.split(' ');
     var retorno = '';
     if (pallavrasTexto.length == 1 && pallavrasTexto[0].length > 50) {
         retorno = 'Informe um texto válido para prosseguir!'
@@ -248,12 +264,13 @@ function validarTexto(texto) {
     return retorno;
 }
 function alteraStatusPedido(status, idPedido) {
+    var txtMensagem = parseInt(idPedido) === 0 ? 'Salvar o Pedido' : 'Atualizar o Pedido';
     $.confirm({
         type: 'blue',
-        title: 'Atualizar Status do Pedido!',
+        title: txtMensagem,
         content:
             '<div class="form-group">' +
-            '<label>Informe o motivo da atualização!</label>' +
+            '<label>Informe o motivo da operação!</label>' +
             '<textarea id="txtAreaCancelPed" maxlength="1000" class="form-control" rows="5"></textarea>' +
             '</div>',
         buttons: {
@@ -272,11 +289,16 @@ function alteraStatusPedido(status, idPedido) {
                         return false;
                     }
 
-                    objEnvio = {};
+                   var objEnvio = {};
                     objEnvio.codigo = idPedido;
                     objEnvio.status = status;
                     objEnvio.observacao = motivo;
-                    atualizarStatus(objEnvio);
+                    if (window.location.href.toLowerCase().indexOf("cadastro/compra") > -1 && (status.toLowerCase() == 'a' || status.toLowerCase() == 'f') ) {
+                        geraPedidoSalvar(status,objEnvio);
+                    } else {
+                        atualizarStatus(objEnvio);
+                    }
+                    
                 }
             },
             cancel: {
@@ -424,7 +446,7 @@ function desconectarSessao() {
 
 function cliqueGrupoDpd(el) {
     var $optgroup = $(el),
-        idSelect = $optgroup.closest('.bootstrap-select').find('select').attr('id'),
+        idSelect = $(document).find('.controls .bootstrap-select.open').find('select').attr('id'),
         $ul = $optgroup.closest("ul"),
         optgroup = $optgroup.data("optgroup"),
         $options = $ul.find("[data-optgroup=" + optgroup + "]").not($optgroup),
@@ -448,7 +470,7 @@ function cliqueGrupoDpd(el) {
         });
     }
     $('.selectpicker').selectpicker('refresh');
-    if (idSelect.indexOf('OcultaColuna') > 0) finalizarOcultacaoColuna();
+    //if (idSelect.indexOf('OcultaColuna') > 0) finalizarOcultacaoColuna();
 }
 
 function mudarSenhaModal() {
@@ -633,9 +655,10 @@ function configuraRangeCalendarioFornecedor(elemento, dataIni, dataFinal) {
     }
 }
 function configuraCombosOpcoes(elemento) {
+    var dtsize = $(elemento).find('option').length < 7 ? "auto" : 7;
     $(elemento).selectpicker('destroy').selectpicker({
-        liveSearch: false,
-        size: "auto",
+        liveSearch: $(elemento).find('option').length > 7,
+        size: dtsize,
         actionsBox: $(elemento).find('option').length > 1,
     });
 }
@@ -653,6 +676,12 @@ function atualizaObjetoMudancaPagina(pg) {
     console.log(paramRetorno)
     return paramRetorno;
 }
+function ajustaCodigoTamanho(str, tamanho) {
+    str = "" + str;
+    if (str.length >= tamanho)
+        return str;
+    return "00000000000000000000000000".substr(0, tamanho - str.length) + str;
+}
 function limparCampos() {
     $('.selectpicker:not([multiple])').selectpicker('val', '');
     $('.selectpicker[multiple]').each(function () {
@@ -665,7 +694,8 @@ function limparCampos() {
     $("input[type=text]").val("");
     $('.selectpicker').selectpicker('refresh');
     $('.dataTable').DataTable().clear().draw();
-
+    sessionStorage.removeItem('paginacao');
+    sessionStorage.removeItem('parametrosFiltro');
 }
 (function () {
     var addRule;
@@ -716,3 +746,7 @@ function limparCampos() {
         createCssClass(className, cssProps, document);
     };
 })();
+
+
+
+

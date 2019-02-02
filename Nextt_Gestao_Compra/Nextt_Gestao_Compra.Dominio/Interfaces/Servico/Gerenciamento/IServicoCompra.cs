@@ -23,8 +23,8 @@ namespace Nextt_Gestao_Compra.Dominio.Interfaces.Servico.Gerenciamento
         List<FotoProduto> RetornaFotosProduto(Parametros parametros);
         FotoProduto SalvarFotosProduto(FotoProduto fotoJson);
         int GravarPedido(string pedidoJson);
-        List<TipoLista> RetornaAtributosTipoLista(List<Atributos> _listaAttr);
-        List<Atributos> RetornaAtributosCampos(List<Atributos> _listaAttr);
+        List<TipoLista> RetornaAtributosTipoLista(List<Atributo> _listaAttr);
+        List<Atributo> RetornaAtributosCampos(List<Atributo> _listaAttr);
 
 
     }

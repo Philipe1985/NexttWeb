@@ -29,7 +29,7 @@ namespace Nextt_Gestao_Compra.Aplicacao.Gerenciador.Produto
 
 
             var listaClassificacao = dadoProd.ElementAt(4).Cast<ClassificacaoFiscal>().OrderBy(x => x.CodigoFiscal).Select(x => fabrica.Criar(x)).ToList();
-            var listaAttrProd = dadoProd.ElementAt(6).Cast<Atributos>().OrderBy(x => x.Ordem).ToList();
+            var listaAttrProd = dadoProd.ElementAt(6).Cast<Atributo>().OrderBy(x => x.Ordem).ToList();
             var listaComprador = dadoProd.ElementAt(7).Cast<Comprador>().OrderBy(x => x.Nome).Select(x => fabrica.Criar(x)).ToList();
             var listaMedida = dadoProd.ElementAt(8).Cast<UnidadeMedida>().OrderBy(x => x.Descricao).Select(x => fabrica.Criar(x)).ToList();
             var ordemProd = listaAttrProd.Where(x => x.IDTipoAtributo == x.IDTipoAtributoKey).Select(x => x.Lista).ToList();
@@ -38,10 +38,11 @@ namespace Nextt_Gestao_Compra.Aplicacao.Gerenciador.Produto
             var listaTabelaPrecoEmpresa = dadoProd.ElementAt(9).Cast<PrecoGrupoEmpresa>().GroupBy(x => x.IDGrupoEmpresa).Select(x => new GrupoEmpresaPrecosVM(x)).ToList();
             var listaCompradorProduto = dadoProd.ElementAt(11).Cast<Comprador>().ToList();
             var listaMarcas = dadoProd.ElementAt(10).Cast<Marca>().ToList();
+            var configPadrao = new DadosConfigPadraoVM(dadoProd.ElementAt(12).Cast<ConfigDefault>().FirstOrDefault());
 
-            
             var filtrosPesquisa = new FiltrosPesquisa(dadosCadastro, produtoServico, fabrica, dadosCores, dadosTamanho, dadosReferencia)
             {
+                DadosConfigPadrao = configPadrao,
                 CompradoresProduto = listaCompradorProduto.Count > 0 ? listaCompradorProduto.OrderBy(x => x.Nome).Select(x => fabrica.Criar(x)).ToList() : null,
                 GrupoEmpresaPrecos = listaTabelaPrecoEmpresa,
                 Compradores = listaComprador,

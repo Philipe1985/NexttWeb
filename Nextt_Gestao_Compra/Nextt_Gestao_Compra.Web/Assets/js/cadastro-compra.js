@@ -1,4 +1,4 @@
-﻿var $frmDados, $frmAttr, $frmCusto, $lgdDados, $lgdAttr, $lgdCusto, isResumo = false, statusTransicao = null, observacaoStatus = null;
+﻿var $frmDados, $frmAttr, $frmCusto, $lgdDados, $lgdAttr, $lgdCusto, isResumo = false, statusTransicao = null;
 
 $(document).ready(function myfunction() {
     (function ($) {
@@ -139,11 +139,13 @@ $(document).ready(function myfunction() {
         });
     });
     $(".finish-change").click(function (e) {
+        console.log(observacaoStatus)
         if (sessionStorage.getItem("pedidoStatus") && sessionStorage.getItem("pedidoStatus") !== 'A') {
             salvarPedidoOpcao();
         }
         else {
             if (validaSalvarPedido()) {
+
                 salvarPedidoOpcao();
             } else if (!isMobile) {
                 $("html, body").animate({ scrollTop: 0 }, 'slow');
@@ -159,6 +161,7 @@ $(document).ready(function myfunction() {
 
     });
     $(document).on('click', '#btnFinalizar', function (e) {
+        console.log(observacaoStatus)
         if (validaSalvarPedido()) {
             atualizarPedidoOpcao('Finalizar Pedido!', 'Este pedido será finalizado e encaminhado para aprovação.', 'F')
             //geraPedidoSalvar('F');
@@ -174,7 +177,7 @@ $(document).ready(function myfunction() {
         } else {
             atualizarPedidoOpcao('Cancelar Pedido!', 'Este pedido será cancelado ao confirmar essa operação.', 'C')
         }
-        
+
         //if (observacaoStatus.indexOf('C') > -1) {
         //    alteraStatusPedido('C', sessionStorage.getItem("pedidoId"))
         //}
@@ -187,12 +190,13 @@ $(document).ready(function myfunction() {
 
     });
     $(document).on('click', '#btnReprovar', function (e) {
+        console.log(observacaoStatus)
         if (permissoesUsuarioLogado.indexOf('Reprovar Qualquer Pedido') === -1) {
             semAcesso();
         } else {
             atualizarPedidoOpcao('Reprovar Pedido!', 'Este pedido será reprovado ao confirmar essa operação.', 'R')
         }
-        
+
         //if (observacaoStatus.indexOf('R') > -1) {
         //    alteraStatusPedido('R', sessionStorage.getItem("pedidoId"))
         //}
@@ -209,7 +213,7 @@ $(document).ready(function myfunction() {
         } else {
             atualizarPedidoOpcao('Aprovar Pedido!', 'Este pedido será aprovado ao confirmar essa operação.', 'L')
         }
-        
+
         //if (observacaoStatus.indexOf('L') > -1) {
         //    alteraStatusPedido('L', sessionStorage.getItem("pedidoId"))
         //}
@@ -227,7 +231,7 @@ $(document).ready(function myfunction() {
         } else {
             atualizarPedidoOpcao('Devolver Pedido!', 'Este pedido retornará para o status aberto, possibilitando alterações.', 'A')
         }
-        
+
         //origemModal = true;
         //if (observacaoStatus.indexOf('A') > -1) {
         //    alteraStatusPedido('A', sessionStorage.getItem("pedidoId"))
@@ -386,6 +390,11 @@ function recolheFieldsetDados(expande) {
             if (!$frmDados.hasClass('collapsed')) $lgdDados.click();
             if (!$frmCusto.hasClass('collapsed')) $lgdCusto.click();
             if ($frmAttr.hasClass('collapsed')) $lgdAttr.click();
+            break;
+        case 4:
+            if (!$frmDados.hasClass('collapsed')) $lgdDados.click();
+            if (!$frmCusto.hasClass('collapsed')) $lgdCusto.click();
+            if (!$frmAttr.hasClass('collapsed')) $lgdAttr.click();
             break;
     }
 }
@@ -632,8 +641,28 @@ function validaDadosProduto() {
         retorno.elemento = attrEl.elemento;
         retorno.isInput = attrEl.isInput;
         retorno.textoMensagem = 'É necessário informar os atributos obrigatórios antes de prosseguir!';
+    } else if (validaPrecoObrigatorio()) {
+        retorno = {};
+        var attrEl = validaPrecoObrigatorio();
+        retorno.field = 4;
+        retorno.elemento = attrEl.elemento;
+        retorno.isInput = attrEl.isInput;
+        retorno.textoMensagem = 'É necessário informar os preçoes de venda obrigatórios antes de prosseguir!';
     }
     return retorno;
+}
+function validaPrecoObrigatorio() {
+    var eleInvalido = null;
+    var elsPreco = $('.prVenda.validaPrEmpresa');
+    for (var i = 0; i < elsPreco.length; i++) {
+        if ($(elsPreco[i]).maskMoney('unmasked')[0] === 0) {
+            eleInvalido = {};
+            eleInvalido.elemento = $(elsPreco[i]);
+            eleInvalido.isInput = true;
+            break;
+        }
+    }
+    return eleInvalido;
 }
 function retornaAttrProdInvalido(pnl) {
     var eleInvalido = null;
@@ -653,6 +682,12 @@ function retornaAttrProdInvalido(pnl) {
                 eleInvalido = {};
                 eleInvalido.elemento = $(elsAtributo[i]);
                 eleInvalido.isInput = false;
+            }
+        } else if ($(elsAtributo[i]).hasClass('attrBool')) {
+            if ($(elsAtributo[i]).bootstrapSwitch('indeterminate')) {
+                eleInvalido = {};
+                eleInvalido.elemento = $(elsAtributo[i]);
+                eleInvalido.isInput = true;
             }
         } else {
             if (!$(elsAtributo[i]).val()) {
@@ -698,7 +733,7 @@ function validaElemento(elAttr, tipo) {
         if (tipo === 4 && !$(elAttr[i]).val().length) {
             valido = false;
         }
-        if (tipo === 5 && !$(elAttr[i]).val().length) {
+        if (tipo === 5 && $(elAttr[i]).bootstrapSwitch('indeterminate')) {
             valido = false;
         }
         if (tipo === 6 && !$(elAttr[i]).val() || !$(elAttr[i]).val().length) {
@@ -758,4 +793,15 @@ function validaExibeMsgAttr() {
             $('#wizard-cad-ped li.active').children()[0].hash.replace('#tab', '');
     console.log(tabAtiva);
     return tabAtiva === 'Atributos';
+}
+function insereVlrVendaObrigatorio() {
+    $('#frmPrecosVenda .prVenda.validaPrEmpresa').removeClass('validaPrEmpresa');
+    $('#frmPrecosVenda .obrigatorio').removeClass('ocultarElemento').addClass('ocultarElemento');
+    var empresas = $('#drpMarc option:selected').attr('data-empresa-obrigatorio');
+    if (empresas) {
+        empresas.split(',').map(obj => {
+            $("#frm" + converterFormatoVariavel(obj)).find('.prVenda').addClass('validaPrEmpresa');
+            $("#frm" + converterFormatoVariavel(obj)).find('.obrigatorio').removeClass('ocultarElemento')
+        })
+    }
 }

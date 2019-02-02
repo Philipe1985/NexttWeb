@@ -367,11 +367,11 @@ namespace Nextt_Gestao_Compra.Apresentacao.API.Controllers
         [AllowAnonymous]
         [Route("ValidarPrimeiroAcesso")]
         [HttpGet]
-        public IHttpActionResult ValidarPrimeiroAcesso()
+        public async Task<IHttpActionResult> ValidarPrimeiroAcesso()
         {
             try
             {
-                SetupImplantacao.CadastrarNovasPermissoes(AppGerenciadorPapel);
+               await SetupImplantacao.CadastrarNovasPermissoes(AppGerenciadorPapel);
 
                 var retorno = SetupImplantacao.PrimeiroAcesso();
 
@@ -384,15 +384,11 @@ namespace Nextt_Gestao_Compra.Apresentacao.API.Controllers
 
                     DateTime localTime = DateTime.SpecifyKind(sourceDate, DateTimeKind.Local);
                     targetTime = new DateTimeOffset(localTime, TimeZoneInfo.Local.GetUtcOffset(localTime));
-                    //DateTimeOffset firstDate = new DateTimeOffset(DateTime.Now,
-                    //                                              new TimeSpan(0, -1, 0));
                     var cookieRetorno = new CookieHeaderValue("session-id", "tempGuest")
                     {
                         Expires = targetTime,
-                        Domain = Request.RequestUri.Host,//ConfigurationManager.AppSettings["ProvedorIP"],
+                        Domain = Request.RequestUri.Host,
                         Path = "/"
-
-                        //Path = "/gerenciamento/configuracao.cshtml"
                     };
                     resp.Headers.AddCookies(new CookieHeaderValue[] { cookieRetorno });
                     return Ok(resp);

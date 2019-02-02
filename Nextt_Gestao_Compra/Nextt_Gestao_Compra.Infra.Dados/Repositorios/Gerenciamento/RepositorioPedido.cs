@@ -18,7 +18,7 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
                                     .With<Fornecedor>()
                                     .With<Marca>()
                                     .With<Segmento>()
-                                    .With<Atributos>()
+                                    .With<Atributo>()
                                     .With<UsuarioGerenciamento>()
                                     .With<StatusPedido>()
                                     .Executar();
@@ -98,8 +98,8 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
                                     .With<Grade>()
                                     .With<GrupoFilial>()
                                     .With<GrupoFilial>()
-                                    .With<Atributos>()
-                                    .With<Atributos>()
+                                    .With<Atributo>()
+                                    .With<Atributo>()
                                     .With<Comprador>()
                                     .With<UnidadeMedida>()
                                     .With<ResumoPedido>()
@@ -108,6 +108,7 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
                                     .With<PrecoGrupoEmpresa>()
                                     .With<Comprador>()
                                     .With<Marca>()
+                                    .With<StatusPedido>()
                                     .Executar();
             }
             catch (Exception ex)

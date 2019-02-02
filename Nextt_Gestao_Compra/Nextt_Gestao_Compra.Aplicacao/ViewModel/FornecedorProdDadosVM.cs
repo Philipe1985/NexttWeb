@@ -19,7 +19,7 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
         public string Observacao { get; set; }
         public List<string> UltimaForma { get; set; }
         public string UltimaCondicao { get; set; }
-        public FornecedorProdDadosVM(List<DadosUltimaCompra> ultimaCompras, DadosCompraFornecedor fornecedor, List<Atributos> atributos)
+        public FornecedorProdDadosVM(List<DadosUltimaCompra> ultimaCompras, DadosCompraFornecedor fornecedor, List<Atributo> atributos)
         {
             if (fornecedor != null)
             {

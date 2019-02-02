@@ -1,0 +1,75 @@
+
+ERROR 2019-01-23 23:41:03 - Erro ao Recuperar Atributos Filtrados
+System.Exception: RepositorioAtributo.BuscaAtributosSintetico: 
+Ocorreu um erro no nível de transporte durante o recebimento de resultados do servidor. (provider: TCP Provider, error: 0 - O tempo limite do semáforo expirou.) ---> System.Data.SqlClient.SqlException: Ocorreu um erro no nível de transporte durante o recebimento de resultados do servidor. (provider: TCP Provider, error: 0 - O tempo limite do semáforo expirou.) ---> System.ComponentModel.Win32Exception: O tempo limite do semáforo expirou
+   --- Fim do rastreamento de pilha de exceções internas ---
+   em System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   em System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   em System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   em System.Data.SqlClient.TdsParserStateObject.ReadSniError(TdsParserStateObject stateObj, UInt32 error)
+   em System.Data.SqlClient.TdsParserStateObject.ReadSniSyncOverAsync()
+   em System.Data.SqlClient.TdsParserStateObject.TryReadNetworkPacket()
+   em System.Data.SqlClient.TdsParserStateObject.TryPrepareBuffer()
+   em System.Data.SqlClient.TdsParserStateObject.TryReadByte(Byte& value)
+   em System.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   em System.Data.SqlClient.SqlDataReader.TryConsumeMetaData()
+   em System.Data.SqlClient.SqlDataReader.get_MetaData()
+   em System.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString, Boolean isInternal, Boolean forDescribeParameterEncryption, Boolean shouldCacheForAlwaysEncrypted)
+   em System.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean async, Int32 timeout, Task& task, Boolean asyncWrite, Boolean inRetry, SqlDataReader ds, Boolean describeParameterEncryptionRequest)
+   em System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry)
+   em System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method)
+   em System.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior, String method)
+   em System.Data.SqlClient.SqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   em System.Data.Common.DbCommand.ExecuteReader()
+   em Nextt_Gestao_Compra.Infra.Dados.Utils.RepositorioProcedures.MultiplosResultSetEncapsulador.Executar() na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Utils\RepositorioProcedures.cs:linha 56
+   em Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento.RepositorioAtributo.BuscaAtributosSintetico(Parametros parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Repositorios\Gerenciamento\RepositorioAtributo.cs:linha 36
+   --- Fim do rastreamento de pilha de exceções internas ---
+   em Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento.RepositorioAtributo.BuscaAtributosSintetico(Parametros parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Repositorios\Gerenciamento\RepositorioAtributo.cs:linha 49
+   em Nextt_Gestao_Compra.Dominio.Servicos.Gerenciamento.ServicoAtributo.BuscaAtributosSintetico(Parametros parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Dominio\Servicos\Gerenciamento\ServicoAtributo.cs:linha 24
+   em Nextt_Gestao_Compra.Aplicacao.Servicos.Gerenciamento.AppServicoAtributo.BuscaAtributosSintetico(Parametros parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Servicos\Gerenciamento\AppServicoAtributo.cs:linha 23
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Atributos.GerenciadorAplicacaoAtributo.RetornaAtributosFiltrados(IAppServicoAtributo atributoServico, ParametrosVM parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Atributos\GerenciadorAplicacaoAtributo.cs:linha 18
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Gerenciamento.AtributoController.RecuperaAtributosFiltrados(ParametrosVM parametro) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Gerenciamento\AtributoController.cs:linha 24
+
+ERROR 2019-01-24 05:40:15 - Erro ao Recuperar Dados de Filtros para Atributo
+System.Exception: RepositorioAtributo.CarregaFiltrosPesquisa: 
+Tempo Limite de Conexão Expirado. O tempo limite decorrido durante a tentativa de consumo da confirmação de handshake pré-logon. Isso ocorre porque houve falha no handshake pré-logon ou o servidor não pôde responder a tempo.  A duração da tentativa de conexão com este servidor foi: [Pre-Login] initialization=8600; handshake=9810;  ---> System.Data.SqlClient.SqlException: Tempo Limite de Conexão Expirado. O tempo limite decorrido durante a tentativa de consumo da confirmação de handshake pré-logon. Isso ocorre porque houve falha no handshake pré-logon ou o servidor não pôde responder a tempo.  A duração da tentativa de conexão com este servidor foi: [Pre-Login] initialization=8600; handshake=9810;  ---> System.ComponentModel.Win32Exception: O tempo limite de espera foi atingido
+   --- Fim do rastreamento de pilha de exceções internas ---
+   em System.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, SqlCredential credential, Object providerInfo, String newPassword, SecureString newSecurePassword, Boolean redirectedUserInstance, SqlConnectionString userConnectionOptions, SessionData reconnectSessionData, DbConnectionPool pool, String accessToken, Boolean applyTransientFaultHandling, SqlAuthenticationProviderManager sqlAuthProviderManager)
+   em System.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, DbConnectionPoolKey poolKey, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection, DbConnectionOptions userOptions)
+   em System.Data.ProviderBase.DbConnectionFactory.CreatePooledConnection(DbConnectionPool pool, DbConnection owningObject, DbConnectionOptions options, DbConnectionPoolKey poolKey, DbConnectionOptions userOptions)
+   em System.Data.ProviderBase.DbConnectionPool.CreateObject(DbConnection owningObject, DbConnectionOptions userOptions, DbConnectionInternal oldConnection)
+   em System.Data.ProviderBase.DbConnectionPool.UserCreateRequest(DbConnection owningObject, DbConnectionOptions userOptions, DbConnectionInternal oldConnection)
+   em System.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, UInt32 waitForMultipleObjectsTimeout, Boolean allowCreate, Boolean onlyOneCheckConnection, DbConnectionOptions userOptions, DbConnectionInternal& connection)
+   em System.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal& connection)
+   em System.Data.ProviderBase.DbConnectionFactory.TryGetConnection(DbConnection owningConnection, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal oldConnection, DbConnectionInternal& connection)
+   em System.Data.ProviderBase.DbConnectionInternal.TryOpenConnectionInternal(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)
+   em System.Data.ProviderBase.DbConnectionClosed.TryOpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)
+   em System.Data.SqlClient.SqlConnection.TryOpenInner(TaskCompletionSource`1 retry)
+   em System.Data.SqlClient.SqlConnection.TryOpen(TaskCompletionSource`1 retry)
+   em System.Data.SqlClient.SqlConnection.Open()
+   em Nextt_Gestao_Compra.Infra.Dados.Utils.RepositorioProcedures.MultiplosResultSetEncapsulador.Executar() na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Utils\RepositorioProcedures.cs:linha 46
+   em Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento.RepositorioAtributo.CarregaFiltrosPesquisa() na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Repositorios\Gerenciamento\RepositorioAtributo.cs:linha 57
+   --- Fim do rastreamento de pilha de exceções internas ---
+   em Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento.RepositorioAtributo.CarregaFiltrosPesquisa() na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Repositorios\Gerenciamento\RepositorioAtributo.cs:linha 64
+   em Nextt_Gestao_Compra.Dominio.Servicos.Gerenciamento.ServicoAtributo.CarregaFiltrosPesquisa() na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Dominio\Servicos\Gerenciamento\ServicoAtributo.cs:linha 29
+   em Nextt_Gestao_Compra.Aplicacao.Servicos.Gerenciamento.AppServicoAtributo.CarregaFiltrosPesquisa() na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Servicos\Gerenciamento\AppServicoAtributo.cs:linha 28
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Atributos.GerenciadorAplicacaoAtributo.RetornaFiltroPesquisa(IAppServicoAtributo atributoServico, FabricaViewModel fabrica) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Atributos\GerenciadorAplicacaoAtributo.cs:linha 37
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Gerenciamento.AtributoController.RecuperaFiltrosAtributo() na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Gerenciamento\AtributoController.cs:linha 56
+
+ERROR 2019-01-26 19:17:05 - Erro ao Recuperar Dados dos Itens de Lista do Atributo a Editar
+System.ArgumentOutOfRangeException: O índice estava fora do intervalo. Ele deve ser não-negativo e menor que o tamanho da coleção.
+Nome do parâmetro: index
+   em System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
+   em System.Collections.Generic.List`1.get_Item(Int32 index)
+   em System.Linq.Enumerable.ElementAt[TSource](IEnumerable`1 source, Int32 index)
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Atributos.GerenciadorAplicacaoAtributo.RetornaAtributoItemLista(IAppServicoAtributo atributoServico, ParametrosVM parametros, FabricaViewModel fabrica) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Atributos\GerenciadorAplicacaoAtributo.cs:linha 38
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Gerenciamento.AtributoController.RecuperaAtributoListaItem(ParametrosVM parametro) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Gerenciamento\AtributoController.cs:linha 56
+
+ERROR 2019-01-26 19:18:28 - Erro ao Recuperar Dados dos Itens de Lista do Atributo a Editar
+System.ArgumentOutOfRangeException: O índice estava fora do intervalo. Ele deve ser não-negativo e menor que o tamanho da coleção.
+Nome do parâmetro: index
+   em System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
+   em System.Collections.Generic.List`1.get_Item(Int32 index)
+   em System.Linq.Enumerable.ElementAt[TSource](IEnumerable`1 source, Int32 index)
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Atributos.GerenciadorAplicacaoAtributo.RetornaAtributoItemLista(IAppServicoAtributo atributoServico, ParametrosVM parametros, FabricaViewModel fabrica) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Atributos\GerenciadorAplicacaoAtributo.cs:linha 38
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Gerenciamento.AtributoController.RecuperaAtributoListaItem(ParametrosVM parametro) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Gerenciamento\AtributoController.cs:linha 56

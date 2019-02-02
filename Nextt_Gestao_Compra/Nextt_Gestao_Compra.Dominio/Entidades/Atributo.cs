@@ -2,7 +2,7 @@
 
 namespace Nextt_Gestao_Compra.Dominio.Entidades
 {
-    public class Atributos
+    public class Atributo
     {
         public Int16 IDTipoAtributo { get; set; }
         public Int16 IDTipoAtributoKey { get; set; }

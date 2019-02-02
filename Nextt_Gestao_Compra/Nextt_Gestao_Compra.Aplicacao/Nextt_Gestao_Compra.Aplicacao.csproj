@@ -154,6 +154,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Gerenciador\Atributos\GerenciadorAplicacaoAtributo.cs" />
     <Compile Include="Gerenciador\Compra\GerenciadorAplicacaoCompra.cs" />
     <Compile Include="Gerenciador\GrupoEmpresas\GerenciadorAplicacaoGrupoEmpresa.cs" />
     <Compile Include="Gerenciador\Grupo\GerenciamentoAplicacaoGrupo.cs" />
@@ -162,12 +163,14 @@
     <Compile Include="Gerenciador\Produto\GerenciadorAplicacaoProduto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Servicos\AppServicoPadrao.cs" />
+    <Compile Include="Servicos\Gerenciamento\AppServicoAtributo.cs" />
     <Compile Include="Servicos\Gerenciamento\AppServicoCompra.cs" />
     <Compile Include="Servicos\Gerenciamento\AppServicoGrupo.cs" />
     <Compile Include="Servicos\Gerenciamento\AppServicoGrupoEmpresa.cs" />
     <Compile Include="Servicos\Gerenciamento\AppServicoMovimentacao.cs" />
     <Compile Include="Servicos\Gerenciamento\AppServicoPedido.cs" />
     <Compile Include="Servicos\Gerenciamento\AppServicoProduto.cs" />
+    <Compile Include="Servicos\Interfaces\Gerenciamento\IAppServicoAtributo.cs" />
     <Compile Include="Servicos\Interfaces\Gerenciamento\IAppServicoCompra.cs" />
     <Compile Include="Servicos\Interfaces\Gerenciamento\IAppServicoGrupo.cs" />
     <Compile Include="Servicos\Interfaces\Gerenciamento\IAppServicoGrupoEmpresa.cs" />
@@ -175,13 +178,20 @@
     <Compile Include="Servicos\Interfaces\Gerenciamento\IAppServicoPedido.cs" />
     <Compile Include="Servicos\Interfaces\Gerenciamento\IAppServicoProduto.cs" />
     <Compile Include="Servicos\Interfaces\IAppServicoPadrao.cs" />
-    <Compile Include="Utils\CriarArquivo.cs" />
+    <Compile Include="Utils\PropertyRenameAndIgnoreSerializerContractResolver.cs" />
+    <Compile Include="ViewModel\AtributoCardVM.cs" />
+    <Compile Include="ViewModel\AtributoEditarVM.cs" />
     <Compile Include="ViewModel\AtributoElementoVM.cs" />
-    <Compile Include="ViewModel\AtributoPdfVM.cs" />
+    <Compile Include="ViewModel\AtributoJsonVM.cs" />
+    <Compile Include="ViewModel\AtributoListaItemVM.cs" />
+    <Compile Include="ViewModel\AtributoTipoVM.cs" />
+    <Compile Include="ViewModel\AtributoSalvarVM.cs" />
+    <Compile Include="ViewModel\AtributoSecaoEspecieVM.cs" />
     <Compile Include="ViewModel\ComboAtributoVM.cs" />
     <Compile Include="ViewModel\ComboFiliaisVM.cs" />
     <Compile Include="ViewModel\CondicaoFormaPgtoVM.cs" />
     <Compile Include="ViewModel\DadosConfigPadraoVM.cs" />
+    <Compile Include="ViewModel\EspeciesVM.cs" />
     <Compile Include="ViewModel\FabricaViewModel.cs" />
     <Compile Include="ViewModel\ComboFiltroVM.cs" />
     <Compile Include="ViewModel\FiliaisVM.cs" />
@@ -209,12 +219,13 @@
     <Compile Include="ViewModel\PackVM.cs" />
     <Compile Include="ViewModel\PaginasGridVM.cs" />
     <Compile Include="ViewModel\PaletaDadosVM.cs" />
+    <Compile Include="ViewModel\ParametrosAtributoVM.cs" />
+    <Compile Include="ViewModel\ParametrosJsonVM.cs" />
     <Compile Include="ViewModel\ParametrosVM.cs" />
     <Compile Include="ViewModel\PedidoAtributoVM.cs" />
     <Compile Include="ViewModel\PedidoCompletoVM.cs" />
     <Compile Include="ViewModel\PedidoPackDistribuicaoVM.cs" />
     <Compile Include="ViewModel\PedidoPackProdutoItemVM.cs" />
-    <Compile Include="ViewModel\PedidoPdfVM.cs" />
     <Compile Include="ViewModel\PedidosFiltradoVM.cs" />
     <Compile Include="ViewModel\PedidoVM.cs" />
     <Compile Include="ViewModel\PrecoVendaVM.cs" />
@@ -229,6 +240,8 @@
     <Compile Include="ViewModel\RetornoPedidoSinteticoVM.cs" />
     <Compile Include="ViewModel\RetornoPrePedidoVM.cs" />
     <Compile Include="ViewModel\RetornoProdutosVM.cs" />
+    <Compile Include="ViewModel\SecaoVM.cs" />
+    <Compile Include="ViewModel\SegmanetosVM.cs" />
     <Compile Include="ViewModel\SegmentoSecaoEspecieVM.cs" />
     <Compile Include="ViewModel\TabelaPrecoVM.cs" />
     <Compile Include="ViewModel\TamanhoGrupoVM.cs" />

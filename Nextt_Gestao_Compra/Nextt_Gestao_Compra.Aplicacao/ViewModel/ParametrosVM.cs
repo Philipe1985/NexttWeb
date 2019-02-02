@@ -3,6 +3,9 @@
     public class ParametrosVM
     {
         public string Marcas { get; set; }
+        public string AtributoModelo { get; set; }
+        public string IDTipoAtributo { get; set; }
+        public string TextoTipo { get; set; }
         public string CodigoOriginal { get; set; }
         public string Secoes { get; set; }
         public string Segmentos { get; set; }

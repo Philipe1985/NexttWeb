@@ -8,6 +8,6 @@ namespace Nextt_Gestao_Compra.Dominio.Entidades
         public Int16 DataEntregaFinal { get; set; }
         public Int16 DataToleranciaAtrasoInicio { get; set; }
         public Int16 DataToleranciaAtrasoFinal { get; set; }
-        public bool ProdutoEditavel { get; set; }
+        public bool ProdutoPossuiPedido { get; set; }
     }
 }

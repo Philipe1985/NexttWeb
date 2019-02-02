@@ -13,9 +13,8 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
         {
             try
             {
-                return _Db.MultiplosResults("[dbo].[pr_consulta_GrupoEmpresa_GESTAO_COMPRAS]")//select * from GrupoEmpresa select * from Marca where Ativo = 1
+                return _Db.MultiplosResults("[dbo].[pr_consulta_grupo_empresa_GESTAO_COMPRAS]")//select * from GrupoEmpresa select * from Marca where Ativo = 1
                                     .With<GrupoEmpresa>()
-                                    .With<Marca>()
                                     .Executar();
             }
             catch (Exception ex)
@@ -28,9 +27,8 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
         {
             try
             {
-                return _Db.MultiplosResults("[dbo].[pr_consulta_marca_GESTAO_COMPRAS]"
-                                   /*+ " @IDGrupoEmpresa = " + parametros.Codigo*/)//select * from GrupoEmpresa where IDGrupoEmpresa = " + parametros.Codigo + " select * from GrupoEmpresaMarca where IDGrupoEmpresa = " + parametros.Codigo
-                                   //.With<GrupoEmpresa>()
+                return _Db.MultiplosResults("[dbo].[pr_consulta_grupo_empresa_marca_GESTAO_COMPRAS]"
+                                   + " @IDGrupoEmpresa = " + parametros.Codigo)
                                    .With<Marca>()
                                    .Executar();
             }
@@ -58,8 +56,8 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
         {
             try
             {
-                _Db.MultiplosResults("[dbo].[pr_gravar_grupo_empresa_GESTAO_COMPRAS]" +
-                                   " @GravarGrupoEmpresa = '" + grpEmpJson + "'")
+                _Db.MultiplosResults("[dbo].[pr_gc_gravar_GrupoEmpresa]" +
+                                   " @Parametros = '" + grpEmpJson + "'")
                                    .Executar();
             }
             catch (Exception ex)

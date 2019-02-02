@@ -21,7 +21,7 @@ namespace Nextt_Gestao_Compra.Apresentacao.API.Controllers.Gerenciamento
         {
             try
             {
-                var retorno = GerenciadorAplicacaoGrupoEmpresa.RetornaDadosFiltroInicial(_grpEmpServico, ModelFabrica);
+                var retorno = GerenciadorAplicacaoGrupoEmpresa.RetornaDadosFiltroInicial(_grpEmpServico);
                 return Ok(retorno);
             }
             catch (Exception ex)
@@ -38,7 +38,7 @@ namespace Nextt_Gestao_Compra.Apresentacao.API.Controllers.Gerenciamento
         {
             try
             {
-                var retorno = GerenciadorAplicacaoGrupoEmpresa.RetornaDadosGrupoEditar(_grpEmpServico,parametros);
+                var retorno = GerenciadorAplicacaoGrupoEmpresa.RetornaDadosGrupoEditar(_grpEmpServico,parametros,ModelFabrica);
                 return Ok(retorno);
             }
             catch (Exception ex)

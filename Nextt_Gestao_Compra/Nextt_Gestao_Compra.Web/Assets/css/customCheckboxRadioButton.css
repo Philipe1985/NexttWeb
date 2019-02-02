@@ -3,12 +3,12 @@
     text-align: left !important;
 }
 
-    /*.phradio div {
+    .phradio div {
         clear: both;
-        overflow: hidden;
+        /*overflow: hidden;*/
         display: inline-flex;
-        background-color: white !important;
-    }*/
+        /*background-color: white !important;*/
+    }
 
     .phradio .ui-btn.ui-checkbox-off:after, .ui-btn.ui-radio-off:after {
         border: 2px solid #0c0d0d;

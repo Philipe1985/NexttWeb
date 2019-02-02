@@ -31,8 +31,10 @@ function criaInputImagem(listImage, configPV, configRodape) {
         uploadUrl: urlApi + 'gerenciamento/compra/SalvarImagem',
         uploadExtraData: function (previewId, index) {
             var obj = {};
+            var cadastroProduto = sessionStorage.getItem("cadastroProduto") ? true : false;
             var idProdFoto = sessionStorage.getItem('idProdutoImagens')
             obj.idProduto = parseInt(idProdFoto);
+            obj.cadastroProduto = cadastroProduto;
             return obj;
         },
         //removeLabel: "Excluir Pendentes",

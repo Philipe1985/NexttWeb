@@ -145,7 +145,7 @@ $(document).ready(function () {
 
     $('#fTxtBusca').keypress(function (event) {
         if (event.keyCode === 13) {
-            event.preventDefault();
+            event.preventDefault(); 
         }
     });
 });
@@ -290,7 +290,7 @@ function limparModalCadastro() {
     $("#txtSobrenome").val('');
     $("#txtCelular").val('');
     $("#txtNomePerfil").val('');
-    $('#txtNomePerfilAtualizar').val('');
+    $('#txtNomePerfilAtualizar').val('').attr('disabled',true);
     $('#cbPerfilUsuario').selectpicker('val', '');
     $('#cbUsuarioNextt').selectpicker('val', '');
     $('#cbPermissaoConceder').selectpicker('deselectAll');

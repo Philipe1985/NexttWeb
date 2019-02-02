@@ -45,6 +45,12 @@ function carregar() {
     if (permissoesUsuarioLogado.indexOf('Cadastrar Produto Novo') === -1) {
         $("#produto").addClass("ocultarElemento");
     }
+    if (permissoesUsuarioLogado.indexOf('Gerenciar Grupo de Empresas') === -1) {
+        $("#grupoempresa").addClass("ocultarElemento");
+    }
+    if (permissoesUsuarioLogado.indexOf('Gerenciar Atributos') === -1) {
+        $("#atributos").addClass("ocultarElemento");
+    } 
     $("#homeOpcao").addClass("ocultarElemento");
     var $menuTitulo = $(".navbar.navbar-default.navbar-fixed-top");
     $menuTitulo.find('.navbar-header .navbar-center').text('Gestão de Compras');

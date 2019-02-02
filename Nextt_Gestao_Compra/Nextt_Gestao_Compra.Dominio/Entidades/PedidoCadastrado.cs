@@ -53,7 +53,7 @@ namespace Nextt_Gestao_Compra.Dominio.Entidades
         public DateTime DataToleranciaAtrasoInicio { get; set; }
         public DateTime DataToleranciaAtrasoFinal { get; set; }
         public string Status { get; set; }
-        public string DescricaoStatus { get; set; }
+        public string DescricaoStatusPedido { get; set; }
         public string IDStatusPedidoPara { get; set; }
         public bool Ativo { get; set; }
     }

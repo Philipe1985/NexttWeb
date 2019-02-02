@@ -12,6 +12,19 @@
         <div class="col-md-12 col-sm-12 col-xs-12" style="text-align:center">
             <div id="alertProdCompra" class="alertCustomizado alert-danger" style="display:none"></div>
         </div>
+        <div id="divStatusProd" class="col-md-2 col-sm-4 col-xs-12 ocultarElemento">
+            <div class="form-group">
+                <h5 class="form-label">Status do Produto:</h5>
+                <div class="controls">
+                    <select name="cbAStatusProd" id="cbAStatusProd" data-container="body" class="selectpicker show-tick form-control"
+                            data-width="100%" data-size="auto">
+                        <option selected value="">Todos</option>
+                        <option value="true">Ativos</option>
+                        <option value="false">Inativos</option>
+                    </select>
+                </div>
+            </div>
+        </div>
         <div id="divForn" class="col-md-2 col-sm-4 col-xs-12 ocultarElemento">
             <div class="form-group">
                 <h5 class="form-label">Fornecedores:</h5>
@@ -68,8 +81,18 @@
                 <h5 class="form-label">Espécies:</h5>
                 <div class="controls">
                     <select id="drpEsp" class="selectpicker show-tick form-control" data-show-subtext="true" data-actions-box="true" multiple data-live-search="true"
-                            data-select-all-text="Marcar" data-container="body" data-deselect-all-text="Desmarcar" data-count-selected-text="Selecionado {0} de {1}" title="0 selecionados..."
+                            data-select-all-text="Marcar" data-deselect-all-text="Desmarcar" data-count-selected-text="Selecionado {0} de {1}" title="0 selecionados..."
                             data-width="100%" data-select-header="true" data-size="5" data-selected-text-format="count > 2"></select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 col-sm-12 col-xs-12">
+            <div class="form-group">
+                <h5 id="lblCodProd" class="form-label">Código Original</h5>
+                <div class="controls">
+                    <input type="text" name="txtCodProd" id="txtCodProd" maxlength="40" class="form-control" />
                 </div>
             </div>
         </div>
@@ -77,23 +100,13 @@
             <div class="form-group">
                 <h5 class="form-label">Pesquisar Produto:</h5>
                 <div class="controls">
-                    <button id="btnBuscarProduto" class="btn btn-primary " onclick="buscarProdutosFiltrado()">
+                    <button id="btnBuscarProduto" class="btn btn-primary " style="vertical-align:top !important" onclick="buscarProdutosFiltrado()">
                         <i class="fa fa-search" aria-hidden="true"> Pesquisar</i>
                     </button>
-                    <a href="javascript:limparCampos();" data-toggle="tooltip" title="Limpar Filtros" class="btn text-center clear-filter">
+                    <a href="javascript:limparCampos();" data-toggle="tooltip" style="vertical-align:top !important" title="Limpar Filtros" class="btn text-center clear-filter">
                         @*<i class="fa fa-filter fa-2x" aria-hidden="true"></i>*@
                         <span class="fa fa-filter-remove fa-2x"></span>
                     </a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-2 col-sm-12 col-xs-12">
-            <div class="form-group">
-                <h5 id="lblCodProd" class="form-label">Cod. Prod. Matriz</h5>
-                <div class="controls">
-                    <input type="text" name="txtCodProd" id="txtCodProd" maxlength="9" class="form-control txtInteiro" />
                 </div>
             </div>
         </div>
@@ -112,7 +125,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4 col-sm-12 col-xs-12">
+        <div class="col-md-4 col-sm-12 col-xs-12 ocultarElemento">
             <div class="form-group">
                 <h5 class="form-label">Pesquise na tabela de produtos:</h5>
                 <div class="controls">
@@ -135,12 +148,13 @@
                             <thead>
                                 <tr>
                                     <th rowspan="2" style="border:1px solid black;border-bottom:2px solid black">Comprar</th>
-                                    <th colspan="5" style="border:1px solid black;border-bottom:2px solid black">Produto</th>
+                                    <th colspan="6" style="border:1px solid black;border-bottom:2px solid black">Produto</th>
                                     <th colspan="5" style="border:1px solid black;border-bottom:2px solid black">Fornecedor</th>
                                     <th colspan="2" style="border:1px solid black;border-bottom:2px solid black">Marca</th>
                                 </tr>
                                 <tr>
                                     <th style="border:1px solid black;border-bottom:2px solid black">ID Produto</th>
+                                    <th style="border:1px solid black;border-bottom:2px solid black">Status</th>
                                     <th style="border:1px solid black;border-bottom:2px solid black">Código</th>
                                     <th style="border:1px solid black;border-bottom:2px solid black">Cód. Original</th>
                                     <th style="border:1px solid black;border-bottom:2px solid black">Descrição</th>

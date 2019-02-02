@@ -20,8 +20,8 @@ namespace Nextt_Gestao_Compra.Dominio.Interfaces.Servico.Gerenciamento
         List<string> RetornaCSSCor(List<Cor> _listaCores);
         void AtualizaStatusPedido(Parametros parametros);
         List<GrupoTamanho> RetornaTamanhosAtivo(List<GrupoTamanho> _listaTamanho);
-        List<TipoLista> RetornaAtributosTipoLista(List<Atributos> _listaAttr);
-        List<Atributos> RetornaAtributosCampos(List<Atributos> _listaAttr);
+        List<TipoLista> RetornaAtributosTipoLista(List<Atributo> _listaAttr);
+        List<Atributo> RetornaAtributosCampos(List<Atributo> _listaAttr);
 
     }
 }

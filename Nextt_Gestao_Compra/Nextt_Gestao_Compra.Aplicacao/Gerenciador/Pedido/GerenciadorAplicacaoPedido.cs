@@ -20,7 +20,7 @@ namespace Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido
 
             var listaSegmetos = dados.ElementAt(2).Cast<Segmento>().OrderBy(x => x.Descricao).Select(x => fabrica.Criar(x)).ToList();
             var listaUsuarios = dados.ElementAt(4).Cast<UsuarioGerenciamento>().OrderBy(x => x.NomeUsuario).Select(x => fabrica.Criar(x)).ToList();
-            var listaAttrForn = dados.ElementAt(3).Cast<Atributos>().OrderBy(x => x.Descricao).Select(x => fabrica.Criar(x)).ToList();
+            var listaAttrForn = dados.ElementAt(3).Cast<Atributo>().OrderBy(x => x.Descricao).Select(x => fabrica.Criar(x)).ToList();
             var listaStatus = dados.ElementAt(5).Cast<StatusPedido>().Select(x => fabrica.Criar(x)).ToList();
             var retorno = new FiltrosPesquisa(listaFornecedores, listaSegmetos, listaMarcas)
             {
@@ -84,8 +84,8 @@ namespace Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido
             ValidaTamanhoPedido(dadosTamanho, listaItensPackAgrupado.ElementAt(0));
             ValidaCorPedido(dadosCores, listaItensPackAgrupado.ElementAt(0));
             ValidaReferenciaPedido(dadosReferenciaProduto, listaItensPackAgrupado.ElementAt(0));
-            var listaAttrProd = dados.ElementAt(12).Cast<Atributos>().OrderBy(x => x.Ordem).ToList();
-            var listaAttrPed = dados.ElementAt(13).Cast<Atributos>().OrderBy(x => x.Ordem).ToList();
+            var listaAttrProd = dados.ElementAt(12).Cast<Atributo>().OrderBy(x => x.Ordem).ToList();
+            var listaAttrPed = dados.ElementAt(13).Cast<Atributo>().OrderBy(x => x.Ordem).ToList();
             var listaElemPed = pedidoServico.RetornaAtributosCampos(listaAttrPed).Select(x => new AtributoElementoVM(x));
             var listaElemProd = pedidoServico.RetornaAtributosCampos(listaAttrProd).Select(x => new AtributoElementoVM(x));
             var comboAttrPed = pedidoServico.RetornaAtributosTipoLista(listaAttrPed).Select(x => new ComboAtributoVM(x, fabrica));
@@ -107,7 +107,7 @@ namespace Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido
             var configPadrao = dados.ElementAt(18).Cast<ConfigDefault>().FirstOrDefault();
             var listaTabelaPrecoEmpresa = dados.ElementAt(19).Cast<PrecoGrupoEmpresa>().GroupBy(x => x.IDGrupoEmpresa).Select(x => new GrupoEmpresaPrecosVM(x)).ToList();
             var listaCompradorProduto = dados.ElementAt(20).Cast<Comprador>().ToList();
-
+            var listaStatus = dados.ElementAt(22).Cast<StatusPedido>().Select(x => fabrica.Criar(x)).ToList();
             var datasCargaInicial = new DadosConfigPadraoVM(configPadrao)
             {
                 DataEntregaInicio = dadosPedido.DataEntregaInicio,
@@ -118,6 +118,7 @@ namespace Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido
 
             var filtrosPesquisa = new FiltrosPesquisa(dadosPedido, fabrica, dadosCores, pedidoServico)
             {
+                StatusPedido = listaStatus,
                 CompradoresProduto = listaCompradorProduto.Count > 0 ? listaCompradorProduto.OrderBy(x => x.Nome).Select(x => fabrica.Criar(x)).ToList() : null,
                 GrupoEmpresaPrecos = listaTabelaPrecoEmpresa,
                 Compradores = listaComprador,

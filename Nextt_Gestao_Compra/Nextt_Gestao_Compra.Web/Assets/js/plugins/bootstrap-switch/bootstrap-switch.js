@@ -232,7 +232,6 @@
 
     function prvhandleHandlers() {
         var _this5 = this;
-
         this.$on.on('click.bootstrapSwitch', function (event) {
             event.preventDefault();
             event.stopPropagation();
@@ -742,7 +741,7 @@
     $.fn.bootstrapSwitch = bootstrapSwitch;
     $.fn.bootstrapSwitch.Constructor = BootstrapSwitch;
     $.fn.bootstrapSwitch.defaults = {
-        state: true,
+        state: false,
         size: null,
         animate: true,
         disabled: false,

@@ -1,0 +1,12 @@
+
+DEBUG 2019-02-01 18:11:02 - Cadastro Iniciado no Servidor
+
+DEBUG 2019-02-01 18:11:08 - Json Gerado - Enviando ao Banco
+
+DEBUG 2019-02-01 18:12:13 - Pedido Gerado: 82
+
+DEBUG 2019-02-01 21:24:07 - Cadastro Iniciado no Servidor
+
+DEBUG 2019-02-01 21:24:07 - Json Gerado - Enviando ao Banco
+
+DEBUG 2019-02-01 21:24:11 - Pedido Gerado: 83

@@ -190,6 +190,7 @@
     <Compile Include="Controllers\Cadastro\PedidoController.cs" />
     <Compile Include="Controllers\Cadastro\GrupoController.cs" />
     <Compile Include="Controllers\Cadastro\ProdutoController.cs" />
+    <Compile Include="Controllers\Gerenciamento\AtributoController.cs" />
     <Compile Include="Controllers\Gerenciamento\CompraController.cs" />
     <Compile Include="Controllers\Gerenciamento\GrupoEmpresaController.cs" />
     <Compile Include="Controllers\Gerenciamento\MovimentacaoController.cs" />

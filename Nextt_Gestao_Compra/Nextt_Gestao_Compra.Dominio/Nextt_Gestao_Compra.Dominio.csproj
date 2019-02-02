@@ -33,7 +33,7 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Entidades\Atributos.cs" />
+    <Compile Include="Entidades\Atributo.cs" />
     <Compile Include="Entidades\CadastroProdutoSecaoEspecieMarcaFornecetor.cs" />
     <Compile Include="Entidades\ClassificacaoFiscal.cs" />
     <Compile Include="Entidades\Comprador.cs" />
@@ -67,9 +67,11 @@
     <Compile Include="Entidades\GrupoTamanho.cs" />
     <Compile Include="Entidades\Segmento.cs" />
     <Compile Include="Entidades\StatusPedido.cs" />
+    <Compile Include="Entidades\TipoAtributoSecaoEspecie.cs" />
     <Compile Include="Entidades\TipoLista.cs" />
     <Compile Include="Entidades\UnidadeMedida.cs" />
     <Compile Include="Entidades\UsuarioGerenciamento.cs" />
+    <Compile Include="Interfaces\Repositorio\Gerenciamento\IRepositorioAtributo.cs" />
     <Compile Include="Interfaces\Repositorio\Gerenciamento\IRepositorioCompra.cs" />
     <Compile Include="Interfaces\Repositorio\Gerenciamento\IRepositorioGrupo.cs" />
     <Compile Include="Interfaces\Repositorio\Gerenciamento\IRepositorioMovimentacao.cs" />
@@ -77,6 +79,7 @@
     <Compile Include="Interfaces\Repositorio\Gerenciamento\IRepositorioProduto.cs" />
     <Compile Include="Interfaces\Repositorio\Gerenciamento\IRepositorioGrupoEmpresa.cs" />
     <Compile Include="Interfaces\Repositorio\IRepositorioPadrao.cs" />
+    <Compile Include="Interfaces\Servico\Gerenciamento\IServicoAtributo.cs" />
     <Compile Include="Interfaces\Servico\Gerenciamento\IServicoCompra.cs" />
     <Compile Include="Interfaces\Servico\Gerenciamento\IServicoGrupo.cs" />
     <Compile Include="Interfaces\Servico\Gerenciamento\IServicoGrupoEmpresa.cs" />
@@ -85,6 +88,7 @@
     <Compile Include="Interfaces\Servico\Gerenciamento\IServicoProduto.cs" />
     <Compile Include="Interfaces\Servico\IServicoPadrao.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Servicos\Gerenciamento\ServicoAtributo.cs" />
     <Compile Include="Servicos\Gerenciamento\ServicoCompra.cs" />
     <Compile Include="Servicos\Gerenciamento\ServicoGrupo.cs" />
     <Compile Include="Servicos\Gerenciamento\ServicoGrupoEmpresa.cs" />

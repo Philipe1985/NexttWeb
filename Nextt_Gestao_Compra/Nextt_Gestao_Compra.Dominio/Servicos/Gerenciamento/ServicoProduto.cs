@@ -27,7 +27,7 @@ namespace Nextt_Gestao_Compra.Dominio.Servicos.Gerenciamento
         {
             return _produtoRepositorio.RetornaDadosProdutoEditar(parametros);
         }
-        public List<TipoLista> RetornaAtributosTipoLista(List<Atributos> _listaAttr)
+        public List<TipoLista> RetornaAtributosTipoLista(List<Atributo> _listaAttr)
         {
             var listasRetorno = _listaAttr.Where(x => x.Lista == true && x.Ativo == true)
                 .Select(x => new TipoLista(x))
@@ -39,7 +39,7 @@ namespace Nextt_Gestao_Compra.Dominio.Servicos.Gerenciamento
             return listasRetorno;
         }
 
-        public List<Atributos> RetornaAtributosCampos(List<Atributos> _listaAttr)
+        public List<Atributo> RetornaAtributosCampos(List<Atributo> _listaAttr)
         {
             return _listaAttr.Where(x => x.Lista == false && x.Ativo == true && x.IDTipoAtributo == x.IDTipoAtributoKey).ToList();
             //throw new System.NotImplementedException();

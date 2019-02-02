@@ -329,17 +329,15 @@ $(document).ready(function () {
     $('#drpSec').on('change', function (e) {
         var objParam = {};
         $('#divEsp').addClass('ocultarElemento');
+        $("#drpEsp").html('');
         if ($('#drpSec').val()) {
+            $('#drpSec').selectpicker('toggle');
             $('.selectpicker').selectpicker('hide');
             $(".navbar.navbar-default.navbar-fixed-top").addClass('ocultarElemento');
             $(".bg_load").show();
             $(".wrapper").show();
             objParam.secoes = $('#drpSec').val().join(',');
             carregarEspecie(objParam);
-        } else {
-
-            $("#drpEsp").html('');
-
         }
     });
     $('#drpSeg').on('change', function (e) {

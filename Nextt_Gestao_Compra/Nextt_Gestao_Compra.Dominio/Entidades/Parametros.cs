@@ -2,6 +2,9 @@
 {
     public class Parametros
     {
+        public string AtributoModelo { get; set; }
+        public string IDTipoAtributo { get; set; }
+        public string TextoTipo { get; set; }
         public string Marcas { get; set; }
         public string CodigoOriginal { get; set; }
         public string Secoes { get; set; }

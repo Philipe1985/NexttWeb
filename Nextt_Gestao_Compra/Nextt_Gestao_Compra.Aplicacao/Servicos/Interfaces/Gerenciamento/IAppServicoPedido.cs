@@ -20,8 +20,8 @@ namespace Nextt_Gestao_Compra.Aplicacao.Servicos.Interfaces.Gerenciamento
         void AtualizaStatusPedido(Parametros parametros);
         List<IEnumerable> ClonarPedido(Parametros parametros);
         List<GrupoTamanho> RetornaTamanhosAtivo(List<GrupoTamanho> _listaTamanho);
-        List<TipoLista> RetornaAtributosTipoLista(List<Atributos> _listaAttr);
-        List<Atributos> RetornaAtributosCampos(List<Atributos> _listaAttr);
+        List<TipoLista> RetornaAtributosTipoLista(List<Atributo> _listaAttr);
+        List<Atributo> RetornaAtributosCampos(List<Atributo> _listaAttr);
 
     }
 }

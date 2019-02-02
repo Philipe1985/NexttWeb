@@ -14,9 +14,9 @@ namespace Nextt_Gestao_Compra.Dominio.Entidades
         public string ValorInicial { get; set; }
         public int Ordem { get; set; }
         public string Descricao { get; set; }
-        public List<Atributos> OpcoesLista { get; set; }
+        public List<Atributo> OpcoesLista { get; set; }
 
-        public TipoLista(Atributos atributo)
+        public TipoLista(Atributo atributo)
         {
             IDTipoAtributo = atributo.IDTipoAtributo;
             MultiSelect = atributo.MultiplaSelecao;
@@ -26,7 +26,7 @@ namespace Nextt_Gestao_Compra.Dominio.Entidades
             Ordem = atributo.Ordem;
             
         }
-        public TipoLista CarregaOpcoesLista(List<Atributos> _opcoesLista)
+        public TipoLista CarregaOpcoesLista(List<Atributo> _opcoesLista)
         {
             OpcoesLista = _opcoesLista;
             return this;

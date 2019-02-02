@@ -307,7 +307,7 @@ function manipularGrupo(tit, desc, part) {
             '</div>' +
             '<div class="col-md-6 form-group">' +
             '<label class="control-label">Exibir Selecionados</label>' +
-            '<input type="checkbox" class="switch ckbFilialSelecionada" data-on-color="success" data-off-color="danger" data-on-text="Sim" data-off-text="Não">' +
+            '<input type="checkbox" class="ckbFilialSelecionada" data-on-color="success" data-off-color="danger" data-on-text="Sim" data-off-text="Não">' +
             '</div>' +
             '<div class="col-md-6 form-group">' +
             '<label class="control-label">Pesquisar</label>' +
