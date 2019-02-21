@@ -132,7 +132,7 @@ namespace Nextt_Gestao_Compra.Apresentacao.API.Controllers
                 var retorno = await GerenciamentoUsuario.RecuperaUsuarioFiltro(AppGerenciadorUsuario, AppGerenciadorPapel, Filtro);
                 return Ok(retorno);
             }
-            catch (Exception ex)
+            catch (Exception ex) 
             {
                 log.Error("Erro ao Filtrar Usuários", ex);
                 return InternalServerError(ex);
@@ -203,10 +203,20 @@ namespace Nextt_Gestao_Compra.Apresentacao.API.Controllers
                 if (!ModelState.IsValid)
                     return BadRequest(ModelState);
 
+                var usuarioVM = await GerenciamentoUsuario.ChecarUsuarioAtivo(AppGerenciadorUsuario, Id);
+                if (!usuarioVM.EmailConfirmed)
+                {
+                    var callbackUrl = new Uri(Url.Link("ConfirmarEmailRoute", new { usuario = usuarioVM.Id, codigo = usuarioVM.Codigo }));
+                    await GerenciamentoUsuario.ReenviarEmailCadastro(AppGerenciadorUsuario, usuarioVM, callbackUrl);
+                    return Ok();
+                }
                 var retorno = await GerenciamentoUsuario.RecuperaSenha(AppGerenciadorUsuario, Id);
                 if (retorno.Succeeded)
                     return Ok();
+
                 return RetornaErro(retorno);
+
+             
             }
             catch (Exception ex)
             {
@@ -391,7 +401,7 @@ namespace Nextt_Gestao_Compra.Apresentacao.API.Controllers
                         Path = "/"
                     };
                     resp.Headers.AddCookies(new CookieHeaderValue[] { cookieRetorno });
-                    return Ok(resp);
+                    return Ok(resp); 
                 }
 
 

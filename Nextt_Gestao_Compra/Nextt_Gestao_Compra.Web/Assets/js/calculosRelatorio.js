@@ -679,7 +679,7 @@ function criaObjPedidoPack() {
     var packObjRetorno = [];
     for (var i = 0; i < tabelaPackCadastrados.length; i++) {
         var objJson = {};
-        objJson.pack = parseInt(tabelaPackCadastrados[i].idTabela.replace(/\D/g, ""));
+        objJson.pack = i + 1;// parseInt(tabelaPackCadastrados[i].idTabela.replace(/\D/g, ""));
         objJson.pedidoPackDistribuicao = criaArrayDistribuicao(tabelaPackCadastrados[i].packGrupos);
         objJson.pedidoPackProdutoItem = criaArrayProdutoitem(tabelaPackCadastrados[i].dadosLinha.toArray());
         objJson.qtde = tabelaPackCadastrados[i].qtdPck;
@@ -912,10 +912,11 @@ function atualizarPedidoOpcao(tit, txt, status) {
                 text: 'Sim',
                 btnClass: 'btn-primary',
                 action: function () {
-                    //if (status === 'F') {
-                    //    geraPedidoSalvar('F');
-                    //} else {
+                    var objEnvio = {};
                     var pedidoID = sessionStorage.getItem("pedidoId") ? sessionStorage.getItem("pedidoId") : '0';
+
+                    objEnvio.codigo = pedidoID;
+                    objEnvio.status = status;
                     if (observacaoStatus.indexOf(status) > -1) {
 
                         alteraStatusPedido(status, pedidoID)
@@ -923,15 +924,18 @@ function atualizarPedidoOpcao(tit, txt, status) {
                     else {
 
                         if (status.toLowerCase() == 'a' || status.toLowerCase() == 'f') {
-                            geraPedidoSalvar(status, null);
+                            if ((sessionStorage.getItem("pedidoStatus") && sessionStorage.getItem("pedidoStatus").toLowerCase() !== status.toLowerCase()) ||
+                                (pedidoID == "0" && status.toLowerCase() == 'f')) {
+                                geraPedidoSalvar(status, objEnvio);
+                            } else {
+                                geraPedidoSalvar(status, null);
+                            }
+
                         } else {
-                            var objEnvio = {};
-                            objEnvio.codigo = pedidoID;
-                            objEnvio.status = status;
                             atualizarStatus(objEnvio);
                         }
                     }
-                    //}
+
                 }
             },
             'Cancelar': {
@@ -997,30 +1001,30 @@ function geraPedidoSalvar(status, objAtualizaStatus) {
         });
         pedidoEnvio.condicaoPagamento = objCondNova;
     }
-    sessionStorage.setItem("salvarStatus", status)
-    controleTempo("Criando objeto pedido: ")
+    sessionStorage.setItem("salvarStatus", status);
+    controleTempo("Criando objeto pedido: ");
     pedidoEnvio.pedido = criaObjPedido(status);
-    controleTempo("Criado objeto pedido: ")
-    console.log('============================')
-    controleTempo("Criando objeto CondicaoFormaPagamento: ")
+    controleTempo("Criado objeto pedido: ");
+    console.log('============================');
+    controleTempo("Criando objeto CondicaoFormaPagamento: ");
     pedidoEnvio.pedidoCondicaoFormaPagamento = criaObjCondFormaPgto();
-    controleTempo("Criado objeto CondicaoFormaPagamento: ")
-    console.log('============================')
-    controleTempo("Criando objeto PedidoPack: ")
+    controleTempo("Criado objeto CondicaoFormaPagamento: ");
+    console.log('============================');
+    controleTempo("Criando objeto PedidoPack: ");
     pedidoEnvio.pedidoPack = criaObjPedidoPack();
-    controleTempo("Criado objeto PedidoPack: ")
-    console.log('============================')
-    controleTempo("Criando objeto produtoAtributo: ")
+    controleTempo("Criado objeto PedidoPack: ");
+    console.log('============================');
+    controleTempo("Criando objeto produtoAtributo: ");
     pedidoEnvio.produtoAtributo = criaArrayAtributo($("#pnlAttrProd"));
-    controleTempo("Criado objeto produtoAtributo: ")
-    console.log('============================')
-    controleTempo("Criando objeto pedidoAtributo: ")
+    controleTempo("Criado objeto produtoAtributo: ");
+    console.log('============================');
+    controleTempo("Criando objeto pedidoAtributo: ");
     pedidoEnvio.pedidoAtributo = criaArrayAtributo($("#pnlAttrPed"));
     pedidoEnvio.produtoTabelaPreco = criaArrayPrecoGrupo();
     pedidoEnvio.parametros = objAtualizaStatus;
-    controleTempo("Criado objeto pedidoAtributo: ")
-    console.log('============================')
-    controleTempo("Cadastrando: ")
+    controleTempo("Criado objeto pedidoAtributo: ");
+    console.log('============================');
+    controleTempo("Cadastrando: ");
     console.log(pedidoEnvio);
 
     salvarPedido(pedidoEnvio);

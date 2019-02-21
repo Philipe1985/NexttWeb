@@ -50,6 +50,7 @@ $(document).ready(function () {
             $(this).blur();
         }
     })
+
     $(document).on('keyup touchend', '.calcular.money', function (evento) {
         var code = (evento.keyCode ? evento.keyCode : evento.which), valorImputado = $(this).maskMoney('unmasked')[0];
         if (validaValorImputado(valorImputado)) {
@@ -634,9 +635,13 @@ $(document).ready(function () {
     })
     $(document).on('change keyup paste', '#txtDescPed', function () {
         var $elDescProd = $(this);
+        $elDescProd.val($elDescProd.val().toUpperCase())
         $('#txtDescResPed').val($elDescProd.val());
     });
-
+    $(document).on('change keyup paste', '.toUpper', function () {
+        var $el = $(this);
+        $el.val($el.val().toUpperCase())
+    });
     $(document).on('keydown', '#txtNomeNovaRef', function (evento) {
         var code = (evento.keyCode ? evento.keyCode : evento.which);
         if (code === 9 || code === 13) {
@@ -883,7 +888,7 @@ function carregar() {
         }
     }
     $(".attributo-cad").bootstrapSwitch();
-}
+} 
 function validaPermissaoPedidoCadastro() {
     if (permissoesUsuarioLogado.indexOf('Cadastrar Novas Referências') === -1) {
         $('#txtNomeNovaRef').attr("disabled", true);
@@ -2257,7 +2262,7 @@ function criarTabGrupoFilial(grupos, indexPack) {
         var qtdGrupoPart = grupos[i].qtdParticipacaoGrupo;
         if (typeof qtdGrupoPart === 'undefined') {
             qtdGrupoPart = grupos[i].qtdGrupoCadastrada
-        }
+        } 
         var filtrosGrupo = retornaLinhaOpcoesGrupo(grupos[i].idGrupo + '_' + indexPack, qtdGrupoPart);
         ulHtml += '<li><a style="border: 1px solid blue !important;" href="#grupo' + grupos[i].idGrupo + '_'
             + indexPack + '" data-toggle="tab"><i class="fa fa-pie-chart" aria-hidden="true"></i> ' + grupos[i].descricao +

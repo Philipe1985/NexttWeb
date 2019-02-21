@@ -18,7 +18,7 @@ $(document).ready(function () {
 
             else {
                 $('#' + id).removeClass('oculto');
-            }
+            } 
         }
     });
 
@@ -315,7 +315,7 @@ function focoCadastroInvalido() {
 }
 
 function carregarGridUsuario(retorno) {
-
+    console.log(retorno)
     var admin = '<select class="selectpicker cbPerfilGrid" data-width="100%" multiple title="Nenhum Perfil Atribuído">';
     var editarUsuario = '<a href="#" class="btn btn-primary editaUsuario" data-toggle="tooltip" title="Editar Usuário"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>';
 
@@ -406,7 +406,7 @@ function recarregarTabelaUsuarios() {
 }
 
 function obterAtivos() {
-    var statusRetorno = [];
+    var statusRetorno = []; 
     var lista = $('#ucComboAtivos').val();
     if (lista) {
         for (var i = 0; i < lista.length; i++) {

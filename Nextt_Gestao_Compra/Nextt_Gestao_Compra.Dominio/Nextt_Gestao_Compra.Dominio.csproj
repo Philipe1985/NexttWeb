@@ -73,6 +73,7 @@
     <Compile Include="Entidades\UsuarioGerenciamento.cs" />
     <Compile Include="Interfaces\Repositorio\Gerenciamento\IRepositorioAtributo.cs" />
     <Compile Include="Interfaces\Repositorio\Gerenciamento\IRepositorioCompra.cs" />
+    <Compile Include="Interfaces\Repositorio\Gerenciamento\IRepositorioDistribuicao.cs" />
     <Compile Include="Interfaces\Repositorio\Gerenciamento\IRepositorioGrupo.cs" />
     <Compile Include="Interfaces\Repositorio\Gerenciamento\IRepositorioMovimentacao.cs" />
     <Compile Include="Interfaces\Repositorio\Gerenciamento\IRepositorioPedido.cs" />
@@ -81,6 +82,7 @@
     <Compile Include="Interfaces\Repositorio\IRepositorioPadrao.cs" />
     <Compile Include="Interfaces\Servico\Gerenciamento\IServicoAtributo.cs" />
     <Compile Include="Interfaces\Servico\Gerenciamento\IServicoCompra.cs" />
+    <Compile Include="Interfaces\Servico\Gerenciamento\IServicoDistribuicao.cs" />
     <Compile Include="Interfaces\Servico\Gerenciamento\IServicoGrupo.cs" />
     <Compile Include="Interfaces\Servico\Gerenciamento\IServicoGrupoEmpresa.cs" />
     <Compile Include="Interfaces\Servico\Gerenciamento\IServicoMovimentacao.cs" />
@@ -90,6 +92,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Servicos\Gerenciamento\ServicoAtributo.cs" />
     <Compile Include="Servicos\Gerenciamento\ServicoCompra.cs" />
+    <Compile Include="Servicos\Gerenciamento\ServicoDistribuicao.cs" />
     <Compile Include="Servicos\Gerenciamento\ServicoGrupo.cs" />
     <Compile Include="Servicos\Gerenciamento\ServicoGrupoEmpresa.cs" />
     <Compile Include="Servicos\Gerenciamento\ServicoMovimentacao.cs" />

@@ -213,6 +213,7 @@ function buscarProdutosFiltrado() {
             objEnvio.idFornecedor = cnpj.join(",");
             if (cnpj.length === 1) fornSelConsulta = cnpj[0];
         }
+        objEnvio.origemConsulta = window.location.href.toLowerCase().indexOf("gerenciamento/compra") > -1 ? "Pedido" : "Produto";
         objEnvio.status = $("#cbAStatusProd").val();
         objEnvio.codigo = codProduto ? codProduto /*ajustaCodigoTamanho(codProduto, 9)*/ : '';
         $(".navbar.navbar-default.navbar-fixed-top").addClass('ocultarElemento');

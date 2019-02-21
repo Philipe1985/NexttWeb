@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Nextt_Gestao_Compra.Dominio.Entidades
 {
-   public class PedidoCadastrado
+    public class PedidoCadastrado
     { 
         public int IDMarca { get; set; }
         public int IDPedido { get; set; }
@@ -22,6 +18,7 @@ namespace Nextt_Gestao_Compra.Dominio.Entidades
         public Int16 IDFornecedor { get; set; }
         public string RazaoSocial { get; set; }
         public string IDComprador { get; set; }
+        public string IDUsuarioCadastro { get; set; }
         public string DescricaoGrupoTamanho { get; set; }
         public string NomeFantasia { get; set; }
         public string ReferenciaFornecedor { get; set; }

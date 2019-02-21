@@ -24,10 +24,13 @@ $(document).ready(function () {
     
     $(document).on('click', '.validarPedido', function (e) {
         objEnvio = {};
+        var userLog = $(this).closest('tr').children().eq(13).html().trim().toLowerCase();
+        
+        var isUserLog = $('#cbUsuario option').filter(function () { return $(this).html().trim().toLowerCase() == userLog}).val() == sessionStorage.getItem("id_usuario")
+   
         objEnvio.codigo = $(this).closest('tr').children().eq(2).html();
-        var statusAtual = retornaStatusValor($(this).closest('tr').children().eq(12).html());
         $('.btnFooters .exibeBtn').addClass('ocultarElemento');
-        carregaPedidoSintetico(objEnvio)
+        carregaPedidoSintetico(objEnvio, isUserLog);
 
         $('#modalBodyDetalhePedido').addClass('ocultarElemento');
         $('.btnFooters').addClass('ocultarElemento');
@@ -437,7 +440,7 @@ function carregarPedidos() {
         deferRender: true,
         "order": [[2, "desc"]],
         responsive: true,
-        scrollCollapse: true,
+        scrollCollapse: true, 
         destroy: true,
         fixedHeader: true,
         scrollX: true,
@@ -497,6 +500,7 @@ function carregarPedidos() {
                 req.setRequestHeader('Authorization', sessionStorage.getItem("token"));
             },
             "dataSrc": function (json) {
+                console.log(json)
                 var retorno = [];
                 for (var i = 0; i < json.length; i++) {
                     retorno.push(geraLinhaRetornoPedido(json[i]))
@@ -527,11 +531,35 @@ function retornaBotõesAlteraStatus(opcoes) {
 function geraLinhaRetornoPedido(retorno) {
     var statusTransicao = retorno.idStatusPedidoPara ? retorno.idStatusPedidoPara.split(','):[];
 
+    var isPedUserLog = $('#cbUsuario option').filter(function () { return $(this).html().trim().toLowerCase() == retorno.usuario.trim().toLowerCase(); }).val() == sessionStorage.getItem("id_usuario")
+    
     var btnClonar = '<a href="#" class="btn btn-primary clonarPedido" data-toggle="tooltip" data-container="body" title="Copiar Pedido" style="margin:auto"><i class="fa fa-plus-square" aria-hidden="true"></i></a>'
     var btnHTML = $.parseHTML(btnStatusTransicaoIcones);
     for (var i = 0; i < statusTransicao.length; i++) {
-
-        $(btnHTML).filter('.status' + statusTransicao[i]).removeClass('ocultarElemento')
+        if (isPedUserLog) {
+            if (statusTransicao[i].toLowerCase() === 'f') {
+                if (permissoesUsuarioLogado.indexOf('Finalizar para Aprovar os Próprio Pedidos') > -1) {
+                    $(btnHTML).filter('.status' + statusTransicao[i]).removeClass('ocultarElemento')
+                }
+            } else if (statusTransicao[i].toLowerCase() === 'c') {
+                if (permissoesUsuarioLogado.indexOf('Cancelar os Próprios Pedidos') > -1) {
+                    $(btnHTML).filter('.status' + statusTransicao[i]).removeClass('ocultarElemento')
+                }
+            } else if (statusTransicao[i].toLowerCase() === 'a') {
+                if (permissoesUsuarioLogado.indexOf('Reprovar para Editar os Próprios Pedidos') > -1) {
+                    $(btnHTML).filter('.status' + statusTransicao[i]).removeClass('ocultarElemento')
+                }
+            } else if (statusTransicao[i].toLowerCase() === 'l') {
+                if (permissoesUsuarioLogado.indexOf('Aprovar os Próprios Pedidos') > -1) {
+                    $(btnHTML).filter('.status' + statusTransicao[i]).removeClass('ocultarElemento')
+                }
+            } else {
+                $(btnHTML).filter('.status' + statusTransicao[i]).removeClass('ocultarElemento')
+            }
+            
+        } else {
+            $(btnHTML).filter('.status' + statusTransicao[i]).removeClass('ocultarElemento')
+        }
     }
 
     var btnOperacoes = '<a href="#" class="btn btn-primary validarPedido" data-toggle="tooltip" data-container="body" title="Detalhamento" style="margin:3px"><i class="fa fa-external-link-square" aria-hidden="true"></i></a>' +

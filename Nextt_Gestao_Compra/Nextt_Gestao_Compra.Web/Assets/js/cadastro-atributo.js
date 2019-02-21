@@ -896,7 +896,7 @@ function carregaModalEditarData(objLista) {
     var def = objLista.valorDef ? objLista.valorDef : 0;
     var valMax = max === min ?
         null :
-        moment().add(max, 'days');
+        moment().add(max, 'days'); 
 
     var valMin = max === min ?
         null :

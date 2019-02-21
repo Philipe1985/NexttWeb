@@ -1,0 +1,72 @@
+﻿@{
+    Layout = "~/_LayoutPrincipal.cshtml";
+}
+<link href="../Assets/js/plugins/gridExcel/css/handsontable.css" rel="stylesheet" />
+<link href="../Assets/js/plugins/gridExcel/css/handsontable.full.css" rel="stylesheet" />
+
+<div class="col-md-12" id="principal">
+    <div class="row">
+        <div class="pull-right">
+            <button type="button" class="btn btn-success finish-change">Salvar Distribuição</button>
+            <button type="button" class="btn btn-danger cancel-change">Cancelar e Sair</button>
+            @*<div class="col-md-1" style="margin-bottom:5px!important">
+            <a id="btnVoltarGerenciarDist" href="#" data-placement="bottom" class="btn btn-primary "
+               title="Retornar ao gerenciamento de distribuição"><i class="fa fa-arrow-left" aria-hidden="true"></i>Voltar</a>
+        </div>*@
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <ul id="tabPacksCad" class="nav nav-pills">
+                <li class="active">
+                    <a href="#pack1" style="border: 1px solid blue !important;" data-toggle="tab">Pack 1</a>
+                </li>
+                <li>
+                    <a href="#pack2" style="border: 1px solid blue !important;" data-toggle="tab">Pack 2</a>
+                </li>
+            </ul>
+            <div class="tab-content clearfix" style="border: 1px solid blue !important;">
+                <div class="tab-pane active" id="pack1">
+                    <div id="excel">
+
+                    </div>
+                </div>
+                <div class="tab-pane" id="pack2">
+                    <div id="excel2">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="bg_load"></div>
+<div class="wrapper">
+    <div class="inner">
+        <span class="wait">
+            <span>A</span>
+            <span>g</span>
+            <span>u</span>
+            <span>a</span>
+            <span>r</span>
+            <span>d</span>
+            <span>e</span>
+        </span>
+        <span class="resized ocultarElemento">
+            <span>A</span>
+            <span>j</span>
+            <span>u</span>
+            <span>s</span>
+            <span>t</span>
+            <span>a</span>
+            <span>n</span>
+            <span>d</span>
+            <span>o</span>
+        </span>
+    </div>
+</div>
+<script src="../Assets/js/plugins/gridExcel/js/handsontable.full.js"></script>
+<script src="../Assets/js/plugins/gridExcel/js/handsontable.js"></script>
+<script src="../Assets/js/distribuicao-grupo.js"></script>

@@ -36,6 +36,7 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
         public decimal Ipi { get; set; }
         public decimal Pis { get; set; }
         public decimal Cofins { get; set; }
+        public string IDUsuarioCadastro { get; set; }
         public decimal Icms { get; set; }
         public decimal QualidadeValor { get; set; }
         public decimal QualidadeQtde { get; set; }
@@ -50,6 +51,7 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
 
         public RetornoPedidoAnalitico(PedidoCadastrado pedidoCadastrado, FiltrosPesquisa filtrosPesquisa,ResumoPedido resumo)
         {
+            IDUsuarioCadastro = pedidoCadastrado.IDUsuarioCadastro;
             IDStatusPedidoPara = pedidoCadastrado.IDStatusPedidoPara;
             Packs = new List<PackVM>();
             ProdutoInativo = !pedidoCadastrado.Ativo;
@@ -62,8 +64,8 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
             CondicaoSeleciona = pedidoCadastrado.IDCondicaoPagamento.ToString();
             DescricaoMarca = pedidoCadastrado.DescricaoMarca;
             CodigoOriginal = pedidoCadastrado.CodigoOriginal;
-            DtCadastroPedido = resumo.DataCadastro.ToString("dd/MM/yyyy hh:mm:ss");
-            DtCadastroProduto = pedidoCadastrado.DataCadastroProduto.ToString("dd/MM/yyyy hh:mm:ss");
+            DtCadastroPedido = resumo.DataCadastro.ToString("dd/MM/yyyy HH:mm:ss");
+            DtCadastroProduto = pedidoCadastrado.DataCadastroProduto.ToString("dd/MM/yyyy HH:mm:ss");
             QtdeItens = resumo.QtdeItens;
             ValorTotal = resumo.ValorTotal;
             IDUnidadeMedida = pedidoCadastrado.IDUnidadeMedida.ToString();

@@ -192,6 +192,7 @@
     <Compile Include="Controllers\Cadastro\ProdutoController.cs" />
     <Compile Include="Controllers\Gerenciamento\AtributoController.cs" />
     <Compile Include="Controllers\Gerenciamento\CompraController.cs" />
+    <Compile Include="Controllers\Gerenciamento\DistribuicaoController.cs" />
     <Compile Include="Controllers\Gerenciamento\GrupoEmpresaController.cs" />
     <Compile Include="Controllers\Gerenciamento\MovimentacaoController.cs" />
     <Compile Include="Controllers\PadraoController.cs" />

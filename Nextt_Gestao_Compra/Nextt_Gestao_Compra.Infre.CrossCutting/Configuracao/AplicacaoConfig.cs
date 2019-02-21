@@ -16,14 +16,20 @@ namespace Nextt_Gestao_Compra.Infre.CrossCutting.Configuracao
 {
     public class AplicacaoConfig
     {
+        /// <summary>
+        /// Cria injeção de dependencia das interfaces nas classes entre as camadas
+        /// da aplicação
+        /// </summary>
+        /// <returns></returns>
         public static UnityResolver RetornaDIContaimer()
         {
+            //Injeção de Dependencia
             var container = Iniciar.RetornaContainerOwin();
             container.RegisterType(typeof(IRepositorioPadrao<>), typeof(RepositorioPadrao<>));
             container.RegisterType(typeof(IServicoPadrao<>), typeof(ServicoPadrao<>));
             container.RegisterType(typeof(IAppServicoPadrao<>), typeof(AppServicoPadrao<>));
-
-            container.RegisterType<Aplicacao.Servicos.Interfaces.Gerenciamento.IAppServicoCompra, 
+            //Camada de aplicação
+            container.RegisterType<Aplicacao.Servicos.Interfaces.Gerenciamento.IAppServicoCompra,
                 Aplicacao.Servicos.Gerenciamento.AppServicoCompra>();
             container.RegisterType<Aplicacao.Servicos.Interfaces.Gerenciamento.IAppServicoGrupo,
                 Aplicacao.Servicos.Gerenciamento.AppServicoGrupo>();
@@ -34,10 +40,13 @@ namespace Nextt_Gestao_Compra.Infre.CrossCutting.Configuracao
             container.RegisterType<Aplicacao.Servicos.Interfaces.Gerenciamento.IAppServicoProduto,
                 Aplicacao.Servicos.Gerenciamento.AppServicoProduto>();
             container.RegisterType<Aplicacao.Servicos.Interfaces.Gerenciamento.IAppServicoGrupoEmpresa,
-                            Aplicacao.Servicos.Gerenciamento.AppServicoGrupoEmpresa>();
+                Aplicacao.Servicos.Gerenciamento.AppServicoGrupoEmpresa>();
             container.RegisterType<Aplicacao.Servicos.Interfaces.Gerenciamento.IAppServicoAtributo,
-                                        Aplicacao.Servicos.Gerenciamento.AppServicoAtributo>();
+                Aplicacao.Servicos.Gerenciamento.AppServicoAtributo>();
+            container.RegisterType<Aplicacao.Servicos.Interfaces.Gerenciamento.IAppServicoDistribuicao,
+                Aplicacao.Servicos.Gerenciamento.AppServicoDistribuicao>();
 
+            //Camada de domínio
             container.RegisterType<Dominio.Interfaces.Servico.Gerenciamento.IServicoCompra,
                 Dominio.Servicos.Gerenciamento.ServicoCompra>();
             container.RegisterType<Dominio.Interfaces.Servico.Gerenciamento.IServicoGrupo,
@@ -49,11 +58,14 @@ namespace Nextt_Gestao_Compra.Infre.CrossCutting.Configuracao
             container.RegisterType<Dominio.Interfaces.Servico.Gerenciamento.IServicoProduto,
                 Dominio.Servicos.Gerenciamento.ServicoProduto>();
             container.RegisterType<Dominio.Interfaces.Servico.Gerenciamento.IServicoGrupoEmpresa,
-                            Dominio.Servicos.Gerenciamento.ServicoGrupoEmpresa>();
+                Dominio.Servicos.Gerenciamento.ServicoGrupoEmpresa>();
             container.RegisterType<Dominio.Interfaces.Servico.Gerenciamento.IServicoAtributo,
-                                        Dominio.Servicos.Gerenciamento.ServicoAtributo>();
+                Dominio.Servicos.Gerenciamento.ServicoAtributo>();
+            container.RegisterType<Dominio.Interfaces.Servico.Gerenciamento.IServicoDistribuicao,
+                Dominio.Servicos.Gerenciamento.ServicoDistribuicao>();
 
-            container.RegisterType<Dominio.Interfaces.Repositorio.Gerenciamento.IRepositorioCompra, 
+            //Camada de dominio/dados (Repositórios)
+            container.RegisterType<Dominio.Interfaces.Repositorio.Gerenciamento.IRepositorioCompra,
                 Infra.Dados.Repositorios.Gerenciamento.RepositorioCompra>();
             container.RegisterType<Dominio.Interfaces.Repositorio.Gerenciamento.IRepositorioGrupo,
                 Infra.Dados.Repositorios.Gerenciamento.RepositorioGrupo>();
@@ -64,9 +76,11 @@ namespace Nextt_Gestao_Compra.Infre.CrossCutting.Configuracao
             container.RegisterType<Dominio.Interfaces.Repositorio.Gerenciamento.IRepositorioProduto,
                 Infra.Dados.Repositorios.Gerenciamento.RepositorioProduto>();
             container.RegisterType<Dominio.Interfaces.Repositorio.Gerenciamento.IRepositorioGrupoEmpresa,
-                            Infra.Dados.Repositorios.Gerenciamento.RepositorioGrupoEmpresa>();
+                Infra.Dados.Repositorios.Gerenciamento.RepositorioGrupoEmpresa>();
             container.RegisterType<Dominio.Interfaces.Repositorio.Gerenciamento.IRepositorioAtributo,
-                                        Infra.Dados.Repositorios.Gerenciamento.RepositorioAtributo>();
+                Infra.Dados.Repositorios.Gerenciamento.RepositorioAtributo>();
+            container.RegisterType<Dominio.Interfaces.Repositorio.Gerenciamento.IRepositorioDistribuicao,
+                Infra.Dados.Repositorios.Gerenciamento.RepositorioDistribuicao>();
 
             return new UnityResolver(container);
         }

@@ -44,7 +44,8 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento
                                     "', @IDSegmento = '" + parametros.Segmentos +
                                     status +
                                     ", @IDMarca = '" + parametros.Marcas +
-                                    "', @ReferenciaForncedor = '" + parametros.ReferenciaFornecedor +
+                                    "', @consulta_pedido_novo = " + (parametros.OrigemConsulta == "Pedido") +
+                                    ", @ReferenciaForncedor = '" + parametros.ReferenciaFornecedor +
                                     "', @AtributoFornecedor = '" + parametros.AttrFornecedor +
                                     "', @IDFornecedor = '" + parametros.IDFornecedor +
                                     "', @pagina = '" + parametros.Paginas +

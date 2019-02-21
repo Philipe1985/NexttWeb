@@ -18,7 +18,7 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
         public HistoricoPedidoVM(HistoricoPedido historicoPedido)
         {
             IDPedido = historicoPedido.IDPedido;
-            Data = historicoPedido.Data.ToString("dd/MM/yyyy hh:mm:ss");
+            Data = historicoPedido.Data.ToString("dd/MM/yyyy HH:mm:ss");
             Detalhamento = historicoPedido.Detalhamento;
             Nome = historicoPedido.Nome;
             Status = historicoPedido.Status;

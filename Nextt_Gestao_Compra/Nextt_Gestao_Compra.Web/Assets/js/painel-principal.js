@@ -6,12 +6,12 @@
         }
         //else if ($(this).attr('id').toLowerCase() === 'produto') {
 
-            //$('.selectpicker').selectpicker('hide');
-            //$(".navbar.navbar-default.navbar-fixed-top").addClass('ocultarElemento');
-            //$(".bg_load").show();
-            //$(".wrapper").show();
-            //sessionStorage.setItem("cadastroProduto", '1');
-            //window.location = "../cadastro/compra.cshtml";
+        //$('.selectpicker').selectpicker('hide');
+        //$(".navbar.navbar-default.navbar-fixed-top").addClass('ocultarElemento');
+        //$(".bg_load").show();
+        //$(".wrapper").show();
+        //sessionStorage.setItem("cadastroProduto", '1');
+        //window.location = "../cadastro/compra.cshtml";
 
         //}
         else {
@@ -50,7 +50,10 @@ function carregar() {
     }
     if (permissoesUsuarioLogado.indexOf('Gerenciar Atributos') === -1) {
         $("#atributos").addClass("ocultarElemento");
-    } 
+    }
+    if (permissoesUsuarioLogado.indexOf('Acessar Distribuição de Produto') === -1) {
+        $("#distribuicao").addClass("ocultarElemento");
+    }
     $("#homeOpcao").addClass("ocultarElemento");
     var $menuTitulo = $(".navbar.navbar-default.navbar-fixed-top");
     $menuTitulo.find('.navbar-header .navbar-center').text('Gestão de Compras');

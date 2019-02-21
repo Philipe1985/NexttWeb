@@ -285,7 +285,7 @@ function alteraStatusPedido(status, idPedido) {
                         return false;
                     }
                     if (!motivo || motivo.length < 5) {
-                        pedidoOperacaoInvalida('O motivo do cancelamento é obrigatório e deve conter no mínimo 5 caracteres! Informe o motivo ou cancele a operação.')
+                        pedidoOperacaoInvalida('O motivo é obrigatório e deve conter no mínimo 5 caracteres! Informe o motivo ou cancele a operação.')
                         return false;
                     }
 
@@ -655,7 +655,7 @@ function configuraRangeCalendarioFornecedor(elemento, dataIni, dataFinal) {
     }
 }
 function configuraCombosOpcoes(elemento) {
-    var dtsize = $(elemento).find('option').length < 7 ? "auto" : 7;
+    var dtsize = $(elemento).find('option').length <= 7 ? "auto" : 7;
     $(elemento).selectpicker('destroy').selectpicker({
         liveSearch: $(elemento).find('option').length > 7,
         size: dtsize,

@@ -1,74 +1,158 @@
 ﻿@{
     Layout = "~/_LayoutPrincipal.cshtml";
 }
-<script src="../Assets/js/distribuicao.js"></script>
+<script src="../Assets/js/plugins/moment.min.js"></script>
 <script src="../Assets/js/calculosRelatorio.js"></script>
-<div class="col-md-12" id="principal">
+<script src="../Assets/js/distribuicao.js"></script>
+<div class="col-md-12 col-sm-12 col-xs-12" id="principal">
+
     <div class="row">
-        <div class="panel panel-primary">
-            <div class="panel-heading">
-                <h3 class="panel-title">Periodo Referência: 1ª Quinzana</h3>
+        <div class="col-md-12 col-sm-12 col-xs-12" style="text-align:center">
+            <div id="alertProdDist" class="alertCustomizado alert-danger" style="display:none"></div>
+        </div>
+        <div class="col-md-2 col-sm-4 col-xs-12">
+            <div class="form-group">
+                <h5 class="form-label">Grupo de Filiais:</h5>
+                <div class="controls ocultarElemento">
+                    <select name="cbGrupoFilial" id="cbGrupoFilial" data-container="body" data-actions-box="true" class="selectpicker show-tick form-control" data-live-search="true"
+                            data-select-all-text="Marcar Todas" data-deselect-all-text="Desmarcar Todas" data-count-selected-text="Selecionado {0} de {1} opções"
+                            data-width="100%" multiple data-select-header="true" data-size="auto" data-selected-text-format="count > 2" title="Selecione..."></select>
+                </div>
             </div>
-            <div id="" class="panel-body">
-                <div class="row">
-                    <div class="col-md-12 col-sm-12 col-xs-12 table-responsive filter-right">
-                        <table id="tabelaUsuarios" cellpadding="0" cellspacing="0" style=" width:100%;" class="table-tools cell-border hover table cell nowrap stripe compact pretty">
+        </div>
+        <div class="col-md-2 col-sm-4 col-xs-12">
+            <div class="form-group">
+                <h5 class="form-label">Fornecedores:</h5>
+                <div class="controls ocultarElemento">
+                    <select id="drpCNPJ" class="selectpicker show-tick form-control" data-show-subtext="true" data-actions-box="true" multiple data-live-search="true"
+                            data-select-all-text="Marcar Todos" data-deselect-all-text="Desmarcar Todos" data-count-selected-text="Selecionado {0} de {1} CNPJ's'" title="0 selecionados..."
+                            data-width="100%" data-select-header="true" data-size="7" data-selected-text-format="count > 2"></select>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2 col-sm-4 col-xs-12">
+            <div class="form-group">
+                <h5 class="form-label">Marcas:</h5>
+                <div class="controls ocultarElemento">
+                    <select id="drpMarc" class="selectpicker show-tick form-control" data-actions-box="true" multiple data-live-search="true"
+                            data-select-all-text="Marcar Todos" data-container="body" data-deselect-all-text="Desmarcar Todos" data-count-selected-text="Selecionado {0} de {1}" title="0 selecionados..."
+                            data-width="100%" data-size="7" data-selected-text-format="count > 2"></select>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2 col-sm-4 col-xs-12">
+            <div class="form-group">
+                <h5 class="form-label">Segmentos:</h5>
+                <div class="controls ocultarElemento">
+                    <select id="drpSeg" class="selectpicker show-tick form-control" data-actions-box="true" data-show-subtext="true" multiple data-live-search="true"
+                            data-count-selected-text="Selecionado {0} de {1}" title="0 selecionados..." data-select-all-text="Marcar Todos" data-deselect-all-text="Desmarcar Todos"
+                            data-width="100%" data-select-header="true" data-size="7" data-selected-text-format="count > 2"></select>
+                </div>
+            </div>
+        </div>
+
+        <div id="divSec" class="col-md-2 col-sm-4 col-xs-12 ocultarElemento">
+            <div class="form-group">
+                <h5 class="form-label">Seções:</h5>
+                <div class="controls">
+                    <select id="drpSec" class="selectpicker show-tick form-control" data-show-subtext="true" data-actions-box="true" multiple data-live-search="true"
+                            data-select-all-text="Marcar Todas" data-container="body" data-deselect-all-text="Desmarcar Todas" data-count-selected-text="Selecionado {0} de {1}" title="0 selecionados..."
+                            data-width="100%" data-select-header="true" data-size="7" data-selected-text-format="count > 2"></select>
+                </div>
+            </div>
+        </div>
+        <div id="divEsp" class="col-md-2 col-sm-4 col-xs-12 ocultarElemento">
+            <div class="form-group">
+                <h5 class="form-label">Espécies:</h5>
+                <div class="controls">
+                    <select id="drpEsp" class="selectpicker show-tick form-control" data-show-subtext="true" data-actions-box="true" multiple data-live-search="true"
+                            data-select-all-text="Marcar" data-deselect-all-text="Desmarcar" data-count-selected-text="Selecionado {0} de {1}" title="0 selecionados..."
+                            data-width="100%" data-select-header="true" data-size="5" data-selected-text-format="count > 2"></select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 col-sm-12 col-xs-12">
+            <div class="form-group">
+                <h5 class="form-label">Pesquise por Cod. Produto, Cod. Pedido ou Descrição:</h5>
+                <div class="controls">
+                    <input type="text" id="txtFiltroProdutoCompra" maxlength="50" placeholder="Digite aqui..." class="form-control" />
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-2 col-sm-4 col-xs-12">
+            <div class="form-group">
+                <h5 class="form-label">Pesquisar Produto:</h5>
+                <div class="controls">
+                    <button id="btnBuscarProduto" class="btn btn-primary " style="vertical-align:top !important" onclick="buscarProdutosDistribuicao()">
+                        <i class="fa fa-search" aria-hidden="true"> Pesquisar</i>
+                    </button>
+                    <a href="javascript:limparCampos();" data-toggle="tooltip" style="vertical-align:top !important" title="Limpar Filtros" class="btn text-center clear-filter">
+                        @*<i class="fa fa-filter fa-2x" aria-hidden="true"></i>*@
+                        <span class="fa fa-filter-remove fa-2x"></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Escolha o Produto para Acessar a Distribuição</h3>
+                </div>
+                <div id="" class="panel-body">
+                    <div class="pagination-holder clearfix pull-right"></div>
+                    <div class="col-md-12 col-sm-12 col-xs-12 table-responsive">
+                        <table id="tabelaProdutos" cellpadding="0" cellspacing="0" style="width:100%;" class="table-tools cell-border hover table cell nowrap stripe compact pretty">
                             <thead>
                                 <tr>
-                                    <th id="coluna_id" style="border:1px solid black;border-bottom:2px solid black">Código de Produto</th>
-                                    <th id="coluna_nome" style="border:1px solid black;border-bottom:2px solid black">Descrição de Produto</th>
-                                    <th id="coluna_email" style="border:1px solid black;border-bottom:2px solid black">Modelo do Produto</th>
-                                    <th id="coluna_ativo" style="border:1px solid black;border-bottom:2px solid black">Grade</th>
-                                    <th id="coluna_administrador" style="border:1px solid black;border-bottom:2px solid black">Qtd em Estoque</th>
-                                    <th id="coluna_gerenciarUsuario" style="border:1px solid black;border-bottom:2px solid black">Qtd em Carteira</th>
-                                    <th id="coluna_realocar" style="border:1px solid black;border-bottom:2px solid black">Redistribuir Produto</th>
+                                    <th style="border:1px solid black;border-bottom:2px solid black">ID Produto</th>
+                                    <th style="border:1px solid black;border-bottom:2px solid black">Código</th>
+                                    <th style="border:1px solid black;border-bottom:2px solid black">Descrição</th>
+                                    <th style="border:1px solid black;border-bottom:2px solid black">Marca</th>
+                                    <th style="border:1px solid black;border-bottom:2px solid black">Referência</th>
+                                    <th style="border:1px solid black;border-bottom:2px solid black">Estoque</th>
+                                    <th style="border:1px solid black;border-bottom:2px solid black">Ult. Entrega</th>
+                                    <th style="border:1px solid black;border-bottom:2px solid black">Dt. Cadastro</th>
+                                    <th style="border:1px solid black;border-bottom:2px solid black"></th>
                                 </tr>
                             </thead>
-                            <tbody id="usuarioTabela"></tbody>
                         </table>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-<div class="modal fade" id="modalRedistribuirProduto" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header modal-header-primary">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="redistribuirProdutoModalTitulo"><i class="fa fa-building-o"></i>&nbsp;Redistribuindo Produto <strong>TESTANDO 1</strong></h4>
-            </div>
-            <div class="modal-body" style="padding-top:8px; padding-bottom:0px;">
-                <h5 id="tituloTotal" style="color:blue" class="text-center"><strong>Valores Iniciais</strong></h5>
-                <div class="row">
-                    <h5 id="tituloProdutoRedistribuir" class="pull-left"><strong>Quantidade Total Inicial:</strong> 23</h5>
-                    <h5 id="tituloPorcentagemProduto" class="pull-right"><strong>Porcentagem Total Inicial:</strong> 100%</h5>
-                </div>
-                <h5 id="tituloRecalculado" style="color:blue" class="text-center"><strong>Valores Recalculados</strong><span id="spanInvalido" style="display:none" class="tips"> Não é permitido finalizar com quantidade ou porcentagen negativas. <br /> Corrija os valores, ou acesse o sistema Open to Buy para aumentar a quantidade de produtos neste período.</span></h5>
-                <div class="row">
-                    <h5 id="tituloProdutoRedistribuirCalculado" class="pull-left"><strong>Quantidade Total Sobressalente:</strong> 0</h5>
-                    <h5 id="tituloPorcentagemProdutoCalculado" class="pull-right"><strong>Porcentagem Total Sobressalente:</strong> 0%</h5>
-                </div>
-                <div class="row">
-                    <div class="col-md-12 col-sm-12 col-xs-12 table-responsive filter-right">
-                        <table cellpadding="0" cellspacing="0" style="width:100%;" border="1" class="table-tools cell-border hover table cell nowrap stripe compact pretty" id="tblRedistribuirProduto">
-                            <thead>
-                                <tr>
-                                    <th id="coluna_filial">Cod. Filial</th>
-                                    <th id="coluna_participacao">Desc. Filial</th>
-                                    <th id="coluna_cobertura">Participação (%)</th>
-                                    <th id="coluna_qtdeVenda">Qtd. Distribuida</th>
-                                </tr>
-                            </thead>
-                        </table>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" ID="btnSalvarDistribuicao" class="btn btn-success"><i class="fa fa-check" aria-hidden="true"></i> Confirmar</button>
-                <button id="btnCancelarSenha" type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-ban" aria-hidden="true"></i> Cancelar</button>
-            </div>
+    <div class="bg_load"></div>
+    <div class="wrapper">
+        <div class="inner">
+            <span class="wait">
+                <span>A</span>
+                <span>g</span>
+                <span>u</span>
+                <span>a</span>
+                <span>r</span>
+                <span>d</span>
+                <span>e</span>
+            </span>
+            <span class="resized ocultarElemento">
+                <span>A</span>
+                <span>j</span>
+                <span>u</span>
+                <span>s</span>
+                <span>t</span>
+                <span>a</span>
+                <span>n</span>
+                <span>d</span>
+                <span>o</span>
+            </span>
         </div>
     </div>
+
 </div>
+
+
+

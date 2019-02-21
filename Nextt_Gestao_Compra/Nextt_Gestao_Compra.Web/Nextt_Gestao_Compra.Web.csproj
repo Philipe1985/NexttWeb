@@ -112,6 +112,9 @@
     <Content Include="Assets\css\customTabelaProdutoCompra.css" />
     <Content Include="Assets\css\erro.css" />
     <Content Include="Assets\css\fastselect.css" />
+    <Content Include="Assets\css\icons\custom-icons\flaticon.css" />
+    <Content Include="Assets\css\icons\custom-icons\flaticon.html" />
+    <Content Include="Assets\css\icons\custom-icons\Flaticon.svg" />
     <Content Include="Assets\css\icons\famfamfam_flags-master\ad.png" />
     <Content Include="Assets\css\icons\famfamfam_flags-master\ae.png" />
     <Content Include="Assets\css\icons\famfamfam_flags-master\af.png" />
@@ -1656,6 +1659,8 @@
     <Content Include="Assets\js\customProdutoManager.js" />
     <Content Include="Assets\js\customUsuarioManager.js" />
     <Content Include="Assets\js\dashboard.js" />
+    <Content Include="Assets\js\distribuicao-grupo.js" />
+    <Content Include="Assets\js\distribuicao-produto.js" />
     <Content Include="Assets\js\distribuicao.js" />
     <Content Include="Assets\js\fastselect.js" />
     <Content Include="Assets\js\fastselect.standalone.js" />
@@ -2175,6 +2180,14 @@
     <Content Include="Assets\js\plugins\graficos\scales\scale.logarithmic.js" />
     <Content Include="Assets\js\plugins\graficos\scales\scale.radialLinear.js" />
     <Content Include="Assets\js\plugins\graficos\scales\scale.time.js" />
+    <Content Include="Assets\js\plugins\gridExcel\css\handsontable.css" />
+    <Content Include="Assets\js\plugins\gridExcel\css\handsontable.full.css" />
+    <Content Include="Assets\js\plugins\gridExcel\css\handsontable.full.min.css" />
+    <Content Include="Assets\js\plugins\gridExcel\css\handsontable.min.css" />
+    <Content Include="Assets\js\plugins\gridExcel\js\handsontable.full.js" />
+    <Content Include="Assets\js\plugins\gridExcel\js\handsontable.full.min.js" />
+    <Content Include="Assets\js\plugins\gridExcel\js\handsontable.js" />
+    <Content Include="Assets\js\plugins\gridExcel\js\handsontable.min.js" />
     <Content Include="Assets\js\plugins\image_upload.js" />
     <Content Include="Assets\js\plugins\jnotify\jNotify.jquery.css" />
     <Content Include="Assets\js\plugins\jnotify\jNotify.jquery.js" />
@@ -2478,6 +2491,13 @@
     <Content Include="Gerenciamento\GrupoEmpresa2.cshtml" />
     <Content Include="Gerenciamento\Atributos.cshtml" />
     <Content Include="Cadastro\Atributo.cshtml" />
+    <Content Include="Assets\css\icons\custom-icons\Flaticon.eot" />
+    <Content Include="Assets\css\icons\custom-icons\Flaticon.ttf" />
+    <Content Include="Assets\css\icons\custom-icons\Flaticon.woff" />
+    <Content Include="Assets\css\icons\custom-icons\Flaticon.woff2" />
+    <Content Include="Assets\css\icons\custom-icons\_flaticon.scss" />
+    <Content Include="Gerenciamento\DistribuicaoProduto.cshtml" />
+    <Content Include="Cadastro\distribuicaoGrupo.cshtml" />
     <None Include="packages.config" />
     <Content Include="Gerenciamento\Pedido.cshtml" />
     <Content Include="Cadastro\Compra.cshtml" />

@@ -29,5 +29,6 @@
         public string IDPedido { get; set; }
         public string Observacao { get; set; }
         public string DescricaoProduto { get; set; }
+        public string OrigemConsulta { get; set; }
     }
 }

@@ -2225,7 +2225,7 @@ function editarProduto(parametro) {
             $("#drpTamanhoGrade").selectpicker('val', result.tamanhosGrade);
             $('#drpReferenciaGrade').selectpicker('val', result.referenciasGrade);
             if (permissoesUsuarioLogado.indexOf('Editar Grade') === -1) {
-                $("#drpCoresGrade").attr('disabled', true);;
+                $("#drpCoresGrade").attr('disabled', true);
                 $("#drpTamanhoGrade").attr('disabled', true);;
                 $('#drpReferenciaGrade').attr('disabled', true);;
             }
@@ -3054,7 +3054,7 @@ function cargaInicialPedido() {
     });
 
 }
-function carregaPedidoSintetico(parametro) {
+function carregaPedidoSintetico(parametro, validarUsuario) {
     $.ajax({
         type: 'POST',
         crossDomain: true,
@@ -3109,7 +3109,31 @@ function carregaPedidoSintetico(parametro) {
             $('#modalBodyDetalhePedido').removeClass('ocultarElemento');
             var statusTransicao = result.idStatusPedidoPara ? result.idStatusPedidoPara.split(',') : []
             for (var i = 0; i < statusTransicao.length; i++) {
-                $('.btnFooters .status' + statusTransicao[i]).removeClass('ocultarElemento');
+                if (validarUsuario) {
+                    if (statusTransicao[i].toLowerCase() === 'f') {
+                        if (permissoesUsuarioLogado.indexOf('Finalizar para Aprovar os Próprio Pedidos') > -1) {
+                            $('.btnFooters .status' + statusTransicao[i]).removeClass('ocultarElemento');
+                        }
+                    } else if (statusTransicao[i].toLowerCase() === 'c') {
+                        if (permissoesUsuarioLogado.indexOf('Cancelar os Próprios Pedidos') > -1) {
+                            $('.btnFooters .status' + statusTransicao[i]).removeClass('ocultarElemento');
+                        }
+                    } else if (statusTransicao[i].toLowerCase() === 'a') {
+                        if (permissoesUsuarioLogado.indexOf('Reprovar para Editar os Próprios Pedidos') > -1) {
+                            $('.btnFooters .status' + statusTransicao[i]).removeClass('ocultarElemento');
+                        }
+                    } else if (statusTransicao[i].toLowerCase() === 'l') {
+                        if (permissoesUsuarioLogado.indexOf('Aprovar os Próprios Pedidos') > -1) {
+                            $('.btnFooters .status' + statusTransicao[i]).removeClass('ocultarElemento');
+                        }
+                    } else {
+                        $('.btnFooters .status' + statusTransicao[i]).removeClass('ocultarElemento');
+                    }
+
+                } else {
+                    $('.btnFooters .status' + statusTransicao[i]).removeClass('ocultarElemento');
+                }
+                
             }
             $('.btnFooters').removeClass('ocultarElemento');
             $("#modalLoad").fadeOut("slow");
@@ -3261,7 +3285,17 @@ function geraCargaPedidoAnalitico(parametro) {
             }
             for (var i = 0; i < statusTransicao.length; i++) {
                 if (statusTransicao[i].toLowerCase() != 'c') {
-                    $('.exibeBtn.status' + statusTransicao[i]).removeClass('ocultarElemento')
+                    if (result.idUsuarioCadastro && sessionStorage.getItem("id_usuario") == result.idUsuarioCadastro) {
+                        if (statusTransicao[i].toLowerCase() === 'f' && permissoesUsuarioLogado.indexOf('Finalizar para Aprovar os Próprio Pedidos') > -1) {
+                            $('.exibeBtn.status' + statusTransicao[i]).removeClass('ocultarElemento');
+                        } else if (statusTransicao[i].toLowerCase() !== 'f') {
+                            $('.exibeBtn.status' + statusTransicao[i]).removeClass('ocultarElemento');
+                        }
+
+                    } else {
+                        $('.exibeBtn.status' + statusTransicao[i]).removeClass('ocultarElemento');
+                    }
+                   
                 }
             }
             if (result.historicos.length) {
@@ -3915,6 +3949,59 @@ function excluirDadosAtributo(parametro) {
                 headerText: "Falha Interna",
                 alertType: "warning"
             })
+        }
+    });
+}
+function carregaFiltrosDistribuicao() {
+    $.ajax({
+        type: 'GET',
+        crossDomain: true,
+        async: true,
+        cache: false,
+        url: urlApi + 'gerenciamento/distribuicao/RecuperaFiltrosDistribuicao',
+        beforeSend: function (req) {
+            req.setRequestHeader('Authorization', sessionStorage.getItem("token"));
+        },
+        success: function (result) {
+            console.log(result)
+            var sourceSeg = "", sourceGrupo = "",sourceMarca = "",sourceForn = "";
+            $.each(result.gruposFiliais, function (index, value) {
+                sourceGrupo += "<option data-tokens='" + value.token + "' value='" + value.valor + "'>" + value.descricao + "</option>";
+            });
+            $.each(result.segmentos, function (index, value) {
+                sourceSeg += "<option data-tokens='" + value.token + "' value='" + value.valor + "'>" + value.descricao + "</option>";
+            });
+            $.each(result.fornecedores, function (index, value) {
+                sourceForn += "<option data-tokens='" + value.token + "' data-subtext='" + value.token.split(';')[3] + "' value='" + value.valor + "'>" + value.descricao + "</option>";
+            });
+            $.each(result.marcas, function (index, value) {
+                sourceMarca += "<option data-tokens='" + value.token + "' value='" + value.valor + "'>" + value.descricao + "</option>";
+            });
+            inicializarTbDistribuicao();
+            $("#drpMarc").html(sourceMarca);
+            $("#drpSeg").html(sourceSeg);
+            $("#cbGrupoFilial").html(sourceGrupo);
+            $("#drpCNPJ").html(sourceForn);
+            $('.selectpicker').selectpicker('refresh');
+            $(".bg_load").fadeOut();
+            $(".wrapper").fadeOut();
+            var $menuTitulo = $(".navbar.navbar-default.navbar-fixed-top");
+            $menuTitulo.removeClass('ocultarElemento');
+            $menuTitulo.find('.navbar-header .navbar-center').text('Distribuição de Produtos');
+            $("div.controls.ocultarElemento").removeClass('ocultarElemento');
+        },
+        error: function (erro) {
+            $(".bg_load").fadeOut();
+            $(".wrapper").fadeOut();
+            $('.selectpicker').selectpicker('show');
+            $(".navbar.navbar-default.navbar-fixed-top").removeClass('ocultarElemento');
+            modal({
+                messageText: "Ocorreu um erro durante esta operação, tente novamente.<br/>Caso o erro persista informe o administrador do sistema o horário e data da ocorrencia",
+                type: "alert",
+                modalSize: 'modal-lg',
+                headerText: "Falha Interna",
+                alertType: "warning"
+            });
         }
     });
 }

@@ -1,0 +1,35 @@
+
+ERROR 2019-02-14 00:20:07 - Erro ao Recuperar Dados do Pedido Analítico
+System.ArgumentOutOfRangeException: Argumento especificado estava fora do intervalo de valores válidos.
+Nome do parâmetro: index
+   em System.Linq.Enumerable.ElementAt[TSource](IEnumerable`1 source, Int32 index)
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido.GerenciadorAplicacaoPedido.RetornaPedidoAnalitico(IAppServicoPedido pedidoServico, ParametrosVM parametroVM, FabricaViewModel fabrica) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Pedido\GerenciadorAplicacaoPedido.cs:linha 84
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Cadastro.PedidoController.RetornaPedidoAnalitico(ParametrosVM parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Cadastro\PedidoController.cs:linha 90
+
+ERROR 2019-02-14 00:23:03 - Erro ao Recuperar Dados do Pedido Analítico
+System.ArgumentOutOfRangeException: Argumento especificado estava fora do intervalo de valores válidos.
+Nome do parâmetro: index
+   em System.Linq.Enumerable.ElementAt[TSource](IEnumerable`1 source, Int32 index)
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido.GerenciadorAplicacaoPedido.RetornaPedidoAnalitico(IAppServicoPedido pedidoServico, ParametrosVM parametroVM, FabricaViewModel fabrica) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Pedido\GerenciadorAplicacaoPedido.cs:linha 84
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Cadastro.PedidoController.RetornaPedidoAnalitico(ParametrosVM parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Cadastro\PedidoController.cs:linha 90
+
+ERROR 2019-02-14 00:24:13 - Erro ao Recuperar Dados do Pedido Analítico
+System.ArgumentOutOfRangeException: Argumento especificado estava fora do intervalo de valores válidos.
+Nome do parâmetro: index
+   em System.Linq.Enumerable.ElementAt[TSource](IEnumerable`1 source, Int32 index)
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido.GerenciadorAplicacaoPedido.RetornaPedidoAnalitico(IAppServicoPedido pedidoServico, ParametrosVM parametroVM, FabricaViewModel fabrica) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Pedido\GerenciadorAplicacaoPedido.cs:linha 84
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Cadastro.PedidoController.RetornaPedidoAnalitico(ParametrosVM parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Cadastro\PedidoController.cs:linha 90
+
+ERROR 2019-02-14 00:26:41 - Erro ao Recuperar Dados do Pedido Analítico
+System.ArgumentOutOfRangeException: Argumento especificado estava fora do intervalo de valores válidos.
+Nome do parâmetro: index
+   em System.Linq.Enumerable.ElementAt[TSource](IEnumerable`1 source, Int32 index)
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido.GerenciadorAplicacaoPedido.RetornaPedidoAnalitico(IAppServicoPedido pedidoServico, ParametrosVM parametroVM, FabricaViewModel fabrica) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Pedido\GerenciadorAplicacaoPedido.cs:linha 84
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Cadastro.PedidoController.RetornaPedidoAnalitico(ParametrosVM parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Cadastro\PedidoController.cs:linha 90
+
+ERROR 2019-02-14 00:27:42 - Erro ao Recuperar Dados do Pedido Analítico
+System.ArgumentOutOfRangeException: Argumento especificado estava fora do intervalo de valores válidos.
+Nome do parâmetro: index
+   em System.Linq.Enumerable.ElementAt[TSource](IEnumerable`1 source, Int32 index)
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Pedido.GerenciadorAplicacaoPedido.RetornaPedidoAnalitico(IAppServicoPedido pedidoServico, ParametrosVM parametroVM, FabricaViewModel fabrica) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Pedido\GerenciadorAplicacaoPedido.cs:linha 84
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Cadastro.PedidoController.RetornaPedidoAnalitico(ParametrosVM parametros) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Cadastro\PedidoController.cs:linha 90

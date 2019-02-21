@@ -61,6 +61,8 @@ $(document).ready(function () {
 
 });
 function carregar() {
+    //window.location = "../home.cshtml";
+
     cargaInicialAtributos();
 }
 function pesquisarAtributo() {

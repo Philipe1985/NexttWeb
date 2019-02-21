@@ -51,6 +51,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositorios\Gerenciamento\RepositorioAtributo.cs" />
     <Compile Include="Repositorios\Gerenciamento\RepositorioCompra.cs" />
+    <Compile Include="Repositorios\Gerenciamento\RepositorioDistribuicao.cs" />
     <Compile Include="Repositorios\Gerenciamento\RepositorioGrupo.cs" />
     <Compile Include="Repositorios\Gerenciamento\RepositorioGrupoEmpresa.cs" />
     <Compile Include="Repositorios\Gerenciamento\RepositorioMovimentacao.cs" />
