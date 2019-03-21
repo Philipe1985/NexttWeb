@@ -264,7 +264,7 @@ function carregarEspecieModal(parametro, isItem) {
                         $("#drpEspCad").selectpicker('val', espSelecionadas)
                         espSelecionadas = [];
                     }
-                    
+
                     $("#divEspCad").removeClass('ocultarElemento');
                 } else {
                     $("#drpEspCadItem").html(sourceEsp);
@@ -1157,9 +1157,10 @@ function atualizarPerfilEnviar(parametro) {
             }
         },
         error: function (error) {
+            console.log(error)
             waitingDialog.hide();
             modal({
-                messageText: "Ocorreu um erro durante esta operação, tente novamente.<br/>Caso o erro persista informe o administrador do sistema o horário e data da ocorrencia",
+                messageText: "Ocorreu um erro durante esta operação, tente novamente.<br/>Caso o erro persista informe o administrador do sistema o horário e data da ocorrencia. Erro " + error.status + ": " + tratamentoErro(error),
                 type: "alert",
                 headerText: "Falha Interna",
                 alertType: "warning"
@@ -1254,6 +1255,695 @@ function cargaInicialGerenciamentoCompra(fluxo) {
     });
 
 }
+function cargaInicialConsultaEntradaNF() {
+    $.ajax({
+        type: 'GET',
+        crossDomain: true,
+        cache: false,
+        url: urlApi + 'gerenciamento/entradaNF/RecuperaFiltrosPesquisaNF',
+        beforeSend: function (req) {
+            req.setRequestHeader('Authorization', sessionStorage.getItem("token"));
+        },
+        success: function (result) {
+            console.log(result)
+            var sourceCNPJ = "", sourceSeg = "", sourceStatus = "", sourceFiliais = "";
+
+            $.each(result.fornecedores, function (index, value) {
+                sourceCNPJ += "<option data-tokens='" + value.token + "' data-subtext='" + value.token.split(';')[3] + "' value='" + value.valor + "'>" + value.descricao + "</option>";
+            });
+            if (result.filiais) {
+                $.each(result.filiais, function (index, value) {
+                    sourceFiliais += "<option data-tokens='" + value.token + "' value='" + value.valor + "'>" + value.descricao + "</option>";
+                });
+            }
+            if (result.statusNota) {
+                $.each(result.statusNota, function (index, value) {
+                    var tokens = value.token.split(';');
+                    if (tokens.length == 3) {
+                        nfStatus.push({ status: value.valor, mudar: tokens[0].split(',') });
+                    }
+                    btnStatusTransicaoNF += '<div class="row"><button type="button" disabled class="block btn-nf-transicao status-nf-' + value.valor + '">' + value.descricao + '</button></div>';
+                    sourceStatus += "<option data-tokens='" + value.token + "' value='" + value.valor + "'>" + value.descricao + "</option>";
+                });
+            }
+            if (result.segmentos) {
+                $.each(result.segmentos, function (index, value) {
+                    sourceSeg += "<option data-tokens='" + value.token + "' value='" + value.valor + "'>" + value.descricao + "</option>";
+                });
+            }
+            $("#drpCNPJ").html(sourceCNPJ);
+            configuraCombosOpcoes('#drpCNPJ');
+            if (!$("#drpCNPJ").hasClass('selectpicker')) $("#drpCNPJ").addClass('selectpicker')
+
+            $("#drpSeg").html(sourceSeg);
+            configuraCombosOpcoes('#drpSeg');
+            if (!$("#drpSeg").hasClass('selectpicker')) $("#drpSeg").addClass('selectpicker')
+
+            $("#drpFiliais").html(sourceFiliais);
+            configuraCombosOpcoes('#drpFiliais');
+            if (!$("#drpFiliais").hasClass('selectpicker')) $("#drpFiliais").addClass('selectpicker')
+
+            $("#drpStatus").html(sourceStatus);
+            configuraCombosOpcoes('#drpStatus');
+            if (!$("#drpStatus").hasClass('selectpicker')) $("#drpStatus").addClass('selectpicker')
+
+            carregarDadosEntradasNF([]);
+            $(".selectpicker").selectpicker('refresh');
+            $(".bg_load").fadeOut();
+            $(".wrapper").fadeOut();
+            $(".navbar.navbar-default.navbar-fixed-top").removeClass('ocultarElemento');
+            $("div.controls.ocultarElemento").removeClass('ocultarElemento');
+            var $menuTitulo = $(".navbar.navbar-default.navbar-fixed-top");
+            $menuTitulo.find('.navbar-header .navbar-center').text('Consulta de Entradas');
+            $("#divForn").removeClass('ocultarElemento');
+            $("#divSeg").removeClass('ocultarElemento');
+            $("#divStatus").removeClass('ocultarElemento');
+            $("#divFiliais").removeClass('ocultarElemento');
+
+
+        },
+        error: function (error) {
+            sessionStorage.clear();
+            localStorage.clear();
+            localStorage.setItem("erro", "<strong>Erro Interno!</strong></br>Ocorreu uma falha de comunicação entre a aplicação e a base de dados. Aguarde alguns minutos e tente novamente.</br>Caso o erro persista, entre em contato com o administrador do sistema e comunique este problema.<br/>Erro " + error.status + ": " + tratamentoErro(error));
+            window.location = "../conta/login.cshtml";
+        }
+    });
+
+}
+function cargaInicialCadastroEntradaNF() {
+    $.ajax({
+        type: 'GET',
+        crossDomain: true,
+        cache: false,
+        url: urlApi + 'gerenciamento/entradaNF/RecuperaFiltrosCadastroNF',
+        beforeSend: function (req) {
+            req.setRequestHeader('Authorization', sessionStorage.getItem("token"));
+        },
+        success: function (result) {
+            console.log(result)
+            var sourceCNPJ = "", sourceSeg = "", sourceStatusNF = "", sourceStatus = "", sourceFiliais = "", sourceMarcas = "";
+            $.each(result.marcas, function (index, value) {
+                sourceMarcas += "<option data-tokens='" + value.token + "' value='" + value.valor + "'>" + value.descricao + "</option>";
+            });
+            $.each(result.fornecedores, function (index, value) {
+                sourceCNPJ += "<option data-tokens='" + value.token + "' data-subtext='" + value.token.split(';')[3] + "' value='" + value.valor + "'>" + value.descricao + "</option>";
+            });
+            if (result.filiais) {
+                $.each(result.filiais, function (index, value) {
+                    sourceFiliais += "<option data-tokens='" + value.token + "' value='" + value.valor + "'>" + value.descricao + "</option>";
+                });
+            }
+            if (result.statusPedido) {
+                $.each(result.statusPedido, function (index, value) {
+                    sourceStatus += "<option data-tokens='" + value.token + "' value='" + value.valor + "'>" + value.descricao + "</option>";
+                });
+            }
+            if (result.segmentos) {
+                $.each(result.segmentos, function (index, value) {
+                    sourceSeg += "<option data-tokens='" + value.token + "' value='" + value.valor + "'>" + value.descricao + "</option>";
+                });
+            }
+            if (result.statusNota) {
+                $.each(result.statusNota, function (index, value) {
+                    var tokens = value.token.split(';');
+                    if (tokens.length == 3) {
+                        nfStatus.push({ status: value.valor, mudar: tokens[0].split(',') });
+                    }
+                    sourceStatusNF += "<option data-tokens='" + value.token + "' value='" + value.valor + "'>" + value.descricao + "</option>";
+                    btnStatusTransicaoNF += '<div class="row"><button type="button" disabled class="block btn-nf-transicao status-nf-' + value.valor + '">' + value.descricao + '</button></div>';
+                });
+            }
+            $("#drpStatusNFAtual").html(sourceStatusNF);
+            
+            $("#drpCNPJ").html(sourceCNPJ);
+            configuraCombosOpcoes('#drpCNPJ');
+            if (!$("#drpCNPJ").hasClass('selectpicker')) $("#drpCNPJ").addClass('selectpicker')
+
+            $("#drpSeg").html(sourceSeg);
+            configuraCombosOpcoes('#drpSeg');
+            if (!$("#drpSeg").hasClass('selectpicker')) $("#drpSeg").addClass('selectpicker')
+
+            $("#drpFiliais").html(sourceFiliais);
+            configuraCombosOpcoes('#drpFiliais');
+            if (!$("#drpFiliais").hasClass('selectpicker')) $("#drpFiliais").addClass('selectpicker')
+
+            $("#cbStatus").html(sourceStatus);
+            configuraCombosOpcoes('#cbStatus');
+            if (!$("#cbStatus").hasClass('selectpicker')) $("#cbStatus").addClass('selectpicker')
+
+            $("#drpMarc").html(sourceMarcas);
+            configuraCombosOpcoes('#drpMarc');
+            if (!$("#drpMarc").hasClass('selectpicker')) $("#drpMarc").addClass('selectpicker')
+
+            carregarPedidosNF();
+            if (!idCadNF) {
+                var listaImagem = [];
+                var configImg = [];
+                var configRodaope = [];
+
+                criaArquivoAnexos(listaImagem, configImg, configRodaope)
+                $("#drpStatusNFAtual").attr('disabled', true);
+                $("#drpStatusNFAtual").selectpicker('val', 'ED');
+                $(".selectpicker").selectpicker('refresh');
+                
+                
+                $("#tabPedido .btnConclusao .next-step").addClass('ocultarElemento');
+                $('li.notaTab').children('a').click();
+                $('li.duplicataTab').addClass('ocultarElemento');
+                $('li.resumoTab').addClass('ocultarElemento');
+                $(".bg_load").fadeOut();
+                $(".wrapper").fadeOut();
+                $(".navbar.navbar-default.navbar-fixed-top").removeClass('ocultarElemento');
+                $("div.controls.ocultarElemento").removeClass('ocultarElemento');
+                var $menuTitulo = $(".navbar.navbar-default.navbar-fixed-top");
+                $menuTitulo.find('.navbar-header .navbar-center').text('Cadastro de Nota Fiscal');
+
+            } else {
+                carregarEntradaCadastrada();
+
+            }
+
+        },
+        error: function (error) {
+            sessionStorage.clear();
+            localStorage.clear();
+            localStorage.setItem("erro", "<strong>Erro Interno!</strong></br>Ocorreu uma falha de comunicação entre a aplicação e a base de dados. Aguarde alguns minutos e tente novamente.</br>Caso o erro persista, entre em contato com o administrador do sistema e comunique este problema.<br/>Erro " + error.status + ": " + tratamentoErro(error));
+            window.location = "../conta/login.cshtml";
+        }
+    });
+
+}
+function carregarEntradasNF(parametro) {
+    //sessionStorage.setItem('parametrosFiltro', JSON.stringify(parametro));
+    $.ajax({
+        type: 'POST',
+        crossDomain: true,
+        async: true,
+        cache: false,
+        url: urlApi + 'gerenciamento/entradaNF/RecuperaEntradasFiltradas',
+        data: parametro,
+        beforeSend: function (req) {
+            req.setRequestHeader('Authorization', sessionStorage.getItem("token"));
+        },
+        success: function (result) {
+            //controleTempo("Consulta produtos concluída: ")
+            //console.log('============================')
+            console.log(result)
+            //$('.pagination-holder').pagination('destroy');
+            //sessionStorage.setItem('paginacao', JSON.stringify(result.paginasReferencia));
+            //if (result.paginasReferencia.length) {
+            //    geraPaginacaoGrid(result.paginasReferencia.length)
+            //}
+
+            //$("#txtFiltroProdutoCompra").val('');
+            var dados = geraDadosGridEntradaNF(result);
+            carregarDadosEntradasNF(dados);
+            $(".bg_load").fadeOut();
+            $(".wrapper").fadeOut();
+            $(".dataTables_paginate.paging_simple_numbers").removeClass('ocultarElemento');
+            $('.selectpicker').selectpicker('show');
+            $(".navbar.navbar-default.navbar-fixed-top").removeClass('ocultarElemento');
+        },
+        error: function (erro) {
+            console.log(erro)
+            $(".bg_load").fadeOut("slow");
+            $(".wrapper").fadeOut("slow", function () {
+                $('.selectpicker').selectpicker('show');
+            });
+
+            modal({
+                messageText: "Ocorreu um erro durante esta operação, tente novamente.<br/>Caso o erro persista informe o administrador do sistema o horário e data da ocorrencia",
+                type: "alert",
+                headerText: "Falha Interna",
+                alertType: "warning"
+            });
+        }
+    });
+}
+function addPackPedidoEntradasNF(parametro) {
+
+    $.ajax({
+        type: 'POST',
+        crossDomain: true,
+        async: true,
+        cache: false,
+        url: urlApi + 'gerenciamento/entradaNF/RecuperaPackAddPedido',
+        data: parametro,
+        beforeSend: function (req) {
+            req.setRequestHeader('Authorization', sessionStorage.getItem("token"));
+        },
+        success: function (result) {
+            console.log(result)
+            for (var i = 0; i < result.length; i++) {
+                addAbaPackNovo(parametro.idPedido, parametro.tipo, result[i], parametro.distribuicao)
+            }
+            //$("#txtFiltroProdutoCompra").val('');
+            //var dados = geraDadosGridEntradaNF(result);
+            //carregarDadosEntradasNF(dados);
+            $(".bg_load").fadeOut();
+            $(".wrapper").fadeOut();
+            //$('.selectpicker').selectpicker('show');
+            $(".navbar.navbar-default.navbar-fixed-top").removeClass('ocultarElemento');
+        },
+        error: function (erro) {
+            console.log(erro)
+            $(".bg_load").fadeOut("slow");
+            $(".wrapper").fadeOut("slow", function () {
+                $('.selectpicker').selectpicker('show');
+            });
+
+            modal({
+                messageText: "Ocorreu um erro durante esta operação, tente novamente.<br/>Caso o erro persista informe o administrador do sistema o horário e data da ocorrencia",
+                type: "alert",
+                headerText: "Falha Interna",
+                alertType: "warning"
+            });
+        }
+    });
+}
+function carregarEntradaCadastrada() {
+    $.ajax({
+        type: 'GET',
+        cache: false,
+        crossDomain: true,
+        url: urlApi + 'gerenciamento/entradaNF/RecuperaEntradaCadastrada/' + idCadNF,
+        statusCode: {
+            200: function (retorno) {
+                console.log(retorno);
+                var sourceDesc = "<option selected value='0'>Nenhum</option>", sourceTpDoc = '', sourceGrpEmp = '';
+                $.each(retorno.duplicata.descontosAcrescimos, function (index, value) {
+                    limiteDescAdd += 1
+                    sourceDesc += "<option data-tokens='" + value.token + "' value='" + value.valor + "'>" + value.descricao + "</option>";
+                });
+                $.each(retorno.duplicata.formaPgto, function (index, value) {
+                    sourceTpDoc += "<option data-tokens='" + value.token + "' value='" + value.valor + "'>" + value.descricao + "</option>";
+                });
+                $.each(retorno.duplicata.grupoEmpresas, function (index, value) {
+                    sourceGrpEmp += "<option data-tokens='" + value.token + "' value='" + value.valor + "'>" + value.descricao + "</option>";
+                });
+                $("#drpGrpEmpDup").html(sourceGrpEmp);
+                $("#drpTpDoc").html(sourceTpDoc);
+                localStorage.setItem('descCombo', sourceDesc);
+                var dadosCustoTit = retornaCustoNfTB(retorno.duplicata.pedidosDuplicata);
+                carregaTabelaTitPedCusto(dadosCustoTit)
+                retornaDadosTbTitulosGerados(retorno.duplicata.documentosTitulo);
+                geraDadosTabelaDesc(retorno.duplicata.descontosAcrescimosPadrao);
+                $('li.notaTab').children('a').click();
+                carregaDadosCadastrados(retorno.dadosEntrada)
+                var listaImagem = [];
+                var configImg = [];
+                var configRodaope = [];
+                enableDisableCamposNota(retorno.entradaNFPedidoPacks.length == 0)
+
+
+                for (var i = 0; i < retorno.entradaNFPedidoPacks.length; i++) {
+                    criarAbaPackPedido(retorno.entradaNFPedidoPacks[i].pedidoDados, retorno.entradaNFPedidoPacks[i].packsEntradaNF)
+                }
+                criaArquivoAnexos(listaImagem, configImg, configRodaope)
+                $(".controls").removeClass('ocultarElemento');
+                $(".selectpicker").selectpicker('refresh');
+
+                if (statusAtual === 'ED') {
+                    $("#tabPedido .btnConclusao .next-step").addClass('ocultarElemento');
+                    $('li.duplicataTab').addClass('ocultarElemento');
+                    $('li.resumoTab').addClass('ocultarElemento');
+                }
+                if (statusAtual != 'ED') {
+                    $(".btnConclusao .finish-change").addClass('ocultarElemento');
+                    carregaValPadraoDuplicata(retorno.duplicata)
+                    desabilitaEdicaNF()
+                }
+                $(".bg_load").fadeOut();
+                $(".wrapper").fadeOut();
+                $(".navbar.navbar-default.navbar-fixed-top").removeClass('ocultarElemento');
+                $("div.controls.ocultarElemento").removeClass('ocultarElemento');
+                var $menuTitulo = $(".navbar.navbar-default.navbar-fixed-top");
+                $menuTitulo.find('.navbar-header .navbar-center').text('Cadastro de Nota Fiscal');
+
+            }
+        },
+        async: true,
+        beforeSend: function (req) {
+            req.setRequestHeader('Authorization', sessionStorage.getItem("token"));
+        },
+        error: function (error) {
+            modal({
+                messageText: "Ocorreu um erro durante esta operação, tente novamente.<br/>Caso o erro persista informe o administrador do sistema o horário e data da ocorrencia",
+                type: "alert",
+                headerText: "Falha Interna",
+                alertType: "warning"
+            });
+        }
+    });
+}
+function retornaCargaPedidoEntrada(parametro) {
+    $.ajax({
+        type: 'POST',
+        cache: false,
+        crossDomain: true,
+        data: parametro,
+        url: urlApi + 'gerenciamento/entradaNF/RecuperaPacksPedidos',
+        success: function (retorno) {
+            console.log(retorno);
+
+            //carregaDadosCadastrados(retorno.dadosEntrada)
+            //var listaImagem = [];
+            //var configImg = [];
+            enableDisableCamposNota(retorno.entradaNFPedidoPacks.length == 0)
+            for (var i = 0; i < retorno.entradaNFPedidoPacks.length; i++) {
+                criarAbaPackPedido(retorno.entradaNFPedidoPacks[i].pedidoDados, retorno.entradaNFPedidoPacks[i].packsEntradaNF)
+            }
+            //criaArquivoAnexos(listaImagem, configImg, configRodaope)
+            //$(".selectpicker").selectpicker('refresh');
+            $(".bg_load").fadeOut();
+            $(".wrapper").fadeOut();
+            $(".navbar.navbar-default.navbar-fixed-top").removeClass('ocultarElemento');
+            //$("div.controls.ocultarElemento").removeClass('ocultarElemento');
+            //var $menuTitulo = $(".navbar.navbar-default.navbar-fixed-top");
+            //$menuTitulo.find('.navbar-header .navbar-center').text('Cadastro de Nota Fiscal');
+
+            //}
+        },
+        async: true,
+        beforeSend: function (req) {
+            req.setRequestHeader('Authorization', sessionStorage.getItem("token"));
+        },
+        error: function (error) {
+            modal({
+                messageText: "Ocorreu um erro durante esta operação, tente novamente.<br/>Caso o erro persista informe o administrador do sistema o horário e data da ocorrencia",
+                type: "alert",
+                headerText: "Falha Interna",
+                alertType: "warning"
+            });
+        }
+    });
+}
+function gravarEntradaNF(parametro) {
+    $.ajax({
+        type: 'POST',
+        crossDomain: true,
+        async: true,
+        cache: false,
+        url: urlApi + 'gerenciamento/entradaNF/gravarEntradaNF',
+        data: parametro,
+
+        beforeSend: function (req) {
+            req.setRequestHeader('Authorization', sessionStorage.getItem("token"));
+        },
+        success: function (result) {
+            $('.selectpicker').selectpicker('show');
+            $(".navbar.navbar-default.navbar-fixed-top").removeClass('ocultarElemento');
+            $(".bg_load").fadeOut("slow");
+            $(".wrapper").fadeOut("slow", function () {
+                $('.selectpicker').selectpicker('show');
+            });
+            if (result) {
+                $.confirm({
+                    title: 'Atenção!',
+                    content: result,
+                    icon: 'fa fa-warning',
+                    theme: 'modern',
+                    closeIcon: false,
+                    animation: 'scale',
+                    typeAnimated: true,
+                    type: 'orange',
+                    buttons: {
+                        okButton: {
+                            text: 'OK'
+                        }
+                    },
+
+                });
+            } else {
+                var jc2 = $.confirm({
+                    title: 'Operação Concluída com Sucesso',
+                    content: 'O nota foi salva.',//'O pedido foi enviado para aprovação.',
+                    icon: 'fa fa-check',
+                    theme: 'modern',
+                    closeIcon: false,
+                    type: 'green',
+                    animation: 'scale',
+                    buttons: {
+                        okButton: {
+                            text: 'ok'
+                        }
+                    },
+                    onContentReady: function () {
+                        setTimeout(function () {
+                            jc2.close()
+                        }, 2000);
+                    },
+                    onOpenBefore: function () {
+                        this.buttons.okButton.hide();
+                    },
+                    onDestroy: function () {
+                        $('.selectpicker').selectpicker('hide');
+                        $(".navbar.navbar-default.navbar-fixed-top").addClass('ocultarElemento');
+                        $(".bg_load").show();
+                        $(".wrapper").show();
+                        window.location = "../gerenciamento/entradanf.cshtml";
+                    }
+                });
+
+            }
+
+
+        },
+        error: function (erro) {
+            $('.selectpicker').selectpicker('show');
+            $(".navbar.navbar-default.navbar-fixed-top").removeClass('ocultarElemento');
+            $(".bg_load").fadeOut("slow");
+            $(".wrapper").fadeOut("slow", function () {
+                $('.selectpicker').selectpicker('show');
+            });
+
+            modal({
+                messageText: "Ocorreu um erro durante esta operação, tente novamente.<br/>Caso o erro persista informe o administrador do sistema o horário e data da ocorrencia",
+                type: "alert",
+                headerText: "Falha Interna",
+                alertType: "warning"
+            });
+        }
+    });
+}
+function geraTitulosEntradaNF(parametro) {
+    $.ajax({
+        type: 'POST',
+        crossDomain: true,
+        async: true,
+        cache: false,
+        url: urlApi + 'gerenciamento/entradaNF/GeraTitulosEntradaNF',
+        data: parametro,
+        beforeSend: function (req) {
+            req.setRequestHeader('Authorization', sessionStorage.getItem("token"));
+        },
+        success: function (result) {
+            carregaDadosTitulosGerados(result);
+            var tbPlanejamento = $('#tabelaDescTit').dataTable().api();
+            var dadosCarga = tbPlanejamento.data().toArray();
+            tbPlanejamento.clear();
+            tbPlanejamento.data(tbPlanejamento).rows.add(dadosCarga);
+            tbPlanejamento.draw();
+            tbPlanejamento.columns.adjust().draw();
+            $('.selectpicker').selectpicker('show');
+            $(".navbar.navbar-default.navbar-fixed-top").removeClass('ocultarElemento');
+            $(".bg_load").fadeOut("slow");
+            $(".wrapper").fadeOut("slow");
+
+
+        },
+        error: function (erro) {
+            $('.selectpicker').selectpicker('show');
+            $(".navbar.navbar-default.navbar-fixed-top").removeClass('ocultarElemento');
+            $(".bg_load").fadeOut("slow");
+            $(".wrapper").fadeOut("slow", function () {
+                $('.selectpicker').selectpicker('show');
+            });
+
+            modal({
+                messageText: "Ocorreu um erro durante esta operação, tente novamente.<br/>Caso o erro persista informe o administrador do sistema o horário e data da ocorrencia",
+                type: "alert",
+                headerText: "Falha Interna",
+                alertType: "warning"
+            });
+        }
+    });
+}
+
+function gravarTitulosEntradaNF(parametro) {
+    $.ajax({
+        type: 'POST',
+        crossDomain: true,
+        async: true,
+        cache: false,
+        url: urlApi + 'gerenciamento/entradaNF/ConfirmaTitulosEntradaNF',
+        data: parametro,
+
+        beforeSend: function (req) {
+            req.setRequestHeader('Authorization', sessionStorage.getItem("token"));
+        },
+        success: function (result) {
+            $('.selectpicker').selectpicker('show');
+            $(".navbar.navbar-default.navbar-fixed-top").removeClass('ocultarElemento');
+            $(".bg_load").fadeOut("slow");
+            $(".wrapper").fadeOut("slow", function () {
+                $('.selectpicker').selectpicker('show');
+            });
+            if (result) {
+
+                $.confirm({
+                    title: 'Atenção!',
+                    content: result,
+                    icon: 'fa fa-warning',
+                    theme: 'modern',
+                    closeIcon: false,
+                    animation: 'scale',
+                    typeAnimated: true,
+                    type: 'orange',
+                    buttons: {
+                        okButton: {
+                            text: 'OK'
+                        }
+                    },
+
+                });
+            } else {
+                var jc2 = $.confirm({
+                    title: 'Operação Concluída com Sucesso',
+                    content: 'Os titulos foram salvos.',//'O pedido foi enviado para aprovação.',
+                    icon: 'fa fa-check',
+                    theme: 'modern',
+                    closeIcon: false,
+                    type: 'green',
+                    animation: 'scale',
+                    buttons: {
+                        okButton: {
+                            text: 'ok'
+                        }
+                    },
+                    onContentReady: function () {
+                        setTimeout(function () {
+                            jc2.close()
+                        }, 2000);
+                    },
+                    onOpenBefore: function () {
+                        this.buttons.okButton.hide();
+                    },
+                    onDestroy: function () {
+                        $('.selectpicker').selectpicker('hide');
+                        $(".navbar.navbar-default.navbar-fixed-top").addClass('ocultarElemento');
+                        $(".bg_load").show();
+                        $(".wrapper").show();
+                        window.location = "../gerenciamento/entradanf.cshtml";
+                    }
+                });
+
+            }
+
+
+        },
+        error: function (erro) {
+            $('.selectpicker').selectpicker('show');
+            $(".navbar.navbar-default.navbar-fixed-top").removeClass('ocultarElemento');
+            $(".bg_load").fadeOut("slow");
+            $(".wrapper").fadeOut("slow", function () {
+                $('.selectpicker').selectpicker('show');
+            });
+
+            modal({
+                messageText: "Ocorreu um erro durante esta operação, tente novamente.<br/>Caso o erro persista informe o administrador do sistema o horário e data da ocorrencia",
+                type: "alert",
+                headerText: "Falha Interna",
+                alertType: "warning"
+            });
+        }
+    });
+}
+function atualizaStatusEntradaNF(parametro) {
+    $.ajax({
+        type: 'POST',
+        crossDomain: true,
+        async: true,
+        cache: false,
+        url: urlApi + 'gerenciamento/entradaNF/AtualizaStatusEntradaNF',
+        data: parametro,
+
+        beforeSend: function (req) {
+            req.setRequestHeader('Authorization', sessionStorage.getItem("token"));
+        },
+        success: function (result) {
+            $('.selectpicker').selectpicker('show');
+            $(".navbar.navbar-default.navbar-fixed-top").removeClass('ocultarElemento');
+            $(".bg_load").fadeOut("slow");
+            $(".wrapper").fadeOut("slow", function () {
+                $('.selectpicker').selectpicker('show');
+            });
+            $(".dataTables_paginate.paging_simple_numbers").removeClass('ocultarElemento');
+            if (result) {
+                $.alert({
+                    title: 'Atenção!',
+                    content: result,
+                    icon: 'fa fa-warning',
+                    theme: 'modern',
+                    closeIcon: false,
+                    animation: 'scale',
+                    typeAnimated: true,
+                    type: 'orange'
+
+                });
+            } else {
+                var jc2 = $.alert({
+                    title: 'Operação Concluída com Sucesso',
+                    content: 'O status foi atualizado.',//'O pedido foi enviado para aprovação.',
+                    icon: 'fa fa-check',
+                    theme: 'modern',
+                    closeIcon: false,
+                    type: 'green',
+                    animation: 'scale',
+                    buttons: {
+                        okButton: {
+                            text: 'ok'
+                        }
+                    },
+                    onContentReady: function () {
+                        setTimeout(function () {
+                            jc2.close()
+                        }, 2000);
+                    },
+                    onOpenBefore: function () {
+                        this.buttons.okButton.hide();
+                    },
+                    onDestroy: function () {
+                        $('.selectpicker').selectpicker('hide');
+                        $(".navbar.navbar-default.navbar-fixed-top").addClass('ocultarElemento');
+                        $(".bg_load").show();
+                        $(".wrapper").show();
+                        window.location = "../gerenciamento/entradanf.cshtml";
+                    }
+                });
+            }
+
+
+
+        },
+        error: function (erro) {
+            $('.selectpicker').selectpicker('show');
+            $(".navbar.navbar-default.navbar-fixed-top").removeClass('ocultarElemento');
+            $(".bg_load").fadeOut("slow");
+            $(".wrapper").fadeOut("slow", function () {
+                $('.selectpicker').selectpicker('show');
+            });
+
+            modal({
+                messageText: "Ocorreu um erro durante esta operação, tente novamente.<br/>Caso o erro persista informe o administrador do sistema o horário e data da ocorrencia",
+                type: "alert",
+                headerText: "Falha Interna",
+                alertType: "warning"
+            });
+        }
+    });
+}
 function geraCargaProdutoFiltrado(parametro) {
     sessionStorage.setItem('parametrosFiltro', JSON.stringify(parametro));
     $.ajax({
@@ -1302,6 +1992,7 @@ function geraCargaProdutoFiltrado(parametro) {
         }
     });
 }
+
 function atualizaCargaFiltroTamanho(parametro) {
     $.ajax({
         type: 'POST',
@@ -1582,7 +2273,7 @@ function geraCargaPrePedido(parametro) {
                 sourceCNPJ += "<option data-tokens='" + value.token + "' data-subtext='" + value.token.split(';')[3] + "' value='" + value.valor + "'" + isSelect + ">" + value.descricao + "</option>";
             });
             $.each(result.filtrosPrePedido.marcas, function (index, value) {
-                var selecionarMarca = /*!result.produtoInativo ? '' :*/ 'selected ';
+                var selecionarMarca = result.filtrosPrePedido.marcaSelecionada != value.valor ? '' : 'selected ';
                 var empVinc = value.dadosAdicionais.length ? "data-empresa-obrigatorio ='" + value.dadosAdicionais[0] + "' " : "";
                 sourceMarca += "<option " + selecionarMarca + empVinc + "data-tokens='" + value.token + "' value='" + value.valor + "'>" + value.descricao + "</option>";
             });
@@ -3133,7 +3824,7 @@ function carregaPedidoSintetico(parametro, validarUsuario) {
                 } else {
                     $('.btnFooters .status' + statusTransicao[i]).removeClass('ocultarElemento');
                 }
-                
+
             }
             $('.btnFooters').removeClass('ocultarElemento');
             $("#modalLoad").fadeOut("slow");
@@ -3295,7 +3986,7 @@ function geraCargaPedidoAnalitico(parametro) {
                     } else {
                         $('.exibeBtn.status' + statusTransicao[i]).removeClass('ocultarElemento');
                     }
-                   
+
                 }
             }
             if (result.historicos.length) {
@@ -3315,7 +4006,6 @@ function geraCargaPedidoAnalitico(parametro) {
             $('#drpClassificacao').html(souceClass).selectpicker('val', '');
             $("#drpCondPgtoPed").html(sourceCondicao);
             $("#drpFrmPgtoPed").html(sourceForma);
-            $("#drpCompProd option").attr('disabled', true);
 
             ordenaOpcao();
             $(".selectpicker").selectpicker();
@@ -3334,9 +4024,11 @@ function geraCargaPedidoAnalitico(parametro) {
             $('#txtAreaObsPed').val(result.observacao);
             $("#txtIDProd").val(result.idProduto).attr('disabled', true);
             $("#txtProdutoPed").val(result.codProduto).attr('disabled', true);
+
             if (result.produtoInativo) {
                 $("#txtStatusProd").val('Inativo');
                 $("#drpMarc option[value='" + result.filtrosPrePedido.marcaSelecionada + "']").attr('selected', 'selected');
+
                 permissoesUsuarioLogado.indexOf('Editar Marca') === -1 ?
                     $("#drpMarc").attr('disabled', true) :
                     $("#drpMarc").attr('disabled', false);
@@ -3358,6 +4050,7 @@ function geraCargaPedidoAnalitico(parametro) {
                     $("#txtDescResPed").attr('disabled', false);
             } else {
                 $("#txtStatusProd").val('Ativo');
+                $("#drpCompProd option").attr('disabled', true);
                 $("#txtCodOriPed").val(result.codigoOriginal).attr('disabled', true);
                 $("#txtRefPed").val(result.referenciaFornecedor).attr('disabled', true);
                 $("#txtDescPed").val(result.descricaoProduto).attr('disabled', true);
@@ -3756,7 +4449,7 @@ function retornaAtributoEditar(parametro) {
 
             $("#ckbAttrObg").bootstrapSwitch('state', result.obrigatorio, false);
             $("#ckbStatusAttr").bootstrapSwitch('state', result.status, false);
-            
+
             $("#ckbTipoAttrModal").bootstrapSwitch('state', result.modelo, false);
             desabilitaFuncoes()
             if (result.lista) {
@@ -3964,7 +4657,7 @@ function carregaFiltrosDistribuicao() {
         },
         success: function (result) {
             console.log(result)
-            var sourceSeg = "", sourceGrupo = "",sourceMarca = "",sourceForn = "";
+            var sourceSeg = "", sourceGrupo = "", sourceMarca = "", sourceForn = "";
             $.each(result.gruposFiliais, function (index, value) {
                 sourceGrupo += "<option data-tokens='" + value.token + "' value='" + value.valor + "'>" + value.descricao + "</option>";
             });

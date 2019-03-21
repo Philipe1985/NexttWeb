@@ -1,5 +1,5 @@
 ﻿var isMobile = false, resizeId, checarSessao = null, expirar = sessionStorage.getItem('token_expirado'); //initiate as false
-var observacaoStatus = [];
+var observacaoStatus = [], nfStatus = [];
 var permissoesUsuarioLogado = JSON.parse(sessionStorage.getItem("permissoes"));
 var btnStatusTransicaoIcones = '<a href="#" class="btn btn-success aprovarPedido ocultarElemento statusL" data-toggle="tooltip" data-container="body" title="Aprovar" style="margin:3px"><i class="fa fa-check" aria-hidden="true"></i></a>' +
     '<a href="#" class="btn btn-danger cancelarPedido ocultarElemento statusC" data-toggle="tooltip" data-container="body" title="Cancelar" style="margin:3px"><i class="fa fa-close" aria-hidden="true"></i></a>' +
@@ -13,13 +13,13 @@ var btnStatusTransicao = '<button type="button" id="btnReprovar" class="btn exib
     '<button type="button" id="btnDevolver" class="btn btn-warning exibeBtn ocultarElemento statusA"><i class="fa fa-mail-reply" aria-hidden="true"></i> Devolver</button>' +
     '<button type="button" id="btnCancelar" class="btn btn-danger exibeBtn ocultarElemento statusC"><i class="fa fa-close" aria-hidden="true"></i> Cancelar</button>'
 
+var btnStatusTransicaoNF = '';
 $(document).ready(function () {
     // device detection
     if (/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|ipad|iris|kindle|Android|Silk|lge |maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i.test(navigator.userAgent)
         || /1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(navigator.userAgent.substr(0, 4))) {
         isMobile = true;
     }
-    
     jQuery.extend(jQuery.fn.dataTableExt.oSort, {
         "currency-pre": function (a) {
             a = (a === "-") ? 0 : a.replace(/[^\d\-\,]/g, "").replace(',', '.');
@@ -34,8 +34,24 @@ $(document).ready(function () {
             return b - a;
         }
     });
+    $.fn.dataTable.moment = function (format, locale) {
+        var types = $.fn.dataTable.ext.type;
+
+        // Add type detection
+        types.detect.unshift(function (d) {
+            return moment(d, format, locale, true).isValid() ?
+                'moment-' + format :
+                null;
+        });
+
+        // Add sorting method - use an integer for the sorting
+        types.order['moment-' + format + '-pre'] = function (d) {
+            return moment(d, format, locale, true).unix();
+        };
+    };
     jQuery.extend(jQuery.fn.dataTableExt.oSort, {
         "numeric-comma-pre": function (a) {
+            console.log(a)
             var x = a === "-" ? 0 : a.replace(/,/, ".");
             return parseFloat(x);
         },
@@ -164,7 +180,7 @@ $(document).ready(function () {
 });
 function validaSessaoExpirada() {
     if (!checarSessao) {
-       checarSessao = setInterval(function () { validaSessaoExpirada(); }, 6000);
+        checarSessao = setInterval(function () { validaSessaoExpirada(); }, 6000);
     }
     if (new Date() > new Date(expirar)) {
         sessionStorage.clear();
@@ -211,13 +227,13 @@ function gerenciarUsuario() {
 }
 
 function navBrandClick() {
-    
+
     if (sessionStorage.getItem("cookies") === null && window.location.href.toLowerCase().indexOf("home") === -1) {
-        if (window.location.href.toLowerCase().indexOf("cadastro/compra") > -1) {
+        if (window.location.href.toLowerCase().indexOf("cadastro/") > -1) {
             modal({
                 type: "confirm",
                 headerText: '<i class="fa fa-exclamation-circle red"></i><strong> Atenção! Tem certeza que deseja prosseguir?</strong>',
-                messageText: 'Ao confirmar esta operação, todas as informações inseridas até aqui serão descartadas.',
+                messageText: 'Ao confirmar esta operação, todas as informações inseridas e não salvas serão descartadas.',
                 alertType: 'warning',
                 modalSize: 'modal-lg',
                 titleClass: 'red'
@@ -236,7 +252,7 @@ function navBrandClick() {
             if (!$('#divValBool').hasClass('ocultarElemento')) {
                 $('#divValBool').addClass('ocultarElemento')
             }
-             sessionStorage.removeItem('paginacao');
+            sessionStorage.removeItem('paginacao');
             sessionStorage.removeItem('parametrosFiltro');
             $('#tabelaUsuarios_paginate').css('display', 'none');
             $('.selectpicker').selectpicker('hide');
@@ -247,7 +263,7 @@ function navBrandClick() {
         }
 
     }
-} 
+}
 function validarTexto(texto) {
     var pallavrasTexto = texto.split(' ');
     var retorno = '';
@@ -289,16 +305,16 @@ function alteraStatusPedido(status, idPedido) {
                         return false;
                     }
 
-                   var objEnvio = {};
+                    var objEnvio = {};
                     objEnvio.codigo = idPedido;
                     objEnvio.status = status;
                     objEnvio.observacao = motivo;
-                    if (window.location.href.toLowerCase().indexOf("cadastro/compra") > -1 && (status.toLowerCase() == 'a' || status.toLowerCase() == 'f') ) {
-                        geraPedidoSalvar(status,objEnvio);
+                    if (window.location.href.toLowerCase().indexOf("cadastro/compra") > -1 && (status.toLowerCase() == 'a' || status.toLowerCase() == 'f')) {
+                        geraPedidoSalvar(status, objEnvio);
                     } else {
                         atualizarStatus(objEnvio);
                     }
-                    
+
                 }
             },
             cancel: {
@@ -451,6 +467,7 @@ function cliqueGrupoDpd(el) {
         optgroup = $optgroup.data("optgroup"),
         $options = $ul.find("[data-optgroup=" + optgroup + "]").not($optgroup),
         $selecionar = $options.filter(":not(.selected)").length > 0;
+    $selecionar = $options.filter(":not(.selected)").length > 0;
 
     if ($selecionar) {
         $options.each(function () {
@@ -603,6 +620,9 @@ function erroCadCompra(msgFalha, idErro) {
     }
 
 }
+function isDate(txtDate) {
+    return txtDate.match(/^(0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])[- /.](19|20)\d\d$/);
+}
 function formataStringData(data) {
     var retorno = '';
     if (data) {
@@ -690,6 +710,12 @@ function limparCampos() {
         }
 
     });
+    if ($('.pagination-holder').length) {
+        paginasMarcadas = [];
+        prodMarcados = [];
+        $('.pagination-holder').pagination('destroy');
+    }
+
     $('.clear-filter').blur();
     $("input[type=text]").val("");
     $('.selectpicker').selectpicker('refresh');
@@ -697,6 +723,132 @@ function limparCampos() {
     sessionStorage.removeItem('paginacao');
     sessionStorage.removeItem('parametrosFiltro');
 }
+function limparCamposModal() {
+    $('.modal-body .selectpicker:not([multiple])').selectpicker('val', '');
+    $('.modal-body .selectpicker[multiple]').each(function () {
+        if (this.length) {
+            $(this).selectpicker('deselectAll')
+        }
+
+    });
+
+    $('.modal-body .clear-filter').blur();
+    $(".modal-body input[type=text]:not('.not-clear')").val("");
+    $('.modal-body .selectpicker').selectpicker('refresh');
+    $('.modal-body .dataTable').DataTable().clear().draw();
+}
+function validarCNPJ(cnpj) {
+
+    cnpj = cnpj.replace(/[^\d]+/g, '');
+
+    if (cnpj == '') return false;
+
+    if (cnpj.length != 14)
+        return false;
+
+    // Elimina CNPJs invalidos conhecidos
+    if (cnpj == "00000000000000" ||
+        cnpj == "11111111111111" ||
+        cnpj == "22222222222222" ||
+        cnpj == "33333333333333" ||
+        cnpj == "44444444444444" ||
+        cnpj == "55555555555555" ||
+        cnpj == "66666666666666" ||
+        cnpj == "77777777777777" ||
+        cnpj == "88888888888888" ||
+        cnpj == "99999999999999")
+        return false;
+
+    // Valida DVs
+    tamanho = cnpj.length - 2
+    numeros = cnpj.substring(0, tamanho);
+    digitos = cnpj.substring(tamanho);
+    soma = 0;
+    pos = tamanho - 7;
+    for (i = tamanho; i >= 1; i--) {
+        soma += numeros.charAt(tamanho - i) * pos--;
+        if (pos < 2)
+            pos = 9;
+    }
+    resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
+    if (resultado != digitos.charAt(0))
+        return false;
+
+    tamanho = tamanho + 1;
+    numeros = cnpj.substring(0, tamanho);
+    soma = 0;
+    pos = tamanho - 7;
+    for (i = tamanho; i >= 1; i--) {
+        soma += numeros.charAt(tamanho - i) * pos--;
+        if (pos < 2)
+            pos = 9;
+    }
+    resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
+    if (resultado != digitos.charAt(1))
+        return false;
+
+    return true;
+
+}
+
+
+function modalAtualizaStatusNF(status, id) {
+    var jcEntNf = $.confirm({
+        icon: 'fa fa-pencil-square-o',
+        type: 'blue',
+        title: 'Atualizar Status',
+        containerFluid: true,
+        content: '<div class="col-md-12 col-sm-12 col-xs-12">' +
+            btnStatusTransicaoNF +
+            '</div>',
+        buttons: {
+
+            cancel: {
+                text: 'Sair',
+                btnClass: 'btn-red'
+            }
+        },
+        onContentReady: function () {
+            var self = this;
+
+            $(self.$content.find('.btn-nf-transicao')).click(function () {
+                var statusDestino = $(this).attr('class').split(' ')[2].replace('status-nf-', '');
+                var objSalvarNF = {}, objEnvio = {};
+                objEnvio.nfFornecedor = [];
+                objSalvarNF.idnfFornecedor = id;
+                objSalvarNF.idUsuarioCadastro = sessionStorage.getItem("id_usuario");
+                objSalvarNF.status = statusDestino;
+                objEnvio.nfFornecedor.push(objSalvarNF);
+                $('.selectpicker').selectpicker('hide');
+                $(".navbar.navbar-default.navbar-fixed-top").addClass('ocultarElemento');
+                $(".dataTables_paginate.paging_simple_numbers").addClass('ocultarElemento');
+                $(".bg_load").show();
+                $(".wrapper").show();
+                atualizaStatusEntradaNF(objEnvio);
+                jcEntNf.close()
+
+
+            })
+
+        },
+        onOpenBefore: function () {
+            var self = this;
+            $(self.$content.find(".btn-nf-transicao.status-nf-" + status.status)).closest('div.row').addClass('ocultarElemento');
+            for (var i = 0; i < status.mudar.length; i++) {
+                $(self.$content.find(".btn-nf-transicao.status-nf-" + status.mudar[i])).attr('disabled', false);
+            }
+
+        },
+        onDestroy: function () {
+            //$('#listaCadastrados_paginate').css('display', 'block');
+            //segSelecionados = [];
+            //espSelecionadas = [];
+            //dadosItemEdt = null
+        },
+    });
+
+}
+
 (function () {
     var addRule;
 
@@ -746,6 +898,58 @@ function limparCampos() {
         createCssClass(className, cssProps, document);
     };
 })();
+(function (factory) {
+    if (typeof define === "function" && define.amd) {
+        define(["jquery", "moment", "datatables.net"], factory);
+    } else {
+        factory(jQuery, moment);
+    }
+}(function ($, moment) {
+
+    $.fn.dataTable.moment = function (format, locale) {
+        var types = $.fn.dataTable.ext.type;
+
+        // Add type detection
+        types.detect.unshift(function (d) {
+            if (d) {
+                // Strip HTML tags and newline characters if possible
+                if (d.replace) {
+                    d = d.replace(/(<.*?>)|(\r?\n|\r)/g, '');
+                }
+
+                // Strip out surrounding white space
+                d = $.trim(d);
+            }
+
+            // Null and empty values are acceptable
+            if (d === '' || d === null) {
+                return 'moment-' + format;
+            }
+
+            return moment(d, format, locale, true).isValid() ?
+                'moment-' + format :
+                null;
+        });
+
+        // Add sorting method - use an integer for the sorting
+        types.order['moment-' + format + '-pre'] = function (d) {
+            if (d) {
+                // Strip HTML tags and newline characters if possible
+                if (d.replace) {
+                    d = d.replace(/(<.*?>)|(\r?\n|\r)/g, '');
+                }
+
+                // Strip out surrounding white space
+                d = $.trim(d);
+            }
+
+            return !moment(d, format, locale, true).isValid() ?
+                Infinity :
+                parseInt(moment(d, format, locale, true).format('x'), 10);
+        };
+    };
+
+}));
 
 
 

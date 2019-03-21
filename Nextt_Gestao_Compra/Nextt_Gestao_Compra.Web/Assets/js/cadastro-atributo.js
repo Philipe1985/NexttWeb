@@ -1168,12 +1168,12 @@ function manipularItem(tit) {
             '</div>',
         buttons: {
             confirm: {
-                text: 'Salvar',
+                text: 'Confirmar',
                 btnClass: 'btn-green',
                 action: function () {
                     var self = this;
                     var retorno = {};
-                    var isNovo = $(self.$$confirm).text().toLowerCase() === 'salvar';
+                    var isNovo = tit.toLowerCase().indexOf('atualizar') === -1 ;
                     if ($(self.$content.find('#txtDescItem')).val() && $(self.$content.find('#txtNumOrdemItem')).val()) {
                         retorno.idTipoAtributo = parseInt($(self.$content.find('#txtItemAttrID')).attr("data-initial"));
                         retorno.descricao = $(self.$content.find('#txtDescItem')).val();
@@ -1342,7 +1342,7 @@ function manipularItem(tit) {
             $(self.$content.find("#txtNumOrdemItem")).val(dadosItemEdt.ordem);
             if ($("#ckbTipoAttrModal").bootstrapSwitch('state')) $(self.$content.find("#divSegSecEspItem")).removeClass('ocultarElemento');
             if (tit.toLowerCase().indexOf('atualizar') > -1) {
-                self.buttons.confirm.setText('Atualizar')
+                self.buttons.confirm.setText('Confirmar')
 
             }
             if (parseInt($("#txtIdAtributo").val()) > 0 && parseInt($(self.$content.find('#txtItemAttrID')).attr("data-initial")) > 0) {

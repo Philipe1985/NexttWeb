@@ -794,14 +794,23 @@ function validaExibeMsgAttr() {
     console.log(tabAtiva);
     return tabAtiva === 'Atributos';
 }
-function insereVlrVendaObrigatorio() {
-    $('#frmPrecosVenda .prVenda.validaPrEmpresa').removeClass('validaPrEmpresa');
-    $('#frmPrecosVenda .obrigatorio').removeClass('ocultarElemento').addClass('ocultarElemento');
+function insereVlrVendaObrigatorio() { 
+    $('.prVenda.validaPrEmpresa').each(function () {
+        $(this).removeClass('validaPrEmpresa');
+    })
+    $('.frmPrecosVenda .obrigatorio').each(function () {
+        if (!$(this).hasClass('ocultarElemento')) {
+            $(this).addClass('ocultarElemento');
+        }
+        
+    })
     var empresas = $('#drpMarc option:selected').attr('data-empresa-obrigatorio');
+    
     if (empresas) {
         empresas.split(',').map(obj => {
-            $("#frm" + converterFormatoVariavel(obj)).find('.prVenda').addClass('validaPrEmpresa');
-            $("#frm" + converterFormatoVariavel(obj)).find('.obrigatorio').removeClass('ocultarElemento')
+            console.log(converterFormatoVariavel(obj.trim()))
+            $("#frm" + converterFormatoVariavel(obj.trim())).find('.prVenda').addClass('validaPrEmpresa');
+            $("#frm" + converterFormatoVariavel(obj.trim())).find('.obrigatorio').removeClass('ocultarElemento')
         })
     }
 }

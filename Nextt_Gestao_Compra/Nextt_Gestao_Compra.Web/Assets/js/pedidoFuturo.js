@@ -755,7 +755,8 @@ $(document).ready(function () {
         validaMudancaGrade();
     });
     $('#drpMarc').on('change', function (e) {
-        if ($('#drpMarc').val()) insereVlrVendaObrigatorio();
+        console.log($('#drpMarc').val())
+        if ($('#drpMarc').val()) insereVlrVendaObrigatorio(); 
     });
     $('#drpTamanhoCategoria').on('change', function (e) {
         var objEnvio = {};

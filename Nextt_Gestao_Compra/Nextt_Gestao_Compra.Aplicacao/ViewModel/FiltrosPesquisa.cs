@@ -13,6 +13,7 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
         public string MarcaSelecionada { get; set; }
         public List<ComboFiltroVM> Fornecedores { get; set; }
         public List<ComboFiltroVM> StatusPedido { get; set; }
+        public List<ComboFiltroVM> StatusNota { get; set; }
         public List<ComboFiltroVM> AttrFornecedores { get; set; }
         public List<RetornoEspecieFiltroVM> EspeciesRecarga { get; set; }
         public List<GrupoEmpresaVM> GrupoEmpresas { get; set; }
@@ -21,6 +22,7 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
         public List<ComboFiltroVM> UniMedida { get; set; }
         public List<ComboFiltroVM> Secoes { get; set; }
         public List<ComboFiltroVM> Segmentos { get; set; }
+        public List<ComboFiltroVM> Filiais { get; set; }
         public List<ComboFiltroVM> GruposFiliais { get; set; }
         public List<ComboFiltroVM> Marcas { get; set; }
         public List<ComboFiltroVM> Especies { get; set; }

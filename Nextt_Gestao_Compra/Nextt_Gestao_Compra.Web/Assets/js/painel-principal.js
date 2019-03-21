@@ -54,6 +54,9 @@ function carregar() {
     if (permissoesUsuarioLogado.indexOf('Acessar Distribuição de Produto') === -1) {
         $("#distribuicao").addClass("ocultarElemento");
     }
+    if (permissoesUsuarioLogado.indexOf('Gerenciar Entradas de Notas') === -1 && permissoesUsuarioLogado.indexOf('Cadastrar Entrada de Nota') === -1) {
+        $("#entradanf").addClass("ocultarElemento");
+    }
     $("#homeOpcao").addClass("ocultarElemento");
     var $menuTitulo = $(".navbar.navbar-default.navbar-fixed-top");
     $menuTitulo.find('.navbar-header .navbar-center').text('Gestão de Compras');

@@ -1,0 +1,18 @@
+
+ERROR 2019-03-18 03:19:28 - Erro ao Validar Setup:
+System.Data.Entity.Validation.DbEntityValidationException: Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.
+   em RDI_Gerenciador_Usuario.ManagerStart.SetupImplantacao.<CadastrarNovasPermissoes>d__2.MoveNext() na C:\RDI_Gerenciador_Usuario\RDI_Gerenciador_Usuario.ManagerStart\SetupImplantacao.cs:linha 71
+--- Fim do rastreamento de pilha do local anterior onde a exceção foi gerada ---
+   em System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   em System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   em System.Runtime.CompilerServices.TaskAwaiter.GetResult()
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.UsuarioController.<ValidarPrimeiroAcesso>d__16.MoveNext() na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\UsuarioController.cs:linha 384
+
+ERROR 2019-03-18 03:24:15 - Erro ao Validar Setup:
+System.Data.Entity.Validation.DbEntityValidationException: Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.
+   em RDI_Gerenciador_Usuario.ManagerStart.SetupImplantacao.<CadastrarNovasPermissoes>d__2.MoveNext() na C:\RDI_Gerenciador_Usuario\RDI_Gerenciador_Usuario.ManagerStart\SetupImplantacao.cs:linha 71
+--- Fim do rastreamento de pilha do local anterior onde a exceção foi gerada ---
+   em System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   em System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   em System.Runtime.CompilerServices.TaskAwaiter.GetResult()
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.UsuarioController.<ValidarPrimeiroAcesso>d__16.MoveNext() na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\UsuarioController.cs:linha 384

@@ -2,7 +2,7 @@
     '  <input class="kv-input kv-new form-control input-sm form-control-sm text-center {TAG_CSS_NEW}" value="{caption}" placeholder="Digite uma legenda...">\n' +
     '  <input class="kv-input kv-init form-control input-sm form-control-sm text-center {TAG_CSS_INIT}" value="{TAG_VALUE}" placeholder="Digite uma legenda...">\n' +
     '   <div class="small" style="margin:15px 0 2px 0">{size}</div> \n{indicator}\n{actions}\n' +
-    '</div>', imagemObjPlugin;
+    '</div>', imagemObjPlugin, anexoObjPlugin;
 var photo = new Image();
 function criaInputImagem(listImage, configPV, configRodape) {
 
@@ -151,4 +151,67 @@ function salvarImagens(file) {
     }
     reader.readAsArrayBuffer(file);
     return objEnvio;
+}
+function criaArquivoAnexos(listArquivo, configPV, configRodape) {
+    anexoObjPlugin = $("#anexoUpload").fileinput({
+        language: "pt-BR",
+        overwriteInitial: false,
+        initialPreview: listArquivo,
+        initialPreviewConfig: configPV,
+        resizeImage: true,
+        maxImageWidth: '90%',
+        maxImageHeight: '90%',
+        purifyHtml: true,
+        showClose: false,
+        showRemove: false,
+        showCancel: false,
+        showUploadedThumbs: false,
+        showUpload: false,
+        showCaption: false,
+        maxFileCount: 20,
+        validateInitialCount: true,
+        uploadUrl: urlApi + 'gerenciamento/compra/SalvarImagem',
+        uploadExtraData: function (previewId, index) {
+            var obj = {};
+            var cadastroProduto = sessionStorage.getItem("cadastroProduto") ? true : false;
+            var idProdFoto = sessionStorage.getItem('idProdutoImagens')
+            obj.idProduto = parseInt(idProdFoto);
+            obj.cadastroProduto = cadastroProduto;
+            return obj;
+        },
+        dropZoneTitle: "",
+        uploadIcon: "",
+        buttonLabelClass: '',
+        browseLabel: "Anexar",
+        browseClass: "btn btn-success",
+        browseIcon: "",
+        showBrowse: true/*permissoesUsuarioLogado.indexOf('Adicionar Fotos') > -1*/,
+        browseOnZoneClick: false,
+        removeIcon: '',
+        removeTitle: '',
+        elErrorContainer: '#kv-avatar-errors-2',
+        msgErrorClass: 'alert alert-block alert-danger',
+        autoOrientImage: true,
+        layoutTemplates: {
+            footer: footerTemplate,
+            actions: '<div class="file-actions">\n' +
+                '    <div class="file-footer-buttons">\n' +
+                '        {delete} {zoom}' +
+                '    </div>\n' +
+                '    <div class="clearfix"></div>\n' +
+                '</div>'
+        },
+        previewThumbTags: {
+            '{TAG_VALUE}': '',
+            '{TAG_CSS_NEW}': '',
+            '{TAG_CSS_INIT}': 'kv-hidden'
+        },
+        initialPreviewThumbTags: configRodape,
+    }).on('filebeforedelete', function () {
+        var retorno = permissoesUsuarioLogado.indexOf('Excluir Fotos') === -1;
+        if (retorno) {
+            semAcesso();
+        }
+        return retorno;
+    });
 }

@@ -1,0 +1,195 @@
+﻿@{
+    Layout = "~/_LayoutPrincipal.cshtml";
+}
+<script src="../Assets/js/plugins/moment.min.js"></script>
+<link href="../Assets/js/plugins/bootstrap-datepicker/daterangepicker.css" rel="stylesheet" />
+<script src="../Assets/js/plugins/bootstrap-datepicker/daterangepicker.js"></script>
+<script src="../Assets/js/entrada-nf-consulta.js"></script>
+
+<div class="col-md-12 col-sm-12 col-xs-12" id="principal">
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12" style="text-align:center">
+                    <div id="alertConsultaEntradaNF" class="alertCustomizado alert-danger" style="display:none"></div>
+                </div>
+                <div class="col-md-2 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <h5 id="lblIdPed" class="form-label">Nº Nota</h5>
+                        <div class="controls">
+                            <input type="text" name="txtNumNota" id="txtNumNota" class="form-control txtInteiro" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <h5 class="form-label">Produto</h5>
+                        <div class="controls">
+                            <input type="text" id="txtProdutoNF" maxlength="40" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <h5 id="lblChaveAcesso" class="form-label">Nº Chave Acesso</h5>
+                        <div class="controls">
+                            <input type="text" name="txtChaveAcesso" id="txtChaveAcesso" maxlength="44" class="form-control txtInteiro" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <h5 class="form-label">Período Cadastro</h5>
+                        <div class="controls">
+                            <input type="text" name="txtDtCadNF" id="txtDtCadNF" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <h5 id="lblEntregaPed" class="form-label">Período Entrada</h5>
+                        <div class="controls">
+                            <input type="text" name="txtDtEntregaNF" id="txtDtEntregaNF" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div id="divForn" class="col-md-2 col-sm-12 col-xs-12 ocultarElemento">
+                    <div class="form-group">
+                        <h5 class="form-label">Fornecedores:</h5>
+                        <div class="controls">
+                            <select id="drpCNPJ" class="selectpicker show-tick form-control" data-show-subtext="true" data-actions-box="true" multiple data-live-search="true"
+                                    data-select-all-text="Marcar Todos" data-deselect-all-text="Desmarcar Todos" data-count-selected-text="Selecionado {0} de {1}" title="0 selecionados..."
+                                    data-width="100%" data-select-header="true" data-size="7" data-selected-text-format="count > 2"></select>
+                        </div>
+                    </div>
+                </div>
+                <div id="divFiliais" class="col-md-2 col-sm-12 col-xs-12 ocultarElemento">
+                    <div class="form-group">
+                        <h5 class="form-label">Filiais</h5>
+                        <div class="controls">
+                            <select id="drpFiliais" class="selectpicker show-tick form-control" data-show-subtext="true" data-actions-box="true" multiple data-live-search="true"
+                                    data-select-all-text="Marcar Todos" data-deselect-all-text="Desmarcar Todos" data-count-selected-text="Selecionado {0} de {1}" title="0 selecionados..."
+                                    data-width="100%" data-select-header="true" data-size="7" data-selected-text-format="count > 2"></select>
+                        </div>
+                    </div>
+                </div>
+                <div id="divStatus" class="col-md-2 col-sm-12 col-xs-12 ocultarElemento">
+                    <div class="form-group">
+                        <h5 class="form-label">Status:</h5>
+                        <div class="controls">
+                            <select id="drpStatus" class="selectpicker show-tick form-control" data-show-subtext="true" data-actions-box="true" multiple data-live-search="true"
+                                    data-select-all-text="Marcar" data-deselect-all-text="Desmarcar" data-count-selected-text="Selecionado {0} de {1}" title="0 selecionados..."
+                                    data-width="100%" data-select-header="true" data-size="7" data-selected-text-format="count > 2"></select>
+                        </div>
+                    </div>
+                </div>
+                <div id="divSeg" class="col-md-2 col-sm-12 col-xs-12 ocultarElemento">
+                    <div class="form-group">
+                        <h5 class="form-label">Segmentos:</h5>
+                        <div class="controls">
+                            <select id="drpSeg" class="selectpicker show-tick form-control" data-actions-box="true" data-show-subtext="true" multiple data-live-search="true"
+                                    data-count-selected-text="Selecionado {0} de {1}" data-select-all-text="Marcar Todos" data-deselect-all-text="Desmarcar Todos" title="0 selecionados..."
+                                    data-width="100%" data-select-header="true" data-size="7" data-selected-text-format="count > 2"></select>
+                        </div>
+                    </div>
+                </div>
+                <div id="divSec" class="col-md-2 col-sm-12 col-xs-12 ocultarElemento">
+                    <div class="form-group">
+                        <h5 class="form-label">Seções:</h5>
+                        <div class="controls">
+                            <select id="drpSec" class="selectpicker show-tick form-control" data-show-subtext="true" data-actions-box="true" multiple data-live-search="true"
+                                    data-select-all-text="Marcar Todas" data-deselect-all-text="Desmarcar Todas" data-count-selected-text="Selecionado {0} de {1}" title="0 selecionados..."
+                                    data-width="100%" data-select-header="true" data-size="7" data-selected-text-format="count > 2"></select>
+                        </div>
+                    </div>
+                </div>
+                <div id="divEsp" class="col-md-2 col-sm-12 col-xs-12 ocultarElemento">
+                    <div class="form-group">
+                        <h5 class="form-label">Espécies:</h5>
+                        <div class="controls">
+                            <select id="drpEsp" class="selectpicker show-tick form-control" data-show-subtext="true" data-actions-box="true" multiple data-live-search="true"
+                                    data-select-all-text="Marcar Todas" data-deselect-all-text="Desmarcar Todas" data-count-selected-text="Selecionado {0} de {1}" title="0 selecionados..."
+                                    data-width="100%" data-select-header="true" data-size="7" data-selected-text-format="count > 2"></select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                            <button class="btn btn-primary" onclick="buscarEntradasNFFiltradas()">
+                                <i class="fa fa-search" aria-hidden="true"> Pesquisar</i>
+                            </button>
+                            <button class="btn btn-danger" onclick="limparCampos()">
+                                <i class="fa fa-filter-remove" aria-hidden="true"> Limpar</i>
+                            </button>
+                            <button class="btn btn-success" onclick="cadastrarNovaEntrada()">
+                                <i class="fa fa-file-plus" aria-hidden="true"> Nova Entrada</i>
+                            </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Entradas</h3>
+                </div>
+                <div class="panel-body panelTbNf" style="padding: 0px !important;">
+                        <div class="col-md-12 col-sm-12 col-xs-12 table-responsive">
+                            <table id="tabelaNF" cellpadding="0" cellspacing="0" style=" width:100%;" class="cell-border hover table cell nowrap stripe compact pretty">
+                                <thead>
+                                    <tr>
+                                        <th style="border:1px solid black;border-bottom:2px solid black"></th>
+                                        <th style="border:1px solid black;border-bottom:2px solid black">Acessar</th>
+                                        <th style="border:1px solid black;border-bottom:2px solid black">Status</th>
+                                        <th style="border:1px solid black;border-bottom:2px solid black">Filial</th>
+                                        <th style="border:1px solid black;border-bottom:2px solid black">CNPJ NF</th>
+                                        <th style="border:1px solid black;border-bottom:2px solid black">Fornecedor</th>
+                                        <th style="border:1px solid black;border-bottom:2px solid black">Nº NF</th>
+                                        <th style="border:1px solid black;border-bottom:2px solid black">Série</th>
+                                        <th style="border:1px solid black;border-bottom:2px solid black">Chave NF-e</th>
+                                        <th style="border:1px solid black;border-bottom:2px solid black">Qtde. Itens</th>
+                                        <th style="border:1px solid black;border-bottom:2px solid black">Vlr. Total</th>
+                                        <th style="border:1px solid black;border-bottom:2px solid black">Dt. Cadastro</th>
+                                        <th style="border:1px solid black;border-bottom:2px solid black">Dt. Entrada</th>
+                                        <th style="border:1px solid black;border-bottom:2px solid black">Cadastrado Por</th>
+
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="bg_load"></div>
+    <div class="wrapper">
+        <div class="inner">
+            <span class="wait">
+                <span>A</span>
+                <span>g</span>
+                <span>u</span>
+                <span>a</span>
+                <span>r</span>
+                <span>d</span>
+                <span>e</span>
+            </span>
+            <span class="resized ocultarElemento">
+                <span>A</span>
+                <span>j</span>
+                <span>u</span>
+                <span>s</span>
+                <span>t</span>
+                <span>a</span>
+                <span>n</span>
+                <span>d</span>
+                <span>o</span>
+            </span>
+        </div>
+    </div>
+</div>

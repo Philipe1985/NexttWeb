@@ -1,0 +1,19 @@
+
+ERROR 2019-03-08 00:59:21 - Erro ao Recuperar Pedidos Filtrados
+System.Exception: RepositorioNotaFiscal.BuscaPedidosFiltrados: 
+The specified cast from a materialized 'System.Int64' type to the 'System.Int32' type is not valid. ---> System.InvalidOperationException: The specified cast from a materialized 'System.Int64' type to the 'System.Int32' type is not valid.
+   em System.Data.Entity.Core.Common.Internal.Materialization.Shaper.ErrorHandlingValueReader`1.GetValue(DbDataReader reader, Int32 ordinal)
+   em lambda_method(Closure , Shaper )
+   em System.Data.Entity.Core.Common.Internal.Materialization.Coordinator`1.ReadNextElement(Shaper shaper)
+   em System.Data.Entity.Core.Common.Internal.Materialization.Shaper`1.SimpleEnumerator.MoveNext()
+   em System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
+   em System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
+   em Nextt_Gestao_Compra.Infra.Dados.Utils.RepositorioProcedures.MultiplosResultSetEncapsulador.<>c__4`1.<With>b__4_0(IObjectContextAdapter adapter, DbDataReader reader) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Utils\RepositorioProcedures.cs:linha 34
+   em Nextt_Gestao_Compra.Infra.Dados.Utils.RepositorioProcedures.MultiplosResultSetEncapsulador.Executar() na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Utils\RepositorioProcedures.cs:linha 65
+   em Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento.RepositorioNotaFiscal.BuscaPedidosFiltrados(String parametroJson) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Repositorios\Gerenciamento\RepositorioNotaFiscal.cs:linha 47
+   --- Fim do rastreamento de pilha de exceções internas ---
+   em Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento.RepositorioNotaFiscal.BuscaPedidosFiltrados(String parametroJson) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Repositorios\Gerenciamento\RepositorioNotaFiscal.cs:linha 54
+   em Nextt_Gestao_Compra.Dominio.Servicos.Gerenciamento.ServicoNotaFiscal.BuscaPedidosFiltrados(String parametroJson) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Dominio\Servicos\Gerenciamento\ServicoNotaFiscal.cs:linha 29
+   em Nextt_Gestao_Compra.Aplicacao.Servicos.Gerenciamento.AppServicoNotaFiscal.BuscaPedidosFiltrados(String parametroJson) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Servicos\Gerenciamento\AppServicoNotaFiscal.cs:linha 26
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.NF.GerenciadorAplicacaoNF.RetornaPedidosFiltrados(IAppServicoNotaFiscal nfServico, ParametroNotaVM parametro) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\NF\GerenciadorAplicacaoNF.cs:linha 57
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Gerenciamento.EntradaNFController.RecuperaPedidosFiltrados(ParametroNotaVM parametro) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Gerenciamento\EntradaNFController.cs:linha 91

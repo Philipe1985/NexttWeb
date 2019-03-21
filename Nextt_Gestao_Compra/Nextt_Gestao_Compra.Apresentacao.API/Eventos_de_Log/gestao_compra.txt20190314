@@ -1,0 +1,100 @@
+
+ERROR 2019-03-14 00:02:48 - Erro ao Recuperar Pedidos Filtrados
+System.Exception: RepositorioNotaFiscal.BuscaPackAddPedidos: 
+The specified cast from a materialized 'System.String' type to the 'System.Int16' type is not valid. ---> System.InvalidOperationException: The specified cast from a materialized 'System.String' type to the 'System.Int16' type is not valid.
+   em System.Data.Entity.Core.Common.Internal.Materialization.Shaper.ErrorHandlingValueReader`1.GetValue(DbDataReader reader, Int32 ordinal)
+   em lambda_method(Closure , Shaper )
+   em System.Data.Entity.Core.Common.Internal.Materialization.Coordinator`1.ReadNextElement(Shaper shaper)
+   em System.Data.Entity.Core.Common.Internal.Materialization.Shaper`1.SimpleEnumerator.MoveNext()
+   em System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
+   em System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
+   em Nextt_Gestao_Compra.Infra.Dados.Utils.RepositorioProcedures.MultiplosResultSetEncapsulador.<>c__4`1.<With>b__4_0(IObjectContextAdapter adapter, DbDataReader reader) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Utils\RepositorioProcedures.cs:linha 34
+   em Nextt_Gestao_Compra.Infra.Dados.Utils.RepositorioProcedures.MultiplosResultSetEncapsulador.Executar(Boolean isGenerico) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Utils\RepositorioProcedures.cs:linha 67
+   em Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento.RepositorioNotaFiscal.BuscaPackAddPedidos(String parametroJson) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Repositorios\Gerenciamento\RepositorioNotaFiscal.cs:linha 51
+   --- Fim do rastreamento de pilha de exceções internas ---
+   em Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento.RepositorioNotaFiscal.BuscaPackAddPedidos(String parametroJson) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Repositorios\Gerenciamento\RepositorioNotaFiscal.cs:linha 58
+   em Nextt_Gestao_Compra.Dominio.Servicos.Gerenciamento.ServicoNotaFiscal.BuscaPackAddPedidos(String parametroJson) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Dominio\Servicos\Gerenciamento\ServicoNotaFiscal.cs:linha 49
+   em Nextt_Gestao_Compra.Aplicacao.Servicos.Gerenciamento.AppServicoNotaFiscal.BuscaPackAddPedidos(String parametroJson) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Servicos\Gerenciamento\AppServicoNotaFiscal.cs:linha 19
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.NF.GerenciadorAplicacaoNF.RetornaPacksPedidoAdd(IAppServicoNotaFiscal nfServico, ParametroNotaVM parametro) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\NF\GerenciadorAplicacaoNF.cs:linha 105
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Gerenciamento.EntradaNFController.RecuperaPackAddPedido(ParametroNotaVM parametro) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Gerenciamento\EntradaNFController.cs:linha 107
+
+ERROR 2019-03-14 00:06:34 - Erro ao Recuperar Pedidos Filtrados
+System.Exception: RepositorioNotaFiscal.BuscaPackAddPedidos: 
+The specified cast from a materialized 'System.String' type to the 'System.Int16' type is not valid. ---> System.InvalidOperationException: The specified cast from a materialized 'System.String' type to the 'System.Int16' type is not valid.
+   em System.Data.Entity.Core.Common.Internal.Materialization.Shaper.ErrorHandlingValueReader`1.GetValue(DbDataReader reader, Int32 ordinal)
+   em lambda_method(Closure , Shaper )
+   em System.Data.Entity.Core.Common.Internal.Materialization.Coordinator`1.ReadNextElement(Shaper shaper)
+   em System.Data.Entity.Core.Common.Internal.Materialization.Shaper`1.SimpleEnumerator.MoveNext()
+   em System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
+   em System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
+   em Nextt_Gestao_Compra.Infra.Dados.Utils.RepositorioProcedures.MultiplosResultSetEncapsulador.<>c__4`1.<With>b__4_0(IObjectContextAdapter adapter, DbDataReader reader) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Utils\RepositorioProcedures.cs:linha 34
+   em Nextt_Gestao_Compra.Infra.Dados.Utils.RepositorioProcedures.MultiplosResultSetEncapsulador.Executar(Boolean isGenerico) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Utils\RepositorioProcedures.cs:linha 67
+   em Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento.RepositorioNotaFiscal.BuscaPackAddPedidos(String parametroJson) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Repositorios\Gerenciamento\RepositorioNotaFiscal.cs:linha 51
+   --- Fim do rastreamento de pilha de exceções internas ---
+   em Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento.RepositorioNotaFiscal.BuscaPackAddPedidos(String parametroJson) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Repositorios\Gerenciamento\RepositorioNotaFiscal.cs:linha 58
+   em Nextt_Gestao_Compra.Dominio.Servicos.Gerenciamento.ServicoNotaFiscal.BuscaPackAddPedidos(String parametroJson) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Dominio\Servicos\Gerenciamento\ServicoNotaFiscal.cs:linha 49
+   em Nextt_Gestao_Compra.Aplicacao.Servicos.Gerenciamento.AppServicoNotaFiscal.BuscaPackAddPedidos(String parametroJson) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Servicos\Gerenciamento\AppServicoNotaFiscal.cs:linha 19
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.NF.GerenciadorAplicacaoNF.RetornaPacksPedidoAdd(IAppServicoNotaFiscal nfServico, ParametroNotaVM parametro) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\NF\GerenciadorAplicacaoNF.cs:linha 105
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Gerenciamento.EntradaNFController.RecuperaPackAddPedido(ParametroNotaVM parametro) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Gerenciamento\EntradaNFController.cs:linha 107
+
+ERROR 2019-03-14 00:06:48 - Erro ao Recuperar Pedidos Filtrados
+System.Exception: RepositorioNotaFiscal.BuscaEntradasFiltradas: 
+Cannot insert the value NULL into column 'IDNFFornecedor', table 'NexttCompras.dbo.NFFornecedor'; column does not allow nulls. INSERT fails. ---> System.Data.SqlClient.SqlException: Cannot insert the value NULL into column 'IDNFFornecedor', table 'NexttCompras.dbo.NFFornecedor'; column does not allow nulls. INSERT fails.
+   em System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   em System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   em System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   em System.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   em System.Data.SqlClient.SqlDataReader.TryConsumeMetaData()
+   em System.Data.SqlClient.SqlDataReader.get_MetaData()
+   em System.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString, Boolean isInternal, Boolean forDescribeParameterEncryption, Boolean shouldCacheForAlwaysEncrypted)
+   em System.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean async, Int32 timeout, Task& task, Boolean asyncWrite, Boolean inRetry, SqlDataReader ds, Boolean describeParameterEncryptionRequest)
+   em System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry)
+   em System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method)
+   em System.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior, String method)
+   em System.Data.SqlClient.SqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   em System.Data.Common.DbCommand.ExecuteReader()
+   em Nextt_Gestao_Compra.Infra.Dados.Utils.RepositorioProcedures.MultiplosResultSetEncapsulador.Executar(Boolean isGenerico) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Utils\RepositorioProcedures.cs:linha 55
+   em Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento.RepositorioNotaFiscal.GravarEntradaNF(String entradaNF) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Repositorios\Gerenciamento\RepositorioNotaFiscal.cs:linha 133
+   --- Fim do rastreamento de pilha de exceções internas ---
+   em Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento.RepositorioNotaFiscal.GravarEntradaNF(String entradaNF) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Repositorios\Gerenciamento\RepositorioNotaFiscal.cs:linha 140
+   em Nextt_Gestao_Compra.Dominio.Servicos.Gerenciamento.ServicoNotaFiscal.GravarEntradaNF(String entradaNF) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Dominio\Servicos\Gerenciamento\ServicoNotaFiscal.cs:linha 54
+   em Nextt_Gestao_Compra.Aplicacao.Servicos.Gerenciamento.AppServicoNotaFiscal.GravarEntradaNF(String entradaNF) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Servicos\Gerenciamento\AppServicoNotaFiscal.cs:linha 24
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.NF.GerenciadorAplicacaoNF.GravarEntradaNF(IAppServicoNotaFiscal nfServico, ObjEntradasSalvarVM parametro) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\NF\GerenciadorAplicacaoNF.cs:linha 97
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Gerenciamento.EntradaNFController.GravarEntradaNF(ObjEntradasSalvarVM parametro) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Gerenciamento\EntradaNFController.cs:linha 123
+
+ERROR 2019-03-14 04:14:46 - Erro ao Recuperar Pedidos Filtrados
+System.Exception: RepositorioNotaFiscal.BuscaEntradasFiltradas: 
+Cannot insert the value NULL into column 'DataSaida', table 'NexttCompras.dbo.NFFornecedor'; column does not allow nulls. INSERT fails. ---> System.Data.SqlClient.SqlException: Cannot insert the value NULL into column 'DataSaida', table 'NexttCompras.dbo.NFFornecedor'; column does not allow nulls. INSERT fails.
+   em System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   em System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   em System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   em System.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   em System.Data.SqlClient.SqlDataReader.TryConsumeMetaData()
+   em System.Data.SqlClient.SqlDataReader.get_MetaData()
+   em System.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString, Boolean isInternal, Boolean forDescribeParameterEncryption, Boolean shouldCacheForAlwaysEncrypted)
+   em System.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean async, Int32 timeout, Task& task, Boolean asyncWrite, Boolean inRetry, SqlDataReader ds, Boolean describeParameterEncryptionRequest)
+   em System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry)
+   em System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method)
+   em System.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior, String method)
+   em System.Data.SqlClient.SqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   em System.Data.Common.DbCommand.ExecuteReader()
+   em Nextt_Gestao_Compra.Infra.Dados.Utils.RepositorioProcedures.MultiplosResultSetEncapsulador.Executar(Boolean isGenerico) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Utils\RepositorioProcedures.cs:linha 55
+   em Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento.RepositorioNotaFiscal.GravarEntradaNF(String entradaNF) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Repositorios\Gerenciamento\RepositorioNotaFiscal.cs:linha 149
+   --- Fim do rastreamento de pilha de exceções internas ---
+   em Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento.RepositorioNotaFiscal.GravarEntradaNF(String entradaNF) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Repositorios\Gerenciamento\RepositorioNotaFiscal.cs:linha 156
+   em Nextt_Gestao_Compra.Dominio.Servicos.Gerenciamento.ServicoNotaFiscal.GravarEntradaNF(String entradaNF) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Dominio\Servicos\Gerenciamento\ServicoNotaFiscal.cs:linha 54
+   em Nextt_Gestao_Compra.Aplicacao.Servicos.Gerenciamento.AppServicoNotaFiscal.GravarEntradaNF(String entradaNF) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Servicos\Gerenciamento\AppServicoNotaFiscal.cs:linha 28
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.NF.GerenciadorAplicacaoNF.GravarEntradaNF(IAppServicoNotaFiscal nfServico, ObjEntradasSalvarVM parametro) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\NF\GerenciadorAplicacaoNF.cs:linha 100
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Gerenciamento.EntradaNFController.GravarEntradaNF(ObjEntradasSalvarVM parametro) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Gerenciamento\EntradaNFController.cs:linha 123
+
+ERROR 2019-03-14 06:44:35 - Erro ao Atualizar Perfil:
+System.NullReferenceException: Referência de objeto não definida para uma instância de um objeto.
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.UsuarioController.<AtualizarPerfil>d__13.MoveNext() na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\UsuarioController.cs:linha 314
+
+ERROR 2019-03-14 06:48:22 - Erro ao Atualizar Perfil:
+System.NullReferenceException: Referência de objeto não definida para uma instância de um objeto.
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.UsuarioController.<AtualizarPerfil>d__13.MoveNext() na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\UsuarioController.cs:linha 314
+
+ERROR 2019-03-14 06:49:38 - Erro ao Atualizar Perfil:
+System.NullReferenceException: Referência de objeto não definida para uma instância de um objeto.
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.UsuarioController.<AtualizarPerfil>d__13.MoveNext() na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\UsuarioController.cs:linha 314

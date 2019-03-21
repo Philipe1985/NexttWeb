@@ -33,6 +33,7 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entidades\DescontoAcrescimoNF.cs" />
     <Compile Include="Entidades\Atributo.cs" />
     <Compile Include="Entidades\CadastroProdutoSecaoEspecieMarcaFornecetor.cs" />
     <Compile Include="Entidades\ClassificacaoFiscal.cs" />
@@ -44,6 +45,8 @@
     <Compile Include="Entidades\DadosGerenciamentoProdutoCompra.cs" />
     <Compile Include="Entidades\DadosPrePedido.cs" />
     <Compile Include="Entidades\DadosUltimaCompra.cs" />
+    <Compile Include="Entidades\DuplicataDadosPadrao.cs" />
+    <Compile Include="Entidades\EntradaNF.cs" />
     <Compile Include="Entidades\EnumAtributoTipo.cs" />
     <Compile Include="Entidades\Especie.cs" />
     <Compile Include="Entidades\FormaPgto.cs" />
@@ -66,9 +69,11 @@
     <Compile Include="Entidades\Secao.cs" />
     <Compile Include="Entidades\GrupoTamanho.cs" />
     <Compile Include="Entidades\Segmento.cs" />
+    <Compile Include="Entidades\StatusNF.cs" />
     <Compile Include="Entidades\StatusPedido.cs" />
     <Compile Include="Entidades\TipoAtributoSecaoEspecie.cs" />
     <Compile Include="Entidades\TipoLista.cs" />
+    <Compile Include="Entidades\TituloNF.cs" />
     <Compile Include="Entidades\UnidadeMedida.cs" />
     <Compile Include="Entidades\UsuarioGerenciamento.cs" />
     <Compile Include="Interfaces\Repositorio\Gerenciamento\IRepositorioAtributo.cs" />
@@ -76,6 +81,7 @@
     <Compile Include="Interfaces\Repositorio\Gerenciamento\IRepositorioDistribuicao.cs" />
     <Compile Include="Interfaces\Repositorio\Gerenciamento\IRepositorioGrupo.cs" />
     <Compile Include="Interfaces\Repositorio\Gerenciamento\IRepositorioMovimentacao.cs" />
+    <Compile Include="Interfaces\Repositorio\Gerenciamento\IRepositorioNotaFiscal.cs" />
     <Compile Include="Interfaces\Repositorio\Gerenciamento\IRepositorioPedido.cs" />
     <Compile Include="Interfaces\Repositorio\Gerenciamento\IRepositorioProduto.cs" />
     <Compile Include="Interfaces\Repositorio\Gerenciamento\IRepositorioGrupoEmpresa.cs" />
@@ -86,6 +92,7 @@
     <Compile Include="Interfaces\Servico\Gerenciamento\IServicoGrupo.cs" />
     <Compile Include="Interfaces\Servico\Gerenciamento\IServicoGrupoEmpresa.cs" />
     <Compile Include="Interfaces\Servico\Gerenciamento\IServicoMovimentacao.cs" />
+    <Compile Include="Interfaces\Servico\Gerenciamento\IServicoNotaFiscal.cs" />
     <Compile Include="Interfaces\Servico\Gerenciamento\IServicoPedido.cs" />
     <Compile Include="Interfaces\Servico\Gerenciamento\IServicoProduto.cs" />
     <Compile Include="Interfaces\Servico\IServicoPadrao.cs" />
@@ -96,6 +103,7 @@
     <Compile Include="Servicos\Gerenciamento\ServicoGrupo.cs" />
     <Compile Include="Servicos\Gerenciamento\ServicoGrupoEmpresa.cs" />
     <Compile Include="Servicos\Gerenciamento\ServicoMovimentacao.cs" />
+    <Compile Include="Servicos\Gerenciamento\ServicoNotaFiscal.cs" />
     <Compile Include="Servicos\Gerenciamento\ServicoPedido.cs" />
     <Compile Include="Servicos\Gerenciamento\ServicoProduto.cs" />
     <Compile Include="Servicos\ServicoPadrao.cs" />

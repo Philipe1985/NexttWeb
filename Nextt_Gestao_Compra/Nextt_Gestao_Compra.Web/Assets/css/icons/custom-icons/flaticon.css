@@ -1,6 +1,6 @@
 /*
   	Flaticon icon font: Flaticon
-  	Creation date: 04/02/2019 05:17
+  	Creation date: 14/03/2019 07:27
   	*/
 
 @font-face {
@@ -21,6 +21,7 @@
 [class^="flaticon-"]:before, [class*=" flaticon-"]:before,
 [class^="flaticon-"]:after, [class*=" flaticon-"]:after {
     font-family: Flaticon;
+    /*font-size: 20px;*/
     font-style: normal;
     /*margin-left: 20px;*/
 }
@@ -35,4 +36,8 @@
 
 .flaticon-view:before {
     content: "\f102";
+}
+
+.flaticon-bill:before {
+    content: "\f103";
 }

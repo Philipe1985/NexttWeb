@@ -30,6 +30,10 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
             QtdeVenda = filial.QtdeVenda;
             QtdePack = filial.QtdeItensDistribuido;
         }
+        public FiliaisVM()
+        {
+
+        }
 
     }
 }

@@ -13,7 +13,9 @@ namespace Nextt_Gestao_Compra.Infre.CrossCutting.Helpers.AutoMapper
             CreateMap<GrupoEmpresaVM, GrupoEmpresa>();
             CreateMap<ImagensProdutoVM, FotoProduto>();
             CreateMap<PedidosFiltradoVM, PedidoConsulta>();
+            CreateMap<EntradasNFVM, EntradaNF>();
             CreateMap<GradePadraoVM, Grade>();
+            CreateMap<TituloNFVM, TituloNF>();
         }
     }
 }

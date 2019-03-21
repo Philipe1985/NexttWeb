@@ -25,6 +25,22 @@ function recalculaTotalLinha(tabelaApi) {
 
     });
 }
+function recalculaTotalLinhaNF(tabelaApi) {
+
+    tabelaApi.rows().every(function () {
+        var d = this.data();
+
+        d.totalCor = 0;
+        $.each(d, function (key, val) {
+            if (key.indexOf("tamanho") > -1 && key.indexOf("itemId_") == -1) {
+                d.totalCor += parseInt(val);
+            }
+        });
+    });
+
+
+
+}
 function recalculaTotalLinhaFiliais(dados) {
     dados[0].total = 0;
     dados[1].total = 0;
@@ -89,16 +105,31 @@ function recalculaTotalColunas(tabelaApi, totalItensPack) {
                 })
         );
     });
-    //tabelaApi.columns(".numInt.sumItem").every(function () {
-    //    var totalItm = this
-    //        .data()
-    //        .reduce(function (a, b) { return a + b; });
-    //    totalItensPack = recalcPack * totalItm;
-    //});
-    //tabelaApi.columns(".totalPackItens").every(function () {
-    //    $(this.footer()).html("Itens no Pack: " + totalItensPack.toLocaleString('pt-BR'))
-    //});
 }
+function recalculaTotalColunasNF(tabelaApi) {
+
+    var totalItens = tabelaApi.column(".qtdPackTot").data()
+        .reduce(function (a, b) {
+            return a + b;
+        });
+
+    if (tabelaApi.column(".qtdPackPed").length) {
+        var rodape = tabelaApi.column(".qtdPackPed").data()[0] * totalItens;
+        var colunaFooter = tabelaApi.column(".qtdPackPed");
+        $(colunaFooter.footer()).html(rodape.toLocaleString('pt-BR'))
+    }
+    if (tabelaApi.column(".qtdPackNota").length) {
+        var rodape = tabelaApi.column(".qtdPackNota").data()[0] * totalItens;
+        var colunaFooter = tabelaApi.column(".qtdPackNota");
+        $(colunaFooter.footer()).html(rodape.toLocaleString('pt-BR'))
+    }
+
+    var rodape = tabelaApi.column(".qtdPackEnt").data()[0] * totalItens;
+    var colunaFooter = tabelaApi.column(".qtdPackEnt");
+    $(colunaFooter.footer()).html(rodape.toLocaleString('pt-BR'))
+
+}
+
 function recalculaDadosPedido() {
     if (compraId) {
         var totalItm = 0;
@@ -1282,12 +1313,117 @@ function criaArrayAtributo(pnl) {
 
     var retorno = criaObjAttr(pnl.find('.attrTexto'), retorno);
     var retorno = criaObjAttr(pnl.find('.attrNum'), retorno);
-    var retorno = criaObjAttr(pnl.find('.attrMon'), retorno);
     var retorno = criaObjAttr(pnl.find('.attrPerc'), retorno);
     var retorno = criaObjAttr(pnl.find('.attrData'), retorno);
     var retorno = criaObjAttrBool(pnl.find('.attrBool'), retorno);
+    var retorno = criaObjAttr(pnl.find('.attrMon'), retorno);
     var retorno = criaObjAttrLista(pnl.find('.selectpicker.listAttr'), retorno);
     return retorno;
+}
+function criaObjGeraTituloNF(dadosDescAcr) {
+    var objSalvarNF = {};
+    objSalvarNF.idnfFornecedor = idCadNF;
+    objSalvarNF.idFormaPagamento = Number($('#drpTpDoc').val());
+    objSalvarNF.idGrupoEmpresa = Number($('#drpGrpEmpDup').val());
+    objSalvarNF.valorTotal = Number($('.titValRecebido').text().replace(/[^\d\-\,]/g, "").replace(',', '.'));
+    objSalvarNF.plano = $('#txtCadCondPgtoNF').val();
+    objSalvarNF.tipoDescontosAcrescimos = retornaDescTipoVal(dadosDescAcr);
+    geraTitulosEntradaNF(objSalvarNF);
+}
+function criaObjConfirmaTituloNF(dadosTituloGerado) {
+    var objSalvarNF = {};
+    objSalvarNF.idnfFornecedor = idCadNF;
+    objSalvarNF.idFormaPagamento = Number($('#drpTpDoc').val());
+    objSalvarNF.idGrupoEmpresa = Number($('#drpGrpEmpDup').val());
+    objSalvarNF.titulos = dadosTituloGerado;
+    gravarTitulosEntradaNF(objSalvarNF);
+}
+function retornaDescTipoVal(dadosDescAcr) {
+    var retorno = [];
+    for (var i = 0; i < dadosDescAcr.length; i++) {
+        retorno.push({ idTipoDescontoAcrescimo: dadosDescAcr[i].tipo, valor: dadosDescAcr[i].valor})
+    }
+    return retorno;
+}
+function criaObjSalvarNF(status) {
+    $('.selectpicker').selectpicker('hide');
+    $(".navbar.navbar-default.navbar-fixed-top").addClass('ocultarElemento');
+    $(".bg_load").show();
+    $(".wrapper").show();
+    var objSalvarNF = {}, objEnvio = {};
+    objEnvio.nfFornecedor = [];
+    objSalvarNF.idnfFornecedor = idCadNF;
+    objSalvarNF.idFornecedor = parseInt($('#drpCNPJ').val());
+    objSalvarNF.idUsuarioCadastro = sessionStorage.getItem("id_usuario");
+    objSalvarNF.numero = parseInt($("#txtNumNota").val());
+    objSalvarNF.serie = parseInt($("#txtSerieNF").val());
+    objSalvarNF.qtdeVolume = $("#txtQtdeVol").val()? parseInt($("#txtQtdeVol").val()):0;
+    objSalvarNF.chaveAcessoNfe = $("#txtChaveAcesso").val();
+    objSalvarNF.dataEmissao = formataStringData($("#txtDtEmiNF").val());
+    objSalvarNF.dataSaida = $("#txtDtSaidaNF").val() ? formataStringData($("#txtDtSaidaNF").val()) : '';
+    objSalvarNF.dataEntrega = $("#txtDtEntregaNF").val() ? formataStringData($("#txtDtEntregaNF").val()) : '';
+    objSalvarNF.status = 'ED';
+    objSalvarNF.valorBaseIcms = $('#txtValorBaseICMS').maskMoney('unmasked')[0];
+    objSalvarNF.valorBaseIcmsST = $('#txtValorBaseICMSST').maskMoney('unmasked')[0];
+    objSalvarNF.valorIcms = $('#txtValorICMS').maskMoney('unmasked')[0];
+    objSalvarNF.valorIcmsST = $('#txtValorICMSST').maskMoney('unmasked')[0];
+    objSalvarNF.valorProdutos = $('#txtValorProduto').maskMoney('unmasked')[0];
+    objSalvarNF.valorFrete = $('#txtValorFrete').maskMoney('unmasked')[0];
+    objSalvarNF.valorSeguro = $('#txtValorSeguro').maskMoney('unmasked')[0];
+    objSalvarNF.valorDesconto = $('#txtValorDesconto').maskMoney('unmasked')[0];
+    objSalvarNF.valorIPI = $('#txtValorIPI').maskMoney('unmasked')[0];
+    objSalvarNF.valorAproxTributos = $('#txtValorAproxTributos').maskMoney('unmasked')[0];
+    objSalvarNF.valorOutros = $('#txtValorOutros').maskMoney('unmasked')[0];
+    objSalvarNF.valorTotal = $('#txtValorTotal').maskMoney('unmasked')[0];
+    objSalvarNF.observacao = $('#txtAreaObsNF').val();
+    objSalvarNF.NFFornecedorPacks = retornaListaPacksNF();
+    objEnvio.nfFornecedor.push(objSalvarNF);
+    gravarEntradaNF(objEnvio);
+}
+function retornaListaPacksNF() {
+    var listaRetorno = [];
+    $('#tabNFPedido li:not(:last-child)').each(function () {
+
+        var idPed = $(this).attr('id').replace(/[^\d]+/g, '');
+
+        $('#tabPedEnt' + idPed + ' .tabPacksEntrada li:not(:last-child)').each(function () {
+            var objPack = {};
+            objPack.idPedido = Number(idPed);
+            var classes = $(this).children('a').attr('class').split(' ')
+            var hRef = $(this).children('a').attr('href');
+            objPack.idnfFornecedorPack = hRef.replace('#pack-', '');
+            objPack.tipoPack = classes[0].replace('tp-', '');
+            objPack.agrupamento = classes[1].replace('ag-', '');
+            objPack.pack = Number($(this).children('a').text().replace(/[^\d]+/g, ''));
+            var tbAPI = $('#tblEnt-' + hRef.replace('#pack-', '')).dataTable().api();
+            objPack.qtdeNota = tbAPI.row(0).data().totalNota ? tbAPI.row(0).data().totalNota:0;
+            objPack.qtdeEntregue = tbAPI.row(0).data().totalRecebido;
+            objPack.nfFornecedorPackProdutoItems = retornaListaItensPacksNF(tbAPI);
+            listaRetorno.push(objPack);
+        });
+    });
+    return listaRetorno;
+}
+function retornaListaItensPacksNF(tbAPI) {
+    var listaRetorno = [];
+    var dados = tbAPI.data().toArray();
+    console.log(dados)
+    for (var i = 0; i < dados.length; i++) {
+        
+        $.each(dados[i], function (key, value) {
+            if (key.indexOf('itemId_') == -1 && key.indexOf('tamanho') > -1) {
+                var objPackItens = {};
+                var idsChave = dados[i][('itemId_' + key)].split('_');
+                objPackItens.idnfFornecedorPackProdutoItem = idsChave[0];
+                objPackItens.idProdutoItem = Number(idsChave[1]);
+                objPackItens.qtdeEntregue = dados[i][key];
+                listaRetorno.push(objPackItens);
+            }
+        });
+        
+    }
+    return listaRetorno;
+   
 }
 function criaObjAttr(el, retornoArray) {
     for (var i = 0; i < el.length; i++) {
@@ -1615,4 +1751,5 @@ function removeTamanhoPack(dadosPackGrade, tamRemover) {
     }
     return dadosPackGrade;
 }
+
 

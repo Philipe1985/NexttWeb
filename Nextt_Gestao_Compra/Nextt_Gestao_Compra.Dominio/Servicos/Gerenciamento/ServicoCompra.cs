@@ -42,7 +42,7 @@ namespace Nextt_Gestao_Compra.Dominio.Servicos.Gerenciamento
 
         public List<IEnumerable> RetornaCargaInicialFiltros()
         {
-            return _compraRepositorio.RetornaCargaInicialFiltros();
+                return _compraRepositorio.RetornaCargaInicialFiltros();
         }
 
         public List<Cor> RetornaCoresPrincipais(List<Cor> _listaCores)

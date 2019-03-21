@@ -45,6 +45,8 @@ namespace Nextt_Gestao_Compra.Infre.CrossCutting.Configuracao
                 Aplicacao.Servicos.Gerenciamento.AppServicoAtributo>();
             container.RegisterType<Aplicacao.Servicos.Interfaces.Gerenciamento.IAppServicoDistribuicao,
                 Aplicacao.Servicos.Gerenciamento.AppServicoDistribuicao>();
+            container.RegisterType<Aplicacao.Servicos.Interfaces.Gerenciamento.IAppServicoNotaFiscal,
+                Aplicacao.Servicos.Gerenciamento.AppServicoNotaFiscal>();
 
             //Camada de domínio
             container.RegisterType<Dominio.Interfaces.Servico.Gerenciamento.IServicoCompra,
@@ -63,6 +65,8 @@ namespace Nextt_Gestao_Compra.Infre.CrossCutting.Configuracao
                 Dominio.Servicos.Gerenciamento.ServicoAtributo>();
             container.RegisterType<Dominio.Interfaces.Servico.Gerenciamento.IServicoDistribuicao,
                 Dominio.Servicos.Gerenciamento.ServicoDistribuicao>();
+            container.RegisterType<Dominio.Interfaces.Servico.Gerenciamento.IServicoNotaFiscal,
+                Dominio.Servicos.Gerenciamento.ServicoNotaFiscal>();
 
             //Camada de dominio/dados (Repositórios)
             container.RegisterType<Dominio.Interfaces.Repositorio.Gerenciamento.IRepositorioCompra,
@@ -81,6 +85,8 @@ namespace Nextt_Gestao_Compra.Infre.CrossCutting.Configuracao
                 Infra.Dados.Repositorios.Gerenciamento.RepositorioAtributo>();
             container.RegisterType<Dominio.Interfaces.Repositorio.Gerenciamento.IRepositorioDistribuicao,
                 Infra.Dados.Repositorios.Gerenciamento.RepositorioDistribuicao>();
+            container.RegisterType<Dominio.Interfaces.Repositorio.Gerenciamento.IRepositorioNotaFiscal,
+                Infra.Dados.Repositorios.Gerenciamento.RepositorioNotaFiscal>();
 
             return new UnityResolver(container);
         }

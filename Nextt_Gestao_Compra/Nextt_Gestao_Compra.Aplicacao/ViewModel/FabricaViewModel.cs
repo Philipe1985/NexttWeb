@@ -149,7 +149,15 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
                 Descricao = especie.DescricaoEspecie.Trim()
             };
         }
-
+        public ComboFiltroVM Criar(GrupoEmpresa grupoEmpresa)
+        {
+            return new ComboFiltroVM
+            {
+                Valor = grupoEmpresa.IDGrupoEmpresa.ToString(),
+                Token = grupoEmpresa.IDGrupoEmpresa + " " + grupoEmpresa.Nome.Trim(),
+                Descricao = grupoEmpresa.Nome.Trim()
+            };
+        }
         public ComboFiltroVM Criar(FormaPgto forma)
         {
             return new ComboFiltroVM
@@ -181,7 +189,16 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
                 Descricao = classificacao.CodigoFiscal.Trim() + " - " + classificacao.DescricaoClassificacao.Trim(),
             };
         }
+        public ComboFiltroVM Criar(DescontoAcrescimoNF descontoAcrescimo)
+        {
 
+            return new ComboFiltroVM
+            {
+                Valor = descontoAcrescimo.IDTipoDescontoAcrescimo.ToString(),
+                Token = descontoAcrescimo.Tipo.Trim(),
+                Descricao =  descontoAcrescimo.Descricao.Trim()
+            };
+        }
         public ComboFiltroVM Criar(CondicaoPgto condicao)
         {
             return new ComboFiltroVM
@@ -252,6 +269,16 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
                 Valor = filial.IDFilial.ToString(),
                 Token = filial.IDFilial + "," + filial.Filial_Nome.Trim(),
                 Descricao = filial.Filial_Nome.Trim()
+            };
+        }
+        public ComboFiltroVM Criar(StatusNF statusNF)
+        {
+            var statusDePara = string.IsNullOrEmpty(statusNF.IDStatusNFFornecedorPara) ? "" : statusNF.IDStatusNFFornecedorPara + ";";
+            return new ComboFiltroVM
+            {
+                Valor = statusNF.IDStatusNFFornecedor.ToString(),
+                Token = statusDePara + statusNF.IDStatusNFFornecedor + ";" + statusNF.Descricao.Trim(),
+                Descricao = statusNF.Descricao.Trim()
             };
         }
         public ComboFiltroVM Criar(UsuarioGerenciamento usuario)

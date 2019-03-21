@@ -1,0 +1,35 @@
+
+ERROR 2019-03-03 02:55:32 - Erro ao Recuperar Entradas de NF Filtradas
+System.NullReferenceException: Referência de objeto não definida para uma instância de um objeto.
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.NF.GerenciadorAplicacaoNF.RetornaEntradasFiltradas(IAppServicoNotaFiscal nfServico, ParametroNotaVM parametro) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\NF\GerenciadorAplicacaoNF.cs:linha 31
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Gerenciamento.EntradaNFController.RecuperaEntradasFiltradas(ParametroNotaVM parametro) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Gerenciamento\EntradaNFController.cs:linha 46
+
+ERROR 2019-03-03 02:56:52 - Erro ao Recuperar Entradas de NF Filtradas
+System.Exception: RepositorioNotaFiscal.BuscaEntradasFiltradas: 
+The specified cast from a materialized 'System.Guid' type to the 'System.String' type is not valid. ---> System.InvalidOperationException: The specified cast from a materialized 'System.Guid' type to the 'System.String' type is not valid.
+   em System.Data.Entity.Core.Common.Internal.Materialization.Shaper.ErrorHandlingValueReader`1.GetValue(DbDataReader reader, Int32 ordinal)
+   em lambda_method(Closure , Shaper )
+   em System.Data.Entity.Core.Common.Internal.Materialization.Coordinator`1.ReadNextElement(Shaper shaper)
+   em System.Data.Entity.Core.Common.Internal.Materialization.Shaper`1.SimpleEnumerator.MoveNext()
+   em System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
+   em System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
+   em Nextt_Gestao_Compra.Infra.Dados.Utils.RepositorioProcedures.MultiplosResultSetEncapsulador.<>c__4`1.<With>b__4_0(IObjectContextAdapter adapter, DbDataReader reader) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Utils\RepositorioProcedures.cs:linha 34
+   em Nextt_Gestao_Compra.Infra.Dados.Utils.RepositorioProcedures.MultiplosResultSetEncapsulador.Executar() na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Utils\RepositorioProcedures.cs:linha 65
+   em Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento.RepositorioNotaFiscal.BuscaEntradasFiltradas(String parametroJson) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Repositorios\Gerenciamento\RepositorioNotaFiscal.cs:linha 16
+   --- Fim do rastreamento de pilha de exceções internas ---
+   em Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento.RepositorioNotaFiscal.BuscaEntradasFiltradas(String parametroJson) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Repositorios\Gerenciamento\RepositorioNotaFiscal.cs:linha 23
+   em Nextt_Gestao_Compra.Dominio.Servicos.Gerenciamento.ServicoNotaFiscal.BuscaEntradasFiltradas(String parametroJson) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Dominio\Servicos\Gerenciamento\ServicoNotaFiscal.cs:linha 19
+   em Nextt_Gestao_Compra.Aplicacao.Servicos.Gerenciamento.AppServicoNotaFiscal.BuscaEntradasFiltradas(String parametroJson) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Servicos\Gerenciamento\AppServicoNotaFiscal.cs:linha 19
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.NF.GerenciadorAplicacaoNF.RetornaEntradasFiltradas(IAppServicoNotaFiscal nfServico, ParametroNotaVM parametro) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\NF\GerenciadorAplicacaoNF.cs:linha 32
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Gerenciamento.EntradaNFController.RecuperaEntradasFiltradas(ParametroNotaVM parametro) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Gerenciamento\EntradaNFController.cs:linha 46
+
+ERROR 2019-03-03 19:51:30 - Erro ao Recuperar Filtros da Pesquisa de Entradas de NF
+System.InvalidCastException: Não é possível converter um objeto do tipo 'Nextt_Gestao_Compra.Dominio.Entidades.StatusNF' no tipo 'Nextt_Gestao_Compra.Dominio.Entidades.StatusPedido'.
+   em System.Linq.Enumerable.<CastIterator>d__97`1.MoveNext()
+   em System.Linq.Buffer`1..ctor(IEnumerable`1 source)
+   em System.Linq.OrderedEnumerable`1.<GetEnumerator>d__1.MoveNext()
+   em System.Linq.Enumerable.WhereSelectEnumerableIterator`2.MoveNext()
+   em System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
+   em System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.NF.GerenciadorAplicacaoNF.RetornaCadastroFiltroInicial(IAppServicoNotaFiscal nfServico, FabricaViewModel fabrica) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\NF\GerenciadorAplicacaoNF.cs:linha 38
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Gerenciamento.EntradaNFController.RecuperaFiltrosCadastroNF() na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Gerenciamento\EntradaNFController.cs:linha 46

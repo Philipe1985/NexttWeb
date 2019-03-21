@@ -1,0 +1,65 @@
+
+ERROR 2019-03-20 02:28:46 - Erro ao Recuperar Entrada de NF Cadastrada
+System.Exception: RepositorioNotaFiscal.BuscaEntradaCadastrada: 
+Arithmetic overflow error converting expression to data type smallint. ---> System.Data.SqlClient.SqlException: Arithmetic overflow error converting expression to data type smallint.
+   em System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   em System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   em System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   em System.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   em System.Data.SqlClient.SqlDataReader.TryHasMoreRows(Boolean& moreRows)
+   em System.Data.SqlClient.SqlDataReader.TryReadInternal(Boolean setTimeout, Boolean& more)
+   em System.Data.SqlClient.SqlDataReader.TryNextResult(Boolean& more)
+   em System.Data.SqlClient.SqlDataReader.NextResult()
+   em Nextt_Gestao_Compra.Infra.Dados.Utils.RepositorioProcedures.MultiplosResultSetEncapsulador.Executar(Boolean isGenerico) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Utils\RepositorioProcedures.cs:linha 75
+   em Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento.RepositorioNotaFiscal.BuscaEntradaCadastrada(String idNota) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Repositorios\Gerenciamento\RepositorioNotaFiscal.cs:linha 32
+   --- Fim do rastreamento de pilha de exceções internas ---
+   em Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento.RepositorioNotaFiscal.BuscaEntradaCadastrada(String idNota) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Repositorios\Gerenciamento\RepositorioNotaFiscal.cs:linha 47
+   em Nextt_Gestao_Compra.Dominio.Servicos.Gerenciamento.ServicoNotaFiscal.BuscaEntradaCadastrada(String idNota) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Dominio\Servicos\Gerenciamento\ServicoNotaFiscal.cs:linha 19
+   em Nextt_Gestao_Compra.Aplicacao.Servicos.Gerenciamento.AppServicoNotaFiscal.BuscaEntradaCadastrada(String idNota) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Servicos\Gerenciamento\AppServicoNotaFiscal.cs:linha 32
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.NF.GerenciadorAplicacaoNF.RetornaEntradaCadastrada(IAppServicoNotaFiscal nfServico, String idNota, FabricaViewModel fabrica) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\NF\GerenciadorAplicacaoNF.cs:linha 76
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Gerenciamento.EntradaNFController.RecuperaEntradaCadastrada(String Id) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Gerenciamento\EntradaNFController.cs:linha 75
+
+ERROR 2019-03-20 02:31:09 - Erro ao Recuperar Entrada de NF Cadastrada
+System.Exception: RepositorioNotaFiscal.BuscaEntradaCadastrada: 
+Arithmetic overflow error converting expression to data type smallint. ---> System.Data.SqlClient.SqlException: Arithmetic overflow error converting expression to data type smallint.
+   em System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   em System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   em System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   em System.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   em System.Data.SqlClient.SqlDataReader.TryHasMoreRows(Boolean& moreRows)
+   em System.Data.SqlClient.SqlDataReader.TryReadInternal(Boolean setTimeout, Boolean& more)
+   em System.Data.SqlClient.SqlDataReader.TryNextResult(Boolean& more)
+   em System.Data.SqlClient.SqlDataReader.NextResult()
+   em Nextt_Gestao_Compra.Infra.Dados.Utils.RepositorioProcedures.MultiplosResultSetEncapsulador.Executar(Boolean isGenerico) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Utils\RepositorioProcedures.cs:linha 75
+   em Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento.RepositorioNotaFiscal.BuscaEntradaCadastrada(String idNota) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Repositorios\Gerenciamento\RepositorioNotaFiscal.cs:linha 32
+   --- Fim do rastreamento de pilha de exceções internas ---
+   em Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento.RepositorioNotaFiscal.BuscaEntradaCadastrada(String idNota) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Repositorios\Gerenciamento\RepositorioNotaFiscal.cs:linha 47
+   em Nextt_Gestao_Compra.Dominio.Servicos.Gerenciamento.ServicoNotaFiscal.BuscaEntradaCadastrada(String idNota) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Dominio\Servicos\Gerenciamento\ServicoNotaFiscal.cs:linha 19
+   em Nextt_Gestao_Compra.Aplicacao.Servicos.Gerenciamento.AppServicoNotaFiscal.BuscaEntradaCadastrada(String idNota) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Servicos\Gerenciamento\AppServicoNotaFiscal.cs:linha 32
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.NF.GerenciadorAplicacaoNF.RetornaEntradaCadastrada(IAppServicoNotaFiscal nfServico, String idNota, FabricaViewModel fabrica) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\NF\GerenciadorAplicacaoNF.cs:linha 76
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Gerenciamento.EntradaNFController.RecuperaEntradaCadastrada(String Id) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Gerenciamento\EntradaNFController.cs:linha 75
+
+ERROR 2019-03-20 02:48:08 - Erro ao Salvar o Pedido
+System.Exception: RepositorioCompra.GravarPedido: 
+Implicit conversion from data type datetime to varbinary is not allowed. Use the CONVERT function to run this query. ---> System.Data.SqlClient.SqlException: Implicit conversion from data type datetime to varbinary is not allowed. Use the CONVERT function to run this query.
+   em System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   em System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   em System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   em System.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   em System.Data.SqlClient.SqlDataReader.TryConsumeMetaData()
+   em System.Data.SqlClient.SqlDataReader.get_MetaData()
+   em System.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString, Boolean isInternal, Boolean forDescribeParameterEncryption, Boolean shouldCacheForAlwaysEncrypted)
+   em System.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean async, Int32 timeout, Task& task, Boolean asyncWrite, Boolean inRetry, SqlDataReader ds, Boolean describeParameterEncryptionRequest)
+   em System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry)
+   em System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method)
+   em System.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior, String method)
+   em System.Data.SqlClient.SqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   em System.Data.Common.DbCommand.ExecuteReader()
+   em Nextt_Gestao_Compra.Infra.Dados.Utils.RepositorioProcedures.MultiplosResultSetEncapsulador.Executar(Boolean isGenerico) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Utils\RepositorioProcedures.cs:linha 55
+   em Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento.RepositorioCompra.GravarPedido(String pedidoJson) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Repositorios\Gerenciamento\RepositorioCompra.cs:linha 310
+   --- Fim do rastreamento de pilha de exceções internas ---
+   em Nextt_Gestao_Compra.Infra.Dados.Repositorios.Gerenciamento.RepositorioCompra.GravarPedido(String pedidoJson) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Infra.Dados\Repositorios\Gerenciamento\RepositorioCompra.cs:linha 320
+   em Nextt_Gestao_Compra.Dominio.Servicos.Gerenciamento.ServicoCompra.GravarPedido(String pedidoJson) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Dominio\Servicos\Gerenciamento\ServicoCompra.cs:linha 95
+   em Nextt_Gestao_Compra.Aplicacao.Servicos.Gerenciamento.AppServicoCompra.GravarPedido(String pedidoJson) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Servicos\Gerenciamento\AppServicoCompra.cs:linha 34
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.Compra.GerenciadorAplicacaoCompra.GravarPedido(IAppServicoCompra compraServico, PedidoCompletoVM pedidoCompleto, ILog log) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\Compra\GerenciadorAplicacaoCompra.cs:linha 259
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Gerenciamento.CompraController.SalvarNovoPedido(PedidoCompletoVM pedido) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Gerenciamento\CompraController.cs:linha 219

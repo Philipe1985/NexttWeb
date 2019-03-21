@@ -37,10 +37,10 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Utils
                     .ToList());
                 return this;
             }
-            public List<IEnumerable> Executar()
+            public List<IEnumerable> Executar(bool isGenerico = false)
             {
                 var results = new List<IEnumerable>();
-               
+
                 using (var connection = _db.Database.Connection)
                 {
                     connection.Open();
@@ -52,19 +52,30 @@ namespace Nextt_Gestao_Compra.Infra.Dados.Utils
                     {
                         command.CommandText = _storedProcedure;
                     }
-
                     using (var reader = command.ExecuteReader())
                     {
+                        
                         if (reader.FieldCount == 0)
                         {
                             return null;
                         }
                         var adapter = ((IObjectContextAdapter)_db);
-                        foreach (var resultSet in _resultSets)
+                        if (isGenerico)
                         {
-                            results.Add(resultSet(adapter, reader));
-                            reader.NextResult();
+                            do
+                            {
+                                results.Add(_resultSets.FirstOrDefault()(adapter, reader));
+                            } while (reader.NextResult());
                         }
+                        else
+                        {
+                            foreach (var resultSet in _resultSets)
+                            {
+                                results.Add(resultSet(adapter, reader));
+                                reader.NextResult();
+                            }
+                        }
+
                     }
                     return results;
                 }

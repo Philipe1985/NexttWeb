@@ -1647,6 +1647,7 @@
     <Content Include="Assets\js\atributo-manager.js" />
     <Content Include="Assets\js\cadastro-atributo.js" />
     <Content Include="Assets\js\cadastro-compra.js" />
+    <Content Include="Assets\js\cadastro-entrada-nf.js" />
     <Content Include="Assets\js\cadastro-fornecedor.js" />
     <Content Include="Assets\js\calculosRelatorio.js" />
     <Content Include="Assets\js\chamadasAPI\callbackAPI.js" />
@@ -1662,6 +1663,7 @@
     <Content Include="Assets\js\distribuicao-grupo.js" />
     <Content Include="Assets\js\distribuicao-produto.js" />
     <Content Include="Assets\js\distribuicao.js" />
+    <Content Include="Assets\js\entrada-nf-consulta.js" />
     <Content Include="Assets\js\fastselect.js" />
     <Content Include="Assets\js\fastselect.standalone.js" />
     <Content Include="Assets\js\grupo-empresa.js" />
@@ -2488,7 +2490,6 @@
     <Content Include="Assets\fonts\font-awesome-action\fonts\fontawesome-webfont.woff2" />
     <Content Include="Assets\fonts\font-awesome-action\fonts\FontAwesome.otf" />
     <Content Include="Gerenciamento\GrupoEmpresa.cshtml" />
-    <Content Include="Gerenciamento\GrupoEmpresa2.cshtml" />
     <Content Include="Gerenciamento\Atributos.cshtml" />
     <Content Include="Cadastro\Atributo.cshtml" />
     <Content Include="Assets\css\icons\custom-icons\Flaticon.eot" />
@@ -2497,7 +2498,9 @@
     <Content Include="Assets\css\icons\custom-icons\Flaticon.woff2" />
     <Content Include="Assets\css\icons\custom-icons\_flaticon.scss" />
     <Content Include="Gerenciamento\DistribuicaoProduto.cshtml" />
-    <Content Include="Cadastro\distribuicaoGrupo.cshtml" />
+    <Content Include="Cadastro\DistribuicaoGrupo.cshtml" />
+    <Content Include="Gerenciamento\EntradaNF.cshtml" />
+    <Content Include="Cadastro\NotaFiscal.cshtml" />
     <None Include="packages.config" />
     <Content Include="Gerenciamento\Pedido.cshtml" />
     <Content Include="Cadastro\Compra.cshtml" />
@@ -2526,7 +2529,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>57141</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:57141/</IISUrl>
+          <IISUrl>http://localhost:57142/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

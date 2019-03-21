@@ -160,6 +160,7 @@
     <Compile Include="Gerenciador\GrupoEmpresas\GerenciadorAplicacaoGrupoEmpresa.cs" />
     <Compile Include="Gerenciador\Grupo\GerenciamentoAplicacaoGrupo.cs" />
     <Compile Include="Gerenciador\Movimentacao\GerenciamentoAplicacaoMovimentacao.cs" />
+    <Compile Include="Gerenciador\NF\GerenciadorAplicacaoNF.cs" />
     <Compile Include="Gerenciador\Pedido\GerenciadorAplicacaoPedido.cs" />
     <Compile Include="Gerenciador\Produto\GerenciadorAplicacaoProduto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -170,6 +171,7 @@
     <Compile Include="Servicos\Gerenciamento\AppServicoGrupo.cs" />
     <Compile Include="Servicos\Gerenciamento\AppServicoGrupoEmpresa.cs" />
     <Compile Include="Servicos\Gerenciamento\AppServicoMovimentacao.cs" />
+    <Compile Include="Servicos\Gerenciamento\AppServicoNotaFiscal.cs" />
     <Compile Include="Servicos\Gerenciamento\AppServicoPedido.cs" />
     <Compile Include="Servicos\Gerenciamento\AppServicoProduto.cs" />
     <Compile Include="Servicos\Interfaces\Gerenciamento\IAppServicoAtributo.cs" />
@@ -178,6 +180,7 @@
     <Compile Include="Servicos\Interfaces\Gerenciamento\IAppServicoGrupo.cs" />
     <Compile Include="Servicos\Interfaces\Gerenciamento\IAppServicoGrupoEmpresa.cs" />
     <Compile Include="Servicos\Interfaces\Gerenciamento\IAppServicoMovimentacao.cs" />
+    <Compile Include="Servicos\Interfaces\Gerenciamento\IAppServicoNotaFiscal.cs" />
     <Compile Include="Servicos\Interfaces\Gerenciamento\IAppServicoPedido.cs" />
     <Compile Include="Servicos\Interfaces\Gerenciamento\IAppServicoProduto.cs" />
     <Compile Include="Servicos\Interfaces\IAppServicoPadrao.cs" />
@@ -194,6 +197,14 @@
     <Compile Include="ViewModel\ComboFiliaisVM.cs" />
     <Compile Include="ViewModel\CondicaoFormaPgtoVM.cs" />
     <Compile Include="ViewModel\DadosConfigPadraoVM.cs" />
+    <Compile Include="ViewModel\DadosDuplicataVM.cs" />
+    <Compile Include="ViewModel\DescontoAcrescimoPadraoVM.cs" />
+    <Compile Include="ViewModel\EntradaCadastradaRetornoVM.cs" />
+    <Compile Include="ViewModel\EntradaNFPackItensSalvarVM.cs" />
+    <Compile Include="ViewModel\EntradaNFPackPedidoSalvarVM.cs" />
+    <Compile Include="ViewModel\EntradaNFPedidoPackVM.cs" />
+    <Compile Include="ViewModel\EntradaNFSalvarVM.cs" />
+    <Compile Include="ViewModel\EntradasNFVM.cs" />
     <Compile Include="ViewModel\EspeciesVM.cs" />
     <Compile Include="ViewModel\FabricaViewModel.cs" />
     <Compile Include="ViewModel\ComboFiltroVM.cs" />
@@ -201,6 +212,7 @@
     <Compile Include="ViewModel\FiltrosCadastroGrupoVM.cs" />
     <Compile Include="ViewModel\FiltrosPesquisa.cs" />
     <Compile Include="ViewModel\FornecedorProdDadosVM.cs" />
+    <Compile Include="ViewModel\FornecedorVM.cs" />
     <Compile Include="ViewModel\GradePadraoVM.cs" />
     <Compile Include="ViewModel\GrupoAtualizarVM.cs" />
     <Compile Include="ViewModel\FilialAtualizarVM.cs" />
@@ -218,15 +230,19 @@
     <Compile Include="ViewModel\MarcaVinculadaVM.cs" />
     <Compile Include="ViewModel\NovaCondicaoPgtoVM.cs" />
     <Compile Include="ViewModel\NovaCorItemProduto.cs" />
+    <Compile Include="ViewModel\ObjEntradasSalvarVM.cs" />
+    <Compile Include="ViewModel\ObjSalvarTituloVM.cs" />
     <Compile Include="ViewModel\PackItensVM.cs" />
     <Compile Include="ViewModel\PackVM.cs" />
     <Compile Include="ViewModel\PaginasGridVM.cs" />
     <Compile Include="ViewModel\PaletaDadosVM.cs" />
+    <Compile Include="ViewModel\ParametroNotaVM.cs" />
     <Compile Include="ViewModel\ParametrosAtributoVM.cs" />
     <Compile Include="ViewModel\ParametrosJsonVM.cs" />
     <Compile Include="ViewModel\ParametrosVM.cs" />
     <Compile Include="ViewModel\PedidoAtributoVM.cs" />
     <Compile Include="ViewModel\PedidoCompletoVM.cs" />
+    <Compile Include="ViewModel\PedidoNFVM.cs" />
     <Compile Include="ViewModel\PedidoPackDistribuicaoVM.cs" />
     <Compile Include="ViewModel\PedidoPackProdutoItemVM.cs" />
     <Compile Include="ViewModel\PedidosFiltradoVM.cs" />
@@ -246,9 +262,11 @@
     <Compile Include="ViewModel\SecaoVM.cs" />
     <Compile Include="ViewModel\SegmanetosVM.cs" />
     <Compile Include="ViewModel\SegmentoSecaoEspecieVM.cs" />
+    <Compile Include="ViewModel\StatusNFVM.cs" />
     <Compile Include="ViewModel\TabelaPrecoVM.cs" />
     <Compile Include="ViewModel\TamanhoGrupoVM.cs" />
     <Compile Include="ViewModel\TamanhoItemVM.cs" />
+    <Compile Include="ViewModel\TituloNFVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

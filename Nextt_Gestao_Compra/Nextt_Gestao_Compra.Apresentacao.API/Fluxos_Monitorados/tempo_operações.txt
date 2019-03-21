@@ -1,0 +1,10 @@
+
+DEBUG 2019-03-20 02:48:07 - Cadastro Iniciado no Servidor
+
+DEBUG 2019-03-20 02:48:07 - Json Gerado - Enviando ao Banco
+
+DEBUG 2019-03-20 02:50:59 - Cadastro Iniciado no Servidor
+
+DEBUG 2019-03-20 02:50:59 - Json Gerado - Enviando ao Banco
+
+DEBUG 2019-03-20 02:51:03 - Produto Gerado: 40159

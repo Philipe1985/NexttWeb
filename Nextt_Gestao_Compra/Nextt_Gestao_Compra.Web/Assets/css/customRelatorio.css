@@ -562,6 +562,10 @@ table.table-heading-sm thead tr th, table.table-heading-sm tbody tr td {
     border-top-right-radius: 5px;
 }
 
+.table th {
+    text-transform: capitalize !important;
+}
+
 table.pretty {
     width: 100% !important;
     clear: both;
@@ -1921,8 +1925,21 @@ ial.nav-pills > li {
 }
 
 
-td.qtdPack, td.qtdPackCadastrado, td.qtdPackFilial {
+td.qtdPack, td.editavelCol, td.qtdPackCadastrado, td.qtdPackFilial, td.qtdPackNota, td.qtdPackEnt, td.qtdPackTot {
     background: white !important;
+}
+
+td.qtdPackPed {
+    background: #a6a6a6 !important;
+    color: white !important;
+}
+
+td.qtdPackNota, td.qtdPackPed, td.qtdPackEnt, td.qtdPackTot {
+    font-weight: bold !important;
+}
+
+td.qtdPackTot {
+    color: #0070c0 !important;
 }
 
 #gruposCadastrados_wrapper table.dataTable.no-footer {
@@ -1953,23 +1970,264 @@ tr.groupOtb td {
     color: #fff !important;
     text-transform: uppercase !important;
 }
+
 .datepicker table tr td span.disabled,
 .datepicker table tr td span.disabled:hover {
     background: none !important;
     color: #999 !important;
     cursor: not-allowed !important;
 }
+
 .text-wrap {
     white-space: normal;
-    text-align:left!important;
+    text-align: left !important;
 }
 
 .width-200 {
     max-width: 100% !important;
 }
+
 .btnOperacoesPedido {
-    margin-right:4px!important;
+    margin-right: 4px !important;
 }
+
 .swicht-neutro {
-    background: #fff!important;
+    background: #fff !important;
 }
+
+.tooltip-inner {
+    max-width: none;
+    white-space: nowrap;
+    text-align: left;
+    /* If max-width does not work, try using width instead */
+    /*width: 550px;*/
+}
+
+    .tooltip-inner hr {
+        display: block;
+        margin-top: 1px;
+        margin-bottom: 1px;
+        margin-left: auto;
+        margin-right: auto;
+        border-style: inset;
+        border-width: 1px;
+    }
+
+[class^="toggle-column"] {
+    box-shadow: 0 0 1em green;
+}
+
+    [class^="toggle-column"]:not(:checked) {
+        box-shadow: 0 0 1em red;
+    }
+
+
+
+label.lbl-rdb {
+    margin: 2em;
+    display: inline-block;
+    position: relative;
+    padding-left: 40px;
+    cursor: pointer;
+}
+
+    label.lbl-rdb input {
+        height: 1px;
+        width: 1px;
+        opacity: 0;
+    }
+
+.outside {
+    display: inline-block;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    margin-top: -10px;
+    width: 20px;
+    height: 20px;
+    border: 2px solid red;
+    border-radius: 50%;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    background: none;
+}
+
+.inside {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    display: inline-block;
+    border-radius: 50%;
+    width: 10px;
+    height: 10px;
+    background: red;
+    left: 3px;
+    top: 3px;
+    -webkit-transform: scale(0, 0);
+    transform: scale(0, 0);
+}
+
+.no-transforms .inside {
+    left: auto;
+    top: auto;
+    width: 0;
+    height: 0;
+}
+
+label.lbl-rdb input {
+    /*  &:focus, &:active {
+        + .outside {
+          border-color: $almost-black;
+        }
+      }*/
+}
+
+    label.lbl-rdb input:checked + .outside .inside {
+        -webkit-animation: radio-select 0.1s linear;
+        animation: radio-select 0.1s linear;
+        -webkit-transform: scale(1, 1);
+        transform: scale(1, 1);
+    }
+
+.no-transforms input:checked + .outside .inside {
+    width: 10px;
+    height: 10px;
+}
+
+.customCSSHead {
+    background-color: #44546a !important;
+    color: white !important;
+}
+
+.customCSSHeadTotal {
+    background-color: #2f75b5 !important;
+    color: white !important;
+}
+
+.tp-FG .customCSSHeadFG {
+    background-color: #ffc000 !important;
+    color: black !important;
+    font-weight: bold !important;
+}
+li.active a.tp-DF,
+li.active a.tp-DF:hover,
+li.active a.tp-DF:focus {
+    background-color: #ea9999 !important;
+    color: black !important;
+    font-weight: bold !important;
+}
+li.active a.tp-FG,
+li.active a.tp-FG:hover,
+li.active a.tp-FG:focus {
+    background-color: #ffe599 !important;
+    color: black !important;
+    font-weight: bold !important;
+}
+li.active a.tp-DG,
+li.active a.tp-DG:hover,
+li.active a.tp-DG:focus {
+    background-color: white !important;
+    color: black !important;
+    font-weight: bold !important;
+}
+.content-pack.tp-DF {
+    background-color: #ea9999 !important;
+}
+
+.content-pack.tp-FG {
+    background-color: #ffe599 !important;
+}
+
+.tp-DF .customCSSHeadFG {
+    background-color: red !important;
+    color: white !important;
+    font-weight: bold !important;
+}
+
+.customCSSHeadTotalRdp {
+    background-color: #2f75b5 !important;
+    color: #fffb08 !important;
+}
+
+.customCSSHeadItmRdp {
+    background-color: white !important;
+    color: #2f75b5 !important;
+    font-weight: bold !important;
+}
+
+.tabPackPedido li a,
+.tabPacksEntrada li a {
+    background-color: #cfdae0 !important;
+    color: black !important;
+}
+
+    .tabPackPedido li a:hover,
+    .tabPacksEntrada li a:hover,
+    .tabPackPedido li a:focus {
+        background-color: #0090D9 !important;
+        color: white !important;
+        font-weight: bold !important;
+    }
+
+.tabPackPedido li.active a {
+    background-color: #337ab7 !important;
+    color: white !important;
+    font-weight: bold !important;
+}
+.duplicata {
+    background-color: #9fc5f8 !important;
+}
+
+.pedido {
+    background-color: #b6d7a8 !important;
+}
+
+.duplicataTab.active a {
+    background-color: #9fc5f8 !important;
+}
+
+.pedidoTab.active a {
+    background-color: #b6d7a8 !important;
+}
+#tabDuplicata th {
+    background-color: #ccc !important;
+}
+#tabDuplicata tbody td {
+    background-color: #fff !important;
+}
+#tabDuplicata tr.odd td {
+    background-color: #eee !important;
+}
+#tabDuplicata td.dataTables_empty,
+#frmDescTit, #frmPedCustoTit {
+    background-color: white !important;
+    font-weight: bold !important;
+}
+
+.block {
+    display: block;
+    width: 100%;
+    border: none;
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 28px;
+    font-size: 16px;
+    cursor: pointer;
+    text-align: center;
+}
+#modalConsultaPedido {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+    #modalConsultaPedido .modal-dialog.modal-lg {
+        width: 90% !important;
+        height: 90% !important;
+    }
+
+    #modalConsultaPedido .modal-body {
+        max-height: 75vh !important;
+        overflow-y: auto !important;
+    }

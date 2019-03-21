@@ -1,0 +1,26 @@
+
+ERROR 2019-03-10 01:46:13 - Erro ao Recuperar Pedidos Filtrados
+System.NullReferenceException: Referência de objeto não definida para uma instância de um objeto.
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.NF.GerenciadorAplicacaoNF.RetornaPacksPedido(IAppServicoNotaFiscal nfServico, PedidoNFVM pedido) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\NF\GerenciadorAplicacaoNF.cs:linha 74
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Gerenciamento.EntradaNFController.RecuperaPacksPedidos(PedidoNFVM parametro) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Gerenciamento\EntradaNFController.cs:linha 107
+
+ERROR 2019-03-10 01:46:24 - Erro ao Recuperar Pedidos Filtrados
+System.NullReferenceException: Referência de objeto não definida para uma instância de um objeto.
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.NF.GerenciadorAplicacaoNF.RetornaPacksPedido(IAppServicoNotaFiscal nfServico, PedidoNFVM pedido) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\NF\GerenciadorAplicacaoNF.cs:linha 74
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Gerenciamento.EntradaNFController.RecuperaPacksPedidos(PedidoNFVM parametro) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Gerenciamento\EntradaNFController.cs:linha 107
+
+ERROR 2019-03-10 04:08:28 - Erro ao Recuperar Entrada de NF Cadastrada
+System.ArgumentException: Pelo menos um objeto deve implementar IComparable.
+   em System.Collections.Comparer.Compare(Object a, Object b)
+   em System.Collections.Generic.ObjectComparer`1.Compare(T x, T y)
+   em System.Linq.EnumerableSorter`2.CompareKeys(Int32 index1, Int32 index2)
+   em System.Linq.EnumerableSorter`1.QuickSort(Int32[] map, Int32 left, Int32 right)
+   em System.Linq.EnumerableSorter`1.Sort(TElement[] elements, Int32 count)
+   em System.Linq.OrderedEnumerable`1.<GetEnumerator>d__1.MoveNext()
+   em System.Linq.Lookup`2.Create[TSource](IEnumerable`1 source, Func`2 keySelector, Func`2 elementSelector, IEqualityComparer`1 comparer)
+   em System.Linq.GroupedEnumerable`3.GetEnumerator()
+   em System.Linq.Enumerable.WhereSelectEnumerableIterator`2.MoveNext()
+   em System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
+   em System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
+   em Nextt_Gestao_Compra.Aplicacao.Gerenciador.NF.GerenciadorAplicacaoNF.RetornaEntradaCadastrada(IAppServicoNotaFiscal nfServico, String idNota) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Aplicacao\Gerenciador\NF\GerenciadorAplicacaoNF.cs:linha 70
+   em Nextt_Gestao_Compra.Apresentacao.API.Controllers.Gerenciamento.EntradaNFController.RecuperaEntradaCadastrada(String Id) na C:\GitHub\GestaoCompras\NexttWeb\Nextt_Gestao_Compra\Nextt_Gestao_Compra.Apresentacao.API\Controllers\Gerenciamento\EntradaNFController.cs:linha 75

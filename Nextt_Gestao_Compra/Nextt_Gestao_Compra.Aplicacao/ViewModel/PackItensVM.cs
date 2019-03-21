@@ -17,7 +17,15 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
         {
             ReferenciaItem = items.ElementAt(0).ReferenciaItem;
             DescricaoCor = items.ElementAt(0).DescricaoCor;
-            DadosTamanho = items.Select(x => new TamanhoItemVM(x)).ToList();
+            DadosTamanho = items.OrderBy(x=> x.TamanhoOrdem).Select(x => new TamanhoItemVM(x)).ToList();
+            TotalItens = totalItens;
+        }
+        public PackItensVM(List<ProdutoItem> items, int totalItens, bool isNota)
+        {
+
+            ReferenciaItem = items.ElementAt(0).ReferenciaItem;
+            DescricaoCor = items.ElementAt(0).DescricaoCor;
+            DadosTamanho = items.OrderBy(x => x.TamanhoOrdem).Select(x => new TamanhoItemVM(x,isNota)).ToList();
             TotalItens = totalItens;
         }
     }

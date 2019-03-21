@@ -11,3 +11,4 @@ namespace Nextt_Gestao_Compra.Aplicacao.ViewModel
         public ParametrosAtributoVM Parametros { get; set; }
     }
 }
+ 
